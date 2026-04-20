@@ -15,6 +15,7 @@ public class AuthRemoteServiceImpl implements AuthRemoteService {
 
     @Override
     public NhanVien login(String username, String password) throws Exception {
+        System.out.println("CLIENT: Đang gửi yêu cầu đăng nhập cho tài khoản: " );
         ResponseObject response = socketClient.sendRequest(
                 new RequestObject("AUTH_LOGIN", new LoginRequestData(username, password))
         );
