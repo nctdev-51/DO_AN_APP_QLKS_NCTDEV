@@ -19,16 +19,18 @@ public class ActionDispatcher {
     private final KhachHangService khachHangService = new KhachHangServiceImpl();
 
     public ResponseObject dispatch(RequestObject request) {
-        System.out.println("\n--- [SERVER ROUTER] Đã nhận Request ---");
-        System.out.println(">> ACTION: " + request.getAction());
-
         if (request == null || request.getAction() == null) {
+            System.out.println("\n--- [SERVER ROUTER] Đã nhận Request ---");
             System.out.println("❌ Lỗi: Yêu cầu không hợp lệ hoặc rỗng.");
             return ResponseObject.fail("Yeu cau khong hop le hoac rỗng.");
         }
 
+        String action = request.getAction();
+        System.out.println("\n--- [SERVER ROUTER] Đã nhận Request ---");
+        System.out.println(">> ACTION: " + action);
+
         try {
-            return switch (request.getAction()) {
+            return switch (action) {
                 case "AUTH_LOGIN" -> handleAuthLogin(request.getPayload());
                 case "KHACH_HANG_GET_ALL" -> {
                     System.out.println(">> Đang gọi KhachHangService.getAll()...");
@@ -40,7 +42,7 @@ public class ActionDispatcher {
                 case "KHACH_HANG_DELETE" -> handleDeleteKhachHang(request.getPayload());
                 default -> {
                     System.out.println("❌ Lỗi: Action chưa được hỗ trợ.");
-                    yield ResponseObject.fail("Action khong duoc ho tro: " + request.getAction());
+                    yield ResponseObject.fail("Action khong duoc ho tro: " + action);
                 }
             };
         } catch (Exception ex) {

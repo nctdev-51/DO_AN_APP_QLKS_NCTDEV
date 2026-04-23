@@ -32,7 +32,7 @@ public class DangNhap_Gui extends JFrame {
     }
 
     private void initializeUI() {
-        setTitle("Dang nhap he thong - Khach san TATP");
+        setTitle("Đăng nhập hệ thống - Khách sạn TATP");
         setSize(900, 650);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -46,44 +46,62 @@ public class DangNhap_Gui extends JFrame {
         JLabel lblBackground = new JLabel(new ImageIcon(img));
         lblBackground.setLayout(new GridBagLayout());
 
-        JPanel pnl = new JPanel();
-        pnl.setOpaque(false);
-        pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
-        pnl.setPreferredSize(new Dimension(380, 400));
+        JPanel pnlGiaoDien = new JPanel();
+        pnlGiaoDien.setOpaque(false);
+        pnlGiaoDien.setLayout(new BoxLayout(pnlGiaoDien, BoxLayout.Y_AXIS));
+        pnlGiaoDien.setPreferredSize(new Dimension(380, 400));
 
-        JLabel lblTieuDe = new JLabel("DANG NHAP HE THONG");
+        Font fontChinh = new Font("Segoe UI", Font.PLAIN, 18);
+        Font fontLabel = new Font("Segoe UI", Font.BOLD, 18);
+        Color mauChu = new Color(45, 45, 45);
+
+        JLabel lblTieuDe = new JLabel("ĐĂNG NHẬP HỆ THỐNG");
         lblTieuDe.setFont(new Font("Segoe UI", Font.BOLD, 30));
         lblTieuDe.setForeground(new Color(0, 82, 164));
         lblTieuDe.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JTextField txtTaiKhoanLocal = new JTextField();
-        txtTaiKhoanLocal.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        txtTaiKhoanLocal.setMaximumSize(new Dimension(380, 45));
-        txtTaiKhoanLocal.setBorder(new CompoundBorder(
+        JLabel lblTaiKhoan = new JLabel("Tài khoản");
+        lblTaiKhoan.setFont(fontLabel);
+        lblTaiKhoan.setForeground(mauChu);
+        lblTaiKhoan.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblTaiKhoan.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
+
+        txtTaiKhoan = new JTextField();
+        txtTaiKhoan.setFont(fontChinh);
+        txtTaiKhoan.setMaximumSize(new Dimension(380, 45));
+        txtTaiKhoan.setBorder(new CompoundBorder(
                 new LineBorder(new Color(150, 150, 150), 1, true),
                 new EmptyBorder(8, 15, 8, 15)
         ));
-        txtTaiKhoan = txtTaiKhoanLocal;
 
-        JPasswordField txtMatKhauLocal = new JPasswordField();
-        txtMatKhauLocal.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        txtMatKhauLocal.setMaximumSize(new Dimension(380, 45));
-        txtMatKhauLocal.setBorder(new CompoundBorder(
+        JLabel lblMatKhau = new JLabel("Mật khẩu");
+        lblMatKhau.setFont(fontLabel);
+        lblMatKhau.setForeground(mauChu);
+        lblMatKhau.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblMatKhau.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
+
+        txtMatKhau = new JPasswordField();
+        txtMatKhau.setFont(fontChinh);
+        txtMatKhau.setMaximumSize(new Dimension(380, 45));
+        txtMatKhau.setEchoChar('•');
+        txtMatKhau.setBorder(new CompoundBorder(
                 new LineBorder(new Color(150, 150, 150), 1, true),
                 new EmptyBorder(8, 15, 8, 15)
         ));
-        txtMatKhau = txtMatKhauLocal;
 
-        chkHienMatKhau = new JCheckBox("Hien mat khau");
+        chkHienMatKhau = new JCheckBox("Hiện mật khẩu");
+        chkHienMatKhau.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         chkHienMatKhau.setOpaque(false);
+        chkHienMatKhau.setForeground(mauChu);
         chkHienMatKhau.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         lblThongBao = new JLabel(" ");
+        lblThongBao.setFont(new Font("Segoe UI", Font.ITALIC, 14));
         lblThongBao.setHorizontalAlignment(SwingConstants.CENTER);
         lblThongBao.setPreferredSize(new Dimension(380, 40));
         lblThongBao.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        btnDangNhap = new JButton("DANG NHAP");
+        btnDangNhap = new JButton("ĐĂNG NHẬP");
         btnDangNhap.setFont(new Font("Segoe UI Semibold", Font.BOLD, 20));
         btnDangNhap.setForeground(Color.WHITE);
         btnDangNhap.setBackground(new Color(0, 102, 204));
@@ -91,6 +109,7 @@ public class DangNhap_Gui extends JFrame {
         btnDangNhap.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnDangNhap.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnDangNhap.setMaximumSize(new Dimension(380, 55));
+        btnDangNhap.setBorder(new LineBorder(new Color(0, 102, 204), 2, true));
 
         btnDangNhap.addMouseListener(new MouseAdapter() {
             @Override
@@ -104,27 +123,32 @@ public class DangNhap_Gui extends JFrame {
             }
         });
 
-        pnl.add(Box.createVerticalStrut(20));
-        pnl.add(lblTieuDe);
-        pnl.add(Box.createVerticalStrut(30));
-        pnl.add(txtTaiKhoan);
-        pnl.add(Box.createVerticalStrut(20));
-        pnl.add(txtMatKhau);
-        pnl.add(Box.createVerticalStrut(8));
-        pnl.add(chkHienMatKhau);
-        pnl.add(Box.createVerticalStrut(12));
-        pnl.add(lblThongBao);
-        pnl.add(Box.createVerticalStrut(20));
-        pnl.add(btnDangNhap);
+        pnlGiaoDien.add(Box.createVerticalStrut(20));
+        pnlGiaoDien.add(lblTieuDe);
+        pnlGiaoDien.add(Box.createVerticalStrut(30));
+        pnlGiaoDien.add(lblTaiKhoan);
+        pnlGiaoDien.add(Box.createVerticalStrut(5));
+        pnlGiaoDien.add(txtTaiKhoan);
+        pnlGiaoDien.add(Box.createVerticalStrut(20));
+        pnlGiaoDien.add(lblMatKhau);
+        pnlGiaoDien.add(Box.createVerticalStrut(5));
+        pnlGiaoDien.add(txtMatKhau);
+        pnlGiaoDien.add(Box.createVerticalStrut(8));
+        pnlGiaoDien.add(chkHienMatKhau);
+        pnlGiaoDien.add(Box.createVerticalStrut(12));
+        pnlGiaoDien.add(lblThongBao);
+        pnlGiaoDien.add(Box.createVerticalStrut(20));
+        pnlGiaoDien.add(btnDangNhap);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 380, 0, 80);
-        lblBackground.add(pnl, gbc);
+        lblBackground.add(pnlGiaoDien, gbc);
 
         add(lblBackground);
+        setVisible(true);
     }
 
     private void setupEventListeners() {
@@ -151,14 +175,13 @@ public class DangNhap_Gui extends JFrame {
         String taiKhoan = txtTaiKhoan.getText().trim();
         String matKhau = new String(txtMatKhau.getPassword());
         if (taiKhoan.isEmpty() || matKhau.isEmpty()) {
-            hienThiLoi("Vui long nhap day du tai khoan va mat khau!");
+            hienThiLoi("Vui lòng nhập đầy đủ tài khoản và mật khẩu!");
             return;
         }
 
         try {
-            // Business validation belongs to server; GUI only sends request and renders response.
             NhanVien nv = authRemoteService.login(taiKhoan, matKhau);
-            hienThiThanhCong("Dang nhap thanh cong! Chao mung " + nv.getHoTen());
+            hienThiThanhCong("Đăng nhập thành công! Chào mừng " + nv.getHoTen());
             Timer timer = new Timer(1200, e -> {
                 dispose();
                 TrangChu_Gui trangChu = new TrangChu_Gui(nv);
@@ -167,7 +190,7 @@ public class DangNhap_Gui extends JFrame {
             timer.setRepeats(false);
             timer.start();
         } catch (Exception ex) {
-            hienThiLoi(ex.getMessage() == null ? "Dang nhap that bai!" : ex.getMessage());
+            hienThiLoi(ex.getMessage() == null ? "Đăng nhập thất bại!" : ex.getMessage());
             txtMatKhau.setText("");
             txtMatKhau.requestFocus();
         }
