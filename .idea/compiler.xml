@@ -7,9 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Hotel_Client" />
-        <module name="Hotel_Server" />
+        <module name="BTL_PT_QLKS" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Hotel_Client" target="21" />
+      <module name="Hotel_Server" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>

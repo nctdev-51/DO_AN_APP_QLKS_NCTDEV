@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #f0f0f0;">
+            <Label text="QUẢN LÝ NHÂN VIÊN" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #0052a4;"/>
+            <Separator/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="15" style="-fx-padding: 15;">
+            <!-- TableView hiển thị danh sách nhân viên -->
+            <TableView fx:id="tableNhanVien" prefHeight="350">
+                <columns>
+                    <TableColumn fx:id="colMa" text="Mã NV" prefWidth="80"/>
+                    <TableColumn fx:id="colTen" text="Tên Nhân Viên" prefWidth="150"/>
+                    <TableColumn fx:id="colSDT" text="SĐT" prefWidth="120"/>
+                    <TableColumn fx:id="colNgaySinh" text="Ngày sinh" prefWidth="120"/>
+                    <TableColumn fx:id="colCCCD" text="CCCD" prefWidth="120"/>
+                    <TableColumn fx:id="colLoai" text="Loại NV" prefWidth="130"/>
+                    <TableColumn fx:id="colTrangThai" text="Trạng thái" prefWidth="80"/>
+                </columns>
+            </TableView>
+
+            <!-- Form input -->
+            <VBox spacing="10" style="-fx-border-style: solid; -fx-border-width: 1; -fx-padding: 15; -fx-border-color: #cccccc;">
+                <Label text="Thông tin nhân viên" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+
+                <HBox spacing="10">
+                    <Label text="Mã NV:" minWidth="80"/>
+                    <TextField fx:id="txtMa" prefWidth="150" editable="false"/>
+                    <Label text="Tên:" minWidth="60"/>
+                    <TextField fx:id="txtTen" prefWidth="200"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label text="SĐT:" minWidth="80"/>
+                    <TextField fx:id="txtSDT" prefWidth="150"/>
+                    <Label text="CCCD:" minWidth="60"/>
+                    <TextField fx:id="txtCCCD" prefWidth="200"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label text="Ngày sinh:" minWidth="80"/>
+                    <DatePicker fx:id="dpNgaySinh" prefWidth="150"/>
+                    <Label text="Loại NV:" minWidth="60"/>
+                    <ComboBox fx:id="cbLoai" prefWidth="200"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label text="Ngày vào làm:" minWidth="80"/>
+                    <DatePicker fx:id="dpNgayVaoLam" prefWidth="150"/>
+                    <Label text="Quê quán:" minWidth="60"/>
+                    <TextField fx:id="txtQueQuan" prefWidth="200"/>
+                </HBox>
+
+                <CheckBox fx:id="chkTrangThai" text="Đang hoạt động"/>
+            </VBox>
+
+            <!-- Buttons -->
+            <HBox spacing="10" style="-fx-alignment: center;">
+                <Button fx:id="btnThem" text="Thêm" prefWidth="100" style="-fx-font-size: 12; -fx-padding: 8;"/>
+                <Button fx:id="btnCapNhat" text="Cập nhật" prefWidth="100" style="-fx-font-size: 12; -fx-padding: 8;"/>
+                <Button fx:id="btnXoa" text="Xóa" prefWidth="100" style="-fx-font-size: 12; -fx-padding: 8;"/>
+                <Button fx:id="btnLamMoi" text="Làm mới" prefWidth="100" style="-fx-font-size: 12; -fx-padding: 8;"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <Label fx:id="lblThongBao" style="-fx-padding: 10; -fx-text-fill: #ff0000;"/>
+    </bottom>
+</BorderPane>
+

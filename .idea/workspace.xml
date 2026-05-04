@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ARCHITECTURE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AUTHENTICATION_PLAINTEXT_MIGRATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CLEAN_ARCHITECTURE_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DATABASE_SETUP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MIGRATION_CHECKLIST.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MIGRATION_COMPLETE_EMPLOYEE_MANAGEMENT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MIGRATION_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SQL_MIGRATION_COMPLETE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/app/Launcher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/app/MainApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/app/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/CaLamViec.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/DichVu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/HoaDon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhachHang.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhuyenMai.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/LoaiKhachHang.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/LoaiNhanVien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/NhanVien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhanCongCaLamViec.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/Phong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TaiKhoan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TinhTrangPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IKhachHangRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/INhanVienRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/ITaiKhoanRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/AuthenticationServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IAuthenticationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IKhachHangService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/INhanVienService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/KhachHangServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/NhanVienServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/db/JpaConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/db/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/KhachHangMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/NhanVienMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/TaiKhoanMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/KhachHangRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/NhanVienRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/TaiKhoanRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyKhachHangController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyNhanVienController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/QuanLyNhanVien.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/DO_AN_APP.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/app/ClientMain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/client/network/SocketClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/client/service/AuthRemoteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/client/service/AuthRemoteServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/client/service/KhachHangRemoteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/client/service/KhachHangRemoteServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/ChiTietHoaDon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/ChiTietHoaDonId.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/ChiTietPhieuDatPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/ChiTietPhieuDatPhongId.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/DichVu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/HoaDon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/KhachHang.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/KhuyenMai.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/LoaiKhachHang.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/LoaiKhuyenMai.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/LoaiNhanVien.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/LoaiPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/NhanVien.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/PhieuDatPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/Phong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/TaiKhoan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/core/entity/TinhTrangPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/dto/KhachHangDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/gui/DangNhap_Gui.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/gui/QuanLyKhachHang.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/gui/TrangChu_Gui.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/shared/model/LoginRequestData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/shared/model/RequestObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/src/main/java/shared/model/ResponseObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/app/ClientMain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/client/network/SocketClient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/client/service/AuthRemoteService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/client/service/AuthRemoteServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/client/service/KhachHangRemoteService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/client/service/KhachHangRemoteServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/ChiTietHoaDon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/ChiTietHoaDonId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/ChiTietPhieuDatPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/ChiTietPhieuDatPhongId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/DichVu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/HoaDon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/KhachHang.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/KhuyenMai.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/LoaiKhachHang.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/LoaiKhuyenMai.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/LoaiNhanVien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/LoaiPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/NhanVien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/PhieuDatPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/Phong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/TaiKhoan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/core/entity/TinhTrangPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/dto/KhachHangDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/DangNhap_Gui$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/DangNhap_Gui$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/DangNhap_Gui.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/QuanLyKhachHang.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/TrangChu_Gui$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/TrangChu_Gui$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/TrangChu_Gui$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/TrangChu_Gui$RoomItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/TrangChu_Gui$RoomState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/gui/TrangChu_Gui.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/shared/model/LoginRequestData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/shared/model/RequestObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/classes/shared/model/ResponseObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/DangNhap_Gui$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/DangNhap_Gui$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/DangNhap_Gui.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/TrangChu_Gui$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/TrangChu_Gui$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/TrangChu_Gui$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/TrangChu_Gui$RoomItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/TrangChu_Gui$RoomState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Client/target/tmp-compile/gui/TrangChu_Gui.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/app/ServerMain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/ChiTietHoaDon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/ChiTietHoaDonId.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/ChiTietPhieuDatPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/ChiTietPhieuDatPhongId.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/DichVu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/HoaDon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/KhachHang.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/KhuyenMai.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/LoaiKhachHang.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/LoaiKhuyenMai.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/LoaiNhanVien.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/LoaiPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/NhanVien.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/PhieuDatPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/Phong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/TaiKhoan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/entity/TinhTrangPhong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/repository/BaseRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/repository/KhachHangRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/repository/TaiKhoanRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/service/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/service/KhachHangService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/service/impl/AuthServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/core/service/impl/KhachHangServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/infrastructure/db/EntityManagerFactoryProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/server/SocketServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/server/handler/ActionDispatcher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/server/handler/ClientHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/shared/model/LoginRequestData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/shared/model/RequestObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/java/shared/model/ResponseObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/src/main/resources/META-INF/persistence.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/META-INF/persistence.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/app/ServerMain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/ChiTietHoaDon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/ChiTietHoaDonId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/ChiTietPhieuDatPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/ChiTietPhieuDatPhongId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/DichVu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/HoaDon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/KhachHang.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/KhuyenMai.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/LoaiKhachHang.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/LoaiKhuyenMai.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/LoaiNhanVien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/LoaiPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/NhanVien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/PhieuDatPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/Phong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/TaiKhoan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/entity/TinhTrangPhong.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/repository/BaseRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/repository/KhachHangRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/repository/TaiKhoanRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/service/AuthService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/service/KhachHangService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/service/impl/AuthServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/core/service/impl/KhachHangServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/infrastructure/db/EntityManagerFactoryProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/server/SocketServer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/server/handler/ActionDispatcher.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/server/handler/ClientHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/shared/model/LoginRequestData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/shared/model/RequestObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/classes/shared/model/ResponseObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hotel_Server/target/tmp-compile/server/handler/ActionDispatcher.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_F:/My_Document/lesson/PhanTan/BTL_PT_QLKS" value="3Ccsmfu7bB3FiSa6IOlj3v8xdqS" />
+      <entry key="_F:/My_Document/lesson/PhanTan/onTapCK/BTL_PT_QLKS" value="3CcscaMwr3NQZXKQklMFUPVG8j7" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
+  <component name="CopilotUserSelectedModel">
+    <selectedModels>
+      <entry key="chat-panel" value="Claude Haiku 4.5" />
+      <entry key="agent-panel" value="Claude Haiku 4.5" />
+    </selectedModels>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/tu" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nctdev-51&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nctdev-51/DO_AN_APP_QLKS_NCTDEV.git&quot;,
+    &quot;accountId&quot;: &quot;bc0dd656-8bb1-4d69-9847-b5f2008e2a72&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3CcscaMwr3NQZXKQklMFUPVG8j7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ClientMain.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ServerMain.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;tu&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/My_Document/lesson/PhanTan/BTL_PT_QLKS&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS" />
+      <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Launcher">
+    <configuration name="ClientMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.ClientMain" />
+      <module name="Hotel_Client" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="iuh.fit.app.Launcher" />
+      <module name="BTL_PT_QLKS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="iuh.fit.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="iuh.fit.app.MainApp" />
+      <module name="BTL_PT_QLKS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="iuh.fit.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.ServerMain" />
+      <module name="Hotel_Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Launcher" />
+        <item itemvalue="Application.MainApp" />
+        <item itemvalue="Application.ClientMain" />
+        <item itemvalue="Application.ServerMain" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="" />
+      <created>1776696283087</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776696283087</updated>
+      <workItem from="1776696284282" duration="14000" />
+      <workItem from="1776696339911" duration="1100000" />
+      <workItem from="1776698289405" duration="1013000" />
+      <workItem from="1776699336143" duration="666000" />
+      <workItem from="1776700241928" duration="489000" />
+      <workItem from="1776702230929" duration="1134000" />
+      <workItem from="1777277165351" duration="1787000" />
+      <workItem from="1777283294572" duration="200000" />
+      <workItem from="1777904549710" duration="710000" />
+      <workItem from="1777905339423" duration="4545000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
