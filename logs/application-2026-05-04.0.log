@@ -1,0 +1,699 @@
+2026-05-04 22:38:00.915 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-04 22:38:00.927 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-04 22:38:01.188 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1049-42000: Unknown database 'qlkhachsan_db'
+2026-05-04 22:38:01.229 [JavaFX Application Thread] WARN  o.h.e.j.e.i.JdbcEnvironmentInitiator - HHH000342: Could not obtain connection to query metadata
+java.lang.IllegalStateException: Cannot get a connection as the driver manager is not properly initialized
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl.getConnection(DriverManagerConnectionProviderImpl.java:259)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.engine.jdbc.internal.JdbcServicesImpl.configure(JdbcServicesImpl.java:52)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.configureService(StandardServiceRegistryImpl.java:136)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:247)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.engine.jdbc.connections.internal.BasicConnectionCreator.convertSqlException(BasicConnectionCreator.java:132)
+	at org.hibernate.engine.jdbc.connections.internal.DriverConnectionCreator.makeConnection(DriverConnectionCreator.java:43)
+	at org.hibernate.engine.jdbc.connections.internal.BasicConnectionCreator.createConnection(BasicConnectionCreator.java:61)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.addConnections(DriverManagerConnectionProviderImpl.java:499)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.<init>(DriverManagerConnectionProviderImpl.java:372)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections$Builder.build(DriverManagerConnectionProviderImpl.java:550)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl.buildPool(DriverManagerConnectionProviderImpl.java:102)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl.configure(DriverManagerConnectionProviderImpl.java:82)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.configureService(StandardServiceRegistryImpl.java:136)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:247)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.buildJdbcConnectionAccess(JdbcEnvironmentInitiator.java:395)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:262)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
+	at iuh.fit.app.MainApp.start(MainApp.java:78)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:839)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:483)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:456)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:455)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2026-05-04 22:38:01.289 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 22:38:01.316 [JavaFX Application Thread] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1049, SQLState: 42000
+2026-05-04 22:38:01.316 [JavaFX Application Thread] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - (conn=5) Unknown database 'qlkhachsan_db'
+2026-05-04 22:38:34.353 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-04 22:38:34.357 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-04 22:38:34.612 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 22:38:35.835 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m ca_lam_viec (
+        ma_ca [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gio_bat_dau [34mtime[0m(6),
+        gio_ket_thuc [34mtime[0m(6),
+        ten_ca [34mvarchar[0m(100),
+        [34mprimary[0m [34mkey[0m (ma_ca)
+    ) engine=InnoDB
+2026-05-04 22:38:35.877 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m dich_vu (
+        ma_dich_vu [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gia_dich_vu [34mfloat[0m(53),
+        ten_dich_vu [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (ma_dich_vu)
+    ) engine=InnoDB
+2026-05-04 22:38:35.882 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m hoa_don (
+        ma_hoa_don [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        tong_tien [34mfloat[0m(53),
+        trang_thai_thanh_toan [34mvarchar[0m(255),
+        ma_phieu_dat [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_hoa_don)
+    ) engine=InnoDB
+2026-05-04 22:38:35.887 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m khach_hang (
+        ma_khach_hang [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ho_ten [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        loai_khach_hang enum ([36m'KHACH_HOI_VIEN'[0m,[36m'KHACH_THUONG_XUYÊN'[0m,[36m'KHACH_MOI'[0m),
+        ngay_sinh [34mdate[0m,
+        so_dien_thoai [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_khach_hang)
+    ) engine=InnoDB
+2026-05-04 22:38:35.893 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m khuyen_mai (
+        ma_khuyen_mai [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        muc_giam_gia [34mfloat[0m(53),
+        ten_khuyen_mai [34mvarchar[0m(100),
+        [34mprimary[0m [34mkey[0m (ma_khuyen_mai)
+    ) engine=InnoDB
+2026-05-04 22:38:35.897 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m nhan_vien (
+        ma_nhan_vien [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        cccd [34mvarchar[0m(20),
+        gioi_tinh bit,
+        ho_ten [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        loai_nhan_vien enum ([36m'NHAN_VIEN_LE_TAN'[0m,[36m'NHAN_VIEN_PHONG'[0m,[36m'NHAN_VIEN_SAN_KHAU'[0m,[36m'QUAN_LY'[0m,[36m'GIAM_DOC'[0m),
+        ngay_sinh [34mdate[0m,
+        ngay_vao_lam [34mdate[0m,
+        que_quan [34mvarchar[0m(200),
+        so_dien_thoai [34mvarchar[0m(20),
+        trang_thai bit,
+        [34mprimary[0m [34mkey[0m (ma_nhan_vien)
+    ) engine=InnoDB
+2026-05-04 22:38:35.902 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phan_cong_ca_lam_viec (
+        ma_phan_cong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ngay_lam_viec [34mdate[0m,
+        ma_ca [34mvarchar[0m(20),
+        ma_nhan_vien [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_phan_cong)
+    ) engine=InnoDB
+2026-05-04 22:38:35.906 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phieu_dat_phong (
+        ma_phieu_dat [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ngay_dat [34mdate[0m,
+        ngay_nhan_phong [34mdate[0m,
+        ngay_tra_phong [34mdate[0m,
+        tong_tien [34mfloat[0m(53),
+        ma_khach_hang [34mvarchar[0m(20),
+        ma_phong [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_phieu_dat)
+    ) engine=InnoDB
+2026-05-04 22:38:35.911 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phong (
+        ma_phong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gia_phong [34mfloat[0m(53),
+        so_tang [34minteger[0m,
+        suc_chua [34minteger[0m,
+        ten_phong [34mvarchar[0m(100),
+        tinh_trang_phong enum ([36m'PHONG_TRONG'[0m,[36m'PHONG_HAN_CHE'[0m,[36m'DANG_SUA_CHUA'[0m,[36m'PHONG_NGOAI_SU_DUNG'[0m),
+        [34mprimary[0m [34mkey[0m (ma_phong)
+    ) engine=InnoDB
+2026-05-04 22:38:35.917 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m tai_khoan (
+        tai_khoan [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        mat_khau [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        ma_nhan_vien [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (tai_khoan)
+    ) engine=InnoDB
+2026-05-04 22:38:35.921 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m khach_hang 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_6j1oks4nrqpqnl0b6cnp85vrd
+2026-05-04 22:38:35.928 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m khach_hang 
+       [34madd[0m [34mconstraint[0m UK_6j1oks4nrqpqnl0b6cnp85vrd [34munique[0m (so_dien_thoai)
+2026-05-04 22:38:35.938 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m nhan_vien 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_4dltajwcytiogq08kwe1pqa48
+2026-05-04 22:38:35.940 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m nhan_vien 
+       [34madd[0m [34mconstraint[0m UK_4dltajwcytiogq08kwe1pqa48 [34munique[0m (cccd)
+2026-05-04 22:38:35.946 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m hoa_don 
+       [34madd[0m [34mconstraint[0m FKre06io0nvm70r3qfjhslb8dfs 
+       [34mforeign[0m [34mkey[0m (ma_phieu_dat) 
+       [34mreferences[0m phieu_dat_phong (ma_phieu_dat)
+2026-05-04 22:38:35.958 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FK6saxk6pcl9u4hfntxcp13wgtj 
+       [34mforeign[0m [34mkey[0m (ma_ca) 
+       [34mreferences[0m ca_lam_viec (ma_ca)
+2026-05-04 22:38:35.965 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FKh6hivn4psc3hljuead690xxuc 
+       [34mforeign[0m [34mkey[0m (ma_nhan_vien) 
+       [34mreferences[0m nhan_vien (ma_nhan_vien)
+2026-05-04 22:38:35.975 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phieu_dat_phong 
+       [34madd[0m [34mconstraint[0m FKowoyrd9mrgwyno21m9fsdgoy3 
+       [34mforeign[0m [34mkey[0m (ma_khach_hang) 
+       [34mreferences[0m khach_hang (ma_khach_hang)
+2026-05-04 22:38:35.984 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phieu_dat_phong 
+       [34madd[0m [34mconstraint[0m FKslgqdyae3phsl7ot2m1uqsg6r 
+       [34mforeign[0m [34mkey[0m (ma_phong) 
+       [34mreferences[0m phong (ma_phong)
+2026-05-04 22:38:35.991 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m tai_khoan 
+       [34madd[0m [34mconstraint[0m FKtk5618eftaoodbwqveaieqo1x 
+       [34mforeign[0m [34mkey[0m (ma_nhan_vien) 
+       [34mreferences[0m nhan_vien (ma_nhan_vien)
+2026-05-04 22:46:49.489 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-04 22:46:49.494 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-04 22:46:49.756 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 22:46:50.913 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m ca_lam_viec (
+        ma_ca [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gio_bat_dau [34mtime[0m(6),
+        gio_ket_thuc [34mtime[0m(6),
+        ten_ca [34mvarchar[0m(100),
+        [34mprimary[0m [34mkey[0m (ma_ca)
+    ) engine=InnoDB
+2026-05-04 22:46:50.919 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m dich_vu (
+        ma_dich_vu [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gia_dich_vu [34mfloat[0m(53),
+        ten_dich_vu [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (ma_dich_vu)
+    ) engine=InnoDB
+2026-05-04 22:46:50.922 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m hoa_don (
+        ma_hoa_don [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        tong_tien [34mfloat[0m(53),
+        trang_thai_thanh_toan [34mvarchar[0m(255),
+        ma_phieu_dat [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_hoa_don)
+    ) engine=InnoDB
+2026-05-04 22:46:50.930 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m khach_hang (
+        ma_khach_hang [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ho_ten [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        loai_khach_hang enum ([36m'KHACH_HOI_VIEN'[0m,[36m'KHACH_THUONG_XUYÊN'[0m,[36m'KHACH_MOI'[0m),
+        ngay_sinh [34mdate[0m,
+        so_dien_thoai [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_khach_hang)
+    ) engine=InnoDB
+2026-05-04 22:46:50.936 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m khuyen_mai (
+        ma_khuyen_mai [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        muc_giam_gia [34mfloat[0m(53),
+        ten_khuyen_mai [34mvarchar[0m(100),
+        [34mprimary[0m [34mkey[0m (ma_khuyen_mai)
+    ) engine=InnoDB
+2026-05-04 22:46:50.942 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m nhan_vien (
+        ma_nhan_vien [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        cccd [34mvarchar[0m(20),
+        gioi_tinh bit,
+        ho_ten [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        loai_nhan_vien enum ([36m'NHAN_VIEN_LE_TAN'[0m,[36m'NHAN_VIEN_PHONG'[0m,[36m'NHAN_VIEN_SAN_KHAU'[0m,[36m'QUAN_LY'[0m,[36m'GIAM_DOC'[0m),
+        ngay_sinh [34mdate[0m,
+        ngay_vao_lam [34mdate[0m,
+        que_quan [34mvarchar[0m(200),
+        so_dien_thoai [34mvarchar[0m(20),
+        trang_thai bit,
+        [34mprimary[0m [34mkey[0m (ma_nhan_vien)
+    ) engine=InnoDB
+2026-05-04 22:46:50.948 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phan_cong_ca_lam_viec (
+        ma_phan_cong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ngay_lam_viec [34mdate[0m,
+        ma_ca [34mvarchar[0m(20),
+        ma_nhan_vien [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_phan_cong)
+    ) engine=InnoDB
+2026-05-04 22:46:50.953 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phieu_dat_phong (
+        ma_phieu_dat [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ngay_dat [34mdate[0m,
+        ngay_nhan_phong [34mdate[0m,
+        ngay_tra_phong [34mdate[0m,
+        tong_tien [34mfloat[0m(53),
+        ma_khach_hang [34mvarchar[0m(20),
+        ma_phong [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_phieu_dat)
+    ) engine=InnoDB
+2026-05-04 22:46:50.958 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m ma_phong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m
+2026-05-04 22:46:50.968 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m gia_phong [34mfloat[0m(53)
+2026-05-04 22:46:50.974 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m so_tang [34minteger[0m
+2026-05-04 22:46:50.979 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m suc_chua [34minteger[0m
+2026-05-04 22:46:50.983 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m ten_phong [34mvarchar[0m(100)
+2026-05-04 22:46:50.994 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m tinh_trang_phong enum ([36m'PHONG_TRONG'[0m,[36m'PHONG_HAN_CHE'[0m,[36m'DANG_SUA_CHUA'[0m,[36m'PHONG_NGOAI_SU_DUNG'[0m)
+2026-05-04 22:46:51.000 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m tai_khoan (
+        tai_khoan [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        mat_khau [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        ma_nhan_vien [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (tai_khoan)
+    ) engine=InnoDB
+2026-05-04 22:46:51.004 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m khach_hang 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_6j1oks4nrqpqnl0b6cnp85vrd
+2026-05-04 22:46:51.009 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m khach_hang 
+       [34madd[0m [34mconstraint[0m UK_6j1oks4nrqpqnl0b6cnp85vrd [34munique[0m (so_dien_thoai)
+2026-05-04 22:46:51.015 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m nhan_vien 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_4dltajwcytiogq08kwe1pqa48
+2026-05-04 22:46:51.018 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m nhan_vien 
+       [34madd[0m [34mconstraint[0m UK_4dltajwcytiogq08kwe1pqa48 [34munique[0m (cccd)
+2026-05-04 22:46:51.022 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m hoa_don 
+       [34madd[0m [34mconstraint[0m FKre06io0nvm70r3qfjhslb8dfs 
+       [34mforeign[0m [34mkey[0m (ma_phieu_dat) 
+       [34mreferences[0m phieu_dat_phong (ma_phieu_dat)
+2026-05-04 22:46:51.034 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FK6saxk6pcl9u4hfntxcp13wgtj 
+       [34mforeign[0m [34mkey[0m (ma_ca) 
+       [34mreferences[0m ca_lam_viec (ma_ca)
+2026-05-04 22:46:51.045 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FKh6hivn4psc3hljuead690xxuc 
+       [34mforeign[0m [34mkey[0m (ma_nhan_vien) 
+       [34mreferences[0m nhan_vien (ma_nhan_vien)
+2026-05-04 22:46:51.058 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phieu_dat_phong 
+       [34madd[0m [34mconstraint[0m FKowoyrd9mrgwyno21m9fsdgoy3 
+       [34mforeign[0m [34mkey[0m (ma_khach_hang) 
+       [34mreferences[0m khach_hang (ma_khach_hang)
+2026-05-04 22:46:51.070 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phieu_dat_phong 
+       [34madd[0m [34mconstraint[0m FKslgqdyae3phsl7ot2m1uqsg6r 
+       [34mforeign[0m [34mkey[0m (ma_phong) 
+       [34mreferences[0m phong (ma_phong)
+2026-05-04 22:46:51.076 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1005-HY000: Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")
+2026-05-04 22:46:51.077 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table if exists phieu_dat_phong 
+       add constraint FKslgqdyae3phsl7ot2m1uqsg6r 
+       foreign key (ma_phong) 
+       references phong (ma_phong)" via JDBC [(conn=7) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table if exists phieu_dat_phong 
+       add constraint FKslgqdyae3phsl7ot2m1uqsg6r 
+       foreign key (ma_phong) 
+       references phong (ma_phong)" via JDBC [(conn=7) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:446)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:268)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
+	at iuh.fit.app.MainApp.start(MainApp.java:78)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:839)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:483)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:456)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:455)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+Caused by: java.sql.SQLException: (conn=7) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
+	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 28 common frames omitted
+2026-05-04 22:46:51.079 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m tai_khoan 
+       [34madd[0m [34mconstraint[0m FKtk5618eftaoodbwqveaieqo1x 
+       [34mforeign[0m [34mkey[0m (ma_nhan_vien) 
+       [34mreferences[0m nhan_vien (ma_nhan_vien)
+2026-05-04 22:46:56.253 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.tai_khoan,
+        tk1_0.mat_khau,
+        tk1_0.ma_nhan_vien 
+    [34mfrom[0m
+        tai_khoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tai_khoan=?
+2026-05-04 22:47:22.590 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.tai_khoan,
+        tk1_0.mat_khau,
+        tk1_0.ma_nhan_vien 
+    [34mfrom[0m
+        tai_khoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tai_khoan=?
+2026-05-04 22:47:53.723 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-04 22:47:53.737 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-04 22:47:53.977 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 22:47:54.970 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m ca_lam_viec (
+        ma_ca [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gio_bat_dau [34mtime[0m(6),
+        gio_ket_thuc [34mtime[0m(6),
+        ten_ca [34mvarchar[0m(100),
+        [34mprimary[0m [34mkey[0m (ma_ca)
+    ) engine=InnoDB
+2026-05-04 22:47:54.973 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m dich_vu (
+        ma_dich_vu [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gia_dich_vu [34mfloat[0m(53),
+        ten_dich_vu [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (ma_dich_vu)
+    ) engine=InnoDB
+2026-05-04 22:47:54.976 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m hoa_don (
+        ma_hoa_don [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        tong_tien [34mfloat[0m(53),
+        trang_thai_thanh_toan [34mvarchar[0m(255),
+        ma_phieu_dat [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_hoa_don)
+    ) engine=InnoDB
+2026-05-04 22:47:54.982 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m khach_hang (
+        ma_khach_hang [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ho_ten [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        loai_khach_hang enum ([36m'KHACH_HOI_VIEN'[0m,[36m'KHACH_THUONG_XUYÊN'[0m,[36m'KHACH_MOI'[0m),
+        ngay_sinh [34mdate[0m,
+        so_dien_thoai [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_khach_hang)
+    ) engine=InnoDB
+2026-05-04 22:47:54.985 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m khuyen_mai (
+        ma_khuyen_mai [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        muc_giam_gia [34mfloat[0m(53),
+        ten_khuyen_mai [34mvarchar[0m(100),
+        [34mprimary[0m [34mkey[0m (ma_khuyen_mai)
+    ) engine=InnoDB
+2026-05-04 22:47:54.990 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m nhan_vien (
+        ma_nhan_vien [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        cccd [34mvarchar[0m(20),
+        gioi_tinh bit,
+        ho_ten [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        loai_nhan_vien enum ([36m'NHAN_VIEN_LE_TAN'[0m,[36m'NHAN_VIEN_PHONG'[0m,[36m'NHAN_VIEN_SAN_KHAU'[0m,[36m'QUAN_LY'[0m,[36m'GIAM_DOC'[0m),
+        ngay_sinh [34mdate[0m,
+        ngay_vao_lam [34mdate[0m,
+        que_quan [34mvarchar[0m(200),
+        so_dien_thoai [34mvarchar[0m(20),
+        trang_thai bit,
+        [34mprimary[0m [34mkey[0m (ma_nhan_vien)
+    ) engine=InnoDB
+2026-05-04 22:47:54.993 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phan_cong_ca_lam_viec (
+        ma_phan_cong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ngay_lam_viec [34mdate[0m,
+        ma_ca [34mvarchar[0m(20),
+        ma_nhan_vien [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_phan_cong)
+    ) engine=InnoDB
+2026-05-04 22:47:54.997 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phieu_dat_phong (
+        ma_phieu_dat [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ngay_dat [34mdate[0m,
+        ngay_nhan_phong [34mdate[0m,
+        ngay_tra_phong [34mdate[0m,
+        tong_tien [34mfloat[0m(53),
+        ma_khach_hang [34mvarchar[0m(20),
+        ma_phong [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (ma_phieu_dat)
+    ) engine=InnoDB
+2026-05-04 22:47:55.001 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m ma_phong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m
+2026-05-04 22:47:55.004 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m gia_phong [34mfloat[0m(53)
+2026-05-04 22:47:55.007 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m so_tang [34minteger[0m
+2026-05-04 22:47:55.011 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m suc_chua [34minteger[0m
+2026-05-04 22:47:55.014 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m ten_phong [34mvarchar[0m(100)
+2026-05-04 22:47:55.017 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phong 
+       [34madd[0m [34mcolumn[0m tinh_trang_phong enum ([36m'PHONG_TRONG'[0m,[36m'PHONG_HAN_CHE'[0m,[36m'DANG_SUA_CHUA'[0m,[36m'PHONG_NGOAI_SU_DUNG'[0m)
+2026-05-04 22:47:55.026 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m tai_khoan (
+        tai_khoan [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        mat_khau [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        ma_nhan_vien [34mvarchar[0m(20),
+        [34mprimary[0m [34mkey[0m (tai_khoan)
+    ) engine=InnoDB
+2026-05-04 22:47:55.030 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m khach_hang 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_6j1oks4nrqpqnl0b6cnp85vrd
+2026-05-04 22:47:55.036 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m khach_hang 
+       [34madd[0m [34mconstraint[0m UK_6j1oks4nrqpqnl0b6cnp85vrd [34munique[0m (so_dien_thoai)
+2026-05-04 22:47:55.042 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m nhan_vien 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_4dltajwcytiogq08kwe1pqa48
+2026-05-04 22:47:55.044 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m nhan_vien 
+       [34madd[0m [34mconstraint[0m UK_4dltajwcytiogq08kwe1pqa48 [34munique[0m (cccd)
+2026-05-04 22:47:55.047 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m hoa_don 
+       [34madd[0m [34mconstraint[0m FKre06io0nvm70r3qfjhslb8dfs 
+       [34mforeign[0m [34mkey[0m (ma_phieu_dat) 
+       [34mreferences[0m phieu_dat_phong (ma_phieu_dat)
+2026-05-04 22:47:55.055 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FK6saxk6pcl9u4hfntxcp13wgtj 
+       [34mforeign[0m [34mkey[0m (ma_ca) 
+       [34mreferences[0m ca_lam_viec (ma_ca)
+2026-05-04 22:47:55.061 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FKh6hivn4psc3hljuead690xxuc 
+       [34mforeign[0m [34mkey[0m (ma_nhan_vien) 
+       [34mreferences[0m nhan_vien (ma_nhan_vien)
+2026-05-04 22:47:55.068 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phieu_dat_phong 
+       [34madd[0m [34mconstraint[0m FKowoyrd9mrgwyno21m9fsdgoy3 
+       [34mforeign[0m [34mkey[0m (ma_khach_hang) 
+       [34mreferences[0m khach_hang (ma_khach_hang)
+2026-05-04 22:47:55.075 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phieu_dat_phong 
+       [34madd[0m [34mconstraint[0m FKslgqdyae3phsl7ot2m1uqsg6r 
+       [34mforeign[0m [34mkey[0m (ma_phong) 
+       [34mreferences[0m phong (ma_phong)
+2026-05-04 22:47:55.079 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1005-HY000: Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")
+2026-05-04 22:47:55.079 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table if exists phieu_dat_phong 
+       add constraint FKslgqdyae3phsl7ot2m1uqsg6r 
+       foreign key (ma_phong) 
+       references phong (ma_phong)" via JDBC [(conn=8) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table if exists phieu_dat_phong 
+       add constraint FKslgqdyae3phsl7ot2m1uqsg6r 
+       foreign key (ma_phong) 
+       references phong (ma_phong)" via JDBC [(conn=8) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:446)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:268)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
+	at iuh.fit.app.MainApp.start(MainApp.java:78)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:839)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:483)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:456)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:455)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+Caused by: java.sql.SQLException: (conn=8) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
+	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 28 common frames omitted
+2026-05-04 22:47:55.082 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m tai_khoan 
+       [34madd[0m [34mconstraint[0m FKtk5618eftaoodbwqveaieqo1x 
+       [34mforeign[0m [34mkey[0m (ma_nhan_vien) 
+       [34mreferences[0m nhan_vien (ma_nhan_vien)
+2026-05-04 22:47:59.275 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.tai_khoan,
+        tk1_0.mat_khau,
+        tk1_0.ma_nhan_vien 
+    [34mfrom[0m
+        tai_khoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tai_khoan=?
+2026-05-04 22:53:04.661 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-04 22:53:04.667 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-04 22:53:04.983 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 22:53:06.308 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m tai_khoan 
+       [34madd[0m [34mcolumn[0m ten_dang_nhap [34mvarchar[0m(50) [34mnot[0m [34mnull[0m
+2026-05-04 22:53:06.336 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m tai_khoan 
+       [34madd[0m [34mcolumn[0m trang_thai_tk bit [34mnot[0m [34mnull[0m
+2026-05-04 22:53:06.358 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phieu_dat_phong 
+       [34madd[0m [34mconstraint[0m FKslgqdyae3phsl7ot2m1uqsg6r 
+       [34mforeign[0m [34mkey[0m (ma_phong) 
+       [34mreferences[0m phong (ma_phong)
+2026-05-04 22:53:06.365 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1005-HY000: Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")
+2026-05-04 22:53:06.366 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table if exists phieu_dat_phong 
+       add constraint FKslgqdyae3phsl7ot2m1uqsg6r 
+       foreign key (ma_phong) 
+       references phong (ma_phong)" via JDBC [(conn=9) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table if exists phieu_dat_phong 
+       add constraint FKslgqdyae3phsl7ot2m1uqsg6r 
+       foreign key (ma_phong) 
+       references phong (ma_phong)" via JDBC [(conn=9) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:446)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:268)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
+	at iuh.fit.app.MainApp.start(MainApp.java:78)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:839)
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:483)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:456)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:455)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+Caused by: java.sql.SQLException: (conn=9) Can't create table `qlkhachsan_db`.`phieu_dat_phong` (errno: 150 "Foreign key constraint is incorrectly formed")
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
+	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 28 common frames omitted
+2026-05-04 22:53:10.762 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.ten_dang_nhap,
+        tk1_0.mat_khau,
+        tk1_0.ma_nhan_vien,
+        tk1_0.trang_thai_tk 
+    [34mfrom[0m
+        tai_khoan tk1_0 
+    [34mwhere[0m
+        tk1_0.ten_dang_nhap=?
+2026-05-04 22:53:28.478 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.ten_dang_nhap,
+        tk1_0.mat_khau,
+        tk1_0.ma_nhan_vien,
+        tk1_0.trang_thai_tk 
+    [34mfrom[0m
+        tai_khoan tk1_0 
+    [34mwhere[0m
+        tk1_0.ten_dang_nhap=?
