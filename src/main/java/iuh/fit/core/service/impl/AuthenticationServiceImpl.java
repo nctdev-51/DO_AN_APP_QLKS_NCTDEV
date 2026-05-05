@@ -1,8 +1,9 @@
-package iuh.fit.core.service;
+package iuh.fit.core.service.impl;
 
 import iuh.fit.core.dto.TaiKhoanDTO;
 import iuh.fit.core.entity.TaiKhoan;
 import iuh.fit.core.repository.ITaiKhoanRepository;
+import iuh.fit.core.service.IAuthenticationService;
 
 /**
  * Class: AuthenticationServiceImpl (Service Implementation)

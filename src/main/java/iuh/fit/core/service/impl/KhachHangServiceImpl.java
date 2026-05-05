@@ -1,9 +1,10 @@
-package iuh.fit.core.service;
+package iuh.fit.core.service.impl;
 
 import iuh.fit.core.dto.KhachHangDTO;
 import iuh.fit.core.entity.KhachHang;
 import iuh.fit.core.entity.LoaiKhachHang;
 import iuh.fit.core.repository.IKhachHangRepository;
+import iuh.fit.core.service.IKhachHangService;
 
 import java.util.List;
 import java.util.stream.Collectors;

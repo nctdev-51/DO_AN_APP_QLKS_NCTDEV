@@ -6,17 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-/**
- * DTO: NhanVienDTO (Data Transfer Object cho Nhân Viên)
- * 
- * Tầng: CORE - DTO Layer
- * Trách nhiệm: Truyền dữ liệu Nhân Viên giữa các tầng, không lộ Entity trực tiếp
- * 
- * DAO là cầu nối giữa:
- * - PRESENTATION → Gửi NhanVienDTO qua API
- * - SERVICE → Xử lý logic dùng DTO
- * - INFRASTRUCTURE → Mapper chuyển DTO ↔ Entity
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +21,3 @@ public class NhanVienDTO {
     private LocalDate ngayVaoLam;
     private String queQuan;
 }
-

@@ -1,9 +1,10 @@
-package iuh.fit.core.service;
+package iuh.fit.core.service.impl;
 
 import iuh.fit.core.dto.NhanVienDTO;
 import iuh.fit.core.entity.NhanVien;
 import iuh.fit.core.entity.LoaiNhanVien;
 import iuh.fit.core.repository.INhanVienRepository;
+import iuh.fit.core.service.INhanVienService;
 
 import java.util.List;
 import java.util.stream.Collectors;

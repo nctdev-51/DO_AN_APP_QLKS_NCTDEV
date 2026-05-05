@@ -109,19 +109,20 @@ public class TaiKhoanRepositoryImpl implements ITaiKhoanRepository {
             em.close();
         }
     }
-    
+
     @Override
     public void deleteByTaiKhoan(String taiKhoan) {
         EntityManager em = JpaConfig.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            
-            String hql = "DELETE FROM TaiKhoan t WHERE t.taiKhoan = :taiKhoan";
+
+            // ĐÃ SỬA: t.taiKhoan thành t.tenDangNhap
+            String hql = "DELETE FROM TaiKhoan t WHERE t.tenDangNhap = :taiKhoan";
             em.createQuery(hql)
                     .setParameter("taiKhoan", taiKhoan)
                     .executeUpdate();
-            
+
             transaction.commit();
             logger.info("✅ TaiKhoan được xóa thành công: " + taiKhoan);
         } catch (Exception e) {

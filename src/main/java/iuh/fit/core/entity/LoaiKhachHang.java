@@ -1,11 +1,5 @@
 package iuh.fit.core.entity;
 
-/**
- * Enum định nghĩa các loại khách hàng
- * 
- * Tầng: CORE - Domain Entity
- * Trách nhiệm: Định nghĩa các hằng số kinh doanh
- */
 public enum LoaiKhachHang {
     KHACH_HOI_VIEN("Khách hội viên"),
     KHACH_THUONG_XUYÊN("Khách thường xuyên"),
@@ -21,4 +15,3 @@ public enum LoaiKhachHang {
         return displayName;
     }
 }
-
