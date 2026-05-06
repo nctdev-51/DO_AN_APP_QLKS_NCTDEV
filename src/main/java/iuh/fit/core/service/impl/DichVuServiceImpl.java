@@ -26,7 +26,7 @@ public class DichVuServiceImpl implements IDichVuService {
     @Override
     public DichVuDTO addDichVu(DichVuDTO dichVuDTO) throws IllegalArgumentException {
         if (dichVuDTO.getMaDichVu() == null || dichVuDTO.getMaDichVu().isEmpty()) {
-            throw new IllegalArgumentException("M� d?ch v? kh�ng du?c d? tr?ng");
+            throw new IllegalArgumentException("Mã dịch vụ không được để trống");
         }
         DichVu entity = DichVuMapper.dtoToEntity(dichVuDTO);
         DichVu saved = dichVuRepository.save(entity);
@@ -35,7 +35,7 @@ public class DichVuServiceImpl implements IDichVuService {
     @Override
     public DichVuDTO updateDichVu(DichVuDTO dichVuDTO) throws IllegalArgumentException {
         if (dichVuDTO.getMaDichVu() == null || dichVuDTO.getMaDichVu().isEmpty()) {
-            throw new IllegalArgumentException("M� d?ch v? kh�ng du?c d? tr?ng");
+            throw new IllegalArgumentException("Mã dịch vụ không được để trống");
         }
         DichVu entity = DichVuMapper.dtoToEntity(dichVuDTO);
         DichVu updated = dichVuRepository.update(entity);

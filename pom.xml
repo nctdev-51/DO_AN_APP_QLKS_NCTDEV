@@ -121,6 +121,7 @@
                 <version>3.11.0</version>
                 <configuration>
                     <release>17</release>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
 

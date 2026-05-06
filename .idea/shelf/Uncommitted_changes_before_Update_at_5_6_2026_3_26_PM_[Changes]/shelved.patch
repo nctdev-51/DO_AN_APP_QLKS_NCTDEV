@@ -1,0 +1,850 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"72c46223-b413-494d-be47-c23ce885344f\" name=\"Changes\" comment=\"Tu update\">\r\n      <change afterPath=\"$PROJECT_DIR$/LOMBOK_REMOVAL_FIX_SUMMARY.md\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhongController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyNhanVien.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/logs/application.log\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/logs/application.log\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pom.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pom.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/CaLamViec.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/CaLamViec.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/DichVu.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/DichVu.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/HoaDon.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/HoaDon.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhachHang.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhachHang.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhuyenMai.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhuyenMai.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/NhanVien.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/NhanVien.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhanCongCaLamViec.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhanCongCaLamViec.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/Phong.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/Phong.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TaiKhoan.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TaiKhoan.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/KhachHangMapper.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/KhachHangMapper.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyKhachHangController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyKhachHangController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyNhanVienController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyNhanVienController.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"CopilotPersistence\">\r\n    <persistenceIdMap>\r\n      <entry key=\"_F:/My_Document/lesson/PhanTan/BTL_PT_QLKS\" value=\"3Ccsmfu7bB3FiSa6IOlj3v8xdqS\" />\r\n      <entry key=\"_F:/My_Document/lesson/PhanTan/onTapCK/BTL_PT_QLKS\" value=\"3CcscaMwr3NQZXKQklMFUPVG8j7\" />\r\n      <entry key=\"_T:/BaiTapLon\" value=\"3DKyCjK1XVJBzjY0oa1HNZL1rsI\" />\r\n    </persistenceIdMap>\r\n  </component>\r\n  <component name=\"CopilotUserSelectedChatMode\">\r\n    <option name=\"chatModeId\" value=\"Agent\" />\r\n  </component>\r\n  <component name=\"CopilotUserSelectedModel\">\r\n    <selectedModels>\r\n      <entry key=\"chat-panel\" value=\"Claude Haiku 4.5\" />\r\n      <entry key=\"agent-panel\" value=\"Claude Haiku 4.5\" />\r\n    </selectedModels>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Enum\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Rebase.Settings\">\r\n    <option name=\"NEW_BASE\" value=\"origin/tu\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"UPDATE_TYPE\" value=\"REBASE\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;nctdev-51&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/nctdev-51/DO_AN_APP_QLKS_NCTDEV.git&quot;,\r\n    &quot;accountId&quot;: &quot;b8ccd20b-ae2a-4dd6-8951-3b75d86e5595&quot;\r\n  }\r\n}</component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"mavenHomeTypeForPersistence\" value=\"WRAPPER\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"McpProjectServerCommands\">\r\n    <commands />\r\n    <urls />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 0\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"3CcscaMwr3NQZXKQklMFUPVG8j7\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.ClientMain.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.ServerMain.executor&quot;: &quot;Run&quot;,\r\n    &quot;Maven.BTL_PT_QLKS [clean].executor&quot;: &quot;Run&quot;,\r\n    &quot;Maven.BTL_PT_QLKS [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,\r\n    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;Tam__1&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;F:/My_Document/lesson/PhanTan/BTL_PT_QLKS&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"F:\\My_Document\\lesson\\PhanTan\\BTL_PT_QLKS\" />\r\n      <recent name=\"F:\\My_Document\\lesson\\PhanTan\\BTL_PT_QLKS\\src\\main\\java\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Application.Launcher\">\r\n    <configuration name=\"ClientMain\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"app.ClientMain\" />\r\n      <module name=\"BTL_PT_QLKS\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"app.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Launcher\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"iuh.fit.app.Launcher\" />\r\n      <module name=\"BTL_PT_QLKS\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"iuh.fit.app.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"MainApp\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"17\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"iuh.fit.app.MainApp\" />\r\n      <module name=\"BTL_PT_QLKS\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"--module-path &quot;C:\\path\\to\\javafx-sdk-21\\lib&quot; --add-modules javafx.controls,javafx.fxml\" />\r\n      <option name=\"VM_PARAMETERS\" value=\"--module-path &quot;F:\\Dowloads\\javafx-sdk-17.0.19\\lib&quot; --add-modules javafx.controls,javafx.fxml\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"iuh.fit.app.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"ServerMain\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"app.ServerMain\" />\r\n      <module name=\"BTL_PT_QLKS\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"app.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Application.ClientMain\" />\r\n      <item itemvalue=\"Application.Launcher\" />\r\n      <item itemvalue=\"Application.MainApp\" />\r\n      <item itemvalue=\"Application.ServerMain\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Launcher\" />\r\n        <item itemvalue=\"Application.MainApp\" />\r\n        <item itemvalue=\"Application.ClientMain\" />\r\n        <item itemvalue=\"Application.ServerMain\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145\" />\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"72c46223-b413-494d-be47-c23ce885344f\" name=\"Changes\" comment=\"\" />\r\n      <created>1776696283087</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1776696283087</updated>\r\n      <workItem from=\"1776696284282\" duration=\"14000\" />\r\n      <workItem from=\"1776696339911\" duration=\"1100000\" />\r\n      <workItem from=\"1776698289405\" duration=\"1013000\" />\r\n      <workItem from=\"1776699336143\" duration=\"666000\" />\r\n      <workItem from=\"1776700241928\" duration=\"489000\" />\r\n      <workItem from=\"1776702230929\" duration=\"1134000\" />\r\n      <workItem from=\"1777277165351\" duration=\"1787000\" />\r\n      <workItem from=\"1777283294572\" duration=\"200000\" />\r\n      <workItem from=\"1777904549710\" duration=\"710000\" />\r\n      <workItem from=\"1777905339423\" duration=\"4775000\" />\r\n      <workItem from=\"1777981857429\" duration=\"13096000\" />\r\n      <workItem from=\"1777995810946\" duration=\"68000\" />\r\n      <workItem from=\"1777996380822\" duration=\"732000\" />\r\n      <workItem from=\"1778044922480\" duration=\"238000\" />\r\n      <workItem from=\"1778049954139\" duration=\"470000\" />\r\n      <workItem from=\"1778050442900\" duration=\"134000\" />\r\n      <workItem from=\"1778050587169\" duration=\"2548000\" />\r\n      <workItem from=\"1778053327525\" duration=\"561000\" />\r\n      <workItem from=\"1778053902267\" duration=\"1100000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"10g30 Tam di ngủ\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1777995138824</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1777995138824</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Tu update\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1778045124692</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1778045124692</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"10g30 Tam di ngủ\" />\r\n    <MESSAGE value=\"Tu update\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Tu update\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/TaiKhoanRepositoryImpl.java</url>\r\n          <line>112</line>\r\n          <option name=\"timeStamp\" value=\"1\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n  <component name=\"github-copilot-workspace\">\r\n    <instructionFileLocations>\r\n      <option value=\".github/instructions\" />\r\n    </instructionFileLocations>\r\n    <promptFileLocations>\r\n      <option value=\".github/prompts\" />\r\n    </promptFileLocations>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 7629bab1f1310b9cd292663d655d6539eb1329f8)
++++ b/.idea/workspace.xml	(date 1778056005759)
+@@ -5,34 +5,7 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="Tu update">
+-      <change afterPath="$PROJECT_DIR$/LOMBOK_REMOVAL_FIX_SUMMARY.md" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhongController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyNhanVien.java" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/CaLamViec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/CaLamViec.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/DichVu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/DichVu.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/HoaDon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/HoaDon.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhachHang.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhachHang.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhuyenMai.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhuyenMai.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/NhanVien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/NhanVien.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhanCongCaLamViec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhanCongCaLamViec.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/Phong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/Phong.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TaiKhoan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TaiKhoan.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/KhachHangMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/KhachHangMapper.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyKhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyKhachHangController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyNhanVienController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyNhanVienController.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+Index: logs/application.log
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/logs/application.log b/logs/application.log
+--- a/logs/application.log	(revision 7629bab1f1310b9cd292663d655d6539eb1329f8)
++++ b/logs/application.log	(date 1778055857008)
+@@ -29509,3 +29509,796 @@
+         p1_0.tinhTrang 
+     [34mfrom[0m
+         Phong p1_0
++2026-05-06 15:23:41.642 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
++2026-05-06 15:23:41.671 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
++2026-05-06 15:23:42.412 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
++2026-05-06 15:23:45.852 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m KhachHang 
++       modify [34mcolumn[0m maKhachHang [34mvarchar[0m(5) [34mnot[0m [34mnull[0m
++2026-05-06 15:23:45.870 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1833-HY000: Cannot change column 'maKhachHang': used in a foreign key constraint '2' of table 'qlkhachsantatp_db.hoadon'
++2026-05-06 15:23:45.871 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
++    alter table if exists KhachHang 
++       modify column maKhachHang varchar(5) not null" via JDBC [(conn=16) Cannot change column 'maKhachHang': used in a foreign key constraint '2' of table 'qlkhachsantatp_db.hoadon']
++org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
++    alter table if exists KhachHang 
++       modify column maKhachHang varchar(5) not null" via JDBC [(conn=16) Cannot change column 'maKhachHang': used in a foreign key constraint '2' of table 'qlkhachsantatp_db.hoadon']
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:333)
++	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
++	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
++	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
++	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
++	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
++	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
++	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
++	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManager(JpaConfig.java:67)
++	at iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl.findByTaiKhoan(TaiKhoanRepositoryImpl.java:37)
++	at iuh.fit.core.service.impl.AuthenticationServiceImpl.login(AuthenticationServiceImpl.java:46)
++	at iuh.fit.presentation.controller.LoginController.handleLogin(LoginController.java:212)
++	at iuh.fit.presentation.controller.LoginController.lambda$createLoginScene$7(LoginController.java:184)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Node.fireEvent(Node.java:8875)
++	at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
++	at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
++	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
++	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
++	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
++	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
++	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
++	at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
++	at com.sun.glass.ui.View.notifyKey(View.java:966)
++	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
++	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.sql.SQLException: (conn=16) Cannot change column 'maKhachHang': used in a foreign key constraint '2' of table 'qlkhachsantatp_db.hoadon'
++	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
++	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
++	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
++	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
++	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
++	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
++	... 68 common frames omitted
++2026-05-06 15:23:45.876 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m NhanVien 
++       modify [34mcolumn[0m maNhanVien [34mvarchar[0m(20) [34mnot[0m [34mnull[0m
++2026-05-06 15:23:45.882 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1833-HY000: Cannot change column 'maNhanVien': used in a foreign key constraint '1' of table 'qlkhachsantatp_db.hoadon'
++2026-05-06 15:23:45.884 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
++    alter table if exists NhanVien 
++       modify column maNhanVien varchar(20) not null" via JDBC [(conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint '1' of table 'qlkhachsantatp_db.hoadon']
++org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
++    alter table if exists NhanVien 
++       modify column maNhanVien varchar(20) not null" via JDBC [(conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint '1' of table 'qlkhachsantatp_db.hoadon']
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:333)
++	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
++	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
++	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
++	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
++	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
++	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
++	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
++	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManager(JpaConfig.java:67)
++	at iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl.findByTaiKhoan(TaiKhoanRepositoryImpl.java:37)
++	at iuh.fit.core.service.impl.AuthenticationServiceImpl.login(AuthenticationServiceImpl.java:46)
++	at iuh.fit.presentation.controller.LoginController.handleLogin(LoginController.java:212)
++	at iuh.fit.presentation.controller.LoginController.lambda$createLoginScene$7(LoginController.java:184)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Node.fireEvent(Node.java:8875)
++	at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
++	at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
++	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
++	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
++	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
++	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
++	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
++	at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
++	at com.sun.glass.ui.View.notifyKey(View.java:966)
++	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
++	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.sql.SQLException: (conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint '1' of table 'qlkhachsantatp_db.hoadon'
++	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
++	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
++	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
++	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
++	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
++	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
++	... 68 common frames omitted
++2026-05-06 15:23:45.885 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m PhieuDatPhong 
++       modify [34mcolumn[0m maKhachHang [34mvarchar[0m(5)
++2026-05-06 15:23:45.893 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1832-HY000: Cannot change column 'maKhachHang': used in a foreign key constraint '1'
++2026-05-06 15:23:45.894 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
++    alter table if exists PhieuDatPhong 
++       modify column maKhachHang varchar(5)" via JDBC [(conn=16) Cannot change column 'maKhachHang': used in a foreign key constraint '1']
++org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
++    alter table if exists PhieuDatPhong 
++       modify column maKhachHang varchar(5)" via JDBC [(conn=16) Cannot change column 'maKhachHang': used in a foreign key constraint '1']
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:333)
++	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
++	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
++	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
++	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
++	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
++	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
++	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
++	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManager(JpaConfig.java:67)
++	at iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl.findByTaiKhoan(TaiKhoanRepositoryImpl.java:37)
++	at iuh.fit.core.service.impl.AuthenticationServiceImpl.login(AuthenticationServiceImpl.java:46)
++	at iuh.fit.presentation.controller.LoginController.handleLogin(LoginController.java:212)
++	at iuh.fit.presentation.controller.LoginController.lambda$createLoginScene$7(LoginController.java:184)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Node.fireEvent(Node.java:8875)
++	at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
++	at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
++	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
++	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
++	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
++	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
++	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
++	at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
++	at com.sun.glass.ui.View.notifyKey(View.java:966)
++	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
++	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.sql.SQLException: (conn=16) Cannot change column 'maKhachHang': used in a foreign key constraint '1'
++	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
++	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
++	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
++	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
++	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
++	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
++	... 68 common frames omitted
++2026-05-06 15:23:45.895 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m PhieuDatPhong 
++       modify [34mcolumn[0m maNhanVien [34mvarchar[0m(5)
++2026-05-06 15:23:45.904 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1832-HY000: Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_PhieuDatPhong_NhanVien'
++2026-05-06 15:23:45.904 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
++    alter table if exists PhieuDatPhong 
++       modify column maNhanVien varchar(5)" via JDBC [(conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_PhieuDatPhong_NhanVien']
++org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
++    alter table if exists PhieuDatPhong 
++       modify column maNhanVien varchar(5)" via JDBC [(conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_PhieuDatPhong_NhanVien']
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:333)
++	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
++	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
++	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
++	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
++	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
++	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
++	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
++	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManager(JpaConfig.java:67)
++	at iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl.findByTaiKhoan(TaiKhoanRepositoryImpl.java:37)
++	at iuh.fit.core.service.impl.AuthenticationServiceImpl.login(AuthenticationServiceImpl.java:46)
++	at iuh.fit.presentation.controller.LoginController.handleLogin(LoginController.java:212)
++	at iuh.fit.presentation.controller.LoginController.lambda$createLoginScene$7(LoginController.java:184)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Node.fireEvent(Node.java:8875)
++	at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
++	at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
++	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
++	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
++	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
++	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
++	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
++	at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
++	at com.sun.glass.ui.View.notifyKey(View.java:966)
++	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
++	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.sql.SQLException: (conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_PhieuDatPhong_NhanVien'
++	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
++	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
++	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
++	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
++	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
++	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
++	... 68 common frames omitted
++2026-05-06 15:23:45.905 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m PhieuDatPhong 
++       modify [34mcolumn[0m maPhong [34mvarchar[0m(4)
++2026-05-06 15:23:45.912 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1832-HY000: Cannot change column 'maPhong': used in a foreign key constraint '2'
++2026-05-06 15:23:45.912 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
++    alter table if exists PhieuDatPhong 
++       modify column maPhong varchar(4)" via JDBC [(conn=16) Cannot change column 'maPhong': used in a foreign key constraint '2']
++org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
++    alter table if exists PhieuDatPhong 
++       modify column maPhong varchar(4)" via JDBC [(conn=16) Cannot change column 'maPhong': used in a foreign key constraint '2']
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:333)
++	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
++	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
++	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
++	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
++	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
++	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
++	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
++	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManager(JpaConfig.java:67)
++	at iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl.findByTaiKhoan(TaiKhoanRepositoryImpl.java:37)
++	at iuh.fit.core.service.impl.AuthenticationServiceImpl.login(AuthenticationServiceImpl.java:46)
++	at iuh.fit.presentation.controller.LoginController.handleLogin(LoginController.java:212)
++	at iuh.fit.presentation.controller.LoginController.lambda$createLoginScene$7(LoginController.java:184)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Node.fireEvent(Node.java:8875)
++	at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
++	at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
++	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
++	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
++	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
++	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
++	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
++	at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
++	at com.sun.glass.ui.View.notifyKey(View.java:966)
++	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
++	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.sql.SQLException: (conn=16) Cannot change column 'maPhong': used in a foreign key constraint '2'
++	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
++	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
++	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
++	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
++	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
++	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
++	... 68 common frames omitted
++2026-05-06 15:23:45.914 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m Phong 
++       modify [34mcolumn[0m maPhong [34mvarchar[0m(4) [34mnot[0m [34mnull[0m
++2026-05-06 15:23:45.922 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1833-HY000: Cannot change column 'maPhong': used in a foreign key constraint '4' of table 'qlkhachsantatp_db.hoadon'
++2026-05-06 15:23:45.923 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
++    alter table if exists Phong 
++       modify column maPhong varchar(4) not null" via JDBC [(conn=16) Cannot change column 'maPhong': used in a foreign key constraint '4' of table 'qlkhachsantatp_db.hoadon']
++org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
++    alter table if exists Phong 
++       modify column maPhong varchar(4) not null" via JDBC [(conn=16) Cannot change column 'maPhong': used in a foreign key constraint '4' of table 'qlkhachsantatp_db.hoadon']
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:333)
++	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
++	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
++	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
++	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
++	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
++	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
++	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
++	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManager(JpaConfig.java:67)
++	at iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl.findByTaiKhoan(TaiKhoanRepositoryImpl.java:37)
++	at iuh.fit.core.service.impl.AuthenticationServiceImpl.login(AuthenticationServiceImpl.java:46)
++	at iuh.fit.presentation.controller.LoginController.handleLogin(LoginController.java:212)
++	at iuh.fit.presentation.controller.LoginController.lambda$createLoginScene$7(LoginController.java:184)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Node.fireEvent(Node.java:8875)
++	at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
++	at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
++	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
++	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
++	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
++	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
++	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
++	at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
++	at com.sun.glass.ui.View.notifyKey(View.java:966)
++	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
++	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.sql.SQLException: (conn=16) Cannot change column 'maPhong': used in a foreign key constraint '4' of table 'qlkhachsantatp_db.hoadon'
++	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
++	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
++	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
++	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
++	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
++	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
++	... 68 common frames omitted
++2026-05-06 15:23:45.925 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m TaiKhoan 
++       modify [34mcolumn[0m maNhanVien [34mvarchar[0m(20)
++2026-05-06 15:23:45.931 [JavaFX Application Thread] WARN  o.m.jdbc.message.server.ErrorPacket - Error: 1832-HY000: Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_TaiKhoan_NhanVien'
++2026-05-06 15:23:45.931 [JavaFX Application Thread] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
++    alter table if exists TaiKhoan 
++       modify column maNhanVien varchar(20)" via JDBC [(conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_TaiKhoan_NhanVien']
++org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
++    alter table if exists TaiKhoan 
++       modify column maNhanVien varchar(20)" via JDBC [(conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_TaiKhoan_NhanVien']
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:574)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:514)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:333)
++	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:232)
++	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:117)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
++	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
++	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
++	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
++	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
++	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
++	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
++	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
++	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:55)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
++	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManagerFactory(JpaConfig.java:48)
++	at iuh.fit.infrastructure.db.JpaConfig.getEntityManager(JpaConfig.java:67)
++	at iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl.findByTaiKhoan(TaiKhoanRepositoryImpl.java:37)
++	at iuh.fit.core.service.impl.AuthenticationServiceImpl.login(AuthenticationServiceImpl.java:46)
++	at iuh.fit.presentation.controller.LoginController.handleLogin(LoginController.java:212)
++	at iuh.fit.presentation.controller.LoginController.lambda$createLoginScene$7(LoginController.java:184)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Node.fireEvent(Node.java:8875)
++	at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
++	at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
++	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
++	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
++	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
++	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
++	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
++	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
++	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
++	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
++	at javafx.event.Event.fireEvent(Event.java:198)
++	at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
++	at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
++	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
++	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
++	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
++	at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
++	at com.sun.glass.ui.View.notifyKey(View.java:966)
++	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
++	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.sql.SQLException: (conn=16) Cannot change column 'maNhanVien': used in a foreign key constraint 'FK_TaiKhoan_NhanVien'
++	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:306)
++	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
++	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
++	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
++	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
++	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
++	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
++	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
++	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
++	... 68 common frames omitted
++2026-05-06 15:23:47.081 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        tk1_0.tenDangNhap,
++        tk1_0.matKhau,
++        tk1_0.maNhanVien,
++        tk1_0.trangThaiTK 
++    [34mfrom[0m
++        TaiKhoan tk1_0 
++    [34mwhere[0m
++        tk1_0.tenDangNhap=?
++2026-05-06 15:23:47.115 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        nv1_0.maNhanVien,
++        nv1_0.cccd,
++        nv1_0.gioiTinh,
++        nv1_0.hoTen,
++        nv1_0.loaiNhanVien,
++        nv1_0.ngaySinh,
++        nv1_0.ngayVaoLam,
++        nv1_0.queQuan,
++        nv1_0.soDienThoai,
++        nv1_0.trangThai 
++    [34mfrom[0m
++        NhanVien nv1_0 
++    [34mwhere[0m
++        nv1_0.maNhanVien=?
++2026-05-06 15:23:47.215 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        p1_0.maPhong,
++        p1_0.giaPhong,
++        p1_0.maLoaiPhong,
++        p1_0.tenPhong,
++        p1_0.tinhTrang 
++    [34mfrom[0m
++        Phong p1_0
++2026-05-06 15:23:50.409 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        p1_0.maPhong,
++        p1_0.giaPhong,
++        p1_0.maLoaiPhong,
++        p1_0.tenPhong,
++        p1_0.tinhTrang 
++    [34mfrom[0m
++        Phong p1_0
++2026-05-06 15:23:53.897 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        p1_0.maPhong,
++        p1_0.giaPhong,
++        p1_0.maLoaiPhong,
++        p1_0.tenPhong,
++        p1_0.tinhTrang 
++    [34mfrom[0m
++        Phong p1_0
++2026-05-06 15:23:55.253 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        kh1_0.maKhachHang,
++        kh1_0.hoTen,
++        kh1_0.loaiKhachHang,
++        kh1_0.ngaySinh,
++        kh1_0.soDienThoai 
++    [34mfrom[0m
++        KhachHang kh1_0
++2026-05-06 15:23:56.824 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        nv1_0.maNhanVien,
++        nv1_0.cccd,
++        nv1_0.gioiTinh,
++        nv1_0.hoTen,
++        nv1_0.loaiNhanVien,
++        nv1_0.ngaySinh,
++        nv1_0.ngayVaoLam,
++        nv1_0.queQuan,
++        nv1_0.soDienThoai,
++        nv1_0.trangThai 
++    [34mfrom[0m
++        NhanVien nv1_0
++2026-05-06 15:23:58.982 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        p1_0.maPhong,
++        p1_0.giaPhong,
++        p1_0.maLoaiPhong,
++        p1_0.tenPhong,
++        p1_0.tinhTrang 
++    [34mfrom[0m
++        Phong p1_0
++2026-05-06 15:24:02.632 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        p1_0.maPhong,
++        p1_0.giaPhong,
++        p1_0.maLoaiPhong,
++        p1_0.tenPhong,
++        p1_0.tinhTrang 
++    [34mfrom[0m
++        Phong p1_0 
++    [34mwhere[0m
++        p1_0.giaPhong [34mbetween[0m ? [34mand[0m ? 
++        [34mand[0m p1_0.tinhTrang<>[36m'Bảo Trì'[0m 
++        [34mand[0m p1_0.maPhong [34mnot[0m [34min[0m ([34mselect[0m
++            pdp1_0.maPhong 
++        [34mfrom[0m
++            PhieuDatPhong pdp1_0 
++        [34mwhere[0m
++            pdp1_0.trangThai [34mnot[0m [34min[0m ([36m'DA_HUY'[0m, [36m'DA_TRA_PHONG'[0m) 
++            [34mand[0m (pdp1_0.ngayNhan<? 
++            [34mand[0m pdp1_0.ngayTra>?))
++2026-05-06 15:24:03.328 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        p1_0.maPhong,
++        p1_0.giaPhong,
++        p1_0.maLoaiPhong,
++        p1_0.tenPhong,
++        p1_0.tinhTrang 
++    [34mfrom[0m
++        Phong p1_0
++2026-05-06 15:24:05.836 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        kh1_0.maKhachHang,
++        kh1_0.hoTen,
++        kh1_0.loaiKhachHang,
++        kh1_0.ngaySinh,
++        kh1_0.soDienThoai 
++    [34mfrom[0m
++        KhachHang kh1_0
++2026-05-06 15:24:06.418 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        nv1_0.maNhanVien,
++        nv1_0.cccd,
++        nv1_0.gioiTinh,
++        nv1_0.hoTen,
++        nv1_0.loaiNhanVien,
++        nv1_0.ngaySinh,
++        nv1_0.ngayVaoLam,
++        nv1_0.queQuan,
++        nv1_0.soDienThoai,
++        nv1_0.trangThai 
++    [34mfrom[0m
++        NhanVien nv1_0
++2026-05-06 15:24:17.008 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
++    [34mselect[0m
++        p1_0.maPhong,
++        p1_0.giaPhong,
++        p1_0.maLoaiPhong,
++        p1_0.tenPhong,
++        p1_0.tinhTrang 
++    [34mfrom[0m
++        Phong p1_0

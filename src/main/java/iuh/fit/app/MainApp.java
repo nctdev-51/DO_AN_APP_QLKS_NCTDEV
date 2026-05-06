@@ -7,6 +7,7 @@ import iuh.fit.infrastructure.persistence.*;
 import iuh.fit.presentation.controller.LoginController;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -35,8 +36,24 @@ public class MainApp extends Application {
 
         // Cấu hình và hiển thị Stage
         primaryStage.setScene(loginScene);
-        primaryStage.setTitle("Quản lý khách sạn TATP - Đăng nhập");
+        primaryStage.setTitle("Quản lý khách sạn TTV - Đăng nhập");
         primaryStage.setResizable(false);
+        try {
+            // Tải logo TTV từ resources
+            Image logo = new Image(getClass().getResourceAsStream("/images/logo_ttv.png"));
+            if (logo.getWidth() > 0) {
+                primaryStage.getIcons().add(logo);
+            } else {
+                throw new Exception("Logo not found");
+            }
+        } catch (Exception e) {
+            // Nếu logo không tìm được, sử dụng logo mặc định từ Internet
+            try {
+                primaryStage.getIcons().add(new Image("https://cdn-icons-png.flaticon.com/512/2117/2117267.png"));
+            } catch (Exception ex) {
+                // Ignore if icon fails to load
+            }
+        }
         primaryStage.show();
     }
 

@@ -13,6 +13,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
+import javafx.concurrent.Task;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -88,6 +89,7 @@ public class QuanLyDatPhongController {
         lblIn.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + COLOR_TEXT_MUTED + ";");
         dpCheckIn = new DatePicker(LocalDate.now());
         dpCheckIn.setStyle("-fx-font-size: 13px;");
+        dpCheckIn.setEditable(false);
         inBox.getChildren().addAll(lblIn, dpCheckIn);
 
         VBox outBox = new VBox(5);
@@ -95,6 +97,7 @@ public class QuanLyDatPhongController {
         lblOut.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + COLOR_TEXT_MUTED + ";");
         dpCheckOut = new DatePicker(LocalDate.now().plusDays(1));
         dpCheckOut.setStyle("-fx-font-size: 13px;");
+        dpCheckOut.setEditable(false);
         outBox.getChildren().addAll(lblOut, dpCheckOut);
 
         Button btnTimPhong = new Button("🔍 TÌM PHÒNG TRỐNG");
@@ -270,63 +273,83 @@ public class QuanLyDatPhongController {
         LocalDate out = dpCheckOut.getValue();
 
         if (in != null && out != null && out.isAfter(in)) {
-            List<PhongDTO> dsPhongTrong = phongService.findAvailableRooms(in, out, 0, 99000000);
+            Task<List<PhongDTO>> loadTask = new Task<>() {
+                @Override
+                protected List<PhongDTO> call() {
+                    return phongService.findAvailableRooms(in, out, 0, 99000000);
+                }
+            };
 
-            for (PhongDTO p : dsPhongTrong) {
-                // Tạo thẻ Card
-                VBox card = new VBox(5);
-                card.setPrefSize(130, 100);
-                card.setAlignment(Pos.CENTER);
+            loadTask.setOnSucceeded(evt -> {
+                List<PhongDTO> dsPhongTrong = loadTask.getValue();
 
-                DropShadow cardShadow = new DropShadow();
-                cardShadow.setColor(Color.color(0, 0, 0, 0.06));
-                cardShadow.setRadius(5);
-                cardShadow.setOffsetY(3);
-                card.setEffect(cardShadow);
+                for (PhongDTO p : dsPhongTrong) {
+                    // Tạo thẻ Card
+                    VBox card = new VBox(5);
+                    card.setPrefSize(130, 100);
+                    card.setAlignment(Pos.CENTER);
 
-                String defaultStyle = "-fx-background-color: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 4 1 1 1; -fx-border-color: " + COLOR_AVAILABLE + " #e2e8f0 #e2e8f0 #e2e8f0; -fx-cursor: hand;";
-                String selectedStyle = "-fx-background-color: " + COLOR_SELECTED_BG + "; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 4 1 1 1; -fx-border-color: " + COLOR_PRIMARY + " " + COLOR_PRIMARY + " " + COLOR_PRIMARY + " " + COLOR_PRIMARY + "; -fx-cursor: hand;";
+                    DropShadow cardShadow = new DropShadow();
+                    cardShadow.setColor(Color.color(0, 0, 0, 0.06));
+                    cardShadow.setRadius(5);
+                    cardShadow.setOffsetY(3);
+                    card.setEffect(cardShadow);
 
-                card.setStyle(defaultStyle);
+                    String defaultStyle = "-fx-background-color: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 4 1 1 1; -fx-border-color: " + COLOR_AVAILABLE + " #e2e8f0 #e2e8f0 #e2e8f0; -fx-cursor: hand;";
+                    String selectedStyle = "-fx-background-color: " + COLOR_SELECTED_BG + "; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 4 1 1 1; -fx-border-color: " + COLOR_PRIMARY + " " + COLOR_PRIMARY + " " + COLOR_PRIMARY + " " + COLOR_PRIMARY + "; -fx-cursor: hand;";
 
-                Label lblMa = new Label(p.getMaPhong());
-                lblMa.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 18));
-                lblMa.setTextFill(Color.web(COLOR_TEXT_MAIN));
+                    card.setStyle(defaultStyle);
 
-                Label lblLoai = new Label(p.getMaLoaiPhong());
-                lblLoai.setFont(Font.font("Segoe UI", 12));
-                lblLoai.setTextFill(Color.web(COLOR_TEXT_MUTED));
+                    Label lblMa = new Label(p.getMaPhong());
+                    lblMa.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 18));
+                    lblMa.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
-                Label lblGia = new Label(String.format("%,.0fđ", p.getGiaPhong()));
-                lblGia.setTextFill(Color.web(COLOR_PRIMARY));
-                lblGia.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+                    Label lblLoai = new Label(p.getMaLoaiPhong());
+                    lblLoai.setFont(Font.font("Segoe UI", 12));
+                    lblLoai.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-                card.getChildren().addAll(lblMa, lblLoai, lblGia);
+                    Label lblGia = new Label(String.format("%,.0fđ", p.getGiaPhong()));
+                    lblGia.setTextFill(Color.web(COLOR_PRIMARY));
+                    lblGia.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
 
-                // Hiệu ứng Hover nâng thẻ
-                card.setOnMouseEntered(e -> card.setTranslateY(-3));
-                card.setOnMouseExited(e -> card.setTranslateY(0));
+                    card.getChildren().addAll(lblMa, lblLoai, lblGia);
 
-                // Click chọn phòng
-                card.setOnMouseClicked(e -> {
-                    if (selectedRoomsList.contains(p)) {
-                        selectedRoomsList.remove(p);
-                        card.setStyle(defaultStyle);
-                    } else {
-                        selectedRoomsList.add(p);
-                        card.setStyle(selectedStyle);
-                    }
-                    updateCartUI();
-                });
+                    // Hiệu ứng Hover nâng thẻ
+                    card.setOnMouseEntered(e -> card.setTranslateY(-3));
+                    card.setOnMouseExited(e -> card.setTranslateY(0));
 
-                pnlRoomMap.getChildren().add(card);
-            }
+                    // Click chọn phòng
+                    card.setOnMouseClicked(e -> {
+                        if (selectedRoomsList.contains(p)) {
+                            selectedRoomsList.remove(p);
+                            card.setStyle(defaultStyle);
+                        } else {
+                            selectedRoomsList.add(p);
+                            card.setStyle(selectedStyle);
+                        }
+                        updateCartUI();
+                    });
 
-            if (dsPhongTrong.isEmpty()) {
-                Label emptyLbl = new Label("Không có phòng trống trong khoảng thời gian này.");
-                emptyLbl.setStyle("-fx-font-size: 14px; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-padding: 20;");
+                    pnlRoomMap.getChildren().add(card);
+                }
+
+                if (dsPhongTrong.isEmpty()) {
+                    Label emptyLbl = new Label("Không có phòng trống trong khoảng thời gian này.");
+                    emptyLbl.setStyle("-fx-font-size: 14px; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-padding: 20;");
+                    pnlRoomMap.getChildren().add(emptyLbl);
+                }
+            });
+
+            loadTask.setOnFailed(evt -> {
+                Throwable ex = loadTask.getException();
+                Label emptyLbl = new Label("Lỗi tải danh sách phòng: " + (ex != null ? ex.getMessage() : "không xác định"));
+                emptyLbl.setStyle("-fx-font-size: 14px; -fx-text-fill: #ef4444; -fx-padding: 20;");
                 pnlRoomMap.getChildren().add(emptyLbl);
-            }
+            });
+
+            Thread worker = new Thread(loadTask, "booking-room-load-task");
+            worker.setDaemon(true);
+            worker.start();
         }
     }
 
