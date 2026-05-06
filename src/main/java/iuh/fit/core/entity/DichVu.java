@@ -1,15 +1,9 @@
 package iuh.fit.core.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "dich_vu")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class DichVu {
 
     @Id
@@ -24,4 +18,26 @@ public class DichVu {
 
     @Column(name = "mo_ta", length = 255)
     private String moTa;
+
+    public DichVu() {
+    }
+
+    public DichVu(String maDichVu, String tenDichVu, double giaTien, String moTa) {
+        this.maDichVu = maDichVu;
+        this.tenDichVu = tenDichVu;
+        this.giaTien = giaTien;
+        this.moTa = moTa;
+    }
+
+    public String getMaDichVu() { return maDichVu; }
+    public void setMaDichVu(String maDichVu) { this.maDichVu = maDichVu; }
+
+    public String getTenDichVu() { return tenDichVu; }
+    public void setTenDichVu(String tenDichVu) { this.tenDichVu = tenDichVu; }
+
+    public double getGiaTien() { return giaTien; }
+    public void setGiaTien(double giaTien) { this.giaTien = giaTien; }
+
+    public String getMoTa() { return moTa; }
+    public void setMoTa(String moTa) { this.moTa = moTa; }
 }

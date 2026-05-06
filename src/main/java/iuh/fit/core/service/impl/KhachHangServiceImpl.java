@@ -2,27 +2,27 @@ package iuh.fit.core.service.impl;
 
 import iuh.fit.core.dto.KhachHangDTO;
 import iuh.fit.core.entity.KhachHang;
-import iuh.fit.core.entity.LoaiKhachHang;
 import iuh.fit.core.repository.IKhachHangRepository;
 import iuh.fit.core.service.IKhachHangService;
+// Chú ý: Đã xóa dòng import LoaiKhachHang vì không còn dùng Enum nữa
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Class: KhachHangServiceImpl (Service Implementation)
- * 
+ *
  * Tầng: CORE - Service Layer
  * Trách nhiệm: Implement logic nghiệp vụ Quản lý Khách Hàng
  */
 public class KhachHangServiceImpl implements IKhachHangService {
-    
+
     private final IKhachHangRepository khachHangRepository;
-    
+
     public KhachHangServiceImpl(IKhachHangRepository khachHangRepository) {
         this.khachHangRepository = khachHangRepository;
     }
-    
+
     @Override
     public List<KhachHangDTO> getAllKhachHang() {
         return khachHangRepository.findAll()
@@ -30,59 +30,59 @@ public class KhachHangServiceImpl implements IKhachHangService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-    
+
     @Override
     public KhachHangDTO getKhachHangById(String maKhachHang) {
         return khachHangRepository.findById(maKhachHang)
                 .map(this::convertToDTO)
                 .orElse(null);
     }
-    
+
     @Override
     public KhachHangDTO getKhachHangBySoDienThoai(String soDienThoai) {
         return khachHangRepository.findBySoDienThoai(soDienThoai)
                 .map(this::convertToDTO)
                 .orElse(null);
     }
-    
+
     @Override
     public KhachHangDTO addKhachHang(KhachHangDTO khachHangDTO) throws IllegalArgumentException {
         // Business Logic: Validate input
         validateKhachHang(khachHangDTO);
-        
+
         // Kiểm tra số điện thoại không trùng lặp
         if (khachHangRepository.findBySoDienThoai(khachHangDTO.getSoDienThoai()).isPresent()) {
             throw new IllegalArgumentException("Số điện thoại đã tồn tại");
         }
-        
+
         // Tạo mã khách hàng tự động (ví dụ: KH001, KH002, ...)
         String maKhachHang = generateMaKhachHang();
-        
+
         // Chuyển DTO → Entity
         KhachHang entity = convertToEntity(khachHangDTO);
         entity.setMaKhachHang(maKhachHang);
-        
+
         // Lưu vào repository
         KhachHang saved = khachHangRepository.save(entity);
-        
+
         return convertToDTO(saved);
     }
-    
+
     @Override
     public KhachHangDTO updateKhachHang(KhachHangDTO khachHangDTO) throws IllegalArgumentException {
         validateKhachHang(khachHangDTO);
-        
+
         // Kiểm tra khách hàng có tồn tại không
         if (!khachHangRepository.findById(khachHangDTO.getMaKhachHang()).isPresent()) {
             throw new IllegalArgumentException("Khách hàng không tồn tại");
         }
-        
+
         KhachHang entity = convertToEntity(khachHangDTO);
         KhachHang updated = khachHangRepository.update(entity);
-        
+
         return convertToDTO(updated);
     }
-    
+
     @Override
     public boolean deleteKhachHang(String maKhachHang) {
         try {
@@ -92,7 +92,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
             return false;
         }
     }
-    
+
     /**
      * Helper: Validate dữ liệu khách hàng
      */
@@ -107,7 +107,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
             throw new IllegalArgumentException("Số điện thoại phải có 10 chữ số");
         }
     }
-    
+
     /**
      * Helper: Chuyển Entity → DTO
      */
@@ -117,10 +117,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
                 entity.getHoTen(),
                 entity.getSoDienThoai(),
                 entity.getNgaySinh(),
-                entity.getLoaiKhachHang() != null ? entity.getLoaiKhachHang().name() : ""
+                entity.getLoaiKhachHang() // ĐÃ SỬA: Gán thẳng String
         );
     }
-    
+
     /**
      * Helper: Chuyển DTO → Entity
      */
@@ -130,12 +130,11 @@ public class KhachHangServiceImpl implements IKhachHangService {
         entity.setHoTen(dto.getHoTen());
         entity.setSoDienThoai(dto.getSoDienThoai());
         entity.setNgaySinh(dto.getNgaySinh());
-        if (dto.getLoaiKhachHang() != null && !dto.getLoaiKhachHang().isEmpty()) {
-            entity.setLoaiKhachHang(LoaiKhachHang.valueOf(dto.getLoaiKhachHang()));
-        }
+        entity.setLoaiKhachHang(dto.getLoaiKhachHang()); // ĐÃ SỬA: Gán thẳng String
+
         return entity;
     }
-    
+
     /**
      * Helper: Tạo mã khách hàng tự động
      */
@@ -145,4 +144,3 @@ public class KhachHangServiceImpl implements IKhachHangService {
         return String.format("KH%03d", nextId);
     }
 }
-
