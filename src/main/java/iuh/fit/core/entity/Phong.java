@@ -6,24 +6,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "phong")
+@Table(name = "Phong") // Đổi thành chữ "P" hoa cho khớp chính xác với script SQL
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Phong {
+
     @Id
-    @Column(name = "ma_phong", length = 4)
+    @Column(name = "maPhong", length = 4) // Đã sửa tên cột
     private String maPhong;
 
-    @Column(name = "ten_phong", length = 100)
+    @Column(name = "tenPhong", length = 100) // Đã sửa tên cột
     private String tenPhong;
 
-    @Column(name = "gia_phong")
+    @Column(name = "giaPhong") // Đã sửa tên cột
     private Double giaPhong;
 
-    @Column(name = "ma_loai_phong", length = 20, nullable = false)
+    @Column(name = "maLoaiPhong", length = 20, nullable = false) // Đã sửa tên cột
     private String maLoaiPhong;
 
-    @Column(name = "tinh_trang", length = 50)
+    @Column(name = "tinhTrang", length = 50) // Đã sửa tên cột
     private String tinhTrang;
 }

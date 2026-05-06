@@ -11,8 +11,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -42,6 +44,16 @@ public class MainController {
     private Label lblClock;
     private VBox roomContainer;
 
+    // --- CÁC MÃ MÀU HIỆN ĐẠI TÙY CHỈNH ---
+    private final String COLOR_PRIMARY = "#2563eb"; // Blue 600
+    private final String COLOR_SIDEBAR = "#1e293b"; // Slate 800
+    private final String COLOR_SIDEBAR_HOVER = "#334155"; // Slate 700
+    private final String COLOR_BG_LIGHT = "#f8fafc"; // Slate 50
+    private final String COLOR_AVAILABLE = "#10b981"; // Emerald 500 (Trống)
+    private final String COLOR_BOOKED = "#ef4444"; // Red 500 (Đã đặt)
+    private final String COLOR_OCCUPIED = "#f59e0b"; // Amber 500 (Đang ở)
+    private final String COLOR_MAINTENANCE = "#64748b"; // Slate 500 (Khác)
+
     public MainController(Stage primaryStage, TaiKhoanDTO currentUser,
                           IKhachHangService khachHangService, INhanVienService nhanVienService,
                           IPhongService phongService, IPhieuDatPhongService phieuDatPhongService) {
@@ -55,7 +67,7 @@ public class MainController {
 
     public void showMainScreen() {
         rootLayout = new BorderPane();
-        rootLayout.setStyle("-fx-background-color: #f4f6f9;");
+        rootLayout.setStyle("-fx-background-color: " + COLOR_BG_LIGHT + ";");
 
         HBox header = createHeader();
         rootLayout.setTop(header);
@@ -80,29 +92,38 @@ public class MainController {
 
     private HBox createHeader() {
         HBox header = new HBox();
-        header.setPadding(new Insets(10, 20, 10, 20));
-        header.setStyle("-fx-background-color: #34495e; -fx-border-width: 0 0 2px 0; -fx-border-color: #e74c3c;");
+        header.setPadding(new Insets(15, 25, 15, 25));
+        header.setStyle("-fx-background-color: white; -fx-border-width: 0 0 1px 0; -fx-border-color: #e2e8f0;");
         header.setAlignment(Pos.CENTER_LEFT);
 
-        Label lblTitle = new Label("KHÁCH SẠN TATP");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 24));
-        lblTitle.setTextFill(Color.WHITE);
+        // Hiệu ứng đổ bóng nhẹ cho Header
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.color(0, 0, 0, 0.05));
+        shadow.setRadius(5);
+        shadow.setOffsetY(2);
+        header.setEffect(shadow);
+
+        Label lblTitle = new Label("TATP HOTEL");
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 22));
+        lblTitle.setTextFill(Color.web(COLOR_PRIMARY));
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         lblClock = new Label();
-        lblClock.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
-        lblClock.setTextFill(Color.web("#f1c40f"));
+        lblClock.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 15));
+        lblClock.setTextFill(Color.web("#475569")); // Slate 600
         startClock();
 
         Button btnCaLamViec = new Button("🔄 Nhận / Giao Ca");
-        btnCaLamViec.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-weight: bold;");
+        btnCaLamViec.setStyle("-fx-background-color: #f8fafc; -fx-text-fill: #475569; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-weight: bold; -fx-padding: 8 15; -fx-cursor: hand;");
+        btnCaLamViec.setOnMouseEntered(e -> btnCaLamViec.setStyle("-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-weight: bold; -fx-padding: 8 15; -fx-cursor: hand;"));
+        btnCaLamViec.setOnMouseExited(e -> btnCaLamViec.setStyle("-fx-background-color: #f8fafc; -fx-text-fill: #475569; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-weight: bold; -fx-padding: 8 15; -fx-cursor: hand;"));
         btnCaLamViec.setOnAction(e -> showPlaceholder("Module Giao Ca đang phát triển..."));
 
-        HBox rightControls = new HBox(20);
+        HBox rightControls = new HBox(25);
         rightControls.setAlignment(Pos.CENTER_RIGHT);
-        rightControls.getChildren().addAll(btnCaLamViec, lblClock);
+        rightControls.getChildren().addAll(lblClock, btnCaLamViec);
 
         header.getChildren().addAll(lblTitle, spacer, rightControls);
         return header;
@@ -110,64 +131,74 @@ public class MainController {
 
     private VBox createSidebar() {
         VBox sidebar = new VBox(5);
-        sidebar.setPadding(new Insets(20, 10, 20, 10));
-        sidebar.setPrefWidth(250);
-        sidebar.setStyle("-fx-background-color: #2c3e50;");
+        sidebar.setPadding(new Insets(25, 0, 20, 0));
+        sidebar.setPrefWidth(260);
+        sidebar.setStyle("-fx-background-color: " + COLOR_SIDEBAR + ";");
 
-        VBox profileBox = new VBox(5);
+        // Profile Box
+        VBox profileBox = new VBox(8);
         profileBox.setAlignment(Pos.CENTER);
-        profileBox.setPadding(new Insets(0, 0, 20, 0));
+        profileBox.setPadding(new Insets(0, 0, 25, 0));
 
         Label lblAvatar = new Label("👤");
-        lblAvatar.setFont(Font.font(40));
-        lblAvatar.setTextFill(Color.LIGHTGRAY);
+        lblAvatar.setFont(Font.font(45));
+        lblAvatar.setTextFill(Color.web("#94a3b8"));
+
+        // Vòng tròn bao quanh Avatar
+        StackPane avatarPane = new StackPane(lblAvatar);
+        avatarPane.setStyle("-fx-background-color: #334155; -fx-background-radius: 50%; -fx-min-width: 70; -fx-min-height: 70; -fx-max-width: 70; -fx-max-height: 70;");
 
         Label lblUser = new Label(currentUser.getHoTenNhanVien());
         lblUser.setTextFill(Color.WHITE);
         lblUser.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
 
-        Label lblRole = new Label("Vai trò: " + (currentUser.getTaiKhoan().equals("admin") ? "Quản Lý" : "Lễ Tân"));
-        lblRole.setTextFill(Color.web("#bdc3c7"));
+        Label lblRole = new Label(currentUser.getTaiKhoan().equals("admin") ? "Quản Lý" : "Lễ Tân");
+        lblRole.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 3 10; -fx-background-radius: 12; -fx-font-size: 11px; -fx-font-weight: bold;");
 
-        profileBox.getChildren().addAll(lblAvatar, lblUser, lblRole);
+        profileBox.getChildren().addAll(avatarPane, lblUser, lblRole);
 
+        // Menu Sections
         Label lblMenuSection = new Label("NGHIỆP VỤ");
-        lblMenuSection.setTextFill(Color.GRAY);
-        lblMenuSection.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
-        lblMenuSection.setPadding(new Insets(10, 0, 5, 10));
+        lblMenuSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 10 0 5 25;");
 
-        Button btnTrangChu = createMenuButton("🏠 Trang Chủ");
-        Button btnDatPhong = createMenuButton("🏨 Đặt & Nhận Phòng");
-        Button btnGoiDichVu = createMenuButton("🍽️ Gọi Dịch Vụ");
-        Button btnQuanLyPhieu = createMenuButton("📋 Quản lý Phiếu Đặt");
+        Button btnTrangChu = createMenuButton("🏠 Trang Chủ", true);
+        Button btnDatPhong = createMenuButton("🏨 Đặt & Nhận Phòng", false);
+        Button btnGoiDichVu = createMenuButton("🍽️ Gọi Dịch Vụ", false);
+        Button btnQuanLyPhieu = createMenuButton("📋 Quản lý Phiếu Đặt", false);
 
         Label lblListSection = new Label("DANH MỤC");
-        lblListSection.setTextFill(Color.GRAY);
-        lblListSection.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
-        lblListSection.setPadding(new Insets(15, 0, 5, 10));
+        lblListSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 20 0 5 25;");
 
-        Button btnKhachHang = createMenuButton("👥 Khách Hàng");
-        Button btnNhanVien = createMenuButton("👨‍💼 Nhân Viên");
+        Button btnKhachHang = createMenuButton("👥 Khách Hàng", false);
+        Button btnNhanVien = createMenuButton("👨‍💼 Nhân Viên", false);
 
-        Button btnDangXuat = createMenuButton("🚪 Đăng xuất");
-        btnDangXuat.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px;");
+        // Nút Đăng Xuất
+        Button btnDangXuat = new Button("🚪 Đăng xuất");
+        btnDangXuat.setMaxWidth(Double.MAX_VALUE);
+        VBox.setMargin(btnDangXuat, new Insets(0, 20, 0, 20));
+        btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-border-color: #ef4444; -fx-border-radius: 6; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-cursor: hand;");
+        btnDangXuat.setOnMouseEntered(e -> btnDangXuat.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-border-color: #ef4444; -fx-border-radius: 6; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-cursor: hand;"));
+        btnDangXuat.setOnMouseExited(e -> btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-border-color: #ef4444; -fx-border-radius: 6; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px; -fx-cursor: hand;"));
 
-        btnTrangChu.setOnAction(e -> showDashboard());
-        btnDatPhong.setOnAction(e -> loadQuanLyDatPhong());
-        btnKhachHang.setOnAction(e -> loadQuanLyKhachHang());
-        btnNhanVien.setOnAction(e -> loadQuanLyNhanVien());
+        // Xử lý sự kiện
+        List<Button> menuButtons = Arrays.asList(btnTrangChu, btnDatPhong, btnGoiDichVu, btnQuanLyPhieu, btnKhachHang, btnNhanVien);
+
+        btnTrangChu.setOnAction(e -> { setActiveMenu(btnTrangChu, menuButtons); showDashboard(); });
+        btnDatPhong.setOnAction(e -> { setActiveMenu(btnDatPhong, menuButtons); loadQuanLyDatPhong(); });
+        btnKhachHang.setOnAction(e -> { setActiveMenu(btnKhachHang, menuButtons); loadQuanLyKhachHang(); });
+        btnNhanVien.setOnAction(e -> { setActiveMenu(btnNhanVien, menuButtons); loadQuanLyNhanVien(); });
+        btnGoiDichVu.setOnAction(e -> { setActiveMenu(btnGoiDichVu, menuButtons); showPlaceholder("Giao diện Gọi Dịch Vụ đang phát triển..."); });
+        btnQuanLyPhieu.setOnAction(e -> { setActiveMenu(btnQuanLyPhieu, menuButtons); showPlaceholder("Giao diện Quản Lý Phiếu đang phát triển..."); });
         btnDangXuat.setOnAction(e -> handleLogout());
 
-        btnGoiDichVu.setOnAction(e -> showPlaceholder("Giao diện Gọi Dịch Vụ đang phát triển..."));
-        btnQuanLyPhieu.setOnAction(e -> showPlaceholder("Giao diện Quản Lý Phiếu đang phát triển..."));
-
-        VBox footerInfo = new VBox(3);
+        // Footer
+        VBox footerInfo = new VBox(4);
         footerInfo.setAlignment(Pos.CENTER);
         footerInfo.setPadding(new Insets(20, 0, 0, 0));
         footerInfo.getChildren().addAll(
-                new Label("SV: Nguyễn Chí Tâm") {{ setTextFill(Color.LIGHTGRAY); }},
-                new Label("Lớp: DHKTPM19A") {{ setTextFill(Color.LIGHTGRAY); }},
-                new Label("Trường: ĐH Công Nghiệp TP.HCM") {{ setTextFill(Color.GRAY); setFont(Font.font(10)); }}
+                new Label("SV: Nguyễn Chí Tâm") {{ setStyle("-fx-text-fill: #94a3b8; -fx-font-size: 12px;"); }},
+                new Label("Lớp: DHKTPM19A") {{ setStyle("-fx-text-fill: #94a3b8; -fx-font-size: 12px;"); }},
+                new Label("ĐH Công Nghiệp TP.HCM") {{ setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px;"); }}
         );
 
         Region spacer = new Region();
@@ -184,23 +215,44 @@ public class MainController {
         return sidebar;
     }
 
-    private Button createMenuButton(String text) {
+    private Button createMenuButton(String text, boolean isDefaultActive) {
         Button btn = new Button(text);
         btn.setMaxWidth(Double.MAX_VALUE);
         btn.setAlignment(Pos.CENTER_LEFT);
-        btn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 12px 20px;");
+        btn.setCursor(Cursor.HAND);
+
+        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #cbd5e1; -fx-font-size: 14px; -fx-padding: 12px 10px 12px 25px; -fx-border-width: 0 0 0 4px; -fx-border-color: transparent;";
+        String hoverStyle = "-fx-background-color: " + COLOR_SIDEBAR_HOVER + "; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 12px 10px 12px 25px; -fx-border-width: 0 0 0 4px; -fx-border-color: #94a3b8;";
+        String activeStyle = "-fx-background-color: #2563eb1A; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 12px 10px 12px 25px; -fx-border-width: 0 0 0 4px; -fx-border-color: " + COLOR_PRIMARY + "; -fx-font-weight: bold;";
+
+        if (isDefaultActive) {
+            btn.setStyle(activeStyle);
+            btn.setUserData("active");
+        } else {
+            btn.setStyle(defaultStyle);
+            btn.setUserData("inactive");
+        }
 
         btn.setOnMouseEntered(e -> {
-            if (!btn.getStyle().contains("#c0392b")) {
-                btn.setStyle("-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 12px 20px; -fx-border-width: 0 0 0 4px; -fx-border-color: #3498db;");
-            }
+            if (!"active".equals(btn.getUserData())) btn.setStyle(hoverStyle);
         });
         btn.setOnMouseExited(e -> {
-            if (!btn.getStyle().contains("#c0392b")) {
-                btn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 12px 20px;");
-            }
+            if (!"active".equals(btn.getUserData())) btn.setStyle(defaultStyle);
         });
+
         return btn;
+    }
+
+    private void setActiveMenu(Button activeBtn, List<Button> allButtons) {
+        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #cbd5e1; -fx-font-size: 14px; -fx-padding: 12px 10px 12px 25px; -fx-border-width: 0 0 0 4px; -fx-border-color: transparent;";
+        String activeStyle = "-fx-background-color: #2563eb1A; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 12px 10px 12px 25px; -fx-border-width: 0 0 0 4px; -fx-border-color: " + COLOR_PRIMARY + "; -fx-font-weight: bold;";
+
+        for (Button btn : allButtons) {
+            btn.setStyle(defaultStyle);
+            btn.setUserData("inactive");
+        }
+        activeBtn.setStyle(activeStyle);
+        activeBtn.setUserData("active");
     }
 
     private void startClock() {
@@ -214,18 +266,22 @@ public class MainController {
 
     private void showDashboard() {
         contentArea.getChildren().clear();
-        VBox dashboard = new VBox(10);
-        dashboard.setPadding(new Insets(15));
-        dashboard.setStyle("-fx-background-color: white;");
+        VBox dashboard = new VBox(20); // Tăng khoảng cách
+        dashboard.setPadding(new Insets(10));
 
         HBox filterBox = createFilterBox(dashboard);
         dashboard.getChildren().add(filterBox);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
-        roomContainer = new VBox(10);
-        roomContainer.setPadding(new Insets(10));
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-padding: 0;");
+        scrollPane.setBorder(Border.EMPTY);
+
+        roomContainer = new VBox(20);
+        roomContainer.setPadding(new Insets(5, 5, 20, 5));
         scrollPane.setContent(roomContainer);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS); // Để ScrollPane chiếm hết chiều cao còn lại
+
         dashboard.getChildren().add(scrollPane);
 
         List<PhongDTO> allRooms = phongService.getAllPhong();
@@ -235,25 +291,47 @@ public class MainController {
     }
 
     private HBox createFilterBox(VBox dashboard) {
-        HBox filterBox = new HBox(10);
+        HBox filterBox = new HBox(15);
         filterBox.setAlignment(Pos.CENTER_LEFT);
-        filterBox.setPadding(new Insets(10));
-        filterBox.setStyle("-fx-background-color: #f0f0f0; -fx-border-radius: 5; -fx-background-radius: 5;");
+        filterBox.setPadding(new Insets(15, 20, 15, 20));
+        filterBox.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e2e8f0;");
 
+        // Đổ bóng cho FilterBox
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.color(0, 0, 0, 0.03));
+        shadow.setRadius(5);
+        shadow.setOffsetY(2);
+        filterBox.setEffect(shadow);
+
+        Label lblIn = new Label("Nhận phòng:");
+        lblIn.setFont(Font.font("System", FontWeight.SEMI_BOLD, 13));
         DatePicker dpCheckIn = new DatePicker(LocalDate.now());
+        dpCheckIn.setStyle("-fx-font-size: 13px;");
+
+        Label lblOut = new Label("Trả phòng:");
+        lblOut.setFont(Font.font("System", FontWeight.SEMI_BOLD, 13));
         DatePicker dpCheckOut = new DatePicker(LocalDate.now().plusDays(1));
+        dpCheckOut.setStyle("-fx-font-size: 13px;");
 
+        Label lblGia = new Label("Mức giá:");
+        lblGia.setFont(Font.font("System", FontWeight.SEMI_BOLD, 13));
         Slider priceSlider = new Slider(0, 10_000_000, 10_000_000);
-        priceSlider.setPrefWidth(150);
-        Label lblPrice = new Label("≤ 10,000,000đ");
-        priceSlider.valueProperty().addListener((obs, old, newVal) ->
-                lblPrice.setText(String.format("≤ %,.0fđ", newVal.doubleValue()))
-        );
+        priceSlider.setPrefWidth(120);
+        Label lblPrice = new Label("≤ 10Tr VNĐ");
+        lblPrice.setStyle("-fx-text-fill: #2563eb; -fx-font-weight: bold;");
 
-        Button btnGuest = new Button("2 khách");
+        priceSlider.valueProperty().addListener((obs, old, newVal) -> {
+            double val = newVal.doubleValue();
+            if(val >= 1000000) lblPrice.setText(String.format("≤ %.1fTr", val/1000000));
+            else lblPrice.setText(String.format("≤ %,.0fđ", val));
+        });
 
-        Button btnSearch = new Button("🔍 Tìm");
-        btnSearch.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+        Button btnGuest = new Button("👥 2 Khách");
+        btnGuest.setStyle("-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-padding: 5 10; -fx-cursor: hand;");
+
+        Button btnSearch = new Button("🔍 Tìm Kiếm");
+        btnSearch.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand;");
+
         btnSearch.setOnAction(e -> {
             LocalDate in = dpCheckIn.getValue();
             LocalDate out = dpCheckOut.getValue();
@@ -265,11 +343,14 @@ public class MainController {
             renderRoomsByFloor(available, in, out);
         });
 
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
         filterBox.getChildren().addAll(
-                new Label("Ngày nhận:"), dpCheckIn,
-                new Label("Ngày trả:"), dpCheckOut,
-                new Label("Giá:"), priceSlider, lblPrice,
-                btnGuest, btnSearch
+                lblIn, dpCheckIn,
+                lblOut, dpCheckOut,
+                lblGia, priceSlider, lblPrice,
+                btnGuest, spacer, btnSearch
         );
         return filterBox;
     }
@@ -277,85 +358,147 @@ public class MainController {
     private void renderRoomsByFloor(List<PhongDTO> rooms, LocalDate in, LocalDate out) {
         roomContainer.getChildren().clear();
         if (rooms.isEmpty()) {
-            roomContainer.getChildren().add(new Label("Không có phòng trống phù hợp."));
+            Label emptyLbl = new Label("Không tìm thấy phòng trống phù hợp với tiêu chí.");
+            emptyLbl.setStyle("-fx-font-size: 14px; -fx-text-fill: #64748b; -fx-padding: 20;");
+            roomContainer.getChildren().add(emptyLbl);
             return;
         }
 
         Map<String, List<PhongDTO>> byFloor = new LinkedHashMap<>();
         for (PhongDTO p : rooms) {
             String ma = p.getMaPhong();
-            String floor = "Tầng " + (ma.length() > 1 ? ma.substring(1, 2) : "0");
+            String floor = "TẦNG " + (ma.length() > 1 ? ma.substring(1, 2) : "0");
             byFloor.computeIfAbsent(floor, k -> new ArrayList<>()).add(p);
         }
 
         List<String> sortedFloors = byFloor.keySet().stream()
-                .sorted(Comparator.comparingInt(s -> Integer.parseInt(s.replace("Tầng ", ""))))
+                .sorted(Comparator.comparingInt(s -> Integer.parseInt(s.replace("TẦNG ", ""))))
                 .collect(Collectors.toList());
 
         for (String floor : sortedFloors) {
+            VBox floorBox = new VBox(10);
+
             Label lblFloor = new Label(floor);
-            lblFloor.setFont(Font.font("System", FontWeight.BOLD, 16));
-            lblFloor.setPadding(new Insets(5, 0, 5, 0));
-            roomContainer.getChildren().add(lblFloor);
+            lblFloor.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+            lblFloor.setTextFill(Color.web("#334155"));
+
+            // Đường kẻ ngang cho đẹp
+            HBox titleBox = new HBox(10);
+            titleBox.setAlignment(Pos.CENTER_LEFT);
+            Region line = new Region();
+            HBox.setHgrow(line, Priority.ALWAYS);
+            line.setStyle("-fx-border-width: 1 0 0 0; -fx-border-color: #cbd5e1;");
+            titleBox.getChildren().addAll(lblFloor, line);
 
             TilePane tilePane = new TilePane();
-            tilePane.setHgap(10);
-            tilePane.setVgap(10);
-            tilePane.setPadding(new Insets(5));
+            tilePane.setHgap(15); // Tăng khoảng cách giữa các thẻ
+            tilePane.setVgap(15);
+            tilePane.setPrefColumns(8);
 
             for (PhongDTO p : byFloor.get(floor)) {
                 VBox card = createRoomCard(p, in, out);
                 tilePane.getChildren().add(card);
             }
-            roomContainer.getChildren().add(tilePane);
+
+            floorBox.getChildren().addAll(titleBox, tilePane);
+            roomContainer.getChildren().add(floorBox);
         }
     }
 
     private VBox createRoomCard(PhongDTO p, LocalDate in, LocalDate out) {
-        VBox card = new VBox(5);
-        card.setPadding(new Insets(8));
+        VBox card = new VBox(8);
+        card.setPadding(new Insets(12));
         card.setAlignment(Pos.CENTER);
-        card.setPrefSize(100, 90);
+        card.setPrefSize(140, 110); // Thẻ phòng to hơn
 
         String trangThai = p.getTinhTrang() != null ? p.getTinhTrang() : "Không xác định";
-        Color bg;
+        String statusColorHex;
+        String statusIcon;
+
         switch (trangThai) {
-            case "Trống" -> bg = Color.GREEN;
-            case "Đã Đặt" -> bg = Color.RED;
-            case "Đang ở" -> bg = Color.ORANGE;
-            default -> bg = Color.GRAY;
+            case "Trống" -> { statusColorHex = COLOR_AVAILABLE; statusIcon = "✓"; }
+            case "Đã Đặt" -> { statusColorHex = COLOR_BOOKED; statusIcon = "📅"; }
+            case "Đang ở" -> { statusColorHex = COLOR_OCCUPIED; statusIcon = "🔑"; }
+            default -> { statusColorHex = COLOR_MAINTENANCE; statusIcon = "🔧"; }
         }
-        card.setStyle("-fx-background-color: " + toHex(bg) + "; -fx-background-radius: 5; -fx-cursor: hand;");
+
+        // Đổ bóng cho Thẻ
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.color(0, 0, 0, 0.1));
+        shadow.setRadius(5);
+        shadow.setOffsetY(3);
+
+        // Giao diện thẻ: Nền trắng, viền trên cùng (Top border) có màu trạng thái
+        card.setStyle("-fx-background-color: white; " +
+                "-fx-background-radius: 8; " +
+                "-fx-border-radius: 8; " +
+                "-fx-border-width: 4 1 1 1; " +
+                "-fx-border-color: " + statusColorHex + " #e2e8f0 #e2e8f0 #e2e8f0; " +
+                "-fx-cursor: hand;");
+        card.setEffect(shadow);
+
+        // Hover effect: Nâng thẻ lên nhẹ
+        card.setOnMouseEntered(e -> {
+            card.setTranslateY(-3);
+            shadow.setRadius(8);
+            shadow.setColor(Color.color(0, 0, 0, 0.15));
+        });
+        card.setOnMouseExited(e -> {
+            card.setTranslateY(0);
+            shadow.setRadius(5);
+            shadow.setColor(Color.color(0, 0, 0, 0.1));
+        });
+
+        // Nội dung thẻ
+        HBox topRow = new HBox();
+        topRow.setAlignment(Pos.CENTER);
 
         Label lblMa = new Label(p.getMaPhong());
-        lblMa.setFont(Font.font("System", FontWeight.BOLD, 14));
-        lblMa.setTextFill(Color.WHITE);
+        lblMa.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 18));
+        lblMa.setTextFill(Color.web("#1e293b"));
+
+        Label lblStatus = new Label(" " + statusIcon);
+        lblStatus.setTextFill(Color.web(statusColorHex));
+        lblStatus.setFont(Font.font(14));
+
+        topRow.getChildren().addAll(lblMa, lblStatus);
+
         Label lblLoai = new Label(p.getMaLoaiPhong());
-        lblLoai.setTextFill(Color.WHITE);
-        Label lblGia = new Label(String.format("%,.0fđ", p.getGiaPhong()));
-        lblGia.setTextFill(Color.WHITE);
-        card.getChildren().addAll(lblMa, lblLoai, lblGia);
+        lblLoai.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 12));
+        lblLoai.setTextFill(Color.web("#64748b"));
+
+        Label lblGia = new Label(String.format("%,.0f đ", p.getGiaPhong()));
+        lblGia.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+        lblGia.setTextFill(Color.web(COLOR_PRIMARY));
+
+        // Nhãn trạng thái text nhỏ xíu ở dưới cùng
+        Label lblStatusText = new Label(trangThai);
+        lblStatusText.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 11));
+        lblStatusText.setTextFill(Color.web(statusColorHex));
+        lblStatusText.setStyle("-fx-background-color: " + statusColorHex + "20; -fx-padding: 2 6; -fx-background-radius: 10;");
+
+        card.getChildren().addAll(topRow, lblLoai, lblGia, lblStatusText);
 
         card.setOnMouseClicked(e -> {
-            if ("Trống".equals(trangThai)) {
-                contentArea.getChildren().clear();
-                QuanLyDatPhongController dpController = new QuanLyDatPhongController(
-                        phongService, phieuDatPhongService, khachHangService, currentUser
-                );
-                contentArea.getChildren().add(dpController.createQuanLyDatPhongScene().getRoot());
+            // In ra Console để kiểm tra xem có nhận Click chưa
+            System.out.println(">>> ĐÃ CLICK VÀO PHÒNG: " + p.getMaPhong() + " | TRẠNG THÁI TỪ DB: '" + trangThai + "'");
+
+            // Dùng trim() để xóa khoảng trắng thừa và ignoreCase để không phân biệt hoa thường
+            if (trangThai != null && trangThai.trim().equalsIgnoreCase("Trống")) {
+                System.out.println(">>> BẮT ĐẦU GỌI GIAO DIỆN ĐẶT PHÒNG...");
+
+                // Gọi thẳng xuống hàm đã bọc bẫy lỗi
+                loadQuanLyDatPhong();
+
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Phòng " + p.getMaPhong() + " đang " + trangThai);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Thông báo");
+                alert.setHeaderText(null);
+                alert.setContentText("Phòng " + p.getMaPhong() + " hiện đang " + trangThai + ".");
                 alert.show();
             }
         });
         return card;
-    }
-
-    private String toHex(Color c) {
-        return String.format("#%02X%02X%02X",
-                (int) (c.getRed() * 255),
-                (int) (c.getGreen() * 255),
-                (int) (c.getBlue() * 255));
     }
 
     private void loadQuanLyKhachHang() {
@@ -372,18 +515,45 @@ public class MainController {
     }
 
     private void loadQuanLyDatPhong() {
-        contentArea.getChildren().clear();
-        QuanLyDatPhongController dpController = new QuanLyDatPhongController(
-                phongService, phieuDatPhongService, khachHangService, currentUser
-        );
-        contentArea.getChildren().add(dpController.createQuanLyDatPhongScene().getRoot());
+        try {
+            contentArea.getChildren().clear();
+            QuanLyDatPhongController dpController = new QuanLyDatPhongController(
+                    phongService, phieuDatPhongService, khachHangService, currentUser
+            );
+            contentArea.getChildren().add(dpController.createQuanLyDatPhongScene().getRoot());
+        } catch (Exception ex) {
+            // Nếu có lỗi, vẽ một màn hình báo lỗi màu đỏ thay vì để trắng tinh
+            ex.printStackTrace();
+            VBox errorBox = new VBox(15);
+            errorBox.setAlignment(Pos.CENTER);
+
+            Label lblTitle = new Label("⚠️ LỖI KHI MỞ GIAO DIỆN ĐẶT PHÒNG");
+            lblTitle.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold;");
+
+            TextArea txtError = new TextArea("Nguyên nhân lỗi:\n" + ex.getMessage() + "\n\nChi tiết:\n" + Arrays.toString(ex.getStackTrace()));
+            txtError.setWrapText(true);
+            txtError.setEditable(false);
+            txtError.setPrefSize(800, 400);
+
+            errorBox.getChildren().addAll(lblTitle, txtError);
+            contentArea.getChildren().add(errorBox);
+        }
     }
 
     private void showPlaceholder(String message) {
         contentArea.getChildren().clear();
+        VBox box = new VBox(15);
+        box.setAlignment(Pos.CENTER);
+
+        Label icon = new Label("🚧");
+        icon.setFont(Font.font(40));
+
         Label lbl = new Label(message);
-        lbl.setFont(Font.font("Segoe UI", 16));
-        contentArea.getChildren().add(lbl);
+        lbl.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 18));
+        lbl.setTextFill(Color.web("#64748b"));
+
+        box.getChildren().addAll(icon, lbl);
+        contentArea.getChildren().add(box);
     }
 
     private void handleLogout() {
