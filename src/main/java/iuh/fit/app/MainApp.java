@@ -20,6 +20,9 @@ public class MainApp extends Application {
         IPhongRepository phongRepo = new PhongRepositoryImpl();
         IPhieuDatPhongRepository phieuRepo = new PhieuDatPhongRepositoryImpl();
         ITaiKhoanRepository tkRepo = new TaiKhoanRepositoryImpl();
+        IDichVuRepository dvRepo = new DichVuRepositoryImpl();
+        IHoaDonRepository hdRepo = new HoaDonRepositoryImpl();
+        IChiTietHoaDonRepository cthdRepo = new ChiTietHoaDonRepositoryImpl();
 
         // Khởi tạo service
         IKhachHangService khService = new KhachHangServiceImpl(khRepo);
@@ -27,10 +30,14 @@ public class MainApp extends Application {
         IPhongService phongService = new PhongServiceImpl(phongRepo);
         IPhieuDatPhongService phieuService = new PhieuDatPhongServiceImpl(phieuRepo);
         IAuthenticationService authService = new AuthenticationServiceImpl(tkRepo);
+        IDichVuService dvService = new DichVuServiceImpl(dvRepo);
+        IHoaDonService hdService = new HoaDonServiceImpl(hdRepo, cthdRepo, phieuRepo, phongRepo);
+        IChiTietHoaDonService cthdService = new ChiTietHoaDonServiceImpl(cthdRepo);
 
         // Tạo LoginController và lấy Scene
         LoginController loginController = new LoginController(
-                authService, khService, nvService, phongService, phieuService
+                authService, khService, nvService, phongService, phieuService,
+                dvService, hdService, cthdService
         );
         Scene loginScene = loginController.createLoginScene();
 
