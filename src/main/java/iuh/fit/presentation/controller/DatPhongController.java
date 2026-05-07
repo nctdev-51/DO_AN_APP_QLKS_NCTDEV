@@ -396,12 +396,28 @@ public class DatPhongController {
         if (dpNgayTra.getValue().isBefore(dpNgayDat.getValue()) || dpNgayTra.getValue().isEqual(dpNgayDat.getValue())) {
             showAlert(Alert.AlertType.WARNING, "Lỗi", "Ngày trả phòng phải LỚN HƠN ngày nhận phòng!"); return;
         }
+        if (coThanhToan) {
+            // 👉 GỌI MÀN HÌNH THANH TOÁN MỚI
+            ThanhToanController paymentCtrl = new ThanhToanController(tongThanhToan);
+            boolean isPaid = Boolean.parseBoolean(paymentCtrl.showThanhToanDialog(stage));
+
+            if (!isPaid) {
+                // Nếu khách đóng cửa sổ thanh toán mà chưa bấm Hoàn tất -> không lưu phiếu
+                return;
+            }
+        }
+
         try {
-            String msg = coThanhToan ? "Đã lưu Phiếu và Xác nhận Thanh toán Trả trước thành công!" : "Đã lưu Phiếu Đặt Phòng (Chờ Nhận Phòng) thành công!";
+            // Logic lưu xuống CSDL của bạn nằm ở đây
+            String msg = coThanhToan ? "Đã thanh toán và lưu phiếu thành công!" : "Đã lưu phiếu chờ thành công!";
             showAlert(Alert.AlertType.INFORMATION, "Thành công", msg);
+
             if (onRefresh != null) onRefresh.run();
             stage.close();
-        } catch (Exception e) { e.printStackTrace(); showAlert(Alert.AlertType.ERROR, "Lỗi CSDL", "Không thể lưu phiếu đặt phòng: " + e.getMessage()); }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể lưu: " + e.getMessage());
+        }
     }
 
     // =========================================================================

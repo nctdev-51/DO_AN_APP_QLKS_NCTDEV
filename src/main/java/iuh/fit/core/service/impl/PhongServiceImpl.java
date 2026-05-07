@@ -4,7 +4,9 @@ import iuh.fit.core.dto.PhongDTO;
 import iuh.fit.core.entity.Phong;
 import iuh.fit.core.repository.IPhongRepository;
 import iuh.fit.core.service.IPhongService;
+import iuh.fit.infrastructure.db.JpaConfig;
 import iuh.fit.infrastructure.mapper.PhongMapper;
+import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -90,5 +92,19 @@ public class PhongServiceImpl implements IPhongService {
         return phongRepository.getDanhSachPhongTheoMaPhieu(maPhieu).stream()
                 .map(PhongMapper::entityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Phong> findPhongByMaPhieu(String maPhieu) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            // Truy vấn lấy phòng dựa trên mã phiếu đặt
+            String jpql = "SELECT p FROM Phong p WHERE p.maPhong = (SELECT pdp.maPhong FROM PhieuDatPhong pdp WHERE pdp.maPhieu = :maPhieu)";
+            return em.createQuery(jpql, Phong.class)
+                    .setParameter("maPhieu", maPhieu)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
     }
 }

@@ -3,20 +3,20 @@ package iuh.fit.core.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dich_vu")
+@Table(name = "DichVu") // 👉 Sửa thành DichVu
 public class DichVu {
 
     @Id
-    @Column(name = "ma_dich_vu", length = 20)
+    @Column(name = "maDichVu", length = 20) // 👉 Sửa thành maDichVu
     private String maDichVu;
 
-    @Column(name = "ten_dich_vu", length = 100, nullable = false)
+    @Column(name = "tenDichVu", length = 100, nullable = false) // 👉 Sửa thành tenDichVu
     private String tenDichVu;
 
-    @Column(name = "gia_tien")
+    @Column(name = "giaTien") // 👉 Sửa thành giaTien
     private double giaTien;
 
-    @Column(name = "mo_ta", length = 255)
+    @Column(name = "moTa", length = 255) // 👉 Sửa thành moTa
     private String moTa;
 
     public DichVu() {

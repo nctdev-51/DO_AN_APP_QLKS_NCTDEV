@@ -13,7 +13,8 @@ public class PhieuDatPhongMapper {
                 entity.getNgayDat(),
                 entity.getNgayNhan(),
                 entity.getNgayTra(),
-                entity.getTongTien(),
+                // 👉 ĐÃ FIX: Kiểm tra NULL, nếu DB bị trống thì gán mặc định là 0.0
+                entity.getTongTien() != null ? entity.getTongTien() : 0.0,
                 entity.getTrangThai(),
                 entity.getMaNhanVien()
         );

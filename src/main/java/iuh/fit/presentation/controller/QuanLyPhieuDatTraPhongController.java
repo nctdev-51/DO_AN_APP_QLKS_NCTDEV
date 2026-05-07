@@ -94,7 +94,6 @@ public class QuanLyPhieuDatTraPhongController {
     public BorderPane createMainView() {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: " + COLOR_BG_LIGHT + ";");
-
         // Header
         VBox header = createHeader();
         root.setTop(header);
