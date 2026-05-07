@@ -27,7 +27,7 @@ import java.util.stream.*;
 import java.util.Arrays; // <<< THÊM MỚI
 import java.util.Comparator;
 
-import connectDB.ConnectDB; 
+import connectDB.ConnectDB;
 import dao.NhanVien_DAO;
 import dao.PhieuDatPhong_DAO; // <<< THÊM MỚI
 import dao.Phong_DAO;
@@ -41,7 +41,7 @@ import gui.QuanLyPhieuDatPhong_Gui;
 import javax.swing.border.MatteBorder;
 
 // <<< THÊM MỚI: Import cho Dialog Thêm Dịch Vụ >>>
-import gui.ThemDichVu_Dialog; 
+import gui.ThemDichVu_Dialog;
 
 
 public class TrangChu_Gui extends JFrame {
@@ -50,32 +50,32 @@ public class TrangChu_Gui extends JFrame {
     private JPanel pnlPhong, pnlThongKe, pnlKhuyenMai, pnlDichVu, pnlKhachHang, pnlNhanVien;
     private JPanel pCenter;
     private CardLayout cardLayout;
-    
+
     // <<< THAY ĐỔI: Chuyển lên làm biến instance để inner class truy cập >>>
     private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     // <<< THÊM MỚI: Khai báo DAO ở đây để Dialog có thể dùng >>>
-    private Phong_DAO phongDAO; 
-    
+    private Phong_DAO phongDAO;
+
     // <<< THÊM MỚI: Khai báo DAO cho phiếu đặt phòng >>>
     private PhieuDatPhong_DAO pdpDAO;
-    
+
     public NhanVien nhanVien;
-    
+
     private JLabel lblChaoMung;
     private JPanel pnlCaLamViec;
-	private JButton btnCaLamViec;
-	private JButton btnPhanCongCa;
-	
-	private QuanLyCaLamViec quanLyCaLamViecPanel;
-	private QuanLyPhanCongCa_Gui quanLyPhanCongCaPanel;
-	
-	// <<< THÊM MỚI (2): Khai báo biến cho panel mới >>>
-	private QuanLyPhieuDatPhong_Gui quanLyPhieuDatPhongPanel;
-	
-	// <<< THÊM MỚI 2: Biến cho đồng hồ >>>
+    private JButton btnCaLamViec;
+    private JButton btnPhanCongCa;
+
+    private QuanLyCaLamViec quanLyCaLamViecPanel;
+    private QuanLyPhanCongCa_Gui quanLyPhanCongCaPanel;
+
+    // <<< THÊM MỚI (2): Khai báo biến cho panel mới >>>
+    private QuanLyPhieuDatPhong_Gui quanLyPhieuDatPhongPanel;
+
+    // <<< THÊM MỚI 2: Biến cho đồng hồ >>>
     private JLabel lblDongHo;
     private Timer timerDongHo;
-	private QuanLyGoiDichVu_Gui quanLyGoiDichVuPanel;
+    private QuanLyGoiDichVu_Gui quanLyGoiDichVuPanel;
 
     private java.util.List<JButton> getButtonsFromPanel(JPanel panel) {
         java.util.List<JButton> list = new java.util.ArrayList<>();
@@ -96,11 +96,11 @@ public class TrangChu_Gui extends JFrame {
     }
 
     public TrangChu_Gui() {
-        ConnectDB.getInstance(); 
+        ConnectDB.getInstance();
         NhanVien nvTest = new NhanVien_DAO().getNhanVienByMa("NV002");
         if (nvTest == null) {
             JOptionPane.showMessageDialog(null, "Không tìm thấy NV002 (Test) trong CSDL!");
-            nvTest = new NhanVien(); 
+            nvTest = new NhanVien();
             nvTest.setHoTen("Nhân viên Test");
         }
         this.nhanVien = nvTest;
@@ -122,21 +122,21 @@ public class TrangChu_Gui extends JFrame {
         pnlTieuDe.setBackground(new Color(33, 105, 170));
         pnlTieuDe.setPreferredSize(new Dimension(0, 72));
         pnlTieuDe.setBorder(new EmptyBorder(6, 12, 6, 12));
-        
+
         JPanel pnlHeaderLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
-        pnlHeaderLeft.setOpaque(false); 
+        pnlHeaderLeft.setOpaque(false);
 
         lblDongHo = new JLabel("<html><center>00:00:00<br>00/00/0000</center></html>");
         lblDongHo.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblDongHo.setForeground(Color.WHITE);
-        lblDongHo.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.WHITE)); 
-        lblDongHo.setPreferredSize(new Dimension(120, 60)); 
+        lblDongHo.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.WHITE));
+        lblDongHo.setPreferredSize(new Dimension(120, 60));
         lblDongHo.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         JLabel lblTieuDe = new JLabel("QUẢN LÝ KHÁCH SẠN TATP");
         lblTieuDe.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblTieuDe.setForeground(Color.WHITE);
-        
+
         pnlHeaderLeft.add(lblDongHo);
         pnlHeaderLeft.add(lblTieuDe);
 
@@ -149,7 +149,7 @@ public class TrangChu_Gui extends JFrame {
         btnNhanCaDialog.setForeground(Color.BLACK);
         btnNhanCaDialog.setFocusPainted(false);
         btnNhanCaDialog.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+
         ImageIcon iconAvatar = new ImageIcon(
                 new ImageIcon("data/images/pngtree-default-avatar-image_2235111.jpg")
                         .getImage()
@@ -183,46 +183,46 @@ public class TrangChu_Gui extends JFrame {
         lblMenuTitle.setForeground(Color.WHITE);
         lblMenuTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblMenuTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
-        lblMenuTitle.setBorder(new EmptyBorder(0, 20, 0, 0)); 
+        lblMenuTitle.setBorder(new EmptyBorder(0, 20, 0, 0));
         pnlMenu.add(lblMenuTitle);
         pnlMenu.add(Box.createVerticalStrut(12));
 
         btnDashboard = new JButton(" Dashboard");
         btnDashboard.setIcon(getIcon("mushroom_4702012", 30, 30));
-        
+
         btnTrangChinh = new JButton(" Trang chủ");
         btnTrangChinh.setIcon(getIcon("google-symbol_2875331", 30, 30));
-        
+
         btnPhong = new JButton(" Phòng");
         btnPhong.setIcon(getIcon("newspaper_4410328", 30, 30));
-        
+
         btnThongKe = new JButton(" Thống kê");
         btnThongKe.setIcon(getIcon("oil_8084515", 30, 30));
-        
+
         btnKhuyenMai = new JButton(" Khuyến mãi");
         btnKhuyenMai.setIcon(getIcon("yay_3770755", 30, 30));
-        
-        
+
+
         btnDichVu = new JButton(" Dịch vụ");
         btnDichVu.setIcon(getIcon("admin_2875381", 30, 30));
-        
+
         btnKhachHang = new JButton(" Khách hàng");
         btnKhachHang.setIcon(getIcon("halloween-party_2682288", 30, 30));
-        
+
         btnNhanVien = new JButton(" Nhân viên");
         btnNhanVien.setIcon(getIcon("customer-support_1195620", 30, 30));
-        
+
         btnDangXuat = new JButton("Đăng xuất");
-        
+
         btnCaLamViec = new JButton(" Ca làm việc");
         btnCaLamViec.setIcon(getIcon("idea_1196033", 30, 30));
-        
+
         btnPhanCongCa = new JButton(" Phân công ca");
         btnPhanCongCa.setIcon(getIcon("overdue_6755655", 30, 30));
 
         JButton[] buttons = {
-            btnDashboard, btnTrangChinh, btnPhong, btnThongKe,
-            btnKhuyenMai, btnDichVu, btnKhachHang, btnNhanVien, btnPhanCongCa,btnCaLamViec
+                btnDashboard, btnTrangChinh, btnPhong, btnThongKe,
+                btnKhuyenMai, btnDichVu, btnKhachHang, btnNhanVien, btnPhanCongCa,btnCaLamViec
         };
 
         pnlPhong = taoSubMenu(new String[]{"Đặt phòng", "Quản lý phiếu đặt", "Gọi dịch vụ", "Quản lý phòng"});
@@ -251,15 +251,15 @@ public class TrangChu_Gui extends JFrame {
             if (btn == btnKhachHang) pnlMenu.add(pnlKhachHang);
             if (btn == btnNhanVien) pnlMenu.add(pnlNhanVien);
             if (btn == btnCaLamViec) pnlMenu.add(pnlCaLamViec);
-            
-            pnlMenu.add(Box.createVerticalStrut(8)); 
+
+            pnlMenu.add(Box.createVerticalStrut(8));
         }
 
         pnlMenu.add(Box.createVerticalGlue());
         styleLogoutButton(btnDangXuat);
-        
+
         int menuWidth = pnlMenu.getPreferredSize().width;
-        int fixedHeight = 60; 
+        int fixedHeight = 60;
 
         btnDangXuat.setPreferredSize(new Dimension(menuWidth, fixedHeight));
         btnDangXuat.setMaximumSize(new Dimension(Integer.MAX_VALUE, fixedHeight));
@@ -278,7 +278,7 @@ public class TrangChu_Gui extends JFrame {
         QuanLyDichVu quanLyDichVuPanel = new QuanLyDichVu();
         QuanLyKhuyenMai quanLyKhuyenMaiPanel = new QuanLyKhuyenMai();
         QuanLyKhachHang quanLyKhachHangPanel = new QuanLyKhachHang();
-        
+
         quanLyPhieuDatPhongPanel = new QuanLyPhieuDatPhong_Gui();
 
 
@@ -289,10 +289,11 @@ public class TrangChu_Gui extends JFrame {
         pCenter.add(quanLyKhachHangPanel, "QuanLyKhachHang");
         pCenter.add(new QuanLyNhanVien(), "QuanLyNhanVien");
         pCenter.add(new LichSuCaLamViec_Gui(), "LichSuCaLamViec");
-        
+
         pCenter.add(quanLyPhieuDatPhongPanel, "QuanLyPhieuDatPhong");
-        
+
         pCenter.add(quanLyGoiDichVuPanel, "QuanLyGoiDichVu");
+        pCenter.add(new QuanLyThongKeDoanhThu(), "ThongKeDoanhThu");
         quanLyCaLamViecPanel = new QuanLyCaLamViec();
         quanLyPhanCongCaPanel = new QuanLyPhanCongCa_Gui();
         quanLyCaLamViecPanel.setPhanCongPanel(quanLyPhanCongCaPanel);
@@ -303,7 +304,7 @@ public class TrangChu_Gui extends JFrame {
 
         // ---------- Submenu actions ----------
         java.util.List<JButton> buttonsPhong = getButtonsFromPanel(pnlPhong);
-        
+
         // <<< BẮT ĐẦU SỬA: Cập nhật logic cho 4 nút menu Phòng >>>
         if (buttonsPhong.size() >= 4) { // Kiểm tra >= 4
             JButton btnDatPhong = buttonsPhong.get(0);
@@ -314,16 +315,16 @@ public class TrangChu_Gui extends JFrame {
             btnDatPhong.addActionListener(e -> new ChonPhong_Gui(this.nhanVien).setVisible(true));
             btnQLPhieuDat.addActionListener(e -> cardLayout.show(pCenter, "QuanLyPhieuDatPhong"));
             btnGoiDV.addActionListener(e -> cardLayout.show(pCenter, "QuanLyGoiDichVu")); // Thêm sự kiện
-            btnQLPhong.addActionListener(e -> cardLayout.show(pCenter, "QuanLyPhong")); 
+            btnQLPhong.addActionListener(e -> cardLayout.show(pCenter, "QuanLyPhong"));
         }
         // <<< KẾT THÚC SỬA >>>
 
         java.util.List<JButton> buttonsCaLamViec = getButtonsFromPanel(pnlCaLamViec);
         if (buttonsCaLamViec.size() >= 2) {
-            buttonsCaLamViec.get(0).addActionListener(e -> cardLayout.show(pCenter, "QuanLyCaLamViec")); 
-            buttonsCaLamViec.get(1).addActionListener(e -> cardLayout.show(pCenter, "LichSuCaLamViec")); 
+            buttonsCaLamViec.get(0).addActionListener(e -> cardLayout.show(pCenter, "QuanLyCaLamViec"));
+            buttonsCaLamViec.get(1).addActionListener(e -> cardLayout.show(pCenter, "LichSuCaLamViec"));
         }
-        
+
         if (pnlDichVu.getComponentCount() > 0 && pnlDichVu.getComponent(0) instanceof JButton)
             ((JButton) pnlDichVu.getComponent(0)).addActionListener(e -> cardLayout.show(pCenter, "QuanLyDichVu"));
         if (pnlKhuyenMai.getComponentCount() > 0 && pnlKhuyenMai.getComponent(0) instanceof JButton)
@@ -335,11 +336,12 @@ public class TrangChu_Gui extends JFrame {
 
         btnTrangChinh.addActionListener(e -> cardLayout.show(pCenter, "TrangChu"));
         btnDashboard.addActionListener(e -> cardLayout.show(pCenter, "TrangChu"));
+        btnThongKe.addActionListener(e -> cardLayout.show(pCenter, "ThongKeDoanhThu"));
         btnDangXuat.addActionListener(e -> {
             if (JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                if(timerDongHo != null) timerDongHo.stop(); 
-                dispose(); 
-                ConnectDB.getInstance(); 
+                if(timerDongHo != null) timerDongHo.stop();
+                dispose();
+                ConnectDB.getInstance();
                 SwingUtilities.invokeLater(() -> new DangNhap_Gui());
             }
         });
@@ -354,33 +356,140 @@ public class TrangChu_Gui extends JFrame {
     }
 
     // ----- Hàm taoTrangChuPanel() và các hàm style (Giữ nguyên) -----
-    
+
     private JPanel taoTrangChuPanel() {
+        // ============================================================
+        // PANEL GỐC: Nền xám nhạt, padding đều
+        // ============================================================
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(new EmptyBorder(12, 12, 12, 12));
+        panel.setBackground(new Color(245, 247, 250));
+        panel.setBorder(new EmptyBorder(14, 14, 14, 14));
 
-        // --- TOP: Legend + Compact Filter ---
+        // ============================================================
+        // SPLIT PANE: TRÁI (Biểu đồ) | PHẢI (Danh sách phòng)
+        // ============================================================
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        splitPane.setResizeWeight(0.42);
+        splitPane.setDividerLocation(660);
+        splitPane.setOneTouchExpandable(false);
+        splitPane.setContinuousLayout(true);
+        splitPane.setBorder(null);
+        splitPane.setDividerSize(8);
+        splitPane.setBackground(new Color(245, 247, 250));
+
+        // ============================================================
+        // BÊN TRÁI: BIỂU ĐỒ + STAT CARDS
+        // ============================================================
+        JPanel pnlLeft = new JPanel(new BorderLayout(0, 12));
+        pnlLeft.setBackground(new Color(245, 247, 250));
+        pnlLeft.setBorder(new EmptyBorder(0, 0, 0, 6));
+
+        // --- Tiêu đề panel trái ---
+        JPanel pnlLeftHeader = new JPanel(new BorderLayout());
+        pnlLeftHeader.setBackground(new Color(245, 247, 250));
+        JLabel lblLeftTitle = new JLabel("📊  Thống kê tổng quan");
+        lblLeftTitle.setFont(new Font("Segoe UI", Font.BOLD, 17));
+        lblLeftTitle.setForeground(new Color(30, 60, 100));
+        lblLeftTitle.setBorder(new EmptyBorder(0, 4, 8, 0));
+        pnlLeftHeader.add(lblLeftTitle, BorderLayout.WEST);
+        pnlLeft.add(pnlLeftHeader, BorderLayout.NORTH);
+
+        // --- 3 Stat Cards ngang ---
+        JPanel pnlStatCards = new JPanel(new GridLayout(1, 3, 10, 0));
+        pnlStatCards.setOpaque(false);
+        pnlStatCards.add(createQuickStatCard("Phòng trống", "28", new Color(22, 163, 74), "🏨"));
+        pnlStatCards.add(createQuickStatCard("Đang sử dụng", "15", new Color(234, 88, 12), "🔑"));
+        pnlStatCards.add(createQuickStatCard("Đã đặt trước", "7", new Color(220, 38, 38), "📋"));
+        pnlLeft.add(pnlStatCards, BorderLayout.SOUTH);
+
+        // --- Khu vực biểu đồ (placeholder) ---
+        JPanel pnlChartArea = new JPanel(new BorderLayout());
+        pnlChartArea.setBackground(Color.WHITE);
+        pnlChartArea.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(220, 224, 230), 1, true),
+                new EmptyBorder(16, 16, 16, 16)
+        ));
+
+        // Placeholder nội dung biểu đồ
+        JPanel pnlChartPlaceholder = new JPanel(new GridBagLayout());
+        pnlChartPlaceholder.setBackground(Color.WHITE);
+        GridBagConstraints gbcPh = new GridBagConstraints();
+        gbcPh.gridy = 0;
+        JLabel iconChart = new JLabel("📈");
+        iconChart.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+        JLabel lblChartHint = new JLabel("Khu vực hiển thị biểu đồ");
+        lblChartHint.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblChartHint.setForeground(new Color(150, 160, 175));
+        JLabel lblChartSub = new JLabel("(Tích hợp JFreeChart tại đây)");
+        lblChartSub.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        lblChartSub.setForeground(new Color(190, 195, 205));
+
+        JPanel colPh = new JPanel();
+        colPh.setLayout(new BoxLayout(colPh, BoxLayout.Y_AXIS));
+        colPh.setOpaque(false);
+        colPh.add(Box.createVerticalGlue());
+        iconChart.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblChartHint.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblChartSub.setAlignmentX(Component.CENTER_ALIGNMENT);
+        colPh.add(iconChart);
+        colPh.add(Box.createVerticalStrut(10));
+        colPh.add(lblChartHint);
+        colPh.add(Box.createVerticalStrut(4));
+        colPh.add(lblChartSub);
+        colPh.add(Box.createVerticalGlue());
+        pnlChartPlaceholder.add(colPh);
+
+        pnlChartArea.add(pnlChartPlaceholder, BorderLayout.CENTER);
+
+        // Label tiêu đề biểu đồ
+        JLabel lblChartTitle = new JLabel("Tỷ lệ sử dụng phòng");
+        lblChartTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblChartTitle.setForeground(new Color(60, 80, 110));
+        pnlChartArea.add(lblChartTitle, BorderLayout.NORTH);
+
+        pnlLeft.add(pnlChartArea, BorderLayout.CENTER);
+
+        // ============================================================
+        // BÊN PHẢI: FILTER + DANH SÁCH PHÒNG
+        // ============================================================
+        JPanel pnlRight = new JPanel(new BorderLayout(0, 10));
+        pnlRight.setBackground(new Color(245, 247, 250));
+        pnlRight.setBorder(new EmptyBorder(0, 6, 0, 0));
+
+        // --- Header bên phải ---
+        JPanel pnlRightHeader = new JPanel(new BorderLayout());
+        pnlRightHeader.setBackground(new Color(245, 247, 250));
+        JLabel lblRightTitle = new JLabel("🏠  Danh sách phòng");
+        lblRightTitle.setFont(new Font("Segoe UI", Font.BOLD, 17));
+        lblRightTitle.setForeground(new Color(30, 60, 100));
+        lblRightTitle.setBorder(new EmptyBorder(0, 4, 0, 0));
+
+        // Legend trạng thái phòng (inline, bên phải tiêu đề)
+        JPanel pnlLegend = new JPanel(new FlowLayout(FlowLayout.RIGHT, 14, 0));
+        pnlLegend.setOpaque(false);
+        pnlLegend.add(trangThaiPhong(new Color(22, 163, 74), "Trống"));
+        pnlLegend.add(trangThaiPhong(new Color(234, 88, 12), "Đang ở"));
+        pnlLegend.add(trangThaiPhong(new Color(220, 38, 38), "Đã đặt"));
+        pnlLegend.add(trangThaiPhong(new Color(100, 116, 139), "Bảo trì"));
+
+        pnlRightHeader.add(lblRightTitle, BorderLayout.WEST);
+        pnlRightHeader.add(pnlLegend, BorderLayout.EAST);
+        pnlRightHeader.setBorder(new EmptyBorder(0, 0, 6, 0));
+        pnlRight.add(pnlRightHeader, BorderLayout.NORTH);
+
+        // --- TOP: Filter ---
         JPanel pnlTop = new JPanel(new BorderLayout());
-        pnlTop.setBackground(Color.WHITE);
+        pnlTop.setBackground(new Color(245, 247, 250));
 
-       // Legend left
-        JPanel pnlTrangThai = new JPanel(new GridLayout(0, 1, 0, 8)); 
-        pnlTrangThai.setBackground(Color.WHITE);
-        pnlTrangThai.add(trangThaiPhong(new Color(0, 180, 0), "Phòng trống"));
-        pnlTrangThai.add(trangThaiPhong(new Color(255, 170, 0), "Phòng đang ở"));
-        pnlTrangThai.add(trangThaiPhong(new Color(200, 0, 0), "Phòng đã đặt"));
-        pnlTop.add(pnlTrangThai, BorderLayout.WEST);
-
-        // ---------- Filter right (compact horizontal, single-row) ----------
         JPanel pnlFilterContainer = new JPanel(new BorderLayout());
         pnlFilterContainer.setOpaque(false);
 
+        // ==================== FILTER PANEL ====================
         JPanel pnlFilterTop = new JPanel(new GridBagLayout());
-        pnlFilterTop.setBackground(new Color(250, 250, 250));
+        pnlFilterTop.setBackground(Color.WHITE);
         pnlFilterTop.setBorder(new CompoundBorder(
-                new LineBorder(new Color(220,220,220),1,true),
-                new EmptyBorder(8,8,8,8)
+                new LineBorder(new Color(220, 225, 235), 1, true),
+                new EmptyBorder(10, 12, 10, 12)
         ));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -402,7 +511,9 @@ public class TrangChu_Gui extends JFrame {
         btnGuestRoom.setFocusPainted(false);
         btnGuestRoom.setPreferredSize(new Dimension(130, 36));
         btnGuestRoom.setBackground(Color.WHITE);
-        btnGuestRoom.setBorder(new LineBorder(new Color(0, 120, 215), 2, true));
+        btnGuestRoom.setForeground(new Color(33, 105, 170));
+        btnGuestRoom.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnGuestRoom.setBorder(new LineBorder(new Color(33, 105, 170), 1, true));
 
         // price controls (formatter + slider)
         NumberFormat intFormat = NumberFormat.getIntegerInstance(new Locale("vi","VN"));
@@ -416,10 +527,10 @@ public class TrangChu_Gui extends JFrame {
 
         final JFormattedTextField txtPriceMin = new JFormattedTextField(numberFormatter);
         final JFormattedTextField txtPriceMax = new JFormattedTextField(numberFormatter);
-        
+
         txtPriceMin.setColumns(10);
         txtPriceMax.setColumns(10);
-        
+
         txtPriceMin.setValue(PRICE_MIN);
         txtPriceMax.setValue(PRICE_MAX);
 
@@ -436,9 +547,9 @@ public class TrangChu_Gui extends JFrame {
         compactPrice.setOpaque(false);
         JPanel priceTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); priceTop.setOpaque(false);
         priceTop.add(new JLabel("<html><b>Khoảng giá</b></html>"));
-        
+
         JPanel priceMid = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0)); // Thay vgap = 4 thành 0
-        
+
         priceMid.setOpaque(false);
         priceMid.add(sliderPrice);
         JPanel priceBottom = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0)); priceBottom.setOpaque(false);
@@ -455,19 +566,25 @@ public class TrangChu_Gui extends JFrame {
         compactPrice.setMinimumSize(new Dimension(200, 60));
 
         // Buttons
-        JButton btnTim = new JButton("Tìm");
-        btnTim.setPreferredSize(new Dimension(80, 28));
-        btnTim.setBackground(new Color(0, 122, 204));
+        JButton btnTim = new JButton("🔍  Tìm");
+        btnTim.setPreferredSize(new Dimension(100, 32));
+        btnTim.setBackground(new Color(33, 105, 170));
         btnTim.setForeground(Color.WHITE);
         btnTim.setFocusPainted(false);
+        btnTim.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btnTim.setBorder(new LineBorder(new Color(25, 85, 145), 1, true));
+        btnTim.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        JButton btnReset = new JButton("Đặt lại");
-        btnReset.setPreferredSize(new Dimension(80, 28));
-        btnReset.setBackground(new Color(180, 180, 180));
-        btnReset.setForeground(Color.WHITE);
+        JButton btnReset = new JButton("↺  Đặt lại");
+        btnReset.setPreferredSize(new Dimension(100, 32));
+        btnReset.setBackground(new Color(241, 243, 246));
+        btnReset.setForeground(new Color(80, 90, 110));
         btnReset.setFocusPainted(false);
+        btnReset.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnReset.setBorder(new LineBorder(new Color(210, 215, 225), 1, true));
+        btnReset.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        
+
         // 1. Tạo Panel con (pnlDates) để chứa 2 hàng ngày
         JPanel pnlDates = new JPanel(new GridBagLayout());
         pnlDates.setOpaque(false); // Làm trong suốt để hòa vào nền
@@ -502,48 +619,53 @@ public class TrangChu_Gui extends JFrame {
 
         gbc.gridx = 1; gbc.weightx = 0;
         pnlFilterTop.add(Box.createHorizontalStrut(8), gbc);
-        
+
         gbc.gridx = 2; gbc.weightx = 0;
         pnlFilterTop.add(new JLabel("Khách:"), gbc);
-        
+
         gbc.gridx = 3; gbc.weightx = 0;
         pnlFilterTop.add(btnGuestRoom, gbc);
-        
+
         gbc.gridx = 4; gbc.weightx = 0;
         pnlFilterTop.add(new JLabel("Khoảng:"), gbc);
-        
+
         gbc.gridx = 5; gbc.weightx = 0;
         pnlFilterTop.add(cbPriceTier, gbc);
-        
+
         gbc.gridx = 6; gbc.weightx = 1.0; gbc.fill = GridBagConstraints.BOTH;
         pnlFilterTop.add(compactPrice, gbc);
-        
+
         gbc.gridx = 7; gbc.weightx = 0; gbc.fill = GridBagConstraints.HORIZONTAL;
         pnlFilterTop.add(btnTim, gbc);
-        
+
         gbc.gridx = 8; gbc.weightx = 0;
         pnlFilterTop.add(btnReset, gbc);
 
         pnlFilterContainer.add(pnlFilterTop, BorderLayout.CENTER);
         pnlTop.add(pnlFilterContainer, BorderLayout.CENTER);
-        
-        panel.add(pnlTop, BorderLayout.NORTH);
+
+        pnlRight.add(pnlTop, BorderLayout.NORTH);
 
 
-        // --- CENTER Room List ---
+        // --- CENTER: Danh sách phòng ---
         final JPanel pnlTang = new JPanel();
         pnlTang.setLayout(new BoxLayout(pnlTang, BoxLayout.Y_AXIS));
-        pnlTang.setBackground(Color.WHITE);
+        pnlTang.setBackground(new Color(245, 247, 250));
 
         JScrollPane scroll = new JScrollPane(pnlTang);
-        scroll.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220,220,220)), "Danh sách phòng theo tầng"));
-        panel.add(scroll, BorderLayout.CENTER);
+        scroll.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(220, 225, 235), 1, true),
+                BorderFactory.createEmptyBorder(6, 6, 6, 6)
+        ));
+        scroll.setBackground(Color.WHITE);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+        pnlRight.add(scroll, BorderLayout.CENTER);
 
         // ---------- Load data and build list ----------
         // <<< THAY ĐỔI: Dùng biến instance thay vì biến cục bộ >>>
-        // Phong_DAO phongDAO = new Phong_DAO(); 
+        // Phong_DAO phongDAO = new Phong_DAO();
         final List<Phong> dsPhong = phongDAO.getDanhSachPhong();
-        
+
         // <<< THAY ĐỔI: Đã chuyển currencyFormatter lên làm biến instance >>>
         // final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
@@ -556,7 +678,7 @@ public class TrangChu_Gui extends JFrame {
             java.util.Map<String, java.util.List<Phong>> theoTang = new java.util.LinkedHashMap<>();
             for (Phong p : visible) {
                 String maPhong = p.getMaPhong();
-                String soTang = "Tầng " + (maPhong != null && maPhong.length() > 1 ? maPhong.charAt(1) : '0');
+                String soTang = "  Tầng " + (maPhong != null && maPhong.length() > 1 ? maPhong.charAt(1) : '0');
                 theoTang.putIfAbsent(soTang, new java.util.ArrayList<>());
                 theoTang.get(soTang).add(p);
             }
@@ -565,72 +687,73 @@ public class TrangChu_Gui extends JFrame {
                 JPanel tungTang = new JPanel(new BorderLayout(10, 0));
                 tungTang.setBackground(Color.WHITE);
                 tungTang.setBorder(new CompoundBorder(
-                        new LineBorder(new Color(235, 235, 235), 1, true),
-                        new EmptyBorder(10, 10, 10, 10)));
+                        new LineBorder(new Color(228, 232, 240), 1, true),
+                        new EmptyBorder(10, 12, 10, 12)));
 
                 JLabel lblTang = new JLabel(tang, SwingConstants.LEFT);
-                lblTang.setFont(new Font("Segoe UI", Font.BOLD, 16));
-                lblTang.setPreferredSize(new Dimension(120, 46));
+                lblTang.setFont(new Font("Segoe UI", Font.BOLD, 14));
+                lblTang.setForeground(new Color(33, 105, 170));
+                lblTang.setPreferredSize(new Dimension(100, 40));
                 tungTang.add(lblTang, BorderLayout.WEST);
 
-                JPanel panelPhongTang = new JPanel(new GridLayout(0, 6, 10, 10));
-                panelPhongTang.setBackground(new Color(248, 249, 250));
+                JPanel panelPhongTang = new JPanel(new GridLayout(0, 6, 8, 8));
+                panelPhongTang.setBackground(Color.WHITE);
 
                 for (Phong p : theoTang.get(tang)) {
-                    
+
                     // 1. Lấy thông tin
                     String maPhong = (p.getMaPhong() == null ? "N/A" : p.getMaPhong());
-                    String giaPhong = currencyFormatter.format(p.getGiaPhong()); 
+                    String giaPhong = currencyFormatter.format(p.getGiaPhong());
                     String sucChua = p.getSucChua() + " người";
 
                     // 2. Tạo nội dung HTML
-                    String buttonText = "<html><center>" + 
-                                        "<b>" + maPhong + "</b><br>" + // In đậm mã phòng
-                                        giaPhong + "<br>" + 
-                                        sucChua + 
-                                        "</center></html>";
-                    
+                    String buttonText = "<html><center>" +
+                            "<b>" + maPhong + "</b><br>" + // In đậm mã phòng
+                            giaPhong + "<br>" +
+                            sucChua +
+                            "</center></html>";
+
                     // 3. Tạo JButton với nội dung và kích thước mới
                     JButton btn = new JButton(buttonText) {
                         @Override
                         public Dimension getPreferredSize() {
-                            // Tăng chiều cao để chứa 3 dòng
-                            return new Dimension(90, 100); 
+                            return new Dimension(90, 90);
                         }
                     };
 
                     btn.setFocusPainted(false);
-                    btn.setFont(new Font("Segoe UI", Font.BOLD, 12)); 
+                    btn.setFont(new Font("Segoe UI", Font.BOLD, 11));
                     btn.setForeground(Color.WHITE);
-                    btn.setBorder(new LineBorder(new Color(200, 200, 200), 1, true));
-                    
-                    
+                    btn.setBorder(new LineBorder(new Color(255,255,255,60), 1, true));
+                    btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+
                     if (p.getTinhTrang() == null) {
-                         btn.setBackground(new Color(100, 100, 100)); // Màu mặc định nếu null
+                        btn.setBackground(new Color(100, 116, 139));
                     } else {
-                         switch(p.getTinhTrang()) {
-                             case TRONG:
-                                 btn.setBackground(new Color(0, 180, 0));
-                                 break;
-                             case DANG_SU_DUNG:
-                                 btn.setBackground(new Color(255, 170, 0));
-                                 break;
-                             case DA_DAT:
-                                 btn.setBackground(new Color(200, 0, 0));
-                                 break;
-                             case DANG_DON_DEP:
-                             case DANG_SUA_CHUA:
-                                 btn.setBackground(new Color(100, 100, 100)); // Màu xám cho dọn/sửa
-                                 break;
-                         }
+                        switch(p.getTinhTrang()) {
+                            case TRONG:
+                                btn.setBackground(new Color(22, 163, 74));
+                                break;
+                            case DANG_SU_DUNG:
+                                btn.setBackground(new Color(234, 88, 12));
+                                break;
+                            case DA_DAT:
+                                btn.setBackground(new Color(220, 38, 38));
+                                break;
+                            case DANG_DON_DEP:
+                            case DANG_SUA_CHUA:
+                                btn.setBackground(new Color(100, 116, 139));
+                                break;
+                        }
                     }
 
-                   // <<< BẮT ĐẦU THAY THẾ: LOGIC SỰ KIỆN NÚT PHÒNG >>>
-                   // Truyền thêm "TrangChu_Gui.this.nhanVien" vào
+                    // <<< BẮT ĐẦU THAY THẾ: LOGIC SỰ KIỆN NÚT PHÒNG >>>
+                    // Truyền thêm "TrangChu_Gui.this.nhanVien" vào
                     btn.addActionListener(e -> {
                         // 1. Lấy trạng thái phòng
                         entity.TinhTrangPhong trangThai = p.getTinhTrang();
-                        
+
                         // 2. Lấy ngày đã chọn từ filter
                         Date selCheckIn = dcCheckIn.getDate();
                         Date selCheckOut = dcCheckOut.getDate();
@@ -638,27 +761,27 @@ public class TrangChu_Gui extends JFrame {
                         // 3. XỬ LÝ THEO TRẠNG THÁI
                         // === NGHIỆP VỤ MỚI: Click phòng đang ở để GỌI DỊCH VỤ ===
                         if (trangThai == entity.TinhTrangPhong.DANG_SU_DUNG) {
-                            
+
                             // A. Tìm phiếu đặt phòng đang hoạt động cho phòng này
                             // (Sử dụng pdpDAO đã thêm vào TrangChu_Gui)
                             String maPhieu = pdpDAO.getMaPhieuHoatDong(p.getMaPhong());
-                            
+
                             if (maPhieu == null) {
-                                JOptionPane.showMessageDialog(TrangChu_Gui.this, 
-                                    "Lỗi: Không tìm thấy Phiếu Đặt Phòng đang hoạt động cho phòng " + p.getMaPhong(), 
-                                    "Lỗi Dữ Liệu", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(TrangChu_Gui.this,
+                                        "Lỗi: Không tìm thấy Phiếu Đặt Phòng đang hoạt động cho phòng " + p.getMaPhong(),
+                                        "Lỗi Dữ Liệu", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
-                            
+
                             // B. Tạo đối tượng PhieuDatPhong (chỉ cần mã)
                             PhieuDatPhong pdp = new PhieuDatPhong(maPhieu);
-                            
+
                             // C. Mở Dialog Thêm Dịch Vụ
                             // (Sử dụng ThemDichVu_Dialog.java mà bạn đã cung cấp)
                             ThemDichVu_Dialog dialog = new ThemDichVu_Dialog(TrangChu_Gui.this, p, pdp);
                             dialog.setVisible(true);
-                            
-                        } 
+
+                        }
                         // === NGHIỆP VỤ CŨ: Click các phòng khác để ĐẶT PHÒNG ===
                         else {
                             if (selCheckIn != null && selCheckOut != null) {
@@ -672,15 +795,15 @@ public class TrangChu_Gui extends JFrame {
                                 boolean ok = phongDAO.isPhongAvailable(p.getMaPhong(), selCheckIn, selCheckOut);
                                 if (!ok) {
                                     JOptionPane.showMessageDialog(TrangChu_Gui.this,
-                                        String.format("Phòng %s hiện có đặt chồng lên khoảng %1$td/%1$tm → %2$td/%2$tm. Vui lòng chọn phòng khác.",
-                                                p.getMaPhong(), selCheckIn, selCheckOut),
-                                        "Phòng không sẵn có", JOptionPane.INFORMATION_MESSAGE);
+                                            String.format("Phòng %s hiện có đặt chồng lên khoảng %1$td/%1$tm → %2$td/%2$tm. Vui lòng chọn phòng khác.",
+                                                    p.getMaPhong(), selCheckIn, selCheckOut),
+                                            "Phòng không sẵn có", JOptionPane.INFORMATION_MESSAGE);
                                     return;
                                 }
-                                
+
                                 // (Logic cũ: Mở dialog đặt phòng với ngày đã chọn)
                                 new ChiTietPhong_Dialog(TrangChu_Gui.this, p, TrangChu_Gui.this.nhanVien, selCheckIn, selCheckOut).setVisible(true);
-                                
+
                             } else {
                                 // (Logic cũ: Mở dialog đặt phòng, chưa có ngày)
                                 new ChiTietPhong_Dialog(TrangChu_Gui.this, p, TrangChu_Gui.this.nhanVien).setVisible(true);
@@ -688,13 +811,13 @@ public class TrangChu_Gui extends JFrame {
                         }
                     });
                     // <<< KẾT THÚC THAY THẾ >>>
-                    
+
                     panelPhongTang.add(btn);
                 }
 
                 tungTang.add(panelPhongTang, BorderLayout.CENTER);
                 pnlTang.add(tungTang);
-                pnlTang.add(Box.createVerticalStrut(10));
+                pnlTang.add(Box.createVerticalStrut(8));
             }
 
             pnlTang.revalidate();
@@ -711,7 +834,7 @@ public class TrangChu_Gui extends JFrame {
 
         // ---------------- Guest popup (ĐÃ NÂNG CẤP) ----------------
         final int[] nguoiLon = {2};
-        final List<Integer> dsTuoiTreEm = new ArrayList<>(); 
+        final List<Integer> dsTuoiTreEm = new ArrayList<>();
         // <<< XÓA: final int[] soPhong = {1}; >>>
 
         JPanel guestContent = new JPanel();
@@ -755,42 +878,42 @@ public class TrangChu_Gui extends JFrame {
             if (nguoiLon[0] > 1) { nguoiLon[0]--; rowNguoiLon.getValueField().setText(String.valueOf(nguoiLon[0])); }
         });
         rowNguoiLon.plus.addActionListener(e -> { nguoiLon[0]++; rowNguoiLon.getValueField().setText(String.valueOf(nguoiLon[0])); });
-        
+
         // <<< XÓA: Các ActionListener của rowPhong >>>
 
         // --- Bắt đầu Panel Trẻ Em (MỚI) ---
         JPanel pnlTreEmList = new JPanel();
         pnlTreEmList.setLayout(new BoxLayout(pnlTreEmList, BoxLayout.Y_AXIS));
         pnlTreEmList.setBackground(Color.WHITE);
-        
+
         JScrollPane scrollTreEm = new JScrollPane(pnlTreEmList);
         scrollTreEm.setOpaque(false);
         scrollTreEm.getViewport().setOpaque(false);
         scrollTreEm.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         scrollTreEm.setPreferredSize(new Dimension(280, 100)); // Giới hạn chiều cao
-        
+
         JButton btnThemTreEm = new JButton("+ Thêm trẻ em");
         btnThemTreEm.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnThemTreEm.setFocusPainted(false);
         // --- Kết thúc Panel Trẻ Em ---
 
         guestContent.add(rowNguoiLon.get());
-        
+
         // Thêm phần trẻ em
         JLabel lblTreEmTitle = new JLabel("Trẻ em (0-17 tuổi):");
         lblTreEmTitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         lblTreEmTitle.setPreferredSize(new Dimension(90, 24));
         lblTreEmTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         lblTreEmTitle.setBorder(new EmptyBorder(5, 5, 0, 0));
-        
+
         guestContent.add(lblTreEmTitle);
         guestContent.add(scrollTreEm);
         guestContent.add(btnThemTreEm);
         guestContent.add(Box.createVerticalStrut(8));
-        
+
         // <<< XÓA: guestContent.add(rowPhong.get()); >>>
         // <<< XÓA: guestContent.add(Box.createVerticalStrut(8)); >>>
-        
+
         JSeparator sep = new JSeparator();
         sep.setMaximumSize(new Dimension(300, 1));
         guestContent.add(sep);
@@ -817,7 +940,7 @@ public class TrangChu_Gui extends JFrame {
         btnThemTreEm.addActionListener(e -> {
             dsTuoiTreEm.add(6); // Thêm 1 trẻ 6 tuổi (mặc định)
             // Cập nhật lại UI danh sách trẻ em
-            capNhatDanhSachTreEm(pnlTreEmList, dsTuoiTreEm, popupGuest); 
+            capNhatDanhSachTreEm(pnlTreEmList, dsTuoiTreEm, popupGuest);
         });
 
         btnGuestRoom.addActionListener(e -> {
@@ -825,7 +948,7 @@ public class TrangChu_Gui extends JFrame {
             rowNguoiLon.getValueField().setText(String.valueOf(nguoiLon[0]));
             capNhatDanhSachTreEm(pnlTreEmList, dsTuoiTreEm, popupGuest); // Cập nhật ds trẻ em
             // <<< XÓA: rowPhong.getValueField()... >>>
-            
+
             popupGuest.show(btnGuestRoom, 0, btnGuestRoom.getHeight());
             popupGuest.pack(); // Tự động điều chỉnh kích thước popup
         });
@@ -838,7 +961,7 @@ public class TrangChu_Gui extends JFrame {
         });
 
         btnCancelGuest.addActionListener(e -> popupGuest.setVisible(false));
-        
+
         // <<< ======================================================== >>>
         // <<< === KẾT THÚC NÂNG CẤP POPUP CHỌN KHÁCH === >>>
         // <<< ======================================================== >>>
@@ -958,14 +1081,14 @@ public class TrangChu_Gui extends JFrame {
                 } finally {
                     priceSyncing[0] = false;
                 }
-            } 
+            }
         });
 
-        
+
         // <<< =================================================================== >>>
         // <<< === THAY THẾ TOÀN BỘ btnTim.addActionListener BẰNG CODE NÀY === >>>
         // <<< =================================================================== >>>
-     // [DÁN ĐÈ LÊN btnTim.addActionListener CŨ]
+        // [DÁN ĐÈ LÊN btnTim.addActionListener CŨ]
         btnTim.addActionListener(e -> {
             // 1. LẤY ĐẦU VÀO TỪ GIAO DIỆN
             Date checkInDate = dcCheckIn.getDate();
@@ -977,23 +1100,23 @@ public class TrangChu_Gui extends JFrame {
             // --- CẬP NHẬT MÀU SẮC TRẠNG THÁI TRÊN MÀN HÌNH CHÍNH ---
             List<Phong> dsPhongHienThi;
             if (checkInDate != null && checkOutDate != null) {
-                 // Đã chọn đủ ngày -> Xem trạng thái chính xác trong khoảng này
-                 dsPhongHienThi = phongDAO.getDSPhongTaiThoiDiem(checkInDate, checkOutDate);
+                // Đã chọn đủ ngày -> Xem trạng thái chính xác trong khoảng này
+                dsPhongHienThi = phongDAO.getDSPhongTaiThoiDiem(checkInDate, checkOutDate);
             } else if (checkInDate != null) {
-                 // Mới chọn ngày nhận -> Xem trạng thái tại thời điểm nhận
-                 dsPhongHienThi = phongDAO.getDSPhongTaiThoiDiem(checkInDate, null);
+                // Mới chọn ngày nhận -> Xem trạng thái tại thời điểm nhận
+                dsPhongHienThi = phongDAO.getDSPhongTaiThoiDiem(checkInDate, null);
             } else {
-                 // Chưa chọn ngày -> Xem trạng thái hiện tại
-                 dsPhongHienThi = phongDAO.getDanhSachPhong();
+                // Chưa chọn ngày -> Xem trạng thái hiện tại
+                dsPhongHienThi = phongDAO.getDanhSachPhong();
             }
             pnlTang.putClientProperty("visibleRooms", dsPhongHienThi);
             buildTangFromList.run();
 
             // --- NẾU CHƯA CHỌN ĐỦ NGÀY THÌ DỪNG TẠI ĐÂY ---
             if (checkInDate == null || checkOutDate == null) {
-                return; 
+                return;
             }
-            
+
             // --- KIỂM TRA TÍNH HỢP LỆ ---
             if (!checkOutDate.after(checkInDate)) {
                 JOptionPane.showMessageDialog(panel, "Ngày trả phòng phải sau ngày nhận phòng.", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -1015,7 +1138,7 @@ public class TrangChu_Gui extends JFrame {
             // [QUAN TRỌNG] Cưỡng ép trạng thái về 'TRỐNG' (màu xanh) để tránh gây hiểu lầm
             // vì các phòng này chắc chắn trống vào ngày khách chọn, dù hiện tại có thể đang có khách.
             for (Phong p : availableRooms) {
-                p.setTinhTrang(entity.TinhTrangPhong.TRONG); 
+                p.setTinhTrang(entity.TinhTrangPhong.TRONG);
             }
 
             // 4. TÌM KIẾM PHÒNG ĐƠN & TỔ HỢP
@@ -1030,16 +1153,16 @@ public class TrangChu_Gui extends JFrame {
 
             // 4b. Tổ hợp nhiều phòng (Cần có hàm findCombinations ở Bước 3)
             List<List<Phong>> combos = findCombinations(availableRooms, tongSucChuaCanThiet, 5); // Giới hạn 5 phòng
-            
+
             // Lọc trùng: Bỏ tổ hợp 1 phòng nếu đã có trong danh sách phòng đơn
             combos.removeIf(c -> c.size() == 1 && singleCandidates.stream().anyMatch(s -> s.getMaPhong().equals(c.get(0).getMaPhong())));
 
             // 5. KIỂM TRA KẾT QUẢ
             if (singleCandidates.isEmpty() && combos.isEmpty()) {
-                JOptionPane.showMessageDialog(panel, 
-                    "Tìm thấy " + availableRooms.size() + " phòng trống, nhưng không đủ sức chứa cho " + tongSucChuaCanThiet + " người.\n" +
-                    "Vui lòng thử giảm số lượng khách hoặc chia nhỏ đoàn.", 
-                    "Không đủ sức chứa", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(panel,
+                        "Tìm thấy " + availableRooms.size() + " phòng trống, nhưng không đủ sức chứa cho " + tongSucChuaCanThiet + " người.\n" +
+                                "Vui lòng thử giảm số lượng khách hoặc chia nhỏ đoàn.",
+                        "Không đủ sức chứa", JOptionPane.WARNING_MESSAGE);
                 // Hiển thị tất cả phòng trống tìm được để nhân viên tự cân nhắc
                 pnlTang.putClientProperty("visibleRooms", availableRooms);
                 buildTangFromList.run();
@@ -1063,7 +1186,7 @@ public class TrangChu_Gui extends JFrame {
                 buildTangFromList.run();
             }
         });
-        
+
         btnReset.addActionListener(e -> {
             dcCheckIn.setDate(null);
             dcCheckOut.setDate(null);
@@ -1072,32 +1195,37 @@ public class TrangChu_Gui extends JFrame {
             sliderPrice.setValue(PRICE_MAX);
             cbPriceTier.setSelectedItem("Tất cả");
             // <<< SỬA LỖI: Reset danh sách trẻ em >>>
-            nguoiLon[0] = 2; 
+            nguoiLon[0] = 2;
             dsTuoiTreEm.clear(); // Xóa hết trẻ em
             // <<< XÓA: soPhong[0] = 1; >>>
             btnGuestRoom.setText(nguoiLon[0] + " khách"); // <<< SỬA: Bỏ "số phòng"
-            
+
             pnlTang.putClientProperty("visibleRooms", new java.util.ArrayList<>(dsPhong));
             buildTangFromList.run();
         });
 
+        splitPane.setLeftComponent(pnlLeft);
+        splitPane.setRightComponent(pnlRight);
+
+        panel.add(splitPane, BorderLayout.CENTER);
+
         return panel;
     }
-    
+
     /**
      * <<< HÀM NÀY ĐÃ ĐƯỢC SỬA LỖI LOGIC TỔ HỢP TRÙNG >>>
      */
- 
+
 
     // <<< ======================================================== >>>
     // <<< === CÁC HÀM HELPER MỚI CHO LOGIC TRẺ EM === >>>
     // <<< ======================================================== >>>
-    
+
     /**
      * HÀM MỚI: Tính tổng sức chứa cần thiết dựa theo quy tắc
      * (Trẻ > 12 tuổi = 1, 2 Trẻ <= 12 tuổi = 1)
      */
-    
+
 
     /**
      * HÀM MỚI: Cập nhật UI cho danh sách trẻ em trong Popup
@@ -1105,26 +1233,26 @@ public class TrangChu_Gui extends JFrame {
      */
     private void capNhatDanhSachTreEm(JPanel pnlList, List<Integer> dsTuoi, JPopupMenu popup) {
         pnlList.removeAll();
-        
+
         for (int i = 0; i < dsTuoi.size(); i++) {
             final int index = i; // Cần final để dùng trong lambda
-            
+
             JPanel pnlRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
             pnlRow.setBackground(Color.WHITE);
 
             JLabel lbl = new JLabel("Tuổi trẻ " + (i + 1) + ":");
             lbl.setPreferredSize(new Dimension(80, 24));
-            
+
             // <<< SỬA LỖI Ở ĐÂY >>>
             // 1. Lấy giá trị ra biến int một cách rõ ràng
-            int tuoiHienTai = dsTuoi.get(i); 
-            
+            int tuoiHienTai = dsTuoi.get(i);
+
             // 2. Sử dụng biến int đó
             JSpinner spinner = new JSpinner(new SpinnerNumberModel(tuoiHienTai, 0, 17, 1));
             // <<< KẾT THÚC SỬA LỖI >>>
-            
+
             spinner.setPreferredSize(new Dimension(60, 24));
-            
+
             // Khi thay đổi spinner, cập nhật ngay vào List
             spinner.addChangeListener(e -> {
                 dsTuoi.set(index, (Integer) spinner.getValue());
@@ -1132,7 +1260,7 @@ public class TrangChu_Gui extends JFrame {
 
             JButton btnXoa = new JButton("Xóa");
             btnXoa.setMargin(new Insets(2, 5, 2, 5));
-            
+
             // Khi nhấn Xóa
             btnXoa.addActionListener(e -> {
                 dsTuoi.remove(index); // Xóa khỏi danh sách
@@ -1142,7 +1270,7 @@ public class TrangChu_Gui extends JFrame {
             pnlRow.add(lbl);
             pnlRow.add(spinner);
             pnlRow.add(btnXoa);
-            
+
             pnlList.add(pnlRow);
         }
 
@@ -1153,7 +1281,7 @@ public class TrangChu_Gui extends JFrame {
 
 
     // ... (Code các hàm styleMenuButton, styleLogoutButton, taoSubMenu, v.v. giữ nguyên) ...
-    
+
     private void styleMenuButton(JButton btn) {
         btn.setFont(new Font("Segoe UI", Font.BOLD, 15));
         btn.setBackground(new Color(28, 60, 95));
@@ -1164,9 +1292,9 @@ public class TrangChu_Gui extends JFrame {
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setHorizontalAlignment(SwingConstants.LEFT);
-        
-        btn.setIconTextGap(15); 
-        btn.setBorder(new EmptyBorder(6, 20, 6, 12)); 
+
+        btn.setIconTextGap(15);
+        btn.setBorder(new EmptyBorder(6, 20, 6, 12));
 
         btn.addMouseListener(new MouseAdapter() {
             @Override
@@ -1204,39 +1332,39 @@ public class TrangChu_Gui extends JFrame {
     private JPanel taoSubMenu(String[] tenButtons) {
         JPanel pnl = new JPanel();
         pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
-        pnl.setBackground(new Color(15, 45, 80)); 
+        pnl.setBackground(new Color(15, 45, 80));
         pnl.setVisible(false);
-        pnl.setBorder(new EmptyBorder(10, 0, 10, 0)); 
+        pnl.setBorder(new EmptyBorder(10, 0, 10, 0));
 
         for (String ten : tenButtons) {
-            JButton btn = new JButton("•  " + ten); 
-            btn.setFont(new Font("Segoe UI", Font.BOLD, 15)); 
-            btn.setBackground(pnl.getBackground()); 
-            btn.setForeground(Color.WHITE); 
+            JButton btn = new JButton("•  " + ten);
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+            btn.setBackground(pnl.getBackground());
+            btn.setForeground(Color.WHITE);
             btn.setFocusPainted(false);
             btn.setBorderPainted(false);
             btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-            btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); 
+            btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
             btn.setHorizontalAlignment(SwingConstants.LEFT);
-            
-            btn.setBorder(new EmptyBorder(8, 40, 8, 8)); 
+
+            btn.setBorder(new EmptyBorder(8, 40, 8, 8));
 
             btn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    btn.setBackground(new Color(40, 80, 130)); 
+                    btn.setBackground(new Color(40, 80, 130));
                     btn.setForeground(Color.WHITE);
                 }
                 @Override
                 public void mouseExited(MouseEvent e) {
                     btn.setBackground(pnl.getBackground());
-                    btn.setForeground(Color.WHITE); 
+                    btn.setForeground(Color.WHITE);
                 }
             });
 
             pnl.add(btn);
-            
+
             pnl.add(Box.createVerticalStrut(5));
         }
         return pnl;
@@ -1258,19 +1386,60 @@ public class TrangChu_Gui extends JFrame {
     }
 
     private JPanel trangThaiPhong(Color color, String text) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 2));
-        panel.setBackground(Color.WHITE);
-        JPanel o = new JPanel();
-        o.setBackground(color);
-        o.setPreferredSize(new Dimension(16, 16));
-        o.setBorder(new LineBorder(Color.GRAY, 1));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 1));
+        panel.setOpaque(false);
+        JPanel dot = new JPanel();
+        dot.setBackground(color);
+        dot.setPreferredSize(new Dimension(10, 10));
+        dot.setBorder(BorderFactory.createLineBorder(color.darker(), 1, true));
         JLabel lbl = new JLabel(text);
-        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        panel.add(o);
+        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lbl.setForeground(new Color(60, 70, 90));
+        panel.add(dot);
         panel.add(lbl);
         return panel;
     }
-    
+
+    private JPanel createQuickStatCard(String title, String value, Color color, String emoji) {
+        JPanel card = new JPanel(new BorderLayout(0, 4));
+        card.setBackground(Color.WHITE);
+        card.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(220, 225, 235), 1, true),
+                new EmptyBorder(14, 16, 14, 16)
+        ));
+
+        // Top row: emoji + title
+        JPanel topRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        topRow.setOpaque(false);
+        JLabel lblEmoji = new JLabel(emoji);
+        lblEmoji.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 18));
+        JLabel lblTitle = new JLabel(title);
+        lblTitle.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        lblTitle.setForeground(new Color(100, 110, 130));
+        topRow.add(lblEmoji);
+        topRow.add(lblTitle);
+
+        JLabel lblValue = new JLabel(value);
+        lblValue.setFont(new Font("Segoe UI", Font.BOLD, 36));
+        lblValue.setForeground(color);
+
+        // Bottom accent bar
+        JPanel accent = new JPanel();
+        accent.setPreferredSize(new Dimension(0, 3));
+        accent.setBackground(color);
+
+        card.add(topRow, BorderLayout.NORTH);
+        card.add(lblValue, BorderLayout.CENTER);
+        card.add(accent, BorderLayout.SOUTH);
+
+        return card;
+    }
+
+    // Keep old overload for backward compatibility
+    private JPanel createQuickStatCard(String title, String value, Color color) {
+        return createQuickStatCard(title, value, color, "•");
+    }
+
     /**
      * Hàm này được gọi bởi DangNhap_Gui để tự động mở dialog Nhận Ca
      * ngay sau khi đăng nhập thành công.
@@ -1292,72 +1461,72 @@ public class TrangChu_Gui extends JFrame {
             LocalDateTime now = LocalDateTime.now();
             String timeStr = now.format(timeFormatter);
             String dateStr = now.format(dateFormatter);
-            
+
             // Cập nhật JLabel (dùng HTML để xuống dòng)
             lblDongHo.setText("<html><center>" + timeStr + "<br>" + dateStr + "</center></html>");
         });
         timerDongHo.setInitialDelay(0); // Chạy ngay lập tức
         timerDongHo.start();
     }
-    
+
     private ImageIcon getIcon(String tenIcon, int width, int height) {
-		try {
-			// 1. Ưu tiên tải từ Classpath (cách làm chuẩn, hoạt động cả trong JAR)
-			// Giả định cấu trúc thư mục là: src/data/icons/tenIcon.png
-			String resourcePath = "/data/icons/" + tenIcon + ".png";
-			InputStream is = getClass().getResourceAsStream(resourcePath);
+        try {
+            // 1. Ưu tiên tải từ Classpath (cách làm chuẩn, hoạt động cả trong JAR)
+            // Giả định cấu trúc thư mục là: src/data/icons/tenIcon.png
+            String resourcePath = "/data/icons/" + tenIcon + ".png";
+            InputStream is = getClass().getResourceAsStream(resourcePath);
 
-			BufferedImage bImg = null;
+            BufferedImage bImg = null;
 
-			if (is != null) {
-				// Tìm thấy qua classpath
-				bImg = ImageIO.read(is);
-			} else {
-				// 2. Dự phòng: Thử tải từ hệ thống tệp tin (giống cách tải avatar)
-				// Cách này không linh hoạt bằng nhưng khớp với code hiện có của bạn
-				String filePath = "data/icons/" + tenIcon + ".png";
-				File f = new File(filePath);
-				
-				if (f.exists()) {
+            if (is != null) {
+                // Tìm thấy qua classpath
+                bImg = ImageIO.read(is);
+            } else {
+                // 2. Dự phòng: Thử tải từ hệ thống tệp tin (giống cách tải avatar)
+                // Cách này không linh hoạt bằng nhưng khớp với code hiện có của bạn
+                String filePath = "data/icons/" + tenIcon + ".png";
+                File f = new File(filePath);
+
+                if (f.exists()) {
                     // <<< SỬA LỖI TYPO: ImageMIO -> ImageIO >>>
-					bImg = ImageIO.read(f); 
-				} else {
-					// 3. Không tìm thấy ảnh
-					System.err.println("Không tìm thấy icon: " + resourcePath + " hoặc " + filePath);
-					return null; // Trả về null nếu không tìm thấy
-				}
-			}
+                    bImg = ImageIO.read(f);
+                } else {
+                    // 3. Không tìm thấy ảnh
+                    System.err.println("Không tìm thấy icon: " + resourcePath + " hoặc " + filePath);
+                    return null; // Trả về null nếu không tìm thấy
+                }
+            }
 
-			// 4. Thay đổi kích thước ảnh
-			Image scaledImg = bImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-			
-			// 5. Trả về ImageIcon
-			return new ImageIcon(scaledImg);
+            // 4. Thay đổi kích thước ảnh
+            Image scaledImg = bImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
-		} catch (IOException e) {
-			System.err.println("Lỗi khi tải icon: " + tenIcon);
-			e.printStackTrace();
-			return null; // Trả về null nếu có lỗi
-		}
-	}
+            // 5. Trả về ImageIcon
+            return new ImageIcon(scaledImg);
+
+        } catch (IOException e) {
+            System.err.println("Lỗi khi tải icon: " + tenIcon);
+            e.printStackTrace();
+            return null; // Trả về null nếu có lỗi
+        }
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ConnectDB.getInstance(); 
+            ConnectDB.getInstance();
             NhanVien_DAO nv_dao = new NhanVien_DAO();
-            NhanVien nvTest = nv_dao.getNhanVienByMa("NV002"); 
-            
+            NhanVien nvTest = nv_dao.getNhanVienByMa("NV002");
+
             if (nvTest == null) {
                 JOptionPane.showMessageDialog(null, "Không tìm thấy NV002 (Test) trong CSDL! Vui lòng kiểm tra CSDL và chuỗi kết nối.");
                 System.exit(0);
             }
-            
+
             try {
                 UIManager.setLookAndFeel( new com.formdev.flatlaf.FlatLightLaf() );
             } catch( Exception ex ) {
                 System.err.println( "Failed to initialize LaF" );
             }
-            
+
             new TrangChu_Gui(nvTest).setVisible(true);
         });
     }
@@ -1365,7 +1534,7 @@ public class TrangChu_Gui extends JFrame {
     // =========================================================================
     // === CÁC INNER CLASS MỚI ĐƯỢC THÊM VÀO ĐÂY (THEO YÊU CẦU) ===
     // =========================================================================
-    
+
     /**
      * Lớp con để chứa kết quả tìm kiếm (thay thế cho service)
      */
@@ -1391,7 +1560,7 @@ public class TrangChu_Gui extends JFrame {
         private JPanel pnlListOptions;
         private JScrollPane scrollPane;
         private List<Phong> selectedOption = null; // Đây là kết quả trả về
-        
+
         // Định nghĩa màu và viền
         private final Color COLOR_DON = new Color(0, 122, 204); // Xanh dương
         private final Color COLOR_HOP = new Color(40, 167, 69); // Xanh lá
@@ -1435,7 +1604,7 @@ public class TrangChu_Gui extends JFrame {
         public List<Phong> getSelectedOption() {
             return selectedOption;
         }
-        
+
         /**
          * Hàm này được gọi bởi Card bên trong để set kết quả và đóng dialog
          */
@@ -1461,10 +1630,10 @@ public class TrangChu_Gui extends JFrame {
             // 2. Thêm các tổ hợp phòng (Tối đa 10)
             List<List<Phong>> comboOptions = result.getCombinationOptions();
             if (comboOptions != null && !comboOptions.isEmpty()) {
-                
-                int limit = Math.min(comboOptions.size(), 10); 
-                
-                
+
+                int limit = Math.min(comboOptions.size(), 10);
+
+
 
                 for (int i = 0; i < limit; i++) { // Chỉ lặp 10 lần
                     List<Phong> combo = comboOptions.get(i);
@@ -1472,24 +1641,24 @@ public class TrangChu_Gui extends JFrame {
                     pnlListOptions.add(Box.createVerticalStrut(8));
                 }
             }
-            
+
             // 3. Nếu không có kết quả nào
             if (pnlListOptions.getComponentCount() == 0) {
-                 JLabel lblEmpty = new JLabel("Không tìm thấy phòng hay tổ hợp nào.");
-                 lblEmpty.setFont(new Font("Segoe UI", Font.ITALIC, 16));
-                 lblEmpty.setHorizontalAlignment(SwingConstants.CENTER);
-                 pnlListOptions.add(lblEmpty);
+                JLabel lblEmpty = new JLabel("Không tìm thấy phòng hay tổ hợp nào.");
+                lblEmpty.setFont(new Font("Segoe UI", Font.ITALIC, 16));
+                lblEmpty.setHorizontalAlignment(SwingConstants.CENTER);
+                pnlListOptions.add(lblEmpty);
             }
         }
-        
-        
+
+
 
         // =====================================================================
         // === INNER CLASS CHO CARD LỰA CHỌN (Giống PhieuDatPhongCard) ===
         // =====================================================================
-        
+
         class PhongOptionCard extends JPanel {
-            
+
             private List<Phong> option;
             private String loai;
             private ChonToHopPhong_Dialog parentDialog;
@@ -1498,21 +1667,21 @@ public class TrangChu_Gui extends JFrame {
                 this.option = option;
                 this.loai = loai;
                 this.parentDialog = parent;
-                
+
                 setLayout(new BorderLayout(15, 10));
                 setBackground(Color.WHITE);
-                
+
                 // Viền ngoài (shadow) + viền màu
                 Border shadowBorder = BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true);
                 Border marginBorder = new EmptyBorder(10, 10, 10, 10);
                 Border colorBorder = loai.equals("PHÒNG ĐƠN") ? LEFT_BORDER_DON : LEFT_BORDER_HOP;
-                
+
                 setBorder(new CompoundBorder(shadowBorder, new CompoundBorder(colorBorder, marginBorder)));
-                
+
                 // <<< SỬA LỖI: Chiều cao tự động dựa trên số phòng >>>
                 int preferredHeight = 120 + (option.size() > 1 ? (option.size() * 25) : 0);
                 setPreferredSize(new Dimension(600, preferredHeight));
-                setMaximumSize(new Dimension(Integer.MAX_VALUE, preferredHeight)); 
+                setMaximumSize(new Dimension(Integer.MAX_VALUE, preferredHeight));
                 setMinimumSize(new Dimension(600, 120));
 
 
@@ -1520,25 +1689,25 @@ public class TrangChu_Gui extends JFrame {
                 JPanel pnlButton = new JPanel(new GridBagLayout()); // Dùng GridBag để căn giữa nút
                 pnlButton.setOpaque(false);
                 pnlButton.setPreferredSize(new Dimension(180, 0));
-                
+
                 JButton btnChon = new JButton("Chọn Lựa Chọn Này");
-                
+
                 pnlButton.add(btnChon, new GridBagConstraints()); // Thêm vào giữa
                 add(pnlButton, BorderLayout.EAST);
 
                 // --- Panel thông tin (BÊN TRÁI) ---
                 JPanel pnlInfo = new JPanel(new BorderLayout(5, 5));
                 pnlInfo.setOpaque(false);
-                
+
                 // TOP: Loại
                 JPanel pnlTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
                 pnlTop.setOpaque(false);
                 JLabel lblLoai = new JLabel(loai + " (" + option.size() + " phòng)");
                 lblLoai.setFont(new Font("Segoe UI", Font.BOLD, 18));
                 pnlTop.add(lblLoai);
-                
+
                 // <<< BẮT ĐẦU THAY ĐỔI LỚN >>>
-                
+
                 // CENTER: Chi tiết TỪNG phòng (dùng JScrollPane)
                 JPanel pnlRoomDetails = new JPanel();
                 pnlRoomDetails.setLayout(new BoxLayout(pnlRoomDetails, BoxLayout.Y_AXIS));
@@ -1553,24 +1722,24 @@ public class TrangChu_Gui extends JFrame {
                     // Tạo một panel nhỏ cho mỗi phòng
                     JPanel pnlMotPhong = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
                     pnlMotPhong.setOpaque(false);
-                    
+
                     JLabel lblMaPhong = new JLabel("• " + p.getMaPhong());
                     lblMaPhong.setFont(new Font("Segoe UI", Font.BOLD, 14));
                     lblMaPhong.setPreferredSize(new Dimension(80, 20)); // Cố định độ rộng
 
                     // Dùng html để hiển thị label: value
                     JLabel lblChiTiet = new JLabel(String.format(
-                        "<html><b>Loại:</b> %s | <b>Sức chứa:</b> %d | <b>Giá:</b> %s</html>",
-                        p.getLoaiPhong().toString(), // "DON", "DOI" (từ Enum)
-                        p.getSucChua(),
-                        currencyFormatter.format(p.getGiaPhong())
+                            "<html><b>Loại:</b> %s | <b>Sức chứa:</b> %d | <b>Giá:</b> %s</html>",
+                            p.getLoaiPhong().toString(), // "DON", "DOI" (từ Enum)
+                            p.getSucChua(),
+                            currencyFormatter.format(p.getGiaPhong())
                     ));
                     lblChiTiet.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
                     pnlMotPhong.add(lblMaPhong);
                     pnlMotPhong.add(lblChiTiet);
                     pnlRoomDetails.add(pnlMotPhong);
-                    
+
                     // Cộng dồn
                     tongSucChua += p.getSucChua();
                     tongGia += p.getGiaPhong();
@@ -1588,24 +1757,24 @@ public class TrangChu_Gui extends JFrame {
                 JPanel pnlBottom = new JPanel(new GridLayout(0, 2, 20, 0)); // 2 cột
                 pnlBottom.setOpaque(false);
                 pnlBottom.setBorder(new CompoundBorder(
-                    new MatteBorder(1, 0, 0, 0, new Color(220, 220, 220)),
-                    new EmptyBorder(8, 0, 0, 0) // Padding top
+                        new MatteBorder(1, 0, 0, 0, new Color(220, 220, 220)),
+                        new EmptyBorder(8, 0, 0, 0) // Padding top
                 ));
-                
+
                 JLabel lblTongSucChua = new JLabel(String.format(
-                    "<html><b>Tổng sức chứa:</b> %d người</html>", tongSucChua
+                        "<html><b>Tổng sức chứa:</b> %d người</html>", tongSucChua
                 ));
                 lblTongSucChua.setFont(new Font("Segoe UI", Font.BOLD, 14));
-                
+
                 JLabel lblTongGia = new JLabel(String.format(
-                    "<html><b>Tổng giá:</b> <font color='red'>%s</font></html>", 
-                    currencyFormatter.format(tongGia)
+                        "<html><b>Tổng giá:</b> <font color='red'>%s</font></html>",
+                        currencyFormatter.format(tongGia)
                 ));
                 lblTongGia.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
                 pnlBottom.add(lblTongSucChua);
                 pnlBottom.add(lblTongGia);
-                
+
                 // <<< KẾT THÚC THAY ĐỔI LỚN >>>
 
                 // Set màu và style
@@ -1616,33 +1785,33 @@ public class TrangChu_Gui extends JFrame {
                     lblLoai.setForeground(COLOR_HOP);
                     styleCardButton(btnChon, COLOR_HOP);
                 }
-                
+
                 // Ghép lại
                 pnlInfo.add(pnlTop, BorderLayout.NORTH);
                 pnlInfo.add(scrollDetails, BorderLayout.CENTER); // Thay pnlCenter bằng scrollDetails
                 pnlInfo.add(pnlBottom, BorderLayout.SOUTH);
-                
+
                 add(pnlInfo, BorderLayout.CENTER);
-                
+
                 // --- Sự kiện cho nút ---
                 btnChon.addActionListener(e -> {
                     // Gọi hàm của dialog cha để xử lý
                     parentDialog.xuLyChon(this.option);
                 });
             }
-            
+
             // Helper tạo label (Giống PhieuDatPhongCard)
             private JLabel createIconLabel(String icon, String title, String value) {
                 // Thêm một chút CSS để `value` không bị tràn
                 String html = String.format(
-                    "<html><body style='width: 400px;'>%s <b>%s</b> %s</body></html>",
-                    icon, title, value
+                        "<html><body style='width: 400px;'>%s <b>%s</b> %s</body></html>",
+                        icon, title, value
                 );
                 JLabel lbl = new JLabel(html);
                 lbl.setFont(new Font("Segoe UI", Font.PLAIN, 14));
                 return lbl;
             }
-            
+
             // Helper style nút (Giống PhieuDatPhongCard)
             private void styleCardButton(JButton btn, Color color) {
                 btn.setBackground(color);
@@ -1654,80 +1823,80 @@ public class TrangChu_Gui extends JFrame {
             }
         } // --- Hết inner class PhongOptionCard ---
     } // --- Hết inner class ChonToHopPhong_Dialog ---
-    
- // =============================================================================
- // === CÁC HÀM BỔ TRỢ CHO TÌM KIẾM NÂNG CAO (DÁN VÀO CUỐI CLASS TRANGCHU_GUI) ===
- // =============================================================================
 
- /**
-  * Hàm tính tổng sức chứa cần thiết (bao gồm quy đổi trẻ em)
-  */
- private int tinhTongSucChuaCanThiet(int soNguoiLon, List<Integer> dsTuoiTreEm) {
-     int treEmTren12 = 0;
-     int treEmDuoi12 = 0;
-     for (int tuoi : dsTuoiTreEm) {
-         if (tuoi > 12) treEmTren12++;
-         else treEmDuoi12++;
-     }
-     // 1 trẻ > 12 tính là 1 người lớn. 2 trẻ <= 12 tính là 1 người lớn.
-     return soNguoiLon + treEmTren12 + (int) Math.ceil(treEmDuoi12 / 2.0);
- }
+    // =============================================================================
+    // === CÁC HÀM BỔ TRỢ CHO TÌM KIẾM NÂNG CAO (DÁN VÀO CUỐI CLASS TRANGCHU_GUI) ===
+    // =============================================================================
 
- /**
-  * Hàm tìm các tổ hợp phòng (Backtracking)
-  */
- private List<List<Phong>> findCombinations(List<Phong> availableRooms, int guestsNeeded, int maxRooms) {
-     List<List<Phong>> results = new ArrayList<>();
-     // Sắp xếp giảm dần theo sức chứa để ưu tiên tìm phòng lớn trước
-     availableRooms.sort((p1, p2) -> Integer.compare(p2.getSucChua(), p1.getSucChua()));
+    /**
+     * Hàm tính tổng sức chứa cần thiết (bao gồm quy đổi trẻ em)
+     */
+    private int tinhTongSucChuaCanThiet(int soNguoiLon, List<Integer> dsTuoiTreEm) {
+        int treEmTren12 = 0;
+        int treEmDuoi12 = 0;
+        for (int tuoi : dsTuoiTreEm) {
+            if (tuoi > 12) treEmTren12++;
+            else treEmDuoi12++;
+        }
+        // 1 trẻ > 12 tính là 1 người lớn. 2 trẻ <= 12 tính là 1 người lớn.
+        return soNguoiLon + treEmTren12 + (int) Math.ceil(treEmDuoi12 / 2.0);
+    }
 
-     // Gọi hàm đệ quy để bắt đầu tìm kiếm
-     findCombosRecursive(availableRooms, guestsNeeded, maxRooms, 0, new ArrayList<>(), 0, results);
-     
-     // Sắp xếp kết quả: Ưu tiên ít phòng hơn, sau đó đến giá rẻ hơn
-     results.sort((c1, c2) -> {
-         int sizeCompare = Integer.compare(c1.size(), c2.size());
-         if (sizeCompare != 0) return sizeCompare;
-         double price1 = c1.stream().mapToDouble(Phong::getGiaPhong).sum();
-         double price2 = c2.stream().mapToDouble(Phong::getGiaPhong).sum();
-         return Double.compare(price1, price2);
-     });
+    /**
+     * Hàm tìm các tổ hợp phòng (Backtracking)
+     */
+    private List<List<Phong>> findCombinations(List<Phong> availableRooms, int guestsNeeded, int maxRooms) {
+        List<List<Phong>> results = new ArrayList<>();
+        // Sắp xếp giảm dần theo sức chứa để ưu tiên tìm phòng lớn trước
+        availableRooms.sort((p1, p2) -> Integer.compare(p2.getSucChua(), p1.getSucChua()));
 
-     // Chỉ lấy tối đa 15 kết quả tốt nhất để không làm rối mắt
-     if (results.size() > 15) {
-         return new ArrayList<>(results.subList(0, 15));
-     }
-     return results;
- }
+        // Gọi hàm đệ quy để bắt đầu tìm kiếm
+        findCombosRecursive(availableRooms, guestsNeeded, maxRooms, 0, new ArrayList<>(), 0, results);
 
- /**
-  * Hàm đệ quy hỗ trợ cho findCombinations
-  */
- private void findCombosRecursive(List<Phong> pool, int guestsNeeded, int maxRooms, int startIndex, 
-                                  List<Phong> currentCombo, int currentCapacity, List<List<Phong>> results) {
-     // Điều kiện dừng 1: Đã đủ sức chứa -> Lưu kết quả và dừng nhánh này
-     if (currentCapacity >= guestsNeeded) {
-         results.add(new ArrayList<>(currentCombo));
-         return;
-     }
+        // Sắp xếp kết quả: Ưu tiên ít phòng hơn, sau đó đến giá rẻ hơn
+        results.sort((c1, c2) -> {
+            int sizeCompare = Integer.compare(c1.size(), c2.size());
+            if (sizeCompare != 0) return sizeCompare;
+            double price1 = c1.stream().mapToDouble(Phong::getGiaPhong).sum();
+            double price2 = c2.stream().mapToDouble(Phong::getGiaPhong).sum();
+            return Double.compare(price1, price2);
+        });
 
-     // Điều kiện dừng 2: Đã đạt giới hạn số phòng -> Dừng nhánh này
-     if (currentCombo.size() >= maxRooms) {
-         return;
-     }
+        // Chỉ lấy tối đa 15 kết quả tốt nhất để không làm rối mắt
+        if (results.size() > 15) {
+            return new ArrayList<>(results.subList(0, 15));
+        }
+        return results;
+    }
 
-     // Duyệt các phòng còn lại trong danh sách
-     for (int i = startIndex; i < pool.size(); i++) {
-         Phong p = pool.get(i);
-         
-         // Thêm phòng vào tổ hợp hiện tại
-         currentCombo.add(p);
-         
-         // Gọi đệ quy để tìm phòng tiếp theo
-         findCombosRecursive(pool, guestsNeeded, maxRooms, i + 1, currentCombo, currentCapacity + p.getSucChua(), results);
-         
-         // Quay lui (Backtrack): Bỏ phòng vừa thêm để thử phòng khác
-         currentCombo.remove(currentCombo.size() - 1); 
-     }
- }
+    /**
+     * Hàm đệ quy hỗ trợ cho findCombinations
+     */
+    private void findCombosRecursive(List<Phong> pool, int guestsNeeded, int maxRooms, int startIndex,
+                                     List<Phong> currentCombo, int currentCapacity, List<List<Phong>> results) {
+        // Điều kiện dừng 1: Đã đủ sức chứa -> Lưu kết quả và dừng nhánh này
+        if (currentCapacity >= guestsNeeded) {
+            results.add(new ArrayList<>(currentCombo));
+            return;
+        }
+
+        // Điều kiện dừng 2: Đã đạt giới hạn số phòng -> Dừng nhánh này
+        if (currentCombo.size() >= maxRooms) {
+            return;
+        }
+
+        // Duyệt các phòng còn lại trong danh sách
+        for (int i = startIndex; i < pool.size(); i++) {
+            Phong p = pool.get(i);
+
+            // Thêm phòng vào tổ hợp hiện tại
+            currentCombo.add(p);
+
+            // Gọi đệ quy để tìm phòng tiếp theo
+            findCombosRecursive(pool, guestsNeeded, maxRooms, i + 1, currentCombo, currentCapacity + p.getSucChua(), results);
+
+            // Quay lui (Backtrack): Bỏ phòng vừa thêm để thử phòng khác
+            currentCombo.remove(currentCombo.size() - 1);
+        }
+    }
 }

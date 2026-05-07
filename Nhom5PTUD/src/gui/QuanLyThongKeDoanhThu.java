@@ -13,7 +13,7 @@ import java.util.List;
 import dao.HoaDon_DAO;
 import entity.HoaDon;
 
-public class QuanLyThongKeDoanhThu extends JFrame {
+public class QuanLyThongKeDoanhThu extends JPanel {
 	private HoaDon_DAO hoaDonDAO;
 	private DefaultTableModel modelTable;
 	private JComboBox<String> cboQuy, cboNhanVien;
@@ -29,9 +29,9 @@ public class QuanLyThongKeDoanhThu extends JFrame {
 	private JLabel lblTongDoanhThuPhong, lblTongSoPhong, lblDoanhThuPhongTB;
 
 	public QuanLyThongKeDoanhThu() {
-		setTitle("Quản lý Thống kê Doanh thu");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+
+
 		setLayout(new BorderLayout());
 
 		hoaDonDAO = new HoaDon_DAO();
@@ -45,9 +45,9 @@ public class QuanLyThongKeDoanhThu extends JFrame {
 		lblTieuDe.setPreferredSize(new Dimension(getWidth(), 70));
 		add(lblTieuDe, BorderLayout.NORTH);
 
-		// --- Menu ---
-		JPanel pnlMenu = createMenuPanel();
-		add(pnlMenu, BorderLayout.WEST);
+		// --- Menu (ẩn đi khi nhúng vào TrangChu) ---
+		// JPanel pnlMenu = createMenuPanel();
+		// add(pnlMenu, BorderLayout.WEST);
 
 		// --- Panel chính ---
 		JPanel pnlMain = new JPanel(new BorderLayout(10, 10));
