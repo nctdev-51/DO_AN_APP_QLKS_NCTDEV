@@ -2,17 +2,24 @@ package iuh.fit.presentation.controller;
 
 import iuh.fit.core.dto.TaiKhoanDTO;
 import iuh.fit.core.service.*;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.logging.Logger;
 
@@ -25,6 +32,7 @@ public class LoginController {
     private Button loginButton;
     private Button exitButton;
     private Label errorLabel;
+    private ProgressBar progressBar;
 
     private IAuthenticationService authenticationService;
     private TaiKhoanDTO currentUser;
@@ -33,40 +41,48 @@ public class LoginController {
     private IPhongService phongService;
     private IPhieuDatPhongService phieuDatPhongService;
     private IDichVuService dichVuService;
+    private IHoaDonService hoaDonService;
+    private IChiTietHoaDonService chiTietHoaDonService;
 
     // --- BẢNG MÀU UI ---
-    private final String COLOR_PRIMARY = "#2563eb";
-    private final String COLOR_PRIMARY_HOVER = "#1d4ed8";
-    private final String COLOR_BG = "#f1f5f9";
+    private final String COLOR_PRIMARY = "#0066cc";  // Xanh lam đậm khớp logo
+    private final String COLOR_ACCENT = "#17a2b8";   // Xanh lục khớp logo
+    private final String COLOR_PRIMARY_HOVER = "#004999";
+    private final String COLOR_BG_START = "#f0f8ff";
+    private final String COLOR_BG_END = "#ffffff";
     private final String COLOR_TEXT_MAIN = "#1e293b";
     private final String COLOR_TEXT_MUTED = "#64748b";
     private final String COLOR_BORDER = "#cbd5e1";
+    private final String COLOR_CARD_BORDER = "#d3d3d3";
 
     public LoginController(IAuthenticationService authenticationService,
                            IKhachHangService khachHangService,
                            INhanVienService nhanVienService,
                            IPhongService phongService,
                            IPhieuDatPhongService phieuDatPhongService,
-                           IDichVuService dichVuService) {
-
+                           IDichVuService dichVuService,
+                           IHoaDonService hoaDonService,
+                           IChiTietHoaDonService chiTietHoaDonService) {
         this.authenticationService = authenticationService;
         this.khachHangService = khachHangService;
         this.nhanVienService = nhanVienService;
         this.phongService = phongService;
         this.phieuDatPhongService = phieuDatPhongService;
         this.dichVuService = dichVuService;
+        this.hoaDonService = hoaDonService;
+        this.chiTietHoaDonService = chiTietHoaDonService;
     }
 
     public Scene createLoginScene() {
         StackPane root = new StackPane();
-        root.setStyle("-fx-background-color: " + COLOR_BG + ";");
+        root.setStyle("-fx-background-color: " + COLOR_BG_START + ";");
 
         VBox cardBox = new VBox(20);
         cardBox.setPadding(new Insets(40, 40, 40, 40));
         cardBox.setMaxWidth(400);
         cardBox.setMaxHeight(450);
         cardBox.setAlignment(Pos.TOP_CENTER);
-        cardBox.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-border-radius: 12;");
+        cardBox.setStyle("-fx-background-color: white; -fx-background-radius: 16; -fx-border-radius: 16; -fx-border-color: #dbeafe; -fx-border-width: 1.2;");
 
         DropShadow shadow = new DropShadow();
         shadow.setColor(Color.color(0, 0, 0, 0.08));
@@ -75,21 +91,64 @@ public class LoginController {
         cardBox.setEffect(shadow);
 
         // Header
-        VBox headerBox = new VBox(5);
-        headerBox.setAlignment(Pos.CENTER);
+         VBox headerBox = new VBox(5);
+         headerBox.setAlignment(Pos.CENTER);
 
-        Label lblLogo = new Label("🏨");
-        lblLogo.setFont(Font.font(40));
+         // Logo + Title
+         HBox logoTitleBox = new HBox(6);
+         logoTitleBox.setAlignment(Pos.CENTER);
 
-        Label titleLabel = new Label("TATP HOTEL");
-        titleLabel.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 24));
-        titleLabel.setTextFill(Color.web(COLOR_PRIMARY));
+         // Tạo ImageView cho logo - To hơn
+         ImageView logoImageView = new ImageView();
+         try {
+             Image logoImage = new Image(getClass().getResourceAsStream("/images/logo_ttv.png"));
+             logoImageView.setImage(logoImage);
+             logoImageView.setFitWidth(78);
+             logoImageView.setFitHeight(78);
+             logoImageView.setPreserveRatio(true);
 
-        Label subTitleLabel = new Label("Đăng nhập vào hệ thống quản lý");
-        subTitleLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
-        subTitleLabel.setTextFill(Color.web(COLOR_TEXT_MUTED));
+             // Thêm shadow effect cho logo
+             DropShadow logoShadow = new DropShadow();
+             logoShadow.setColor(Color.web(COLOR_PRIMARY, 0.3));
+             logoShadow.setRadius(8);
+             logoShadow.setOffsetY(2);
+             logoImageView.setEffect(logoShadow);
+         } catch (Exception e) {
+             // Nếu logo không tìm được, sử dụng emoji
+             Label logoEmoji = new Label("🏨");
+             logoEmoji.setFont(Font.font(60));
+             logoTitleBox.getChildren().add(logoEmoji);
+         }
 
-        headerBox.getChildren().addAll(lblLogo, titleLabel, subTitleLabel);
+         if (logoImageView.getImage() != null) {
+             logoTitleBox.getChildren().add(logoImageView);
+         }
+
+         // Tên với kiểu chữ phong cách hơn
+         Label titleLabel = new Label("TTV HOTEL");
+         titleLabel.setFont(Font.font("Segoe UI Semibold", FontWeight.EXTRA_BOLD, 32));
+         titleLabel.setTextFill(new LinearGradient(
+                 0, 0, 1, 0,
+                 true, CycleMethod.NO_CYCLE,
+                 new Stop(0.0, Color.web(COLOR_ACCENT)),
+                 new Stop(1.0, Color.web(COLOR_PRIMARY))
+         ));
+
+         // Thêm shadow effect cho text
+         DropShadow titleShadow = new DropShadow();
+         titleShadow.setColor(Color.web(COLOR_PRIMARY, 0.2));
+         titleShadow.setRadius(5);
+         titleShadow.setOffsetY(2);
+         titleLabel.setEffect(titleShadow);
+
+         logoTitleBox.getChildren().add(titleLabel);
+
+         // Subtitle
+         Label subTitleLabel = new Label("Hệ thống quản lý khách sạn TTV");
+         subTitleLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 13));
+         subTitleLabel.setTextFill(Color.web(COLOR_TEXT_MUTED));
+
+         headerBox.getChildren().addAll(logoTitleBox, subTitleLabel);
 
         // Input Styling
         // Thêm padding bên phải (35px) để chữ không bị đè lên icon con mắt
@@ -124,7 +183,7 @@ public class LoginController {
 
         // 3. Nút con mắt
         Button togglePasswordBtn = new Button("👁"); // Dùng emoji hoặc có thể dùng Icon thật nếu bạn có thư viện
-        togglePasswordBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-cursor: hand; -fx-font-size: 14px;");
+        togglePasswordBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_ACCENT + "; -fx-cursor: hand; -fx-font-size: 15px;");
         togglePasswordBtn.setPadding(new Insets(0, 10, 0, 0)); // Căn icon cách lề phải 10px
 
         // Đồng bộ dữ liệu 2 chiều giữa 2 ô nhập (gõ ô này, ô kia cũng nhận)
@@ -159,6 +218,13 @@ public class LoginController {
         errorLabel.setAlignment(Pos.CENTER);
         errorLabel.setMaxWidth(Double.MAX_VALUE);
 
+        // Progress Bar
+        progressBar = new ProgressBar();
+        progressBar.setVisible(false);
+        progressBar.setMaxWidth(Double.MAX_VALUE);
+        progressBar.setPrefHeight(10);
+        progressBar.setStyle("-fx-accent: " + COLOR_ACCENT + ";");
+
         // Buttons
         VBox buttonBox = new VBox(12);
         buttonBox.setAlignment(Pos.CENTER);
@@ -167,18 +233,18 @@ public class LoginController {
         loginButton = new Button("Đăng Nhập");
         loginButton.setMaxWidth(Double.MAX_VALUE);
         loginButton.setCursor(Cursor.HAND);
-        loginButton.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 6;");
+        loginButton.setStyle("-fx-background-color: linear-gradient(to right, " + COLOR_ACCENT + ", " + COLOR_PRIMARY + "); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 10;");
 
-        loginButton.setOnMouseEntered(e -> loginButton.setStyle("-fx-background-color: " + COLOR_PRIMARY_HOVER + "; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 6;"));
-        loginButton.setOnMouseExited(e -> loginButton.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 6;"));
+        loginButton.setOnMouseEntered(e -> loginButton.setStyle("-fx-background-color: linear-gradient(to right, #0ea5a4, " + COLOR_PRIMARY_HOVER + "); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 10;"));
+        loginButton.setOnMouseExited(e -> loginButton.setStyle("-fx-background-color: linear-gradient(to right, " + COLOR_ACCENT + ", " + COLOR_PRIMARY + "); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 10;"));
 
         exitButton = new Button("Thoát Hệ Thống");
         exitButton.setMaxWidth(Double.MAX_VALUE);
         exitButton.setCursor(Cursor.HAND);
-        exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-font-size: 14px; -fx-padding: 10; -fx-border-color: transparent;");
+        exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10; -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 10; -fx-background-radius: 10;");
 
-        exitButton.setOnMouseEntered(e -> exitButton.setStyle("-fx-background-color: #e2e8f0; -fx-text-fill: #0f172a; -fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 6;"));
-        exitButton.setOnMouseExited(e -> exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-font-size: 14px; -fx-padding: 10;"));
+        exitButton.setOnMouseEntered(e -> exitButton.setStyle("-fx-background-color: #eff6ff; -fx-text-fill: " + COLOR_ACCENT + "; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10; -fx-border-color: " + COLOR_ACCENT + "; -fx-border-radius: 10; -fx-background-radius: 10;"));
+        exitButton.setOnMouseExited(e -> exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10; -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 10; -fx-background-radius: 10;"));
 
         buttonBox.getChildren().addAll(loginButton, exitButton);
 
@@ -193,6 +259,7 @@ public class LoginController {
                 usernameVBox,
                 passwordVBox,
                 errorLabel,
+                progressBar,
                 buttonBox
         );
 
@@ -212,28 +279,35 @@ public class LoginController {
         try {
             loginButton.setText("Đang xử lý...");
             loginButton.setDisable(true);
+            progressBar.setVisible(true);
 
             TaiKhoanDTO user = authenticationService.login(username, password);
 
             if (user != null) {
                 currentUser = user;
                 showSuccess("Đăng nhập thành công! Đang chuyển trang...");
-                try {
-                    Stage currentStage = (Stage) loginButton.getScene().getWindow();
+                // Thêm hiệu ứng delay 1 giây trước khi chuyển trang
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                pause.setOnFinished(event -> {
+                    try {
+                        Stage currentStage = (Stage) loginButton.getScene().getWindow();
 
-                    MainController mainController = new MainController(
-                            currentStage, user,
-                            khachHangService, nhanVienService,
-                            phongService, phieuDatPhongService,
-                            dichVuService
-                    );
-                    mainController.showMainScreen();
+                        MainController mainController = new MainController(
+                                currentStage, user,
+                                khachHangService, nhanVienService,
+                                phongService, phieuDatPhongService,
+                                dichVuService, hoaDonService, chiTietHoaDonService
+                        );
+                        mainController.showMainScreen();
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    showError("Lỗi khi tải trang chủ: " + ex.getMessage());
-                    resetLoginButton();
-                }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        showError("Lỗi khi tải trang chủ: " + ex.getMessage());
+                        resetLoginButton();
+                    }
+                });
+                pause.play();
+
             } else {
                 showError("Tài khoản hoặc mật khẩu không đúng");
                 clearFields();
@@ -252,6 +326,7 @@ public class LoginController {
     private void resetLoginButton() {
         loginButton.setText("Đăng Nhập");
         loginButton.setDisable(false);
+        progressBar.setVisible(false);
     }
 
     private void showError(String message) {
