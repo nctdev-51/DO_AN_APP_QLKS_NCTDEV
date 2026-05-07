@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="iuh.fit.presentation.controller.QuanLyDatPhongController">
+
+    <top>
+        <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #ecf0f1;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="tfSearch" promptText="Tìm kiếm phiếu đặt..." prefWidth="250"/>
+                <ComboBox fx:id="cbTrangThai" prefWidth="150" promptText="Trạng thái"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="➕ Thêm Phiếu" onAction="#handleThem"/>
+                <Button text="✏️ Sửa" onAction="#handleSua"/>
+                <Button text="🗑️ Hủy" onAction="#handleHuy"/>
+                <Button text="🔄 Làm Mới" onAction="#handleLamMoi"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tablePhieuDat">
+            <columns>
+                <TableColumn text="Mã Phiếu" prefWidth="100"/>
+                <TableColumn text="Khách Hàng" prefWidth="150"/>
+                <TableColumn text="Phòng" prefWidth="80"/>
+                <TableColumn text="Ngày Nhận" prefWidth="100"/>
+                <TableColumn text="Ngày Trả" prefWidth="100"/>
+                <TableColumn text="Trạng Thái" prefWidth="100"/>
+                <TableColumn text="Tổng Tiền" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+
+</BorderPane>
+

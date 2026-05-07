@@ -1,11 +1,21 @@
 package iuh.fit.core.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+/**
+ * Entity: Phong (Phòng)
+ * Bảng: Phong
+ * Mô tả: Lưu trữ thông tin chi tiết của các phòng khách sạn
+ */
 @Entity
 @Table(name = "Phong")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Phong {
-
     @Id
     @Column(name = "maPhong", length = 4)
     private String maPhong;
@@ -13,38 +23,14 @@ public class Phong {
     @Column(name = "tenPhong", length = 100)
     private String tenPhong;
 
-    @Column(name = "giaPhong")
-    private Double giaPhong;
+    @Column(name = "giaPhong", nullable = false)
+    private double giaPhong;
 
-    @Column(name = "maLoaiPhong", length = 20, nullable = false)
-    private String maLoaiPhong;
 
-    @Column(name = "tinhTrang", length = 50)
-    private String tinhTrang;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maLoaiPhong", nullable = false)
+    private LoaiPhong loaiPhong;
 
-    public Phong() {
-    }
-
-    public Phong(String maPhong, String tenPhong, Double giaPhong, String maLoaiPhong, String tinhTrang) {
-        this.maPhong = maPhong;
-        this.tenPhong = tenPhong;
-        this.giaPhong = giaPhong;
-        this.maLoaiPhong = maLoaiPhong;
-        this.tinhTrang = tinhTrang;
-    }
-
-    public String getMaPhong() { return maPhong; }
-    public void setMaPhong(String maPhong) { this.maPhong = maPhong; }
-
-    public String getTenPhong() { return tenPhong; }
-    public void setTenPhong(String tenPhong) { this.tenPhong = tenPhong; }
-
-    public Double getGiaPhong() { return giaPhong; }
-    public void setGiaPhong(Double giaPhong) { this.giaPhong = giaPhong; }
-
-    public String getMaLoaiPhong() { return maLoaiPhong; }
-    public void setMaLoaiPhong(String maLoaiPhong) { this.maLoaiPhong = maLoaiPhong; }
-
-    public String getTinhTrang() { return tinhTrang; }
-    public void setTinhTrang(String tinhTrang) { this.tinhTrang = tinhTrang; }
+    @Column(name = "tinhTrang", length = 50, nullable = false)
+    private String tinhTrang; // 'Trống', 'Đã Đặt', 'Bảo Trì'
 }

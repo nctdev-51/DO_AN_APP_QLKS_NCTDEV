@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="iuh.fit.presentation.controller.LoginController" stylesheets="@../../styles/login.css">
+    <center>
+        <VBox alignment="CENTER" spacing="20" style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -fx-padding: 50;">
+            <!-- Logo/Title -->
+            <VBox alignment="CENTER" spacing="10" style="-fx-text-fill: white;">
+                <Label text="🏨 HOTEL MANAGEMENT SYSTEM" style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+                <Label text="Quản Lý Khách Sạn TATP" style="-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"/>
+            </VBox>
+
+            <!-- Login Form -->
+            <VBox spacing="15" style="-fx-background-color: white; -fx-border-radius: 10; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 5);" maxWidth="350">
+
+                <!-- Username -->
+                <VBox spacing="5">
+                    <Label text="Tên Đăng Nhập" style="-fx-font-size: 12px; -fx-text-fill: #333;"/>
+                    <TextField fx:id="tfUsername" promptText="Nhập tên đăng nhập" style="-fx-padding: 10; -fx-font-size: 13px;"/>
+                </VBox>
+
+                <!-- Password -->
+                <VBox spacing="5">
+                    <Label text="Mật Khẩu" style="-fx-font-size: 12px; -fx-text-fill: #333;"/>
+                    <PasswordField fx:id="tfPassword" promptText="Nhập mật khẩu" style="-fx-padding: 10; -fx-font-size: 13px;"/>
+                </VBox>
+
+                <!-- Remember Me -->
+                <CheckBox fx:id="cbRemember" text="Ghi nhớ tôi" style="-fx-font-size: 12px;"/>
+
+                <!-- Error Message -->
+                <Label fx:id="lblError" text="" style="-fx-text-fill: #d32f2f; -fx-font-size: 11px;"/>
+
+                <!-- Login Button -->
+                <Button fx:id="btnLogin" text="ĐĂNG NHẬP" style="-fx-padding: 12px; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-color: #667eea; -fx-text-fill: white; -fx-cursor: hand;" onAction="#handleLogin"/>
+
+                <!-- Cancel Button -->
+                <Button fx:id="btnCancel" text="HỦY" style="-fx-padding: 12px; -fx-font-size: 14px; -fx-background-color: #e0e0e0; -fx-text-fill: #333; -fx-cursor: hand;" onAction="#handleCancel"/>
+
+            </VBox>
+
+            <!-- Footer -->
+            <Label text="© 2026 Hotel Management System - Version 1.0" style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 10px;"/>
+        </VBox>
+    </center>
+</BorderPane>
+

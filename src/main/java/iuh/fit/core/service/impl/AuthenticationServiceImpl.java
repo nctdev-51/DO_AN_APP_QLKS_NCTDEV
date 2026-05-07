@@ -74,7 +74,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     @Override
     public TaiKhoanDTO register(TaiKhoanDTO taiKhoanDTO) throws IllegalArgumentException {
         // Validate input
-        if (taiKhoanDTO.getTaiKhoan() == null || taiKhoanDTO.getTaiKhoan().trim().isEmpty()) {
+        if (taiKhoanDTO.getTenDangNhap() == null || taiKhoanDTO.getTenDangNhap().trim().isEmpty()) {
             throw new IllegalArgumentException("Tài khoản không được để trống");
         }
         if (taiKhoanDTO.getMatKhau() == null || taiKhoanDTO.getMatKhau().trim().isEmpty()) {
@@ -82,13 +82,13 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         }
         
         // Kiểm tra tài khoản đã tồn tại
-        if (checkAccountExists(taiKhoanDTO.getTaiKhoan())) {
+        if (checkAccountExists(taiKhoanDTO.getTenDangNhap())) {
             throw new IllegalArgumentException("Tài khoản đã tồn tại");
         }
         
         // Tạo entity mới từ DTO và lưu vào DB
         TaiKhoan newAccount = new TaiKhoan();
-        newAccount.setTenDangNhap(taiKhoanDTO.getTaiKhoan());
+        newAccount.setTenDangNhap(taiKhoanDTO.getTenDangNhap());
         // ✅ Lưu password dưới dạng PLAIN TEXT (không hash)
         newAccount.setMatKhau(taiKhoanDTO.getMatKhau());
         newAccount.setTrangThaiTK(true); // Default: active
@@ -128,7 +128,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
      */
     private TaiKhoanDTO convertToDTO(TaiKhoan entity) {
         TaiKhoanDTO dto = new TaiKhoanDTO();
-        dto.setTaiKhoan(entity.getTenDangNhap()); // Map tenDangNhap → taiKhoan in DTO
+        dto.setTenDangNhap(entity.getTenDangNhap()); // Map tenDangNhap → taiKhoan in DTO
         // ⚠️ WARNING: Không nên include password trong DTO response
         // dto.setMatKhau(entity.getMatKhau()); // COMMENTED OUT - Security best practice
         

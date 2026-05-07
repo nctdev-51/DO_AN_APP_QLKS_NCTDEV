@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="iuh.fit.presentation.controller.QuanLyDichVuController">
+
+    <top>
+        <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #ecf0f1;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="tfSearch" promptText="Tìm kiếm dịch vụ..." prefWidth="250"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="➕ Thêm" onAction="#handleThem"/>
+                <Button text="✏️ Sửa" onAction="#handleSua"/>
+                <Button text="🗑️ Xóa" onAction="#handleXoa"/>
+                <Button text="🔄 Làm Mới" onAction="#handleLamMoi"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tableDichVu">
+            <columns>
+                <TableColumn text="Mã Dịch Vụ" prefWidth="100"/>
+                <TableColumn text="Tên Dịch Vụ" prefWidth="200"/>
+                <TableColumn text="Giá Tiền" prefWidth="100"/>
+                <TableColumn text="Mô Tả" prefWidth="250"/>
+            </columns>
+        </TableView>
+    </center>
+
+</BorderPane>
+

@@ -1,36 +1,39 @@
 package iuh.fit.core.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
+/**
+ * Entity: KhuyenMai (Khuyến mại / Giảm giá)
+ * Bảng: KhuyenMai
+ * Mô tả: Lưu trữ thông tin các chương trình khuyến mại (giảm giá theo khách hàng hoặc phòng)
+ */
 @Entity
-@Table(name = "khuyen_mai")
+@Table(name = "KhuyenMai")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class KhuyenMai {
-
     @Id
-    @Column(name = "ma_khuyen_mai", length = 20)
+    @Column(name = "maKhuyenMai", length = 5)
     private String maKhuyenMai;
 
-    @Column(name = "ten_khuyen_mai", length = 100)
+    @Column(name = "tenKhuyenMai", length = 50, nullable = false)
     private String tenKhuyenMai;
 
-    @Column(name = "muc_giam_gia")
-    private double mucGiamGia;
+    @Column(name = "ngayBatDau", nullable = false)
+    private LocalDate ngayBatDau;
 
-    public KhuyenMai() {
-    }
+    @Column(name = "ngayKetThuc", nullable = false)
+    private LocalDate ngayKetThuc;
 
-    public KhuyenMai(String maKhuyenMai, String tenKhuyenMai, double mucGiamGia) {
-        this.maKhuyenMai = maKhuyenMai;
-        this.tenKhuyenMai = tenKhuyenMai;
-        this.mucGiamGia = mucGiamGia;
-    }
+    @Column(name = "loaiKhuyenMai", length = 50, nullable = false)
+    private String loaiKhuyenMai; // 'THEO_KHACH_HANG' hoặc 'THEO_PHONG'
 
-    public String getMaKhuyenMai() { return maKhuyenMai; }
-    public void setMaKhuyenMai(String maKhuyenMai) { this.maKhuyenMai = maKhuyenMai; }
-
-    public String getTenKhuyenMai() { return tenKhuyenMai; }
-    public void setTenKhuyenMai(String tenKhuyenMai) { this.tenKhuyenMai = tenKhuyenMai; }
-
-    public double getMucGiamGia() { return mucGiamGia; }
-    public void setMucGiamGia(double mucGiamGia) { this.mucGiamGia = mucGiamGia; }
+    @Column(name = "chietKhau", nullable = false)
+    private double chietKhau;
 }

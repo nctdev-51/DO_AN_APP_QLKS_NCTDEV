@@ -135,12 +135,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
         return entity;
     }
 
-    /**
-     * Helper: Tạo mã khách hàng tự động
-     */
     private String generateMaKhachHang() {
-        List<KhachHang> allCustomers = khachHangRepository.findAll();
-        int nextId = allCustomers.size() + 1;
-        return String.format("KH%03d", nextId);
+        // Sử dụng timestamp đơn giản để tạo mã duy nhất
+        return "KH" + java.time.LocalDateTime.now().format(
+                java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+        );
     }
 }

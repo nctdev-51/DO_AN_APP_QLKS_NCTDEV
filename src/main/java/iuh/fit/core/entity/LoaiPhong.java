@@ -1,18 +1,28 @@
 package iuh.fit.core.entity;
 
-public enum LoaiPhong {
-    PHONG_DON("Phòng đơn"),
-    PHONG_DOI("Phòng đôi"),
-    PHONG_VIP("Phòng VIP"),
-    PHONG_GIA_DINH("Phòng gia đình");
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    private final String displayName;
+/**
+ * Entity: LoaiPhong (Loại phòng)
+ * Bảng: LoaiPhong
+ * Mô tả: Lưu trữ thông tin các loại phòng (Đơn, Đôi, Gia đình, VIP)
+ */
+@Entity
+@Table(name = "LoaiPhong")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoaiPhong {
+    @Id
+    @Column(name = "maLoaiPhong", length = 20)
+    private String maLoaiPhong;
 
-    LoaiPhong(String displayName) {
-        this.displayName = displayName;
-    }
+    @Column(name = "tenLoaiPhong", length = 50, nullable = false)
+    private String tenLoaiPhong;
 
-    public String getDisplayName() {
-        return displayName;
-    }
+    @Column(name = "moTa", length = 50, nullable = false)
+    private String moTa;
 }

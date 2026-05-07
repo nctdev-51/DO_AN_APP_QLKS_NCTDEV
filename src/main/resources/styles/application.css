@@ -1,0 +1,200 @@
+/* ============================================
+   MAIN APPLICATION STYLESHEET
+   ============================================ */
+
+/* Root Styling */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 12px;
+    -fx-base: #f0f0f0;
+}
+
+/* Buttons */
+.button {
+    -fx-padding: 8px 15px;
+    -fx-font-size: 12px;
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #2563eb;
+}
+
+.button:pressed {
+    -fx-background-color: #1d4ed8;
+}
+
+/* TextField */
+.text-field {
+    -fx-padding: 8px;
+    -fx-font-size: 12px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-width: 1;
+    -fx-border-radius: 4px;
+}
+
+.text-field:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-padding: 8px;
+    -fx-font-size: 12px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-width: 1;
+    -fx-border-radius: 4px;
+}
+
+/* DatePicker */
+.date-picker {
+    -fx-padding: 8px;
+    -fx-font-size: 12px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-width: 1;
+    -fx-border-radius: 4px;
+}
+
+/* TableView */
+.table-view {
+    -fx-font-size: 11px;
+    -fx-border-color: #e2e8f0;
+}
+
+.table-view .table-row-cell {
+    -fx-padding: 5px;
+    -fx-border-color: #e2e8f0;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #1e293b;
+    -fx-font-weight: bold;
+    -fx-border-color: #cbd5e1;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #1e293b;
+}
+
+.label:light {
+    -fx-text-fill: #64748b;
+}
+
+/* CheckBox */
+.check-box {
+    -fx-font-size: 12px;
+    -fx-padding: 5px;
+}
+
+/* TabPane */
+.tab-pane {
+    -fx-padding: 5px;
+}
+
+.tab {
+    -fx-padding: 10px 20px;
+    -fx-font-size: 12px;
+}
+
+.tab:selected {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+}
+
+/* Alert/Dialog */
+.dialog-pane {
+    -fx-padding: 15px;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+}
+
+/* ============================================
+   CUSTOM STYLES
+   ============================================ */
+
+/* Primary Color */
+.primary-button {
+    -fx-background-color: #3b82f6;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2563eb;
+}
+
+/* Danger Color */
+.danger-button {
+    -fx-background-color: #ef4444;
+}
+
+.danger-button:hover {
+    -fx-background-color: #dc2626;
+}
+
+/* Success Color */
+.success-button {
+    -fx-background-color: #22c55e;
+}
+
+.success-button:hover {
+    -fx-background-color: #16a34a;
+}
+
+/* Warning Color */
+.warning-button {
+    -fx-background-color: #f59e0b;
+}
+
+.warning-button:hover {
+    -fx-background-color: #d97706;
+}
+
+/* Large Text */
+.large-text {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Small Text */
+.small-text {
+    -fx-font-size: 10px;
+    -fx-text-fill: #64748b;
+}
+
+/* Card Style */
+.card {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-padding: 15;
+}
+
+/* VBox/HBox */
+VBox, HBox {
+    -fx-spacing: 10;
+}
+
+/* Scrollbar */
+.scroll-bar {
+    -fx-font-size: 10px;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-padding: 0;
+}
+

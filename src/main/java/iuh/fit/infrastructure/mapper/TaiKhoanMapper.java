@@ -7,25 +7,12 @@ import iuh.fit.core.entity.TaiKhoan;
  * Class: TaiKhoanMapper (Mapper/Converter)
  * 
  * Tầng: INFRASTRUCTURE - Mapper Layer
- * Trách nhiệm: Chuyển đổi giữa Entity và DTO
- * 
- * Lý do cần Mapper:
- * - Entity không được expose trực tiếp ra ngoài
- * - DTO dùng để truyền dữ liệu giữa các tầng
- * - Mapper tập trung logic chuyển đổi ở một chỗ
- * 
- * Pattern: Object Mapping
- * - entity → dto (khi gửi dữ liệu từ DB ra presentation)
- * - dto → entity (khi nhận dữ liệu từ presentation vào DB)
+ * Trách nhiệm: Chuyển đổi giữa Entity TaiKhoan và DTO TaiKhoanDTO
  */
 public class TaiKhoanMapper {
     
     /**
      * Chuyển Entity TaiKhoan → DTO TaiKhoanDTO
-     * Dùng khi: Lấy dữ liệu từ DB trả về cho presentation
-     * 
-     * @param entity Entity TaiKhoan từ database
-     * @return DTO TaiKhoanDTO để gửi cho client
      */
     public static TaiKhoanDTO entityToDTO(TaiKhoan entity) {
         if (entity == null) {
@@ -33,9 +20,9 @@ public class TaiKhoanMapper {
         }
         
         TaiKhoanDTO dto = new TaiKhoanDTO();
-        dto.setTaiKhoan(entity.getTenDangNhap());
+        dto.setTenDangNhap(entity.getTenDangNhap());
         // Lưu ý: Không set mật khẩu vào DTO để gửi cho client (security)
-        // dto.setMatKhau(entity.getMatKhau()); // ❌ Không nên
+        dto.setTrangThaiTK(entity.isTrangThaiTK());
         
         if (entity.getNhanVien() != null) {
             dto.setMaNhanVien(entity.getNhanVien().getMaNhanVien());
@@ -47,23 +34,21 @@ public class TaiKhoanMapper {
     
     /**
      * Chuyển DTO TaiKhoanDTO → Entity TaiKhoan
-     * Dùng khi: Nhận dữ liệu từ presentation lưu vào DB
-     * 
-     * @param dto DTO TaiKhoanDTO từ client
-     * @return Entity TaiKhoan để lưu vào database
      */
     public static TaiKhoan dtoToEntity(TaiKhoanDTO dto) {
         if (dto == null) {
             return null;
         }
         
-        TaiKhoan entity = new TaiKhoan();
-        entity.setTenDangNhap(dto.getTaiKhoan());
-        entity.setMatKhau(dto.getMatKhau());
-        // Lưu ý: NhanVien phải được load từ repository, không set trực tiếp từ DTO
-        // entity.setNhanVien(...); // Phải load từ DB
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setTenDangNhap(dto.getTenDangNhap());
+        taiKhoan.setMatKhau(dto.getMatKhau());
+        taiKhoan.setTrangThaiTK(dto.isTrangThaiTK());
+        // nhanVien sẽ được fetch từ DB bởi Repository
         
-        return entity;
+        return taiKhoan;
     }
 }
+
+
 

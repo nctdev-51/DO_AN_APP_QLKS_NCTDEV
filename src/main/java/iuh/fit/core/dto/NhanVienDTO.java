@@ -1,7 +1,18 @@
 package iuh.fit.core.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
+/**
+ * DTO: NhanVienDTO
+ * Mô tả: Data Transfer Object cho Nhân viên, dùng để truyền dữ liệu giữa các tầng
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class NhanVienDTO {
     private String maNhanVien;
     private String hoTen;
@@ -13,51 +24,4 @@ public class NhanVienDTO {
     private String loaiNhanVien;
     private LocalDate ngayVaoLam;
     private String queQuan;
-
-    public NhanVienDTO() {
-    }
-
-    public NhanVienDTO(String maNhanVien, String hoTen, LocalDate ngaySinh, boolean gioiTinh, String cccd,
-                       String soDienThoai, boolean trangThai, String loaiNhanVien, LocalDate ngayVaoLam, String queQuan) {
-        this.maNhanVien = maNhanVien;
-        this.hoTen = hoTen;
-        this.ngaySinh = ngaySinh;
-        this.gioiTinh = gioiTinh;
-        this.cccd = cccd;
-        this.soDienThoai = soDienThoai;
-        this.trangThai = trangThai;
-        this.loaiNhanVien = loaiNhanVien;
-        this.ngayVaoLam = ngayVaoLam;
-        this.queQuan = queQuan;
-    }
-
-    public String getMaNhanVien() { return maNhanVien; }
-    public void setMaNhanVien(String maNhanVien) { this.maNhanVien = maNhanVien; }
-
-    public String getHoTen() { return hoTen; }
-    public void setHoTen(String hoTen) { this.hoTen = hoTen; }
-
-    public LocalDate getNgaySinh() { return ngaySinh; }
-    public void setNgaySinh(LocalDate ngaySinh) { this.ngaySinh = ngaySinh; }
-
-    public boolean isGioiTinh() { return gioiTinh; }
-    public void setGioiTinh(boolean gioiTinh) { this.gioiTinh = gioiTinh; }
-
-    public String getCccd() { return cccd; }
-    public void setCccd(String cccd) { this.cccd = cccd; }
-
-    public String getSoDienThoai() { return soDienThoai; }
-    public void setSoDienThoai(String soDienThoai) { this.soDienThoai = soDienThoai; }
-
-    public boolean isTrangThai() { return trangThai; }
-    public void setTrangThai(boolean trangThai) { this.trangThai = trangThai; }
-
-    public String getLoaiNhanVien() { return loaiNhanVien; }
-    public void setLoaiNhanVien(String loaiNhanVien) { this.loaiNhanVien = loaiNhanVien; }
-
-    public LocalDate getNgayVaoLam() { return ngayVaoLam; }
-    public void setNgayVaoLam(LocalDate ngayVaoLam) { this.ngayVaoLam = ngayVaoLam; }
-
-    public String getQueQuan() { return queQuan; }
-    public void setQueQuan(String queQuan) { this.queQuan = queQuan; }
 }

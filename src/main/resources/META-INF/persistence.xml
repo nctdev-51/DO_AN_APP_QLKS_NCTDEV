@@ -42,7 +42,7 @@
             <property name="hibernate.highlight_sql" value="true"/>
 
             <!-- SQL Generation Strategy: update | create-drop | create | validate -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+<!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
 
             <!-- Connection Pool Configuration (HikariCP) -->
             <property name="hibernate.hikari.maximumPoolSize" value="20"/>

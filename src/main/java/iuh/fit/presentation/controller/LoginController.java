@@ -32,6 +32,7 @@ public class LoginController {
     private INhanVienService nhanVienService;
     private IPhongService phongService;
     private IPhieuDatPhongService phieuDatPhongService;
+    private IDichVuService dichVuService;
 
     // --- BẢNG MÀU UI ---
     private final String COLOR_PRIMARY = "#2563eb";
@@ -45,12 +46,15 @@ public class LoginController {
                            IKhachHangService khachHangService,
                            INhanVienService nhanVienService,
                            IPhongService phongService,
-                           IPhieuDatPhongService phieuDatPhongService) {
+                           IPhieuDatPhongService phieuDatPhongService,
+                           IDichVuService dichVuService) {
+
         this.authenticationService = authenticationService;
         this.khachHangService = khachHangService;
         this.nhanVienService = nhanVienService;
         this.phongService = phongService;
         this.phieuDatPhongService = phieuDatPhongService;
+        this.dichVuService = dichVuService;
     }
 
     public Scene createLoginScene() {
@@ -220,7 +224,8 @@ public class LoginController {
                     MainController mainController = new MainController(
                             currentStage, user,
                             khachHangService, nhanVienService,
-                            phongService, phieuDatPhongService
+                            phongService, phieuDatPhongService,
+                            dichVuService
                     );
                     mainController.showMainScreen();
 

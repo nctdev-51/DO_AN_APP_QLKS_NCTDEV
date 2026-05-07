@@ -19,19 +19,17 @@ CREATE TABLE LoaiPhong (
 );
 
 CREATE TABLE NhanVien (
-    maNhanVien CHAR(5) PRIMARY KEY,
-    hoTen VARCHAR(50) NOT NULL,
-    ngaySinh DATE NOT NULL
-        CHECK (ngaySinh <= DATE_SUB(CURRENT_DATE, INTERVAL 18 YEAR)),
-    gioiTinh TINYINT(1) NOT NULL,
-    CCCD CHAR(12) NOT NULL UNIQUE,
-    soDienThoai VARCHAR(15) NOT NULL UNIQUE,
-    trangThai TINYINT(1) NOT NULL,
-    loaiNhanVien VARCHAR(50) NOT NULL
-        CHECK (loaiNhanVien IN ('NHAN_VIEN_LE_TAN', 'NHAN_VIEN_QUAN_LY')),
-    ngayVaoLam DATE NOT NULL
-        CHECK (ngayVaoLam <= CURRENT_DATE),
-    queQuan VARCHAR(50) NOT NULL
+                          maNhanVien CHAR(5) PRIMARY KEY,
+                          hoTen VARCHAR(50) NOT NULL,
+                          ngaySinh DATE NOT NULL,
+                          gioiTinh TINYINT(1) NOT NULL,
+                          CCCD CHAR(12) NOT NULL UNIQUE,
+                          soDienThoai VARCHAR(15) NOT NULL UNIQUE,
+                          trangThai TINYINT(1) NOT NULL,
+                          loaiNhanVien VARCHAR(50) NOT NULL
+                              CHECK (loaiNhanVien IN ('NHAN_VIEN_LE_TAN', 'NHAN_VIEN_QUAN_LY')),
+                          ngayVaoLam DATE NOT NULL,
+                          queQuan VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE TaiKhoan (
@@ -45,13 +43,12 @@ CREATE TABLE TaiKhoan (
 );
 
 CREATE TABLE KhachHang (
-    maKhachHang CHAR(5) PRIMARY KEY,
-    hoTen VARCHAR(50) NOT NULL,
-    soDienThoai VARCHAR(10) NOT NULL UNIQUE,
-    ngaySinh DATE NOT NULL
-        CHECK (ngaySinh <= DATE_SUB(CURRENT_DATE, INTERVAL 18 YEAR)),
-    loaiKhachHang VARCHAR(50) NOT NULL
-        CHECK (loaiKhachHang IN ('KHACH_VANG_LAI', 'KHACH_HOI_VIEN'))
+                           maKhachHang CHAR(5) PRIMARY KEY,
+                           hoTen VARCHAR(50) NOT NULL,
+                           soDienThoai VARCHAR(10) NOT NULL UNIQUE,
+                           ngaySinh DATE NOT NULL,
+                           loaiKhachHang VARCHAR(50) NOT NULL
+                               CHECK (loaiKhachHang IN ('KHACH_VANG_LAI', 'KHACH_HOI_VIEN'))
 );
 
 CREATE TABLE KhuyenMai (

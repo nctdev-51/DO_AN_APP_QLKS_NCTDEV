@@ -2,24 +2,11 @@ package iuh.fit.infrastructure.mapper;
 
 import iuh.fit.core.dto.NhanVienDTO;
 import iuh.fit.core.entity.NhanVien;
-import iuh.fit.core.entity.LoaiNhanVien;
 
-/**
- * Class: NhanVienMapper (Mapper/Converter)
- * 
- * Tầng: INFRASTRUCTURE - Mapper Layer
- * Trách nhiệm: Chuyển đổi giữa Entity NhanVien và DTO NhanVienDTO
- */
 public class NhanVienMapper {
-    
-    /**
-     * Chuyển Entity NhanVien → DTO NhanVienDTO
-     */
+
     public static NhanVienDTO entityToDTO(NhanVien entity) {
-        if (entity == null) {
-            return null;
-        }
-        
+        if (entity == null) return null;
         return new NhanVienDTO(
                 entity.getMaNhanVien(),
                 entity.getHoTen(),
@@ -28,20 +15,14 @@ public class NhanVienMapper {
                 entity.getCccd(),
                 entity.getSoDienThoai(),
                 entity.isTrangThai(),
-                entity.getLoaiNhanVien() != null ? entity.getLoaiNhanVien().name() : "",
+                entity.getLoaiNhanVien(),          // đã là String
                 entity.getNgayVaoLam(),
                 entity.getQueQuan()
         );
     }
-    
-    /**
-     * Chuyển DTO NhanVienDTO → Entity NhanVien
-     */
+
     public static NhanVien dtoToEntity(NhanVienDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-        
+        if (dto == null) return null;
         NhanVien entity = new NhanVien();
         entity.setMaNhanVien(dto.getMaNhanVien());
         entity.setHoTen(dto.getHoTen());
@@ -50,19 +31,9 @@ public class NhanVienMapper {
         entity.setCccd(dto.getCccd());
         entity.setSoDienThoai(dto.getSoDienThoai());
         entity.setTrangThai(dto.isTrangThai());
-        
-        if (dto.getLoaiNhanVien() != null && !dto.getLoaiNhanVien().isEmpty()) {
-            try {
-                entity.setLoaiNhanVien(LoaiNhanVien.valueOf(dto.getLoaiNhanVien()));
-            } catch (IllegalArgumentException e) {
-                entity.setLoaiNhanVien(LoaiNhanVien.NHAN_VIEN_LE_TAN);
-            }
-        }
-        
+        entity.setLoaiNhanVien(dto.getLoaiNhanVien());   // String -> String
         entity.setNgayVaoLam(dto.getNgayVaoLam());
         entity.setQueQuan(dto.getQueQuan());
-        
         return entity;
     }
 }
-

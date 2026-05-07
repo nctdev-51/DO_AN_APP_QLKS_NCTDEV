@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="iuh.fit.presentation.controller.dialog.ThemKhachHangDialogController">
+
+    <headerText>Thêm Khách Hàng Mới</headerText>
+
+    <content>
+        <VBox spacing="15" style="-fx-padding: 20;">
+
+            <HBox spacing="10">
+                <Label text="Mã KH:" style="-fx-min-width: 120;"/>
+                <TextField fx:id="tfMaKhach" promptText="Auto" disable="true" prefWidth="250"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Tên Khách:" style="-fx-min-width: 120;"/>
+                <TextField fx:id="tfTenKhach" promptText="Nhập tên khách hàng" prefWidth="250"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Số ĐT:" style="-fx-min-width: 120;"/>
+                <TextField fx:id="tfSoDienThoai" promptText="Nhập số điện thoại" prefWidth="250"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Ngày Sinh:" style="-fx-min-width: 120;"/>
+                <DatePicker fx:id="dpNgaySinh" prefWidth="250"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Loại KH:" style="-fx-min-width: 120;"/>
+                <ComboBox fx:id="cbLoaiKhach" prefWidth="250" promptText="Chọn loại khách"/>
+            </HBox>
+
+        </VBox>
+    </content>
+
+    <buttons>
+        <ButtonType fx:value="OK"/>
+        <ButtonType fx:value="CANCEL"/>
+    </buttons>
+
+</DialogPane>
+

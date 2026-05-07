@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="iuh.fit.presentation.controller.dialog.ThemPhongDialogController">
+
+    <headerText>Thêm Phòng Mới</headerText>
+
+    <content>
+        <VBox spacing="15" style="-fx-padding: 20;">
+
+            <!-- Mã Phòng -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Mã Phòng:" style="-fx-min-width: 120;"/>
+                <TextField fx:id="tfMaPhong" promptText="Nhập mã phòng"/>
+            </HBox>
+
+            <!-- Tên Phòng -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Tên Phòng:" style="-fx-min-width: 120;"/>
+                <TextField fx:id="tfTenPhong" promptText="Nhập tên phòng"/>
+            </HBox>
+
+            <!-- Loại Phòng -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Loại Phòng:" style="-fx-min-width: 120;"/>
+                <ComboBox fx:id="cbLoaiPhong" prefWidth="200" promptText="Chọn loại phòng"/>
+            </HBox>
+
+            <!-- Giá Phòng -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Giá Phòng:" style="-fx-min-width: 120;"/>
+                <TextField fx:id="tfGiaPhong" promptText="Nhập giá" />
+            </HBox>
+
+            <!-- Tình Trạng -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Tình Trạng:" style="-fx-min-width: 120;"/>
+                <ComboBox fx:id="cbTinhTrang" prefWidth="200" promptText="Chọn tình trạng"/>
+            </HBox>
+
+        </VBox>
+    </content>
+
+    <buttons>
+        <ButtonType fx:value="OK"/>
+        <ButtonType fx:value="CANCEL"/>
+    </buttons>
+
+</DialogPane>
+

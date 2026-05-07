@@ -1,44 +1,53 @@
 package iuh.fit.core.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
+/**
+ * Entity: HoaDon (Hóa đơn)
+ * Bảng: HoaDon
+ * Mô tả: Lưu trữ thông tin hóa đơn thanh toán của khách hàng
+ */
 @Entity
-@Table(name = "hoa_don")
+@Table(name = "HoaDon")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class HoaDon {
-
     @Id
-    @Column(name = "ma_hoa_don", length = 20)
+    @Column(name = "maHoaDon", length = 10)
     private String maHoaDon;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ma_phieu_dat")
-    private PhieuDatPhong phieuDatPhong;
+    @Column(name = "ngayLap")
+    private LocalDate ngayLap;
 
-    @Column(name = "tong_tien")
+    @Column(name = "thueVAT")
+    private double thueVAT;
+
+
+    @Column(name = "ghiChu", length = 500)
+    private String ghiChu;
+
+    @Column(name = "tongTien")
     private double tongTien;
 
-    @Column(name = "trang_thai_thanh_toan")
-    private String trangThaiThanhToan;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maNhanVien")
+    private NhanVien nhanVien;
 
-    public HoaDon() {
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maKhachHang")
+    private KhachHang khachHang;
 
-    public HoaDon(String maHoaDon, PhieuDatPhong phieuDatPhong, double tongTien, String trangThaiThanhToan) {
-        this.maHoaDon = maHoaDon;
-        this.phieuDatPhong = phieuDatPhong;
-        this.tongTien = tongTien;
-        this.trangThaiThanhToan = trangThaiThanhToan;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maKhuyenMai")
+    private KhuyenMai khuyenMai;
 
-    public String getMaHoaDon() { return maHoaDon; }
-    public void setMaHoaDon(String maHoaDon) { this.maHoaDon = maHoaDon; }
-
-    public PhieuDatPhong getPhieuDatPhong() { return phieuDatPhong; }
-    public void setPhieuDatPhong(PhieuDatPhong phieuDatPhong) { this.phieuDatPhong = phieuDatPhong; }
-
-    public double getTongTien() { return tongTien; }
-    public void setTongTien(double tongTien) { this.tongTien = tongTien; }
-
-    public String getTrangThaiThanhToan() { return trangThaiThanhToan; }
-    public void setTrangThaiThanhToan(String trangThaiThanhToan) { this.trangThaiThanhToan = trangThaiThanhToan; }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maPhongDat")
+    private Phong phong;
 }

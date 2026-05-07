@@ -11,18 +11,18 @@ import java.util.stream.Collectors;
 
 /**
  * Class: NhanVienServiceImpl (Service Implementation)
- * 
+ *
  * Tầng: CORE - Service Layer
  * Trách nhiệm: Implement logic nghiệp vụ Quản lý Nhân Viên
  */
 public class NhanVienServiceImpl implements INhanVienService {
-    
+
     private final INhanVienRepository nhanVienRepository;
-    
+
     public NhanVienServiceImpl(INhanVienRepository nhanVienRepository) {
         this.nhanVienRepository = nhanVienRepository;
     }
-    
+
     @Override
     public List<NhanVienDTO> getAllNhanVien() {
         return nhanVienRepository.findAll()
@@ -30,59 +30,59 @@ public class NhanVienServiceImpl implements INhanVienService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-    
+
     @Override
     public NhanVienDTO getNhanVienById(String maNhanVien) {
         return nhanVienRepository.findById(maNhanVien)
                 .map(this::convertToDTO)
                 .orElse(null);
     }
-    
+
     @Override
     public NhanVienDTO getNhanVienBySoDienThoai(String soDienThoai) {
         return nhanVienRepository.findBySoDienThoai(soDienThoai)
                 .map(this::convertToDTO)
                 .orElse(null);
     }
-    
+
     @Override
     public NhanVienDTO addNhanVien(NhanVienDTO nhanVienDTO) throws IllegalArgumentException {
         // Business Logic: Validate input
         validateNhanVien(nhanVienDTO);
-        
+
         // Kiểm tra số điện thoại không trùng lặp
         if (nhanVienRepository.findBySoDienThoai(nhanVienDTO.getSoDienThoai()).isPresent()) {
             throw new IllegalArgumentException("Số điện thoại đã tồn tại");
         }
-        
+
         // Tạo mã nhân viên tự động
         String maNhanVien = generateMaNhanVien();
-        
+
         // Chuyển DTO → Entity
         NhanVien entity = convertToEntity(nhanVienDTO);
         entity.setMaNhanVien(maNhanVien);
-        
+
         // Lưu vào repository
         NhanVien saved = nhanVienRepository.save(entity);
-        
+
         return convertToDTO(saved);
     }
-    
+
     @Override
     public NhanVienDTO updateNhanVien(NhanVienDTO nhanVienDTO) throws IllegalArgumentException {
         validateNhanVien(nhanVienDTO);
-        
+
         // Kiểm tra nhân viên có tồn tại không
         if (!nhanVienRepository.findById(nhanVienDTO.getMaNhanVien()).isPresent()) {
             throw new IllegalArgumentException("Nhân viên không tồn tại");
         }
-        
+
         NhanVien entity = convertToEntity(nhanVienDTO);
         NhanVien updated = nhanVienRepository.update(entity);
-        
+
         return convertToDTO(updated);
     }
-    
+
     @Override
     public boolean deleteNhanVien(String maNhanVien) {
         try {
@@ -92,14 +92,14 @@ public class NhanVienServiceImpl implements INhanVienService {
             return false;
         }
     }
-    
+
     @Override
     public String generateMaNhanVien() {
-        List<NhanVien> allNhanVien = nhanVienRepository.findAll();
-        int nextId = allNhanVien.size() + 1;
-        return String.format("NV%03d", nextId);
+        return "NV" + java.time.LocalDateTime.now().format(
+                java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+        );
     }
-    
+
     /**
      * Helper: Validate dữ liệu nhân viên
      */
@@ -117,10 +117,7 @@ public class NhanVienServiceImpl implements INhanVienService {
             throw new IllegalArgumentException("CCCD không được để trống");
         }
     }
-    
-    /**
-     * Helper: Chuyển Entity → DTO
-     */
+
     private NhanVienDTO convertToDTO(NhanVien entity) {
         return new NhanVienDTO(
                 entity.getMaNhanVien(),
@@ -130,15 +127,12 @@ public class NhanVienServiceImpl implements INhanVienService {
                 entity.getCccd(),
                 entity.getSoDienThoai(),
                 entity.isTrangThai(),
-                entity.getLoaiNhanVien() != null ? entity.getLoaiNhanVien().name() : "",
+                entity.getLoaiNhanVien(),   // String
                 entity.getNgayVaoLam(),
                 entity.getQueQuan()
         );
     }
-    
-    /**
-     * Helper: Chuyển DTO → Entity
-     */
+
     private NhanVien convertToEntity(NhanVienDTO dto) {
         NhanVien entity = new NhanVien();
         entity.setMaNhanVien(dto.getMaNhanVien());
@@ -148,9 +142,7 @@ public class NhanVienServiceImpl implements INhanVienService {
         entity.setCccd(dto.getCccd());
         entity.setSoDienThoai(dto.getSoDienThoai());
         entity.setTrangThai(dto.isTrangThai());
-        if (dto.getLoaiNhanVien() != null && !dto.getLoaiNhanVien().isEmpty()) {
-            entity.setLoaiNhanVien(LoaiNhanVien.valueOf(dto.getLoaiNhanVien()));
-        }
+        entity.setLoaiNhanVien(dto.getLoaiNhanVien());   // String
         entity.setNgayVaoLam(dto.getNgayVaoLam());
         entity.setQueQuan(dto.getQueQuan());
         return entity;

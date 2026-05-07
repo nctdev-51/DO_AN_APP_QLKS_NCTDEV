@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="iuh.fit.presentation.controller.QuanLyPhongController">
+
+    <!-- TOP: Toolbar -->
+    <top>
+        <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #ecf0f1; -fx-border-color: #bdc3c7; -fx-border-width: 0 0 1 0;">
+
+            <!-- Search and Action Buttons -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Tìm kiếm:" style="-fx-font-size: 12px;"/>
+                <TextField fx:id="tfSearch" promptText="Nhập mã hoặc tên phòng..." prefWidth="250"/>
+                <ComboBox fx:id="cbLoaiPhong" prefWidth="150" promptText="Chọn loại phòng"/>
+                <ComboBox fx:id="cbTinhTrang" prefWidth="150" promptText="Chọn tình trạng"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button fx:id="btnThem" text="➕ Thêm Phòng" style="-fx-padding: 8px 15px; -fx-cursor: hand;" onAction="#handleThem"/>
+                <Button fx:id="btnSua" text="✏️ Sửa" style="-fx-padding: 8px 15px; -fx-cursor: hand;" onAction="#handleSua"/>
+                <Button fx:id="btnXoa" text="🗑️ Xóa" style="-fx-padding: 8px 15px; -fx-cursor: hand;" onAction="#handleXoa"/>
+                <Button fx:id="btnLamMoi" text="🔄 Làm Mới" style="-fx-padding: 8px 15px; -fx-cursor: hand;" onAction="#handleLamMoi"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- CENTER: Table View -->
+    <center>
+        <TableView fx:id="tablePhong" style="-fx-padding: 15;">
+            <columns>
+                <TableColumn text="Mã Phòng" fx:id="colMaPhong" prefWidth="80"/>
+                <TableColumn text="Tên Phòng" fx:id="colTenPhong" prefWidth="150"/>
+                <TableColumn text="Loại Phòng" fx:id="colLoaiPhong" prefWidth="100"/>
+                <TableColumn text="Giá Phòng" fx:id="colGiaPhong" prefWidth="100"/>
+                <TableColumn text="Tình Trạng" fx:id="colTinhTrang" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <!-- BOTTOM: Status Bar -->
+    <bottom>
+        <HBox spacing="10" style="-fx-padding: 10; -fx-background-color: #ecf0f1; -fx-border-color: #bdc3c7; -fx-border-width: 1 0 0 0;">
+            <Label fx:id="lblTongCong" text="Tổng cộng: 0 phòng" style="-fx-font-size: 11px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblTrong" text="Trống: 0" style="-fx-font-size: 11px;"/>
+            <Label fx:id="lblDaDat" text="Đã đặt: 0" style="-fx-font-size: 11px;"/>
+            <Label fx:id="lblBaoTri" text="Bảo trì: 0" style="-fx-font-size: 11px;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
+
