@@ -23,14 +23,16 @@ public class Phong {
     @Column(name = "tenPhong", length = 100)
     private String tenPhong;
 
-    @Column(name = "giaPhong", nullable = false)
+    @Column(name = "giaPhong")
     private double giaPhong;
 
+    @Column(name = "maLoaiPhong", length = 20, insertable = false, updatable = false)
+    private String maLoaiPhong;  // Mã loại phòng để query
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "maLoaiPhong", nullable = false)
-    private LoaiPhong loaiPhong;
+    @JoinColumn(name = "maLoaiPhong")
+    private LoaiPhong loaiPhong;  // Quan hệ entity
 
-    @Column(name = "tinhTrang", length = 50, nullable = false)
-    private String tinhTrang; // 'Trống', 'Đã Đặt', 'Bảo Trì'
+    @Column(name = "tinhTrang", length = 50)
+    private String tinhTrang;
 }

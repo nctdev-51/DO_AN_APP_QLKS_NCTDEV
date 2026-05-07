@@ -19,18 +19,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class KhachHang {
     @Id
-    @Column(name = "maKhachHang")
+    @Column(name = "maKhachHang", length = 30)
     private String maKhachHang;
 
-    @Column(name = "hoTen", length = 50, nullable = false)
+    @Column(name = "hoTen", length = 50)
     private String hoTen;
 
-    @Column(name = "soDienThoai", length = 10, nullable = false, unique = true)
+    @Column(name = "soDienThoai", length = 15)
     private String soDienThoai;
 
-    @Column(name = "ngaySinh", nullable = false)
+    @Column(name = "ngaySinh")
     private LocalDate ngaySinh;
 
-    @Column(name = "loaiKhachHang", length = 50, nullable = false)
-    private String loaiKhachHang; // 'KHACH_VANG_LAI' hoặc 'KHACH_HOI_VIEN'
+    @Column(name = "loaiKhachHang", length = 50)
+    private String loaiKhachHang;
 }

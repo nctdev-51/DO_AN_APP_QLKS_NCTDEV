@@ -45,10 +45,8 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
             throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
         }
 
+        // Dùng Mapper để chuyển đổi, mapper đã tự động tạo Khóa ghép và set Số lượng
         ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
-        // Gán khóa chính trực tiếp
-        entity.setMaHoaDon(dto.getMaHoaDon());
-        entity.setMaDichVu(dto.getMaDichVu());
 
         ChiTietHoaDon saved = chiTietHoaDonRepository.save(entity);
         return ChiTietHoaDonMapper.toDTO(saved);
@@ -63,9 +61,8 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
             throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
         }
 
+        // Mapper đã tự động map ID ghép và Số lượng, không cần gọi lại các hàm set lỗi
         ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
-        entity.setMaHoaDon(dto.getMaHoaDon());
-        entity.setMaDichVu(dto.getMaDichVu());
 
         ChiTietHoaDon updated = chiTietHoaDonRepository.update(entity);
         return ChiTietHoaDonMapper.toDTO(updated);
@@ -104,9 +101,8 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
         ChiTietHoaDonId id = new ChiTietHoaDonId(dto.getMaHoaDon(), dto.getMaDichVu());
         Optional<ChiTietHoaDon> existing = chiTietHoaDonRepository.findById(id);
 
+        // Mapper đã xử lý việc set ID ghép và setSoLuong
         ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
-        entity.setMaHoaDon(dto.getMaHoaDon());
-        entity.setMaDichVu(dto.getMaDichVu());
 
         if (existing.isPresent()) {
             chiTietHoaDonRepository.update(entity);

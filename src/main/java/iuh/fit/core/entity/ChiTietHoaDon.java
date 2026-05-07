@@ -15,20 +15,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(ChiTietHoaDonId.class)
+// CHÚ Ý: Đã xóa dòng @IdClass ở đây để không bị xung đột với @EmbeddedId bên dưới
 public class ChiTietHoaDon {
-    @Id
-    @Column(name = "maHoaDon")
-    private String maHoaDon;
 
-    @Id
-    @Column(name = "maDichVu", length = 20)
-    private String maDichVu;
+    @EmbeddedId
+    private ChiTietHoaDonId id;
 
     @Column(name = "soLuong")
     private int soLuong;
 
-    // Relationships (mapped but not part of ID)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maHoaDon", insertable = false, updatable = false)
     private HoaDon hoaDon;
@@ -36,4 +31,17 @@ public class ChiTietHoaDon {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maDichVu", insertable = false, updatable = false)
     private DichVu dichVu;
+
+    // Tiện ích getter/setter cho mã
+    public String getMaHoaDon() { return id != null ? id.maHoaDon : null; }
+    public void setMaHoaDon(String maHoaDon) {
+        if (id == null) id = new ChiTietHoaDonId();
+        id.maHoaDon = maHoaDon;
+    }
+
+    public String getMaDichVu() { return id != null ? id.maDichVu : null; }
+    public void setMaDichVu(String maDichVu) {
+        if (id == null) id = new ChiTietHoaDonId();
+        id.maDichVu = maDichVu;
+    }
 }

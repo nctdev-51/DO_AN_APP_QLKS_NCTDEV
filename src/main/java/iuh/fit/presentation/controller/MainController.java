@@ -415,9 +415,19 @@ public class MainController {
     private void loadGoiDichVu() {
         try {
             contentArea.getChildren().clear();
-            QuanLyDichVuController gd = new QuanLyDichVuController(dichVuService, phieuDatPhongService, chiTietHoaDonService);
-            contentArea.getChildren().add(gd.createView());
-        } catch (Exception ex) { ex.printStackTrace(); }
+
+            // Khởi tạo Controller Mới (Bản POS)
+            GoiDichVuController gdController = new GoiDichVuController(
+                    dichVuService, phieuDatPhongService, chiTietHoaDonService
+            );
+
+            // Thêm giao diện vào vùng hiển thị chính
+            contentArea.getChildren().add(gdController.createGoiDichVuView());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showErrorBox("LỖI KHI MỞ GIAO DIỆN GỌI DỊCH VỤ", ex);
+        }
     }
 
     private void loadTraPhong() {

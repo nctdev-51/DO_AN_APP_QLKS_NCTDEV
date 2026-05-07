@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HoaDon {
     @Id
-    @Column(name = "maHoaDon", length = 10)
+    @Column(name = "maHoaDon", length = 30)
     private String maHoaDon;
 
     @Column(name = "ngayLap")
@@ -28,24 +28,50 @@ public class HoaDon {
     @Column(name = "thueVAT")
     private double thueVAT;
 
-
     @Column(name = "ghiChu", length = 500)
     private String ghiChu;
 
     @Column(name = "tongTien")
     private double tongTien;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "maNhanVien")
-    private NhanVien nhanVien;
+    @Column(name = "tongTienPhong")
+    private double tongTienPhong;
+
+    @Column(name = "tongTienDichVu")
+    private double tongTienDichVu;
+
+    @Column(name = "chietKhau")
+    private double chietKhau;
+
+    @Column(name = "trangThaiThanhToan", length = 50)
+    private String trangThaiThanhToan;
+
+    @Column(name = "tenPhong", length = 100)
+    private String tenPhong;
+
+    @Column(name = "maKhachHang", length = 30, insertable = false, updatable = false)
+    private String maKhachHang;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maKhachHang")
     private KhachHang khachHang;
 
+    @Column(name = "maNhanVien", length = 5, insertable = false, updatable = false)
+    private String maNhanVien;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maNhanVien")
+    private NhanVien nhanVien;
+
+    @Column(name = "maKhuyenMai", length = 5, insertable = false, updatable = false)
+    private String maKhuyenMai;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maKhuyenMai")
     private KhuyenMai khuyenMai;
+
+    @Column(name = "maPhongDat", length = 4, insertable = false, updatable = false)
+    private String maPhongDat;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maPhongDat")

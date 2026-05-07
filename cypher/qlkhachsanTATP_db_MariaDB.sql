@@ -1,13 +1,8 @@
 -- ============================================================
--- HOTEL MANAGEMENT SYSTEM - MariaDB DATABASE (FIXED VERSION)
+-- HOTEL MANAGEMENT SYSTEM - MariaDB DATABASE (FIXED LENGTH VERSION)
 -- Các thay đổi so với bản gốc:
---   1. KhachHang.loaiKhachHang: thêm 'KHACH_MOI', 'KHACH_THUONG_XUYEN'
---   2. HoaDon: thêm cột tongTienPhong, tongTienDichVu, chietKhau,
---              trangThaiThanhToan, tenPhong để DTO hiển thị đầy đủ
---   3. PhieuDatPhong.trangThai: thêm các giá trị 'Nhận Phòng', 'Trả Phòng'
---              được dùng trong QuanLyPhieuDatTraPhongController
---   4. Dữ liệu mẫu HoaDon cập nhật cột mới
---   5. Thêm 5 phiếu trạng thái DA_NHAN_PHONG để TraPhongController hiển thị
+--   1. Nới lỏng kích thước cột maKhachHang, maPhieu, maHoaDon lên VARCHAR(30)
+--      để tương thích với auto-generate ID từ Java (System.currentTimeMillis())
 -- ============================================================
 
 DROP DATABASE IF EXISTS qlkhachsanTATP_db;
@@ -48,9 +43,9 @@ CREATE TABLE TaiKhoan (
                               ON DELETE CASCADE
 );
 
--- FIX #1: Mở rộng CHECK để khớp tất cả loại KH dùng trong Java code
+-- ĐÃ FIX: CHAR(5) -> VARCHAR(30)
 CREATE TABLE KhachHang (
-                           maKhachHang CHAR(5) PRIMARY KEY,
+                           maKhachHang VARCHAR(30) PRIMARY KEY,
                            hoTen VARCHAR(50) NOT NULL,
                            soDienThoai VARCHAR(15) NOT NULL UNIQUE,
                            ngaySinh DATE NOT NULL,
@@ -79,7 +74,6 @@ CREATE TABLE Phong (
                        tenPhong VARCHAR(100),
                        giaPhong DECIMAL(18, 2) NOT NULL,
                        maLoaiPhong VARCHAR(20) NOT NULL,
-    -- FIX #3: Thêm giá trị 'Đang ở' (đúng với code cập nhật phòng khi check-in)
                        tinhTrang VARCHAR(50) NOT NULL DEFAULT 'Trống',
                        CONSTRAINT FK_Phong_LoaiPhong FOREIGN KEY (maLoaiPhong)
                            REFERENCES LoaiPhong(maLoaiPhong),
@@ -93,10 +87,10 @@ CREATE TABLE DichVu (
                         moTa VARCHAR(255)
 );
 
--- FIX #2: Thêm các giá trị trangThai phù hợp với controller
+-- ĐÃ FIX: maPhieu VARCHAR(20) -> VARCHAR(30) | maKhachHang CHAR(5) -> VARCHAR(30)
 CREATE TABLE PhieuDatPhong (
-                               maPhieu VARCHAR(20) PRIMARY KEY,
-                               maKhachHang CHAR(5),
+                               maPhieu VARCHAR(30) PRIMARY KEY,
+                               maKhachHang VARCHAR(30),
                                maPhong CHAR(4),
                                ngayDat DATE,
                                ngayNhan DATE,
@@ -108,9 +102,9 @@ CREATE TABLE PhieuDatPhong (
                                                         'DA_NHAN_PHONG',
                                                         'DA_TRA_PHONG',
                                                         'DA_HUY',
-                                                        'Nhận Phòng',   -- dùng trong QuanLyPhieuDatTraPhongController.processCheckIn()
-                                                        'Trả Phòng',    -- dùng trong processCheckoutReal()
-                                                        'Đang chờ',     -- dùng trong filter stat cards
+                                                        'Nhận Phòng',
+                                                        'Trả Phòng',
+                                                        'Đang chờ',
                                                         'Đã xác nhận',
                                                         'Đã checkin',
                                                         'Đã checkout'
@@ -121,30 +115,31 @@ CREATE TABLE PhieuDatPhong (
                                FOREIGN KEY (maNhanVien) REFERENCES NhanVien(maNhanVien)
 );
 
--- FIX #2: Bổ sung cột cần thiết cho HoaDonDTO được dùng trong các controller
+-- ĐÃ FIX: maHoaDon VARCHAR(10) -> VARCHAR(30) | maKhachHang CHAR(5) -> VARCHAR(30)
 CREATE TABLE HoaDon (
-                        maHoaDon VARCHAR(10) PRIMARY KEY,
+                        maHoaDon VARCHAR(30) PRIMARY KEY,
                         maNhanVien CHAR(5),
-                        maKhachHang CHAR(5),
+                        maKhachHang VARCHAR(30),
                         ngayLap DATE,
                         thueVAT FLOAT DEFAULT 0,
                         maKhuyenMai CHAR(5),
                         maPhongDat CHAR(4),
-                        tenPhong VARCHAR(100),           -- NEW: tên phòng (dùng trong processCheckoutReal)
+                        tenPhong VARCHAR(100),
                         ghiChu VARCHAR(500),
-                        tongTienPhong DECIMAL(18, 2) DEFAULT 0,  -- NEW: tiền phòng riêng
-                        tongTienDichVu DECIMAL(18, 2) DEFAULT 0, -- NEW: tiền dịch vụ riêng
-                        chietKhau DECIMAL(18, 2) DEFAULT 0,      -- NEW: chiết khấu
+                        tongTienPhong DECIMAL(18, 2) DEFAULT 0,
+                        tongTienDichVu DECIMAL(18, 2) DEFAULT 0,
+                        chietKhau DECIMAL(18, 2) DEFAULT 0,
                         tongTien DECIMAL(18, 2),
-                        trangThaiThanhToan VARCHAR(50) DEFAULT 'Chưa Thanh Toán',  -- NEW: trạng thái TT
+                        trangThaiThanhToan VARCHAR(50) DEFAULT 'Chưa Thanh Toán',
                         FOREIGN KEY (maNhanVien) REFERENCES NhanVien(maNhanVien),
                         FOREIGN KEY (maKhachHang) REFERENCES KhachHang(maKhachHang),
                         FOREIGN KEY (maKhuyenMai) REFERENCES KhuyenMai(maKhuyenMai),
                         FOREIGN KEY (maPhongDat) REFERENCES Phong(maPhong)
 );
 
+-- ĐÃ FIX: maPhieu VARCHAR(20) -> VARCHAR(30)
 CREATE TABLE ChiTietPhieuDatPhong (
-                                      maPhieu VARCHAR(20),
+                                      maPhieu VARCHAR(30),
                                       maDichVu VARCHAR(20),
                                       soLuong INT,
                                       ghiChu VARCHAR(500),
@@ -153,8 +148,9 @@ CREATE TABLE ChiTietPhieuDatPhong (
                                       FOREIGN KEY (maDichVu) REFERENCES DichVu(maDichVu)
 );
 
+-- ĐÃ FIX: maHoaDon VARCHAR(10) -> VARCHAR(30)
 CREATE TABLE ChiTietHoaDon (
-                               maHoaDon VARCHAR(10),
+                               maHoaDon VARCHAR(30),
                                maDichVu VARCHAR(20),
                                soLuong INT,
                                PRIMARY KEY (maHoaDon, maDichVu),
@@ -201,7 +197,7 @@ INSERT INTO TaiKhoan (maNhanVien, tenDangNhap, matKhau, trangThaiTK) VALUES
                                                                          ('NV010', 'letan07',    '123', 1),
                                                                          ('NV011', 'manager02',  '123', 1);
 
--- KHÁCH HÀNG (FIX #1: dùng đúng các loại mới)
+-- KHÁCH HÀNG
 INSERT INTO KhachHang (maKhachHang, hoTen, soDienThoai, ngaySinh, loaiKhachHang) VALUES
                                                                                      ('KH001', 'Trần Hùng Dũng',   '0912345001', '1990-11-20', 'KHACH_HOI_VIEN'),
                                                                                      ('KH002', 'Phạm Thị Mai',     '0987654002', '1985-05-10', 'KHACH_HOI_VIEN'),
@@ -282,7 +278,6 @@ INSERT INTO Phong (maPhong, tenPhong, giaPhong, maLoaiPhong, tinhTrang) VALUES
 ('3P10', 'Phòng 310 - VIP Garden', 2050000.00, 'VIP',     'Bảo Trì');
 
 -- PHIẾU ĐẶT PHÒNG
--- FIX #3: Các phiếu DA_NHAN_PHONG = khách đang ở → TraPhong/GoiDichVu sẽ hiện
 INSERT INTO PhieuDatPhong (maPhieu, maKhachHang, maPhong, ngayDat, ngayNhan, ngayTra, tongTien, trangThai, maNhanVien) VALUES
 -- Chờ nhận phòng
 ('PDP001', 'KH001', '1P07', '2025-10-25', '2026-05-10', '2026-05-13', NULL,         'CHO_NHAN_PHONG', 'NV002'),
@@ -292,7 +287,7 @@ INSERT INTO PhieuDatPhong (maPhieu, maKhachHang, maPhong, ngayDat, ngayNhan, nga
 ('PDP010', 'KH007', '3P01', '2025-11-02', '2026-05-11', '2026-05-13', NULL,         'CHO_NHAN_PHONG', 'NV006'),
 ('PDP011', 'KH009', '3P02', '2025-11-03', '2026-05-13', '2026-05-17', NULL,         'CHO_NHAN_PHONG', 'NV002'),
 ('PDP012', 'KH011', '2P01', '2025-11-02', '2026-05-14', '2026-05-17', NULL,         'CHO_NHAN_PHONG', 'NV003'),
--- Đã nhận phòng (đang ở) → hiện trong GoiDichVu & TraPhong
+-- Đã nhận phòng (đang ở)
 ('PDP004', 'KH003', '1P05', '2025-10-30', '2026-05-05', '2026-05-09', NULL,         'DA_NHAN_PHONG',  'NV003'),
 ('PDP005', 'KH005', '2P06', '2025-10-15', '2026-05-04', '2026-05-08', NULL,         'DA_NHAN_PHONG',  'NV002'),
 ('PDP006', 'KH008', '1P08', '2025-10-20', '2026-05-03', '2026-05-07', NULL,         'DA_NHAN_PHONG',  'NV004'),
@@ -309,7 +304,7 @@ INSERT INTO PhieuDatPhong (maPhieu, maKhachHang, maPhong, ngayDat, ngayNhan, nga
 ('PDP_H2', 'KH008', '1P07', '2025-10-20', '2025-10-22', '2025-10-28', 4950000.00,  'DA_TRA_PHONG',   'NV004'),
 ('PDP_H3', 'KH010', '3P05', '2025-10-25', '2025-10-28', '2025-11-02', 3380000.00,  'DA_TRA_PHONG',   'NV006');
 
--- HÓA ĐƠN (FIX #2: thêm tongTienPhong, tongTienDichVu, chietKhau, trangThaiThanhToan, tenPhong)
+-- HÓA ĐƠN
 INSERT INTO HoaDon (maHoaDon, maNhanVien, maKhachHang, ngayLap, thueVAT, maKhuyenMai, maPhongDat, tenPhong, ghiChu, tongTienPhong, tongTienDichVu, chietKhau, tongTien, trangThaiThanhToan) VALUES
                                                                                                                                                                                                 ('HD001', 'NV002', 'KH005', '2025-10-25', 0.08, NULL,   '2P05', 'Phòng 205 - Hướng Biển',  'Thanh toán PDP_H1',          3050000.00, 244400.00, 0.00, 3294400.00, 'Đã Thanh Toán'),
                                                                                                                                                                                                 ('HD002', 'NV004', 'KH008', '2025-10-28', 0.08, 'KM003','1P07', 'Phòng 107 - Hướng Vườn',  'Thanh toán PDP_H2 - giảm 5%', 4500000.00, 472800.00, 0.00, 5068800.00, 'Đã Thanh Toán'),
@@ -403,3 +398,4 @@ FROM PhieuDatPhong pdp
 -- ============================================================
 -- MIGRATION COMPLETE
 -- ============================================================
+Bạn hãy cho tôi file ddl update lại các Entity trong hệ thống để nó match với db hiện tại
