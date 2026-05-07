@@ -10,5 +10,9 @@
         <module name="BTL_PT_QLKS" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Hotel_Client" target="21" />
+      <module name="Hotel_Server" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>

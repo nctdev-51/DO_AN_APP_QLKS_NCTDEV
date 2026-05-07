@@ -14,4 +14,11 @@ public interface IPhongRepository {
     Phong update(Phong phong);
     void deleteById(String maPhong);
     List<Phong> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, double minPrice, double maxPrice);
+
+    // 1. Hàm này dùng để lấy Entity phục vụ cho nội bộ hoặc Service
+    List<Phong> getPhongByPhieuDat(String maPhieu);
+
+    // 2. Sửa lại hàm này để khớp với định nghĩa trong Interface IPhongRepository
+    // Lưu ý: Interface IPhongRepository cũng phải để kiểu trả về là List<Phong>
+    List<Phong> getDanhSachPhongTheoMaPhieu(String maPhieu);
 }

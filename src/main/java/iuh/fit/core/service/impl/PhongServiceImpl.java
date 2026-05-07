@@ -84,4 +84,11 @@ public class PhongServiceImpl implements IPhongService {
                 .map(PhongMapper::entityToDTO)
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<PhongDTO> getPhongByPhieuDat(String maPhieu) {
+        // Gọi repo lấy Entity -> dùng Stream API map sang DTO
+        return phongRepository.getDanhSachPhongTheoMaPhieu(maPhieu).stream()
+                .map(PhongMapper::entityToDTO)
+                .collect(Collectors.toList());
+    }
 }
