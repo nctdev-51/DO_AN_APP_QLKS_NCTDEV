@@ -548,10 +548,6 @@ public class PhieuDatPhong_DAO {
                 List<Phong> dsPhong = getDanhSachPhongTheoMaPhieu(pdp.getMaPhieu());
                 pdp.setDsPhong(dsPhong); // Gán danh sách phòng vào phiếu
                 
-                // Gán thêm danh sách dịch vụ
-                List<ChiTietDichVu> dsDichVu = getDanhSachDichVuTheoMaPhieu(pdp.getMaPhieu());
-                pdp.setDsDichVu(dsDichVu);
-                
                 // 4. Thêm phiếu đã đủ thông tin vào danh sách
                 dsPhieu.add(pdp);
             }

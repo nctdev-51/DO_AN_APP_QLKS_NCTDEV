@@ -118,4 +118,30 @@ public class PhongRepositoryImpl implements IPhongRepository {
                     .getResultList();
         }
     }
+
+    // 1. Hàm này dùng để lấy Entity phục vụ cho nội bộ hoặc Service
+    @Override
+    public List<Phong> getPhongByPhieuDat(String maPhieu) {
+        try (EntityManager em = JpaConfig.getEntityManager()) {
+            String jpql = """
+                SELECT p FROM Phong p 
+                JOIN p.dsPhieuDat pdp 
+                WHERE pdp.maPhieu = :maPhieu
+                """;
+
+            return em.createQuery(jpql, Phong.class)
+                    .setParameter("maPhieu", maPhieu)
+                    .getResultList();
+        } catch (Exception e) {
+            logger.severe("Lỗi lấy danh sách phòng theo mã phiếu: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    // 2. Sửa lại hàm này để khớp với định nghĩa trong Interface IPhongRepository
+    // Lưu ý: Interface IPhongRepository cũng phải để kiểu trả về là List<Phong>
+    @Override
+    public List<Phong> getDanhSachPhongTheoMaPhieu(String maPhieu) {
+        return getPhongByPhieuDat(maPhieu);
+    }
 }

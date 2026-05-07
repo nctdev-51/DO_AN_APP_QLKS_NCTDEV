@@ -1,10 +1,43 @@
 package iuh.fit.app;
 
-import iuh.fit.core.repository.*;
-import iuh.fit.core.service.*;
+// Import đích danh các Interface (Giao diện)
+import iuh.fit.core.repository.IChiTietHoaDonRepository;
+import iuh.fit.core.repository.IDichVuRepository;
+import iuh.fit.core.repository.IHoaDonRepository;
+import iuh.fit.core.repository.IKhachHangRepository;
+import iuh.fit.core.repository.INhanVienRepository;
+import iuh.fit.core.repository.IPhieuDatPhongRepository;
+import iuh.fit.core.repository.IPhongRepository;
+import iuh.fit.core.repository.ITaiKhoanRepository;
+
+import iuh.fit.core.service.IAuthenticationService;
+import iuh.fit.core.service.IChiTietHoaDonService;
+import iuh.fit.core.service.IDichVuService;
 import iuh.fit.core.service.IHoaDonService;
-import iuh.fit.core.service.impl.*;
-import iuh.fit.infrastructure.persistence.*;
+import iuh.fit.core.service.IKhachHangService;
+import iuh.fit.core.service.INhanVienService;
+import iuh.fit.core.service.IPhieuDatPhongService;
+import iuh.fit.core.service.IPhongService;
+
+// Import đích danh các Class thực thi (Impl) ĐỂ TRÁNH LỖI AMBIGUOUS
+import iuh.fit.core.service.impl.AuthenticationServiceImpl;
+import iuh.fit.core.service.impl.ChiTietHoaDonServiceImpl;
+import iuh.fit.core.service.impl.DichVuServiceImpl;
+import iuh.fit.core.service.impl.HoaDonServiceImpl;
+import iuh.fit.core.service.impl.KhachHangServiceImpl;
+import iuh.fit.core.service.impl.NhanVienServiceImpl;
+import iuh.fit.core.service.impl.PhieuDatPhongServiceImpl;
+import iuh.fit.core.service.impl.PhongServiceImpl;
+
+import iuh.fit.infrastructure.persistence.ChiTietHoaDonRepositoryImpl;
+import iuh.fit.infrastructure.persistence.DichVuRepositoryImpl;
+import iuh.fit.infrastructure.persistence.HoaDonRepositoryImpl;
+import iuh.fit.infrastructure.persistence.KhachHangRepositoryImpl;
+import iuh.fit.infrastructure.persistence.NhanVienRepositoryImpl;
+import iuh.fit.infrastructure.persistence.PhieuDatPhongRepositoryImpl;
+import iuh.fit.infrastructure.persistence.PhongRepositoryImpl;
+import iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl;
+
 import iuh.fit.presentation.controller.LoginController;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -28,9 +61,7 @@ public class MainApp extends Application {
         // Khởi tạo service
         IKhachHangService khService = new KhachHangServiceImpl(khRepo);
         INhanVienService nvService = new NhanVienServiceImpl(nvRepo);
-        IPhieuDatPhongRepository phieuDatPhongRepo = new PhieuDatPhongRepositoryImpl();
-        IPhongRepository phongRepository = new PhongRepositoryImpl();
-        IPhongService phongService = new PhongServiceImpl(phongRepository, phieuDatPhongRepo);
+        IPhongService phongService = new PhongServiceImpl(phongRepo);
         IPhieuDatPhongService phieuService = new PhieuDatPhongServiceImpl(phieuRepo);
         IAuthenticationService authService = new AuthenticationServiceImpl(tkRepo);
         IDichVuService dvService = new DichVuServiceImpl(dvRepo);
@@ -48,6 +79,7 @@ public class MainApp extends Application {
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("Quản lý khách sạn TTV - Đăng nhập");
         primaryStage.setResizable(false);
+
         try {
             // Tải logo TTV từ resources
             Image logo = new Image(getClass().getResourceAsStream("/images/logo_ttv.png"));
@@ -64,6 +96,7 @@ public class MainApp extends Application {
                 // Ignore if icon fails to load
             }
         }
+
         primaryStage.show();
     }
 

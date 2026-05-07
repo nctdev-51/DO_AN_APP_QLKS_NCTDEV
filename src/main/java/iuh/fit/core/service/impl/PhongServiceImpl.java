@@ -1,27 +1,22 @@
 package iuh.fit.core.service.impl;
 
-
 import iuh.fit.core.dto.PhongDTO;
 import iuh.fit.core.entity.Phong;
-import iuh.fit.core.entity.PhieuDatPhong;
-import iuh.fit.core.repository.IPhieuDatPhongRepository;
 import iuh.fit.core.repository.IPhongRepository;
 import iuh.fit.core.service.IPhongService;
+import iuh.fit.infrastructure.db.JpaConfig;
 import iuh.fit.infrastructure.mapper.PhongMapper;
+import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PhongServiceImpl implements IPhongService {
     private final IPhongRepository phongRepository;
-    private final IPhieuDatPhongRepository phieuDatPhongRepository; // thêm
 
-    public PhongServiceImpl(IPhongRepository phongRepository,
-                            IPhieuDatPhongRepository phieuDatPhongRepository) {
+    public PhongServiceImpl(IPhongRepository phongRepository) {
         this.phongRepository = phongRepository;
-        this.phieuDatPhongRepository = phieuDatPhongRepository;
     }
 
     @Override
@@ -91,18 +86,25 @@ public class PhongServiceImpl implements IPhongService {
                 .map(PhongMapper::entityToDTO)
                 .collect(Collectors.toList());
     }
-
     @Override
     public List<PhongDTO> getPhongByPhieuDat(String maPhieu) {
-        // Tìm phiếu theo mã
-        PhieuDatPhong phieu = phieuDatPhongRepository.findById(maPhieu).orElse(null);
-        if (phieu == null || phieu.getPhong().getMaPhong() == null) {
-            return Collections.emptyList();
+        // Gọi repo lấy Entity -> dùng Stream API map sang DTO
+        return phongRepository.getDanhSachPhongTheoMaPhieu(maPhieu).stream()
+                .map(PhongMapper::entityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Phong> findPhongByMaPhieu(String maPhieu) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            // Truy vấn lấy phòng dựa trên mã phiếu đặt
+            String jpql = "SELECT p FROM Phong p WHERE p.maPhong = (SELECT pdp.maPhong FROM PhieuDatPhong pdp WHERE pdp.maPhieu = :maPhieu)";
+            return em.createQuery(jpql, Phong.class)
+                    .setParameter("maPhieu", maPhieu)
+                    .getResultList();
+        } finally {
+            em.close();
         }
-        // Lấy mã phòng từ phiếu (giả sử getMaPhong() trả về String, nếu là entity thì cần .getMaPhong().getMaPhong())
-        String maPhong = phieu.getPhong().getMaPhong(); // Điều chỉnh nếu là ManyToOne
-        Phong phong = phongRepository.findById(maPhong).orElse(null);
-        if (phong == null) return Collections.emptyList();
-        return List.of(PhongMapper.entityToDTO(phong));
     }
 }

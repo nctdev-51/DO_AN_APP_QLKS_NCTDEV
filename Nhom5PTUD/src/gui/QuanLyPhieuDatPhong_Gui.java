@@ -110,14 +110,6 @@ public class QuanLyPhieuDatPhong_Gui extends JPanel {
         });
         
         btnTim.addActionListener(e -> loadDataToList());
-
-        // Tự động tải lại dữ liệu mỗi khi panel được hiển thị
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
-            @Override
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                loadDataToList();
-            }
-        });
     }
 
     /**

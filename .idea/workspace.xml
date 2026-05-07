@@ -4,106 +4,226 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="abc">
-      <change afterPath="$PROJECT_DIR$/ARCHITECTURE_MIGRATION_COMPLETE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/COMPOSITE_KEY_IDCLASS_FIX.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/COMPOSITE_KEY_REFERENCE_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DEVELOPER_QUICK_REFERENCE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ENTITY_FIX_SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ENTITY_MAPPING_FIX_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FINAL_PROJECT_SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FINAL_SESSION_REPORT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IDCLASS_FIX_COMPLETE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NEXT_STEPS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PRESENTATION_LAYER_COMPLETE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PROJECT_COMPLETION_REPORT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PROJECT_VERIFICATION_CHECKLIST.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/QUICK_REFERENCE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_CLEAN_ARCHITECTURE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SESSION_COMPLETE_IDCLASS_FIX.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SESSION_FIX_COMPLETE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/START_HERE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TESTING_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VERIFICATION_CHECKLIST.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhuyenMaiDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LoaiPhongDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/ChiTietHoaDon.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/ChiTietHoaDonId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/ChiTietPhieuDatPhong.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/ChiTietPhieuDatPhongId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IChiTietHoaDonRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IChiTietPhieuDatPhongRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IHoaDonRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IKhuyenMaiRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/ILoaiPhongRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IHoaDonService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IKhuyenMaiService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/ILoaiPhongService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/HoaDonServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhuyenMaiServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/LoaiPhongServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/HoaDonMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/KhuyenMaiMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/LoaiPhongMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/ChiTietHoaDonRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/ChiTietPhieuDatPhongRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/DichVuRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/HoaDonRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/KhuyenMaiRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/LoaiPhongRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DashboardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyGoiDichVuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/dialog/ThemKhachHangDialogController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/dialog/ThemPhongDialogController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/baocao/BaoCao.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/dashboard/Dashboard.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/datphong/DatPhong.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/dialog/ThemKhachHangDialog.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/dialog/ThemPhongDialog.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/dichvu/QuanLyDichVu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/khachhang/QuanLyKhachHang.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/khuyenmai/QuanLyKhuyenMai.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/login/LoginWindow.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/main/MainWindow.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/phong/QuanLyPhong.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/styles/application.css" afterDir="false" />
+    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="Tu update">
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/connectDB/ConnectDB.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/CaLamViec_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/ChiTietDichVu_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/DangNhap_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/DichVu_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/HoaDon_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/KhachHang_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/KhuyenMai_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/LichSuCaLamViec_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/NhanVien_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/PhanCongCaLamViec_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/PhieuDatPhong_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/Phong_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dao/TaiKhoan_DAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dto/PhanCongDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dto/PhongFilterCriteria.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/dto/PhongFilterResult.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/CaLamViec.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/ChiTietDatPhong.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/ChiTietDichVu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/ChiTietHoaDon.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/ChiTietPhieuDatPhong.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/ChiTietThanhToan.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/DichVu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/DonViTinh.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/HinhThucThanhToan.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/HoaDon.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/KhachHang.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/KhuyenMai.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LichSuCaLamViec.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LichSuCheckOut.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LichSuCheckin.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LoaiDichVu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LoaiKhachHang.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LoaiKhuyenMai.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LoaiNhanVien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/LoaiPhong.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/NhanVien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/PhanCongCaLamViec.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/PhieuDatPhong.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/Phong.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/TaiKhoan.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/TinhTrangPhong.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/entity/TrangThaiPhieuDat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/flatlaf-3.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/ChiTietPhong_Dialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/ChonDichVu_Dialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/ChonPhong_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/ChonPhuongAn_Dialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/DangNhap_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/DatPhong_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/HuyPhong_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/LichSuCaLamViec_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/NhanCaBanGiao_Dialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/NhanCa_Dialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyCaLamViec.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyDichVu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyGoiDichVu_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyKhachHang.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyKhuyenMai.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyNhanVien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyPhanCongCa_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyPhieuDatPhong_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyPhong.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyThongKe.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/QuanLyThongKeDoanhThu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/ThemDichVu_Dialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/TienMatPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/gui/TrangChu_Gui.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/jcalendar-1.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/jdatepicker-1.3.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/services/CaLamViecService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/services/PhongFilterService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/bin/sqljdbc42.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/admin_2875381.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/chat_1207415.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/customer-support_1195620.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/google-symbol_2875331.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/halloween-party_2682288.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/idea_1196033.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/mushroom_4702012.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/newspaper_4410328.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/oil_8084515.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/overdue_6755655.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/icons/yay_3770755.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/add.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/analytics_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/blueAdd_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/blueAdd_24.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/boathouse-9871057_1920.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/booking.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/calendar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/calender_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/cancel_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/check.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/check2_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/close.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/edit.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/edit2_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/magnifying-glass.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/plus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/pngtree-default-avatar-image_2235111.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/printer.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/purse.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/question.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/question_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/refresh.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/refresh_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/search_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/trash.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/images/trash2_16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/banhmisung.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/cafe.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/cakho.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/canhmongtoi.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/caphile.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/coca.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/dauhutamhanh.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/giatui.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/karaoke.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/khoquet.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/massage.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/nuocep.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/nuocsuoi.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/pancake.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/ruou.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/trasua.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/data/services/trung.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/database/qlkhachsanTATP_db.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/lib/flatlaf-3.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/lib/jcalendar-1.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/lib/jdatepicker-1.3.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/lib/sqljdbc42.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/connectDB/ConnectDB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/CaLamViec_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/ChiTietDichVu_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/DangNhap_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/DichVu_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/HoaDon_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/KhachHang_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/KhuyenMai_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/LichSuCaLamViec_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/NhanVien_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/PhanCongCaLamViec_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/PhieuDatPhong_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/Phong_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dao/TaiKhoan_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dto/PhanCongDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dto/PhongFilterCriteria.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/dto/PhongFilterResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/CaLamViec.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/ChiTietDatPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/ChiTietDichVu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/ChiTietHoaDon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/ChiTietPhieuDatPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/ChiTietThanhToan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/DichVu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/DonViTinh.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/HinhThucThanhToan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/HoaDon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/KhachHang.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/KhuyenMai.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LichSuCaLamViec.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LichSuCheckOut.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LichSuCheckin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LoaiDichVu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LoaiKhachHang.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LoaiKhuyenMai.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LoaiNhanVien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/LoaiPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/NhanVien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/PhanCongCaLamViec.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/PhieuDatPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/Phong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/TaiKhoan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/TinhTrangPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/entity/TrangThaiPhieuDat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/ChiTietPhong_Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/ChonDichVu_Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/ChonPhong_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/ChonPhuongAn_Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/DangNhap_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/DatPhong_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/HuyPhong_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/LichSuCaLamViec_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/NhanCaBanGiao_Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/NhanCa_Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyCaLamViec.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyDichVu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyGoiDichVu_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyKhachHang.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyKhuyenMai.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyNhanVien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyPhanCongCa_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyPhieuDatPhong_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyPhong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyThongKe.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/QuanLyThongKeDoanhThu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/ThemDichVu_Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/TienMatPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/gui/TrangChu_Gui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/services/CaLamViecService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Nhom5PTUD/src/services/PhongFilterService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ChonPhongController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatNhanPhongController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyDichVuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThanhToanController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypher/qlkhachsanTATP_db_MariaDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/cypher/qlkhachsanTATP_db_MariaDB.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/app/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/app/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/DichVu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/DichVu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/HoaDon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/HoaDon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhachHang.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhachHang.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhuyenMai.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/KhuyenMai.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/LoaiPhong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/LoaiPhong.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/NhanVien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/NhanVien.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/Phong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/Phong.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TaiKhoan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/TaiKhoan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IDichVuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IDichVuRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IDichVuService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IDichVuService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/AuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/AuthenticationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/DichVuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/DichVuServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/NhanVienServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/NhanVienServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/NhanVienMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/NhanVienMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IPhongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IPhongService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/PhongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/PhongServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/DichVuMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/DichVuMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/PhieuDatPhongMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/PhieuDatPhongMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/PhongMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/PhongMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/TaiKhoanMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/TaiKhoanMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/GoiDichVuController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyDatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyDatPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatTraPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatTraPhongController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,6 +232,7 @@
   </component>
   <component name="CopilotPersistence">
     <persistenceIdMap>
+      <entry key="_D:/HK2_Nam3/JAVA/BTNhom/DO_AN_APP_QLKS_NCTDEV" value="3DMG8DfFaLUXAs6LQTtDEaoHrwz" />
       <entry key="_F:/My_Document/lesson/PhanTan/BTL_PT_QLKS" value="3Ccsmfu7bB3FiSa6IOlj3v8xdqS" />
       <entry key="_F:/My_Document/lesson/PhanTan/onTapCK/BTL_PT_QLKS" value="3CcscaMwr3NQZXKQklMFUPVG8j7" />
       <entry key="_T:/BaiTapLon" value="3DKyCjK1XVJBzjY0oa1HNZL1rsI" />
@@ -122,8 +243,8 @@
   </component>
   <component name="CopilotUserSelectedModel">
     <selectedModels>
-      <entry key="chat-panel" value="Claude Haiku 4.5" />
       <entry key="agent-panel" value="Claude Haiku 4.5" />
+      <entry key="chat-panel" value="Claude Haiku 4.5" />
     </selectedModels>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -131,7 +252,6 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
-        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -156,7 +276,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/nctdev-51/DO_AN_APP_QLKS_NCTDEV.git&quot;,
-    &quot;accountId&quot;: &quot;bc0dd656-8bb1-4d69-9847-b5f2008e2a72&quot;
+    &quot;accountId&quot;: &quot;b8ccd20b-ae2a-4dd6-8951-3b75d86e5595&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -181,39 +301,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ClientMain.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ServerMain.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.BTL_PT_QLKS [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.BTL_PT_QLKS [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Tam__1&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/My_Document/lesson/PhanTan/BTL_PT_QLKS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ClientMain.executor": "Run",
+    "Application.Launcher.executor": "Run",
+    "Application.MainApp.executor": "Run",
+    "Application.ServerMain.executor": "Run",
+    "Maven.BTL_PT_QLKS [clean].executor": "Run",
+    "Maven.BTL_PT_QLKS [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "Tu",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "T:/BTLJV",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="T:\BTLJV" />
+      <recent name="D:\HK2_Nam3\JAVA\BTNhom\DO_AN_APP_QLKS_NCTDEV\src\main\resources\images" />
       <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS" />
       <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS\src\main\java" />
     </key>
@@ -284,8 +406,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Launcher" />
-        <item itemvalue="Application.MainApp" />
         <item itemvalue="Application.ClientMain" />
+        <item itemvalue="Application.MainApp" />
         <item itemvalue="Application.ServerMain" />
       </list>
     </recent_temporary>
@@ -323,10 +445,9 @@
       <workItem from="1778050442900" duration="134000" />
       <workItem from="1778050587169" duration="2548000" />
       <workItem from="1778053327525" duration="561000" />
-      <workItem from="1778053902267" duration="1713000" />
-      <workItem from="1778060701512" duration="1757000" />
-      <workItem from="1778112775249" duration="1426000" />
-      <workItem from="1778130843512" duration="3416000" />
+      <workItem from="1778053902267" duration="1100000" />
+      <workItem from="1778084343376" duration="3689000" />
+      <workItem from="1778135545182" duration="3371000" />
     </task>
     <task id="LOCAL-00001" summary="10g30 Tam di ngủ">
       <option name="closed" value="true" />
@@ -344,15 +465,7 @@
       <option name="project" value="LOCAL" />
       <updated>1778045124692</updated>
     </task>
-    <task id="LOCAL-00003" summary="Tu update 15h10pm">
-      <option name="closed" value="true" />
-      <created>1778055061678</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1778055061678</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,8 +485,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="10g30 Tam di ngủ" />
     <MESSAGE value="Tu update" />
-    <MESSAGE value="Tu update 15h10pm" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tu update 15h10pm" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tu update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -382,6 +494,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/TaiKhoanRepositoryImpl.java</url>
           <line>112</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
