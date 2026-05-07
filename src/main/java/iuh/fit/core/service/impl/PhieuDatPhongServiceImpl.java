@@ -1,10 +1,16 @@
 package iuh.fit.core.service.impl;
 
+import iuh.fit.core.dto.HoaDonDTO;
 import iuh.fit.core.dto.PhieuDatPhongDTO;
+import iuh.fit.core.entity.HoaDon;
 import iuh.fit.core.entity.PhieuDatPhong;
+import iuh.fit.core.entity.Phong;
 import iuh.fit.core.repository.IPhieuDatPhongRepository;
 import iuh.fit.core.service.IPhieuDatPhongService;
+import iuh.fit.infrastructure.db.JpaConfig;
+import iuh.fit.infrastructure.mapper.HoaDonMapper;
 import iuh.fit.infrastructure.mapper.PhieuDatPhongMapper;
+import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -52,9 +58,30 @@ public class PhieuDatPhongServiceImpl implements IPhieuDatPhongService {
                 .collect(Collectors.toList());
     }
 
+    // ✅ IMPLEMENTATION: Lọc phiếu đặt phòng theo trạng thái
+    @Override
+    public List<PhieuDatPhongDTO> getPhieuDatPhongByTrangThai(String status) {
+        return phieuRepository.findByTrangThai(status).stream()
+                .map(PhieuDatPhongMapper::entityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Bổ sung method này vào class PhieuDatPhongRepositoryImpl
+    @Override
+    public List<PhieuDatPhong> findByTrangThai(String trangThai) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            String jpql = "SELECT p FROM PhieuDatPhong p WHERE p.trangThai = :trangThai";
+            return em.createQuery(jpql, PhieuDatPhong.class)
+                    .setParameter("trangThai", trangThai)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public PhieuDatPhongDTO addPhieuDatPhong(PhieuDatPhongDTO phieuDTO) throws IllegalArgumentException {
-        // ĐÃ FIX LỖI FONT CHỮ
         if (phieuDTO.getMaPhieu() == null || phieuDTO.getMaPhieu().trim().isEmpty()) {
             throw new IllegalArgumentException("Mã phiếu không được để trống");
         }
@@ -65,7 +92,6 @@ public class PhieuDatPhongServiceImpl implements IPhieuDatPhongService {
 
     @Override
     public PhieuDatPhongDTO updatePhieuDatPhong(PhieuDatPhongDTO phieuDTO) throws IllegalArgumentException {
-        // ĐÃ FIX LỖI FONT CHỮ
         if (phieuDTO.getMaPhieu() == null || phieuDTO.getMaPhieu().trim().isEmpty()) {
             throw new IllegalArgumentException("Mã phiếu không được để trống");
         }
@@ -84,10 +110,64 @@ public class PhieuDatPhongServiceImpl implements IPhieuDatPhongService {
         }
     }
 
-    // MAP HÀM MỚI VÀO REPOSITORY
     @Override
     public boolean bookRoomTransaction(PhieuDatPhongDTO phieuDTO) {
-        PhieuDatPhong entity = PhieuDatPhongMapper.dtoToEntity(phieuDTO);
-        return phieuRepository.saveBookingTransaction(entity);
+        try {
+            if (phieuDTO == null || phieuDTO.getMaPhieu() == null) {
+                throw new IllegalArgumentException("Phiếu đặt phòng không hợp lệ");
+            }
+            if (phieuDTO.getMaPhong() == null || phieuDTO.getMaKhachHang() == null) {
+                throw new IllegalArgumentException("Thông tin phòng hoặc khách hàng không được để trống");
+            }
+
+            PhieuDatPhong entity = PhieuDatPhongMapper.dtoToEntity(phieuDTO);
+            entity.setTrangThai("DA_NHAN_PHONG");
+
+            return phieuRepository.saveBookingTransaction(entity);
+        } catch (Exception e) {
+            System.err.println("Lỗi trong bookRoomTransaction: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ✅ IMPLEMENTATION: Transaction (Atomicity) -> Lưu phiếu + Cập nhật phòng + Lưu hóa đơn
+    @Override
+    public boolean checkoutTransaction(String maPhieu, HoaDonDTO hoaDonDTO) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            // 1. Cập nhật trạng thái Phiếu Đặt Phòng
+            PhieuDatPhong phieu = em.find(PhieuDatPhong.class, maPhieu);
+            if (phieu == null) throw new IllegalArgumentException("Không tìm thấy phiếu đặt phòng");
+            phieu.setTrangThai("DA_THANH_TOAN");
+            em.merge(phieu);
+
+            // 2. Cập nhật trạng thái Phòng (Đang sử dụng -> Trống/Sẵn sàng)
+            if (phieu.getPhong() != null) {
+                Phong phong = em.find(Phong.class, phieu.getPhong().getMaPhong());
+                if (phong != null) {
+                    phong.setTinhTrang("TRONG");
+                    em.merge(phong);
+                }
+            }
+
+            // 3. Lưu Hóa Đơn
+            HoaDon hoaDonEntity = HoaDonMapper.dtoToEntity(hoaDonDTO);
+            em.persist(hoaDonEntity);
+
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.err.println("Transaction Checkout thất bại: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
+        }
     }
 }

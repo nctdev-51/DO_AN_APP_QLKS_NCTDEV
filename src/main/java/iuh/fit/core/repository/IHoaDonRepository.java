@@ -2,6 +2,7 @@ package iuh.fit.core.repository;
 
 import iuh.fit.core.entity.HoaDon;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +42,10 @@ public interface IHoaDonRepository {
      * Tìm các hóa đơn của khách hàng
      */
     List<HoaDon> findByMaKhachHang(String maKhachHang);
+
+    /**
+     * Lấy hóa đơn trong khoảng thời gian
+     */
+    List<HoaDon> findByNgayLapBetween(LocalDate startDate, LocalDate endDate);
 }
 

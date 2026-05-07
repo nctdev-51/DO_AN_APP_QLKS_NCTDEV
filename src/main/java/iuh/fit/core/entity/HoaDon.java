@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Entity: HoaDon (Hóa đơn)
@@ -76,4 +78,8 @@ public class HoaDon {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maPhongDat")
     private Phong phong;
+
+    // THÊM: OneToMany relationship với ChiTietHoaDon
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ChiTietHoaDon> dsChiTietHoaDon = new ArrayList<>();
 }

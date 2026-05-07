@@ -19,4 +19,7 @@ public class KhachHangDTO {
     private String soDienThoai;
     private LocalDate ngaySinh;
     private String loaiKhachHang;
+
+    // ✅ Thêm mới: Đối tượng khách (VIP/Thường) để phục vụ logic tính khuyến mãi
+    private String doiTuongKhach;
 }

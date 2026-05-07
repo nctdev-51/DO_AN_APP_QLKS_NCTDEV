@@ -28,7 +28,7 @@ public class LoginController {
 
     private TextField usernameTextField;
     private PasswordField passwordField;
-    private TextField passwordVisibleField; // Thêm ô nhập text thường để hiện mật khẩu
+    private TextField passwordVisibleField;
     private Button loginButton;
     private Button exitButton;
     private Label errorLabel;
@@ -44,16 +44,13 @@ public class LoginController {
     private IHoaDonService hoaDonService;
     private IChiTietHoaDonService chiTietHoaDonService;
 
-    // --- BẢNG MÀU UI ---
-    private final String COLOR_PRIMARY = "#0066cc";  // Xanh lam đậm khớp logo
-    private final String COLOR_ACCENT = "#17a2b8";   // Xanh lục khớp logo
-    private final String COLOR_PRIMARY_HOVER = "#004999";
-    private final String COLOR_BG_START = "#f0f8ff";
-    private final String COLOR_BG_END = "#ffffff";
-    private final String COLOR_TEXT_MAIN = "#1e293b";
+    // --- BẢNG MÀU UI CẢI TIẾN HIỆN ĐẠI ---
+    private final String COLOR_PRIMARY = "#1e3a8a";  // Xanh dương đậm sang trọng
+    private final String COLOR_ACCENT = "#0284c7";   // Xanh da trời sáng
+    private final String COLOR_TEXT_MAIN = "#0f172a";
     private final String COLOR_TEXT_MUTED = "#64748b";
     private final String COLOR_BORDER = "#cbd5e1";
-    private final String COLOR_CARD_BORDER = "#d3d3d3";
+    private final String COLOR_INPUT_BG = "#f8fafc";
 
     public LoginController(IAuthenticationService authenticationService,
                            IKhachHangService khachHangService,
@@ -75,184 +72,194 @@ public class LoginController {
 
     public Scene createLoginScene() {
         StackPane root = new StackPane();
-        root.setStyle("-fx-background-color: " + COLOR_BG_START + ";");
+        // Cải tiến: Nền gradient tạo chiều sâu cho ứng dụng
+        root.setStyle("-fx-background-color: linear-gradient(to bottom right, #e0f2fe, #bae6fd);");
 
-        VBox cardBox = new VBox(20);
-        cardBox.setPadding(new Insets(40, 40, 40, 40));
-        cardBox.setMaxWidth(400);
-        cardBox.setMaxHeight(450);
+        VBox cardBox = new VBox(22);
+        cardBox.setPadding(new Insets(45, 45, 45, 45));
+        cardBox.setMaxWidth(480);
+        cardBox.setMaxHeight(500);
         cardBox.setAlignment(Pos.TOP_CENTER);
-        cardBox.setStyle("-fx-background-color: white; -fx-background-radius: 16; -fx-border-radius: 16; -fx-border-color: #dbeafe; -fx-border-width: 1.2;");
+        // Cải tiến: Khung bo góc mềm mại hơn, viền mảnh tinh tế
+        cardBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.98); -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #ffffff; -fx-border-width: 2;");
 
+        // Cải tiến: Đổ bóng nhạt và rộng hơn tạo hiệu ứng nổi 3D hiện đại
         DropShadow shadow = new DropShadow();
-        shadow.setColor(Color.color(0, 0, 0, 0.08));
-        shadow.setRadius(20);
-        shadow.setOffsetY(10);
+        shadow.setColor(Color.web("#000000", 0.1));
+        shadow.setRadius(25);
+        shadow.setOffsetY(12);
         cardBox.setEffect(shadow);
 
-        // Header
-         VBox headerBox = new VBox(5);
-         headerBox.setAlignment(Pos.CENTER);
+        // ================= HEADER =================
+        VBox headerBox = new VBox(8);
+        headerBox.setAlignment(Pos.CENTER);
 
-         // Logo + Title
-         HBox logoTitleBox = new HBox(6);
-         logoTitleBox.setAlignment(Pos.CENTER);
+        HBox logoTitleBox = new HBox(12);
+        logoTitleBox.setAlignment(Pos.CENTER);
 
-         // Tạo ImageView cho logo - To hơn
-         ImageView logoImageView = new ImageView();
-         try {
-             Image logoImage = new Image(getClass().getResourceAsStream("/images/logo_ttv.png"));
-             logoImageView.setImage(logoImage);
-             logoImageView.setFitWidth(78);
-             logoImageView.setFitHeight(78);
-             logoImageView.setPreserveRatio(true);
+        ImageView logoImageView = new ImageView();
+        try {
+            Image logoImage = new Image(getClass().getResourceAsStream("/images/logo_ttv.png"));
+            logoImageView.setImage(logoImage);
+            logoImageView.setFitWidth(85); // Tăng size logo
+            logoImageView.setFitHeight(85);
+            logoImageView.setPreserveRatio(true);
 
-             // Thêm shadow effect cho logo
-             DropShadow logoShadow = new DropShadow();
-             logoShadow.setColor(Color.web(COLOR_PRIMARY, 0.3));
-             logoShadow.setRadius(8);
-             logoShadow.setOffsetY(2);
-             logoImageView.setEffect(logoShadow);
-         } catch (Exception e) {
-             // Nếu logo không tìm được, sử dụng emoji
-             Label logoEmoji = new Label("🏨");
-             logoEmoji.setFont(Font.font(60));
-             logoTitleBox.getChildren().add(logoEmoji);
-         }
+            DropShadow logoShadow = new DropShadow();
+            logoShadow.setColor(Color.web(COLOR_ACCENT, 0.4));
+            logoShadow.setRadius(10);
+            logoShadow.setOffsetY(4);
+            logoImageView.setEffect(logoShadow);
+        } catch (Exception e) {
+            Label logoEmoji = new Label("🏨");
+            logoEmoji.setFont(Font.font(65));
+            logoTitleBox.getChildren().add(logoEmoji);
+        }
 
-         if (logoImageView.getImage() != null) {
-             logoTitleBox.getChildren().add(logoImageView);
-         }
+        if (logoImageView.getImage() != null) {
+            logoTitleBox.getChildren().add(logoImageView);
+        }
 
-         // Tên với kiểu chữ phong cách hơn
-         Label titleLabel = new Label("TTV HOTEL");
-         titleLabel.setFont(Font.font("Segoe UI Semibold", FontWeight.EXTRA_BOLD, 32));
-         titleLabel.setTextFill(new LinearGradient(
-                 0, 0, 1, 0,
-                 true, CycleMethod.NO_CYCLE,
-                 new Stop(0.0, Color.web(COLOR_ACCENT)),
-                 new Stop(1.0, Color.web(COLOR_PRIMARY))
-         ));
+        // CẢI TIẾN CHÍNH: Tên thương hiệu nổi bật, to và font đậm
+        Label titleLabel = new Label("TTV HOTEL");
+        titleLabel.setFont(Font.font("Verdana", FontWeight.BLACK, 38));
+        titleLabel.setTextFill(new LinearGradient(
+                0, 0, 1, 0,
+                true, CycleMethod.NO_CYCLE,
+                new Stop(0.0, Color.web(COLOR_ACCENT)),
+                new Stop(1.0, Color.web(COLOR_PRIMARY))
+        ));
 
-         // Thêm shadow effect cho text
-         DropShadow titleShadow = new DropShadow();
-         titleShadow.setColor(Color.web(COLOR_PRIMARY, 0.2));
-         titleShadow.setRadius(5);
-         titleShadow.setOffsetY(2);
-         titleLabel.setEffect(titleShadow);
+        DropShadow titleShadow = new DropShadow();
+        titleShadow.setColor(Color.web(COLOR_PRIMARY, 0.25));
+        titleShadow.setRadius(6);
+        titleShadow.setOffsetY(3);
+        titleLabel.setEffect(titleShadow);
 
-         logoTitleBox.getChildren().add(titleLabel);
+        logoTitleBox.getChildren().add(titleLabel);
 
-         // Subtitle
-         Label subTitleLabel = new Label("Hệ thống quản lý khách sạn TTV");
-         subTitleLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 13));
-         subTitleLabel.setTextFill(Color.web(COLOR_TEXT_MUTED));
+        Label subTitleLabel = new Label("HỆ THỐNG QUẢN LÝ KHÁCH SẠN");
+        subTitleLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
+        subTitleLabel.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-         headerBox.getChildren().addAll(logoTitleBox, subTitleLabel);
+        headerBox.getChildren().addAll(logoTitleBox, subTitleLabel);
 
-        // Input Styling
-        // Thêm padding bên phải (35px) để chữ không bị đè lên icon con mắt
-        String inputStyle = "-fx-padding: 12 35 12 12; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: " + COLOR_BORDER + "; -fx-background-color: #f8fafc; -fx-font-size: 14px;";
+        // ================= INPUT FORM =================
+        String inputStyle = "-fx-padding: 14 40 14 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: " + COLOR_BORDER + "; -fx-background-color: " + COLOR_INPUT_BG + "; -fx-font-size: 14px; -fx-text-fill: " + COLOR_TEXT_MAIN + ";";
+        String inputFocusStyle = "-fx-border-color: " + COLOR_ACCENT + "; -fx-background-color: #ffffff; -fx-effect: dropshadow(three-pass-box, rgba(2, 132, 199, 0.2), 5, 0, 0, 0);";
 
-        // Username Box
-        VBox usernameVBox = new VBox(8);
-        Label usernameLabel = new Label("Tài khoản");
-        usernameLabel.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 13));
+        // Username
+        VBox usernameVBox = new VBox(6);
+        Label usernameLabel = new Label("Tên đăng nhập");
+        usernameLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
         usernameLabel.setTextFill(Color.web(COLOR_TEXT_MAIN));
         usernameTextField = new TextField();
-        usernameTextField.setPromptText("Nhập tên đăng nhập...");
+        usernameTextField.setPromptText("Nhập tài khoản của bạn...");
         usernameTextField.setStyle(inputStyle);
+        // Hiệu ứng focus
+        usernameTextField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) usernameTextField.setStyle(inputStyle + inputFocusStyle);
+            else usernameTextField.setStyle(inputStyle);
+        });
         usernameVBox.getChildren().addAll(usernameLabel, usernameTextField);
 
-        // Password Box
-        VBox passwordVBox = new VBox(8);
+        // Password
+        VBox passwordVBox = new VBox(6);
         Label passwordLabel = new Label("Mật khẩu");
-        passwordLabel.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 13));
+        passwordLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
         passwordLabel.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
-        // 1. Ô ẩn mật khẩu (PasswordField)
         passwordField = new PasswordField();
         passwordField.setPromptText("Nhập mật khẩu...");
         passwordField.setStyle(inputStyle);
 
-        // 2. Ô hiện mật khẩu (TextField)
         passwordVisibleField = new TextField();
         passwordVisibleField.setPromptText("Nhập mật khẩu...");
         passwordVisibleField.setStyle(inputStyle);
-        passwordVisibleField.setVisible(false); // Mặc định ẩn
+        passwordVisibleField.setVisible(false);
 
-        // 3. Nút con mắt
-        Button togglePasswordBtn = new Button("👁"); // Dùng emoji hoặc có thể dùng Icon thật nếu bạn có thư viện
-        togglePasswordBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_ACCENT + "; -fx-cursor: hand; -fx-font-size: 15px;");
-        togglePasswordBtn.setPadding(new Insets(0, 10, 0, 0)); // Căn icon cách lề phải 10px
+        // Đồng bộ focus effect cho password
+        passwordField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) passwordField.setStyle(inputStyle + inputFocusStyle);
+            else passwordField.setStyle(inputStyle);
+        });
+        passwordVisibleField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) passwordVisibleField.setStyle(inputStyle + inputFocusStyle);
+            else passwordVisibleField.setStyle(inputStyle);
+        });
 
-        // Đồng bộ dữ liệu 2 chiều giữa 2 ô nhập (gõ ô này, ô kia cũng nhận)
+        Button togglePasswordBtn = new Button("👁");
+        togglePasswordBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-cursor: hand; -fx-font-size: 16px;");
+        togglePasswordBtn.setPadding(new Insets(0, 12, 0, 0));
+
         passwordVisibleField.textProperty().bindBidirectional(passwordField.textProperty());
 
-        // Sự kiện click nút con mắt
         togglePasswordBtn.setOnAction(e -> {
             if (passwordField.isVisible()) {
-                // Đang ẩn -> Chuyển sang Hiện
                 passwordField.setVisible(false);
                 passwordVisibleField.setVisible(true);
-                togglePasswordBtn.setText("🙈"); // Icon nhắm mắt
+                togglePasswordBtn.setText("🙈");
+                togglePasswordBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_ACCENT + "; -fx-cursor: hand; -fx-font-size: 16px;");
             } else {
-                // Đang hiện -> Chuyển sang Ẩn
                 passwordField.setVisible(true);
                 passwordVisibleField.setVisible(false);
-                togglePasswordBtn.setText("👁"); // Icon mở mắt
+                togglePasswordBtn.setText("👁");
+                togglePasswordBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-cursor: hand; -fx-font-size: 16px;");
             }
         });
 
-        // 4. Xếp chồng (Stack) 2 ô nhập và nút con mắt lên nhau
         StackPane passwordStack = new StackPane();
-        passwordStack.setAlignment(Pos.CENTER_RIGHT); // Căn nút nằm bên phải
+        passwordStack.setAlignment(Pos.CENTER_RIGHT);
         passwordStack.getChildren().addAll(passwordField, passwordVisibleField, togglePasswordBtn);
-
         passwordVBox.getChildren().addAll(passwordLabel, passwordStack);
 
-        // Thông báo lỗi
+        // Messages & Progress
         errorLabel = new Label();
-        errorLabel.setFont(Font.font("Segoe UI", 13));
+        errorLabel.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 13));
         errorLabel.setWrapText(true);
         errorLabel.setAlignment(Pos.CENTER);
         errorLabel.setMaxWidth(Double.MAX_VALUE);
 
-        // Progress Bar
         progressBar = new ProgressBar();
         progressBar.setVisible(false);
         progressBar.setMaxWidth(Double.MAX_VALUE);
-        progressBar.setPrefHeight(10);
-        progressBar.setStyle("-fx-accent: " + COLOR_ACCENT + ";");
+        progressBar.setPrefHeight(6); // Thanh mảnh hơn
+        progressBar.setStyle("-fx-accent: " + COLOR_ACCENT + "; -fx-control-inner-background: #e2e8f0;");
 
-        // Buttons
-        VBox buttonBox = new VBox(12);
+        // ================= BUTTONS =================
+        VBox buttonBox = new VBox(14);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(10, 0, 0, 0));
 
-        loginButton = new Button("Đăng Nhập");
+        // Cải tiến nút đăng nhập sang trọng hơn
+        loginButton = new Button("Đăng Nhập Hệ Thống");
         loginButton.setMaxWidth(Double.MAX_VALUE);
         loginButton.setCursor(Cursor.HAND);
-        loginButton.setStyle("-fx-background-color: linear-gradient(to right, " + COLOR_ACCENT + ", " + COLOR_PRIMARY + "); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 10;");
+        String btnLoginStyle = "-fx-background-color: linear-gradient(to right, " + COLOR_ACCENT + ", " + COLOR_PRIMARY + "); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 14; -fx-background-radius: 8;";
+        String btnLoginHover = "-fx-background-color: linear-gradient(to right, #0369a1, #1e3a8a); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 14; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(2, 132, 199, 0.4), 10, 0, 0, 4);";
 
-        loginButton.setOnMouseEntered(e -> loginButton.setStyle("-fx-background-color: linear-gradient(to right, #0ea5a4, " + COLOR_PRIMARY_HOVER + "); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 10;"));
-        loginButton.setOnMouseExited(e -> loginButton.setStyle("-fx-background-color: linear-gradient(to right, " + COLOR_ACCENT + ", " + COLOR_PRIMARY + "); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 10;"));
+        loginButton.setStyle(btnLoginStyle);
+        loginButton.setOnMouseEntered(e -> loginButton.setStyle(btnLoginHover));
+        loginButton.setOnMouseExited(e -> loginButton.setStyle(btnLoginStyle));
 
-        exitButton = new Button("Thoát Hệ Thống");
+        // Nút thoát chuyển thành dạng Outline tinh tế
+        exitButton = new Button("Thoát Khỏi Trình Ứng Dụng");
         exitButton.setMaxWidth(Double.MAX_VALUE);
         exitButton.setCursor(Cursor.HAND);
-        exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10; -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 10; -fx-background-radius: 10;");
+        String btnExitStyle = "-fx-background-color: transparent; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 12; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 8; -fx-background-radius: 8;";
+        String btnExitHover = "-fx-background-color: #f1f5f9; -fx-text-fill: #ef4444; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 12; -fx-border-color: #fca5a5; -fx-border-radius: 8; -fx-background-radius: 8;";
 
-        exitButton.setOnMouseEntered(e -> exitButton.setStyle("-fx-background-color: #eff6ff; -fx-text-fill: " + COLOR_ACCENT + "; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10; -fx-border-color: " + COLOR_ACCENT + "; -fx-border-radius: 10; -fx-background-radius: 10;"));
-        exitButton.setOnMouseExited(e -> exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10; -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 10; -fx-background-radius: 10;"));
+        exitButton.setStyle(btnExitStyle);
+        exitButton.setOnMouseEntered(e -> exitButton.setStyle(btnExitHover));
+        exitButton.setOnMouseExited(e -> exitButton.setStyle(btnExitStyle));
 
         buttonBox.getChildren().addAll(loginButton, exitButton);
 
-        // Xử lý sự kiện Enter
+        // Actions
         loginButton.setOnAction(e -> handleLogin());
         exitButton.setOnAction(e -> System.exit(0));
-        passwordField.setOnAction(e -> handleLogin()); // Bấm Enter khi đang ở chế độ ẩn mk
-        passwordVisibleField.setOnAction(e -> handleLogin()); // Bấm Enter khi đang ở chế độ hiện mk
+        passwordField.setOnAction(e -> handleLogin());
+        passwordVisibleField.setOnAction(e -> handleLogin());
 
         cardBox.getChildren().addAll(
                 headerBox,
@@ -264,7 +271,7 @@ public class LoginController {
         );
 
         root.getChildren().add(cardBox);
-        return new Scene(root, 600, 500);
+        return new Scene(root, 650, 580); // Tăng kích thước tổng thể cửa sổ
     }
 
     private void handleLogin() {
@@ -277,7 +284,7 @@ public class LoginController {
         }
 
         try {
-            loginButton.setText("Đang xử lý...");
+            loginButton.setText("Đang Xác Thực...");
             loginButton.setDisable(true);
             progressBar.setVisible(true);
 
@@ -285,9 +292,9 @@ public class LoginController {
 
             if (user != null) {
                 currentUser = user;
-                showSuccess("Đăng nhập thành công! Đang chuyển trang...");
-                // Thêm hiệu ứng delay 1 giây trước khi chuyển trang
-                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                showSuccess("Thành công! Đang truy cập hệ thống...");
+
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.2)); // Chờ chút để UX mượt hơn
                 pause.setOnFinished(event -> {
                     try {
                         Stage currentStage = (Stage) loginButton.getScene().getWindow();
@@ -309,7 +316,7 @@ public class LoginController {
                 pause.play();
 
             } else {
-                showError("Tài khoản hoặc mật khẩu không đúng");
+                showError("Tài khoản hoặc mật khẩu không chính xác.");
                 clearFields();
                 resetLoginButton();
             }
@@ -317,31 +324,30 @@ public class LoginController {
             showError(e.getMessage());
             resetLoginButton();
         } catch (Exception e) {
-            showError("Lỗi hệ thống: " + e.getMessage());
+            showError("Lỗi kết nối hệ thống: " + e.getMessage());
             e.printStackTrace();
             resetLoginButton();
         }
     }
 
     private void resetLoginButton() {
-        loginButton.setText("Đăng Nhập");
+        loginButton.setText("Đăng Nhập Hệ Thống");
         loginButton.setDisable(false);
         progressBar.setVisible(false);
     }
 
     private void showError(String message) {
         errorLabel.setText("⚠️ " + message);
-        errorLabel.setStyle("-fx-text-fill: #ef4444; -fx-background-color: #fef2f2; -fx-padding: 8 12; -fx-background-radius: 6; -fx-border-color: #fecaca; -fx-border-radius: 6;");
+        errorLabel.setStyle("-fx-text-fill: #b91c1c; -fx-background-color: #fef2f2; -fx-padding: 10 15; -fx-background-radius: 8; -fx-border-color: #fecaca; -fx-border-radius: 8;");
     }
 
     private void showSuccess(String message) {
         errorLabel.setText("✅ " + message);
-        errorLabel.setStyle("-fx-text-fill: #059669; -fx-background-color: #ecfdf5; -fx-padding: 8 12; -fx-background-radius: 6; -fx-border-color: #a7f3d0; -fx-border-radius: 6;");
+        errorLabel.setStyle("-fx-text-fill: #047857; -fx-background-color: #ecfdf5; -fx-padding: 10 15; -fx-background-radius: 8; -fx-border-color: #a7f3d0; -fx-border-radius: 8;");
     }
 
     private void clearFields() {
         passwordField.clear();
-        // Do đã bindBidirectional nên passwordField.clear() sẽ tự động làm sạch cả passwordVisibleField
         passwordField.requestFocus();
     }
 

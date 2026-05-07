@@ -19,13 +19,18 @@ public class KhachHangMapper {
             return null;
         }
 
-        return new KhachHangDTO(
-                entity.getMaKhachHang(),
-                entity.getHoTen(),
-                entity.getSoDienThoai(),
-                entity.getNgaySinh(),
-                entity.getLoaiKhachHang() // Đã chuyển thành String, truyền thẳng trực tiếp
-        );
+        // Dùng Constructor rỗng và các hàm set để tránh lỗi số lượng tham số
+        KhachHangDTO dto = new KhachHangDTO();
+        dto.setMaKhachHang(entity.getMaKhachHang());
+        dto.setHoTen(entity.getHoTen());
+        dto.setSoDienThoai(entity.getSoDienThoai());
+        dto.setNgaySinh(entity.getNgaySinh());
+        dto.setLoaiKhachHang(entity.getLoaiKhachHang());
+
+        // (Tùy chọn) Nếu Entity của bạn có thuộc tính doiTuongKhach, hãy mở comment dòng dưới:
+        // dto.setDoiTuongKhach(entity.getDoiTuongKhach());
+
+        return dto;
     }
 
     /**
@@ -41,7 +46,10 @@ public class KhachHangMapper {
         entity.setHoTen(dto.getHoTen());
         entity.setSoDienThoai(dto.getSoDienThoai());
         entity.setNgaySinh(dto.getNgaySinh());
-        entity.setLoaiKhachHang(dto.getLoaiKhachHang()); // Gán trực tiếp String sang String
+        entity.setLoaiKhachHang(dto.getLoaiKhachHang());
+
+        // (Tùy chọn) Nếu Entity của bạn có thuộc tính doiTuongKhach, hãy mở comment dòng dưới:
+        // entity.setDoiTuongKhach(dto.getDoiTuongKhach());
 
         return entity;
     }

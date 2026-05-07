@@ -123,11 +123,8 @@ public class PhongRepositoryImpl implements IPhongRepository {
     @Override
     public List<Phong> getPhongByPhieuDat(String maPhieu) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
-            String jpql = """
-                SELECT p FROM Phong p 
-                JOIN p.dsPhieuDat pdp 
-                WHERE pdp.maPhieu = :maPhieu
-                """;
+            String jpql = "SELECT p FROM Phong p " +
+                    "WHERE p.maPhong = (SELECT pdp.maPhong FROM PhieuDatPhong pdp WHERE pdp.maPhieu = :maPhieu)";
 
             return em.createQuery(jpql, Phong.class)
                     .setParameter("maPhieu", maPhieu)

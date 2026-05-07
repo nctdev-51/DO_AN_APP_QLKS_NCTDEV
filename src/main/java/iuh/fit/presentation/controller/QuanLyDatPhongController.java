@@ -258,8 +258,7 @@ public class QuanLyDatPhongController {
         }
 
         try {
-            List<PhongDTO> phongTrong = phongService.findAvailableRooms(checkIn, checkOut, 0, Double.MAX_VALUE);
-            lvPhongTrong.setItems(FXCollections.observableArrayList(phongTrong));
+            List<PhongDTO> phongTrong = phongService.findAvailableRooms(checkIn, checkOut, 0, Double.MAX_VALUE, null);            lvPhongTrong.setItems(FXCollections.observableArrayList(phongTrong));
             if (phongTrong.isEmpty()) {
                 showAlert(Alert.AlertType.INFORMATION, "Thông báo", "Không có phòng trống trong khoảng thời gian này!");
             }

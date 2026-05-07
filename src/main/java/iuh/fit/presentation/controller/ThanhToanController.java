@@ -1,8 +1,8 @@
 package iuh.fit.presentation.controller;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -24,15 +24,19 @@ public class ThanhToanController {
 
     private final double tongCanThanhToan;
     private final SimpleDoubleProperty tienKhachDua = new SimpleDoubleProperty(0.0);
-    private final SimpleBooleanProperty isCashMode = new SimpleBooleanProperty(true); // Biến theo dõi tab hiện tại
+
+    // Sử dụng StringProperty để hỗ trợ nhiều hơn 2 phương thức
+    private final SimpleStringProperty paymentMethod = new SimpleStringProperty("Tiền mặt");
+
     private final Locale vnLocale = new Locale("vi", "VN");
     private final NumberFormat formatter = NumberFormat.getCurrencyInstance(vnLocale);
 
-    // --- BẢNG MÀU UI/UX ---
+    // --- BẢNG MÀU UI/UX HIỆN ĐẠI ---
     private final String COLOR_BG = "#f1f5f9";
     private final String COLOR_PRIMARY = "#2563eb";
     private final String COLOR_SUCCESS = "#10b981";
     private final String COLOR_DANGER = "#ef4444";
+    private final String COLOR_EWALLET = "#db2777"; // Màu hồng cho Ví điện tử (Momo)
     private final String COLOR_TEXT_MAIN = "#0f172a";
     private final String COLOR_BORDER = "#e2e8f0";
     private final String COLOR_TEXT_MUTED = "#64748b";
@@ -42,7 +46,8 @@ public class ThanhToanController {
     }
 
     /**
-     * @return Trả về String phương thức thanh toán ("Tiền mặt" hoặc "Chuyển khoản"). Trả về null nếu khách bấm Hủy.
+     * @return Trả về String phương thức thanh toán ("Tiền mặt", "Chuyển khoản", "Ví điện tử").
+     * Trả về null nếu khách bấm Hủy.
      */
     public String showThanhToanDialog(Stage parentStage) {
         Stage stage = new Stage();
@@ -79,7 +84,7 @@ public class ThanhToanController {
         // 2. CỘT PHẢI: CHỌN PHƯƠNG THỨC THANH TOÁN
         // =====================================================================
         VBox pnlPayment = new VBox(15);
-        pnlPayment.setPrefWidth(450);
+        pnlPayment.setPrefWidth(550); // Tăng width một chút để chứa 3 nút
         pnlPayment.setStyle("-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12;");
         applyShadow(pnlPayment);
 
@@ -89,32 +94,45 @@ public class ThanhToanController {
 
         ToggleButton btnTabCash = new ToggleButton("💵 TIỀN MẶT");
         ToggleButton btnTabBank = new ToggleButton("🏦 CHUYỂN KHOẢN");
+        ToggleButton btnTabEWallet = new ToggleButton("📱 VÍ ĐIỆN TỬ");
 
         ToggleGroup group = new ToggleGroup();
         btnTabCash.setToggleGroup(group);
         btnTabBank.setToggleGroup(group);
-        btnTabCash.setSelected(true); // Mặc định chọn tiền mặt
+        btnTabEWallet.setToggleGroup(group);
+        btnTabCash.setSelected(true);
 
-        styleToggleButton(btnTabCash);
-        styleToggleButton(btnTabBank);
+        styleToggleButton(btnTabCash, COLOR_PRIMARY);
+        styleToggleButton(btnTabBank, COLOR_PRIMARY);
+        styleToggleButton(btnTabEWallet, COLOR_EWALLET); // Đổi màu tab ví điện tử cho nổi bật
 
         btnTabCash.setMaxWidth(Double.MAX_VALUE); HBox.setHgrow(btnTabCash, Priority.ALWAYS);
         btnTabBank.setMaxWidth(Double.MAX_VALUE); HBox.setHgrow(btnTabBank, Priority.ALWAYS);
-        tabBox.getChildren().addAll(btnTabCash, btnTabBank);
+        btnTabEWallet.setMaxWidth(Double.MAX_VALUE); HBox.setHgrow(btnTabEWallet, Priority.ALWAYS);
+        tabBox.getChildren().addAll(btnTabCash, btnTabBank, btnTabEWallet);
 
         // --- KHU VỰC HIỂN THỊ NỘI DUNG TƯƠNG ỨNG TỪNG TAB ---
         StackPane contentSwitcher = new StackPane();
         VBox viewCash = createCashView();
         VBox viewBank = createBankView();
+        VBox viewEWallet = createEWalletView();
 
-        contentSwitcher.getChildren().addAll(viewBank, viewCash);
+        contentSwitcher.getChildren().addAll(viewEWallet, viewBank, viewCash); // Add ngược để Cash hiện lên đầu
 
-        // Đổi giao diện khi bấm nút
-        btnTabCash.setOnAction(e -> { viewCash.toFront(); isCashMode.set(true); });
-        btnTabBank.setOnAction(e -> { viewBank.toFront(); isCashMode.set(false); });
+        // Đổi giao diện và cập nhật biến theo dõi khi bấm nút
+        btnTabCash.setOnAction(e -> { viewCash.toFront(); paymentMethod.set("Tiền mặt"); });
+        btnTabBank.setOnAction(e -> { viewBank.toFront(); paymentMethod.set("Chuyển khoản"); });
+        btnTabEWallet.setOnAction(e -> { viewEWallet.toFront(); paymentMethod.set("Ví điện tử"); });
 
-        // --- NÚT HOÀN TẤT CHUNG ---
-        final String[] finalPaymentMethod = {null}; // Biến lưu kết quả trả về
+        // --- CHECKBOX IN HÓA ĐƠN ---
+        CheckBox chkInHoaDon = new CheckBox("🖨 In biên lai sau khi thanh toán");
+        chkInHoaDon.setSelected(true); // Mặc định là có in
+        chkInHoaDon.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+        chkInHoaDon.setTextFill(Color.web(COLOR_TEXT_MAIN));
+        chkInHoaDon.setCursor(Cursor.HAND);
+
+        // --- NÚT HOÀN TẤT ---
+        final String[] finalPaymentMethod = {null};
 
         Button btnFinish = new Button("✅ HOÀN TẤT THANH TOÁN");
         btnFinish.setMaxWidth(Double.MAX_VALUE);
@@ -122,29 +140,38 @@ public class ThanhToanController {
         btnFinish.setCursor(Cursor.HAND);
         btnFinish.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15px; -fx-background-radius: 8;");
 
-        // Logic vô hiệu hóa nút: Nếu là Tiền mặt thì phải nhập đủ tiền. Ngân hàng thì luôn mở.
+        // Logic vô hiệu hóa nút: Chỉ khóa nếu đang ở chế độ Tiền mặt VÀ tiền khách đưa chưa đủ
         btnFinish.disableProperty().bind(Bindings.createBooleanBinding(
-                () -> isCashMode.get() && tienKhachDua.get() < tongCanThanhToan,
-                isCashMode, tienKhachDua
+                () -> paymentMethod.get().equals("Tiền mặt") && tienKhachDua.get() < tongCanThanhToan,
+                paymentMethod, tienKhachDua
         ));
 
         btnFinish.setOnAction(e -> {
-            finalPaymentMethod[0] = isCashMode.get() ? "Tiền mặt" : "Chuyển khoản";
+            finalPaymentMethod[0] = paymentMethod.get();
+
+            // Xử lý logic In Hóa Đơn
+            if (chkInHoaDon.isSelected()) {
+                inHoaDonAo(finalPaymentMethod[0]);
+            }
+
             stage.close();
         });
 
-        pnlPayment.getChildren().addAll(tabBox, new Separator(), contentSwitcher, btnFinish);
+        pnlPayment.getChildren().addAll(tabBox, new Separator(), contentSwitcher, new Separator(), chkInHoaDon, btnFinish);
 
         root.getChildren().addAll(pnlSummary, pnlPayment);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.showAndWait();
 
+        // TRẢ VỀ "true" để khớp với logic Boolean.parseBoolean(...) ở DatPhongController,
+        // hoặc trả về đúng tên phương thức tùy vào logic parse của hệ thống bạn.
+        // Tạm thời mình trả về tên phương thức chuẩn:
         return finalPaymentMethod[0];
     }
 
     // =========================================================================
-    // GIAO DIỆN TAB: TIỀN MẶT
+    // GIAO DIỆN TAB 1: TIỀN MẶT
     // =========================================================================
     private VBox createCashView() {
         VBox cashBox = new VBox(15);
@@ -163,7 +190,7 @@ public class ThanhToanController {
 
         for (int i = 0; i < menhGia.length; i++) {
             Button btn = createMoneyButton(labels[i], menhGia[i]);
-            gridCash.add(btn, i % 3, i / 3);
+            gridCash.add(btn, i % 4, i / 4); // Chỉnh lại thành 4 cột cho gọn với panel 550px
         }
 
         HBox quickActions = new HBox(10);
@@ -198,33 +225,31 @@ public class ThanhToanController {
     }
 
     // =========================================================================
-    // GIAO DIỆN TAB: NGÂN HÀNG (CHUYỂN KHOẢN)
+    // GIAO DIỆN TAB 2: NGÂN HÀNG (CHUYỂN KHOẢN)
     // =========================================================================
     private VBox createBankView() {
         VBox bankBox = new VBox(15);
         bankBox.setAlignment(Pos.CENTER);
         bankBox.setStyle("-fx-background-color: white;");
 
-        Label lblInstruct = new Label("Vui lòng quét mã QR dưới đây hoặc yêu cầu khách hàng chuyển khoản số tiền:");
+        Label lblInstruct = new Label("Yêu cầu khách hàng quét mã VietQR để thanh toán:");
         lblInstruct.setTextFill(Color.web(COLOR_TEXT_MUTED));
-        lblInstruct.setWrapText(true);
-        lblInstruct.setTextAlignment(TextAlignment.CENTER);
+        lblInstruct.setFont(Font.font("Segoe UI", 14));
 
         Label lblAmount = new Label(formatter.format(tongCanThanhToan));
         lblAmount.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 30));
         lblAmount.setTextFill(Color.web(COLOR_PRIMARY));
 
-        // Mô phỏng Mã QR Code (Bạn có thể thay bằng ImageView nạp ảnh QR thật của khách sạn)
-        Label lblQR = new Label("📱\nQuét mã VietQR");
+        Label lblQR = new Label("🏦\nQuét mã VietQR");
         lblQR.setAlignment(Pos.CENTER);
         lblQR.setTextAlignment(TextAlignment.CENTER);
         lblQR.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
         lblQR.setTextFill(Color.web("#94a3b8"));
         lblQR.setPrefSize(180, 180);
-        lblQR.setStyle("-fx-border-color: #cbd5e1; -fx-border-width: 2; -fx-border-radius: 12; -fx-border-style: dashed; -fx-background-color: #f8fafc; -fx-background-radius: 12;");
+        lblQR.setStyle("-fx-border-color: " + COLOR_PRIMARY + "; -fx-border-width: 2; -fx-border-radius: 12; -fx-border-style: dashed; -fx-background-color: #eff6ff; -fx-background-radius: 12;");
 
         TextField txtTxnCode = new TextField();
-        txtTxnCode.setPromptText("Nhập mã giao dịch (Không bắt buộc)...");
+        txtTxnCode.setPromptText("Nhập mã giao dịch (VD: FT240508...)");
         txtTxnCode.setStyle("-fx-padding: 10; -fx-font-size: 14px; -fx-background-radius: 6; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 6;");
         txtTxnCode.setMaxWidth(300);
 
@@ -233,15 +258,48 @@ public class ThanhToanController {
     }
 
     // =========================================================================
-    // HELPER METHODS
+    // GIAO DIỆN TAB 3: VÍ ĐIỆN TỬ (MOMO / ZALOPAY)
+    // =========================================================================
+    private VBox createEWalletView() {
+        VBox walletBox = new VBox(15);
+        walletBox.setAlignment(Pos.CENTER);
+        walletBox.setStyle("-fx-background-color: white;");
+
+        Label lblInstruct = new Label("Mở ứng dụng Momo / ZaloPay để quét mã:");
+        lblInstruct.setTextFill(Color.web(COLOR_TEXT_MUTED));
+        lblInstruct.setFont(Font.font("Segoe UI", 14));
+
+        Label lblAmount = new Label(formatter.format(tongCanThanhToan));
+        lblAmount.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 30));
+        lblAmount.setTextFill(Color.web(COLOR_EWALLET)); // Sử dụng màu hồng Momo
+
+        Label lblQR = new Label("📱\nQuét mã Ví Điện Tử");
+        lblQR.setAlignment(Pos.CENTER);
+        lblQR.setTextAlignment(TextAlignment.CENTER);
+        lblQR.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        lblQR.setTextFill(Color.web("#94a3b8"));
+        lblQR.setPrefSize(180, 180);
+        lblQR.setStyle("-fx-border-color: " + COLOR_EWALLET + "; -fx-border-width: 2; -fx-border-radius: 12; -fx-border-style: solid; -fx-background-color: #fdf2f8; -fx-background-radius: 12;");
+
+        TextField txtTxnCode = new TextField();
+        txtTxnCode.setPromptText("Nhập số điện thoại khách hoặc mã GD...");
+        txtTxnCode.setStyle("-fx-padding: 10; -fx-font-size: 14px; -fx-background-radius: 6; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 6;");
+        txtTxnCode.setMaxWidth(300);
+
+        walletBox.getChildren().addAll(lblInstruct, lblAmount, lblQR, txtTxnCode);
+        return walletBox;
+    }
+
+    // =========================================================================
+    // HELPER METHODS VÀ LOGIC MÔ PHỎNG IN
     // =========================================================================
 
-    private void styleToggleButton(ToggleButton btn) {
+    private void styleToggleButton(ToggleButton btn, String activeColor) {
         btn.setPrefHeight(45);
         btn.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
         btn.setCursor(Cursor.HAND);
         String idleStyle = "-fx-background-color: transparent; -fx-text-fill: #64748b; -fx-border-color: transparent transparent #cbd5e1 transparent; -fx-border-width: 3;";
-        String activeStyle = "-fx-background-color: transparent; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-border-color: transparent transparent " + COLOR_PRIMARY + " transparent; -fx-border-width: 3;";
+        String activeStyle = "-fx-background-color: transparent; -fx-text-fill: " + activeColor + "; -fx-border-color: transparent transparent " + activeColor + " transparent; -fx-border-width: 3;";
 
         btn.setStyle(idleStyle);
         btn.selectedProperty().addListener((obs, oldVal, newVal) -> {
@@ -253,6 +311,8 @@ public class ThanhToanController {
     private Button createMoneyButton(String label, double value) {
         Button btn = new Button(label);
         btn.setPrefSize(140, 50);
+        btn.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(btn, Priority.ALWAYS);
         btn.setCursor(Cursor.HAND);
         btn.setStyle("-fx-background-color: #f1f5f9; -fx-border-color: #cbd5e1; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 6; -fx-border-radius: 6;");
         btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 6;"));
@@ -293,5 +353,36 @@ public class ThanhToanController {
         ds.setColor(Color.web("#000000", 0.05));
         ds.setRadius(10); ds.setOffsetY(3);
         box.setEffect(ds);
+    }
+
+    // --- MÔ PHỎNG IN HÓA ĐƠN ---
+    private void inHoaDonAo(String pMethod) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("====================================\n");
+        sb.append("         HÓA ĐƠN THANH TOÁN         \n");
+        sb.append("====================================\n");
+        sb.append(String.format("Ngày In: %s\n", java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
+        sb.append("------------------------------------\n");
+        sb.append(String.format("Tổng tiền : %,15.0f đ\n", tongCanThanhToan));
+        sb.append(String.format("P.Thức TT : %15s\n", pMethod));
+        if (pMethod.equals("Tiền mặt")) {
+            sb.append(String.format("Khách đưa : %,15.0f đ\n", tienKhachDua.get()));
+            sb.append(String.format("Tiền thừa : %,15.0f đ\n", tienKhachDua.get() - tongCanThanhToan));
+        }
+        sb.append("====================================\n");
+        sb.append("     CẢM ƠN QUÝ KHÁCH. HẸN GẶP LẠI! \n");
+
+        TextArea textArea = new TextArea(sb.toString());
+        textArea.setFont(Font.font("Monospaced", 14));
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setPrefSize(350, 400);
+        textArea.setStyle("-fx-control-inner-background: white; -fx-font-family: 'Consolas', monospace;");
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Máy In Hóa Đơn");
+        alert.setHeaderText("Đang xuất hóa đơn qua máy in nhiệt...");
+        alert.getDialogPane().setContent(textArea);
+        alert.showAndWait();
     }
 }

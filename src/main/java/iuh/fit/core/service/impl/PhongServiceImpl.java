@@ -49,7 +49,6 @@ public class PhongServiceImpl implements IPhongService {
 
     @Override
     public PhongDTO addPhong(PhongDTO phongDTO) throws IllegalArgumentException {
-        // ĐÃ FIX LỖI FONT CHỮ
         if (phongDTO.getMaPhong() == null || phongDTO.getMaPhong().trim().isEmpty()) {
             throw new IllegalArgumentException("Mã phòng không được để trống");
         }
@@ -60,7 +59,6 @@ public class PhongServiceImpl implements IPhongService {
 
     @Override
     public PhongDTO updatePhong(PhongDTO phongDTO) throws IllegalArgumentException {
-        // ĐÃ FIX LỖI FONT CHỮ
         if (phongDTO.getMaPhong() == null || phongDTO.getMaPhong().trim().isEmpty()) {
             throw new IllegalArgumentException("Mã phòng không được để trống");
         }
@@ -79,16 +77,41 @@ public class PhongServiceImpl implements IPhongService {
         }
     }
 
-    // MAP HÀM MỚI VÀO REPOSITORY
+    // ✅ IMPLEMENTATION: Lọc phòng theo ngày + giá + tình trạng
     @Override
-    public List<PhongDTO> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, double minPrice, double maxPrice) {
+    public List<PhongDTO> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, double minPrice, double maxPrice, String tinhTrang) {
+        // Giả định repository hỗ trợ lọc theo tình trạng, nếu chưa có thì lọc qua Stream API
         return phongRepository.findAvailableRooms(checkIn, checkOut, minPrice, maxPrice).stream()
+                .filter(p -> tinhTrang == null || p.getTinhTrang().equalsIgnoreCase(tinhTrang))
                 .map(PhongMapper::entityToDTO)
                 .collect(Collectors.toList());
     }
+
+    // ✅ IMPLEMENTATION: Cập nhật nhanh trạng thái phòng (Trống → Đặt → Đang sử dụng → Bảo trì)
+    @Override
+    public boolean updatePhongTrangThai(String maPhong, String trangThai) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Phong phong = em.find(Phong.class, maPhong);
+            if (phong != null) {
+                phong.setTinhTrang(trangThai);
+                em.merge(phong);
+                em.getTransaction().commit();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public List<PhongDTO> getPhongByPhieuDat(String maPhieu) {
-        // Gọi repo lấy Entity -> dùng Stream API map sang DTO
         return phongRepository.getDanhSachPhongTheoMaPhieu(maPhieu).stream()
                 .map(PhongMapper::entityToDTO)
                 .collect(Collectors.toList());
@@ -98,7 +121,6 @@ public class PhongServiceImpl implements IPhongService {
     public List<Phong> findPhongByMaPhieu(String maPhieu) {
         EntityManager em = JpaConfig.getEntityManager();
         try {
-            // Truy vấn lấy phòng dựa trên mã phiếu đặt
             String jpql = "SELECT p FROM Phong p WHERE p.maPhong = (SELECT pdp.maPhong FROM PhieuDatPhong pdp WHERE pdp.maPhieu = :maPhieu)";
             return em.createQuery(jpql, Phong.class)
                     .setParameter("maPhieu", maPhieu)

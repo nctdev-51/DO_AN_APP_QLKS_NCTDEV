@@ -17,7 +17,6 @@ import javafx.stage.Window;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class ChiTietPhongController {
 
@@ -286,11 +285,11 @@ public class ChiTietPhongController {
 
             final PhieuDatPhongDTO finalPhieu = bookedPhieu;
             btnCheckIn.setOnAction(e -> {
-                QuanLyPhieuDatTraPhongController controller = new QuanLyPhieuDatTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
+                ThanhToanTraPhongController controller = new ThanhToanTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
                 if (controller.processCheckIn(finalPhieu.getMaPhieu())) { parentStage.close(); if(onRefreshDashboard != null) onRefreshDashboard.run(); }
             });
             btnCancel.setOnAction(e -> {
-                QuanLyPhieuDatTraPhongController controller = new QuanLyPhieuDatTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
+                ThanhToanTraPhongController controller = new ThanhToanTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
                 if (controller.cancelBooking(finalPhieu.getMaPhieu())) { parentStage.close(); if(onRefreshDashboard != null) onRefreshDashboard.run(); }
             });
 
@@ -309,7 +308,7 @@ public class ChiTietPhongController {
 
         Button btnComplete = createActionButton("✅ Hoàn Thành Bảo Trì", COLOR_AVAILABLE);
         btnComplete.setOnAction(e -> {
-            QuanLyPhieuDatTraPhongController controller = new QuanLyPhieuDatTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
+            ThanhToanTraPhongController controller = new ThanhToanTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
             if (controller.completeMaintenance(phong.getMaPhong())) { parentStage.close(); if(onRefreshDashboard != null) onRefreshDashboard.run(); }
         });
 
@@ -339,7 +338,7 @@ public class ChiTietPhongController {
             btnBook.setOnAction(e -> {
                 if (cbKhachHang.getValue() == null) { showMessage("Lỗi", "Vui lòng chọn khách hàng"); return; }
                 String maKhach = cbKhachHang.getValue().split(" - ")[0];
-                QuanLyPhieuDatTraPhongController controller = new QuanLyPhieuDatTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
+                ThanhToanTraPhongController controller = new ThanhToanTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
                 if (controller.processBooking(maKhach, phong.getMaPhong(), dpNhanPhong.getValue(), dpTraPhong.getValue())) {
                     dialog.close(); parentStage.close(); if(onRefreshDashboard != null) onRefreshDashboard.run();
                 }

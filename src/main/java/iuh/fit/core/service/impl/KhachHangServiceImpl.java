@@ -112,25 +112,36 @@ public class KhachHangServiceImpl implements IKhachHangService {
      * Helper: Chuyển Entity → DTO
      */
     private KhachHangDTO convertToDTO(KhachHang entity) {
-        return new KhachHangDTO(
-                entity.getMaKhachHang(),
-                entity.getHoTen(),
-                entity.getSoDienThoai(),
-                entity.getNgaySinh(),
-                entity.getLoaiKhachHang() // ĐÃ SỬA: Gán thẳng String
-        );
+        if (entity == null) return null;
+
+        KhachHangDTO dto = new KhachHangDTO();
+        dto.setMaKhachHang(entity.getMaKhachHang());
+        dto.setHoTen(entity.getHoTen());
+        dto.setSoDienThoai(entity.getSoDienThoai());
+        dto.setNgaySinh(entity.getNgaySinh());
+        dto.setLoaiKhachHang(entity.getLoaiKhachHang());
+
+        // (Tùy chọn) Nếu trong Entity KhachHang của bạn cũng đã thêm trường này
+        // dto.setDoiTuongKhach(entity.getDoiTuongKhach());
+
+        return dto;
     }
 
     /**
      * Helper: Chuyển DTO → Entity
      */
     private KhachHang convertToEntity(KhachHangDTO dto) {
+        if (dto == null) return null;
+
         KhachHang entity = new KhachHang();
         entity.setMaKhachHang(dto.getMaKhachHang());
         entity.setHoTen(dto.getHoTen());
         entity.setSoDienThoai(dto.getSoDienThoai());
         entity.setNgaySinh(dto.getNgaySinh());
-        entity.setLoaiKhachHang(dto.getLoaiKhachHang()); // ĐÃ SỬA: Gán thẳng String
+        entity.setLoaiKhachHang(dto.getLoaiKhachHang());
+
+        // (Tùy chọn) Map ngược lại nếu entity có
+        // entity.setDoiTuongKhach(dto.getDoiTuongKhach());
 
         return entity;
     }

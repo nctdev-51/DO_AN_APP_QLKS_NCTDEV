@@ -15,5 +15,6 @@ public interface IPhieuDatPhongRepository {
     PhieuDatPhong update(PhieuDatPhong phieuDatPhong);
     void deleteById(String maPhieu);
 
-    boolean saveBookingTransaction(PhieuDatPhong pdp);
+    List<PhieuDatPhong> findByTrangThai(String trangThai);
+    boolean saveBookingTransaction(PhieuDatPhong entity);
 }

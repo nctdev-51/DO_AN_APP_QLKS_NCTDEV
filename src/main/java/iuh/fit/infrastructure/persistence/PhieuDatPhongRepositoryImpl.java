@@ -22,6 +22,20 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
     }
 
     @Override
+    public List<PhieuDatPhong> findByTrangThai(String trangThai) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            // Dùng JPQL để query danh sách phiếu theo trạng thái
+            String jpql = "SELECT p FROM PhieuDatPhong p WHERE p.trangThai = :trangThai";
+            return em.createQuery(jpql, PhieuDatPhong.class)
+                    .setParameter("trangThai", trangThai)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
     public Optional<PhieuDatPhong> findById(String maPhieu) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
             return Optional.ofNullable(em.find(PhieuDatPhong.class, maPhieu));

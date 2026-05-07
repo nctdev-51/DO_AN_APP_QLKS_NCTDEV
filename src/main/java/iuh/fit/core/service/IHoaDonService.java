@@ -8,6 +8,9 @@ public interface IHoaDonService {
     List<HoaDonDTO> getHoaDonByDateRange(LocalDate start, LocalDate end);
     double getTotalServiceRevenueByDateRange(LocalDate start, LocalDate end);
     List<HoaDonDTO> getHoaDonByPhieuDat(String maPhieu);
+
+    // Logic tính tiền kèm VAT, chiết khấu và dịch vụ
     HoaDonDTO calculateInvoiceAtCheckout(String maPhieu, double thueVAT, double chietKhau);
+
     HoaDonDTO addHoaDon(HoaDonDTO hoaDon);
 }

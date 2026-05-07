@@ -41,7 +41,11 @@ public class HoaDonMapper {
         }
         dto.setGhiChu(entity.getGhiChu());
         dto.setTongTien(entity.getTongTien());
-        
+        dto.setTongTienPhong(entity.getTongTienPhong());
+        dto.setTongTienDichVu(entity.getTongTienDichVu());
+        dto.setChietKhau(entity.getChietKhau());
+        dto.setTrangThaiThanhToan(entity.getTrangThaiThanhToan());
+
         return dto;
     }
     
@@ -59,6 +63,15 @@ public class HoaDonMapper {
         entity.setThueVAT(dto.getThueVAT());
         entity.setGhiChu(dto.getGhiChu());
         entity.setTongTien(dto.getTongTien());
+        entity.setTongTienPhong(dto.getTongTienPhong());
+        entity.setTongTienDichVu(dto.getTongTienDichVu());
+        entity.setChietKhau(dto.getChietKhau());
+        entity.setTrangThaiThanhToan(dto.getTrangThaiThanhToan());
+        entity.setMaPhongDat(dto.getMaPhongDat());
+        entity.setTenPhong(dto.getTenPhong());
+        entity.setMaKhachHang(dto.getMaKhachHang());
+        entity.setMaNhanVien(dto.getMaNhanVien());
+        entity.setMaKhuyenMai(dto.getMaKhuyenMai());
         // Relationships (nhanVien, khachHang, khuyenMai, phong) sẽ được fetch từ DB
         
         return entity;

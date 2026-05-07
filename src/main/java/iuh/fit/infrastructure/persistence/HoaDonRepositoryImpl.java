@@ -6,6 +6,7 @@ import iuh.fit.infrastructure.db.JpaConfig;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -123,6 +124,23 @@ public class HoaDonRepositoryImpl implements IHoaDonRepository {
                     .getResultList();
         } catch (Exception e) {
             logger.severe("❌ Lỗi tìm HoaDon theo khách hàng: " + e.getMessage());
+            return List.of();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<HoaDon> findByNgayLapBetween(LocalDate startDate, LocalDate endDate) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            String hql = "SELECT h FROM HoaDon h WHERE h.ngayLap BETWEEN :startDate AND :endDate";
+            return em.createQuery(hql, HoaDon.class)
+                    .setParameter("startDate", startDate)
+                    .setParameter("endDate", endDate)
+                    .getResultList();
+        } catch (Exception e) {
+            logger.severe("❌ Lỗi tìm HoaDon theo khoảng ngày: " + e.getMessage());
             return List.of();
         } finally {
             em.close();

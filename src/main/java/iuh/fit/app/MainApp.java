@@ -2,9 +2,11 @@ package iuh.fit.app;
 
 // Import đích danh các Interface (Giao diện)
 import iuh.fit.core.repository.IChiTietHoaDonRepository;
+import iuh.fit.core.repository.IChiTietPhieuDatPhongRepository;
 import iuh.fit.core.repository.IDichVuRepository;
 import iuh.fit.core.repository.IHoaDonRepository;
 import iuh.fit.core.repository.IKhachHangRepository;
+import iuh.fit.core.repository.IKhuyenMaiRepository;
 import iuh.fit.core.repository.INhanVienRepository;
 import iuh.fit.core.repository.IPhieuDatPhongRepository;
 import iuh.fit.core.repository.IPhongRepository;
@@ -30,9 +32,11 @@ import iuh.fit.core.service.impl.PhieuDatPhongServiceImpl;
 import iuh.fit.core.service.impl.PhongServiceImpl;
 
 import iuh.fit.infrastructure.persistence.ChiTietHoaDonRepositoryImpl;
+import iuh.fit.infrastructure.persistence.ChiTietPhieuDatPhongRepositoryImpl;
 import iuh.fit.infrastructure.persistence.DichVuRepositoryImpl;
 import iuh.fit.infrastructure.persistence.HoaDonRepositoryImpl;
 import iuh.fit.infrastructure.persistence.KhachHangRepositoryImpl;
+import iuh.fit.infrastructure.persistence.KhuyenMaiRepositoryImpl;
 import iuh.fit.infrastructure.persistence.NhanVienRepositoryImpl;
 import iuh.fit.infrastructure.persistence.PhieuDatPhongRepositoryImpl;
 import iuh.fit.infrastructure.persistence.PhongRepositoryImpl;
@@ -57,6 +61,8 @@ public class MainApp extends Application {
         IDichVuRepository dvRepo = new DichVuRepositoryImpl();
         IHoaDonRepository hdRepo = new HoaDonRepositoryImpl();
         IChiTietHoaDonRepository cthdRepo = new ChiTietHoaDonRepositoryImpl();
+        IChiTietPhieuDatPhongRepository ctphRepository = new ChiTietPhieuDatPhongRepositoryImpl();
+        IKhuyenMaiRepository kmRepo = new KhuyenMaiRepositoryImpl();
 
         // Khởi tạo service
         IKhachHangService khService = new KhachHangServiceImpl(khRepo);
@@ -65,7 +71,7 @@ public class MainApp extends Application {
         IPhieuDatPhongService phieuService = new PhieuDatPhongServiceImpl(phieuRepo);
         IAuthenticationService authService = new AuthenticationServiceImpl(tkRepo);
         IDichVuService dvService = new DichVuServiceImpl(dvRepo);
-        IHoaDonService hdService = new HoaDonServiceImpl(hdRepo, cthdRepo, phieuRepo, phongRepo);
+        IHoaDonService hdService = new HoaDonServiceImpl(hdRepo, cthdRepo, phieuRepo, phongRepo, dvRepo, ctphRepository, khRepo, nvRepo, kmRepo);
         IChiTietHoaDonService cthdService = new ChiTietHoaDonServiceImpl(cthdRepo);
 
         // Tạo LoginController và lấy Scene
