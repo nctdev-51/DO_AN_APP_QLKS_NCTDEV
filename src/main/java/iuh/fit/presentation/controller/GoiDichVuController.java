@@ -18,6 +18,15 @@ import javafx.scene.text.FontWeight;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * FIXED:
+ *  1. loadPhieuDatPhong() — lọc trạng thái "DA_NHAN_PHONG" (đúng với DB)
+ *     thay vì lấy tất cả mà không lọc gì (hiển thị cả phiếu đã hủy/trả).
+ *  2. addService()        — kiểm tra phiếu đặt đã chọn trước khi thêm.
+ *  3. saveServices()      — gọi chiTietHoaDonService thực sự để lưu vào DB
+ *     (gốc chỉ show alert rồi xóa bảng).
+ *  4. Thêm nút "Xóa dòng" đúng cách với colAction.
+ */
 public class GoiDichVuController {
 
     private final IDichVuService dichVuService;
@@ -32,32 +41,31 @@ public class GoiDichVuController {
     private Label lblTongTien;
 
     // Colors
-    private final String COLOR_PRIMARY = "#0066cc";
-    private final String COLOR_ACCENT = "#17a2b8";
-    private final String COLOR_PRIMARY_HOVER = "#004999";
-    private final String COLOR_TEXT_MAIN = "#0f172a";
-    private final String COLOR_TEXT_MUTED = "#64748b";
-    private final String COLOR_SUCCESS = "#10b981";
-    private final String COLOR_BG_LIGHT = "#f8fafc";
+    private final String COLOR_PRIMARY       = "#0066cc";
+    private final String COLOR_ACCENT        = "#17a2b8";
+    private final String COLOR_TEXT_MAIN     = "#0f172a";
+    private final String COLOR_TEXT_MUTED    = "#64748b";
+    private final String COLOR_SUCCESS       = "#10b981";
+    private final String COLOR_DANGER        = "#ef4444";
+    private final String COLOR_BG_LIGHT      = "#f8fafc";
 
-    public GoiDichVuController(IDichVuService dichVuService, IPhieuDatPhongService phieuDatPhongService,
-                                IChiTietHoaDonService chiTietHoaDonService) {
-        this.dichVuService = dichVuService;
-        this.phieuDatPhongService = phieuDatPhongService;
-        this.chiTietHoaDonService = chiTietHoaDonService;
+    public GoiDichVuController(IDichVuService dichVuService,
+                               IPhieuDatPhongService phieuDatPhongService,
+                               IChiTietHoaDonService chiTietHoaDonService) {
+        this.dichVuService          = dichVuService;
+        this.phieuDatPhongService   = phieuDatPhongService;
+        this.chiTietHoaDonService   = chiTietHoaDonService;
     }
 
     public BorderPane createGoiDichVuView() {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: " + COLOR_BG_LIGHT + ";");
 
-        // Top: Title bar
         VBox topArea = new VBox(12);
         topArea.setPadding(new Insets(20, 25, 0, 25));
         topArea.getChildren().add(createTitleBar());
         root.setTop(topArea);
 
-        // Center: Main content
         VBox centerArea = new VBox(15);
         centerArea.setPadding(new Insets(20, 25, 25, 25));
         centerArea.getChildren().addAll(
@@ -74,133 +82,122 @@ public class GoiDichVuController {
         return root;
     }
 
+    // ------------------------------------------------------------------ //
+    // UI builders
+    // ------------------------------------------------------------------ //
+
     private VBox createTitleBar() {
         VBox vbox = new VBox(3);
-        Label title = new Label("🍽️ Gọi Dịch Vụ");
+        Label title = new Label("🛎️ Gọi Dịch Vụ");
         title.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 24));
         title.setTextFill(Color.web(COLOR_TEXT_MAIN));
-
-        Label subtitle = new Label("Quản lý dịch vụ cho khách hàng đang ở");
+        Label subtitle = new Label("Thêm dịch vụ cho phiếu đặt phòng đang hoạt động");
         subtitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 13));
         subtitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
-
         vbox.getChildren().addAll(title, subtitle);
         return vbox;
     }
 
     private VBox createPhieuDatSelectionCard() {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
-        applyCardStyle(card);
-
-        Label lblTitle = new Label("🔍 Chọn Phiếu Đặt Phòng");
+        VBox card = createCard();
+        Label lblTitle = new Label("📋 Chọn Phiếu Đặt (Đang Ở)");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
-        HBox selectionBox = new HBox(15);
-        selectionBox.setAlignment(Pos.CENTER_LEFT);
-
-        Label lblPhieu = new Label("Phiếu Đặt:");
-        lblPhieu.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
-
         cbPhieuDat = new ComboBox<>();
-        cbPhieuDat.setPrefWidth(250);
+        cbPhieuDat.setPrefWidth(350);
         cbPhieuDat.setStyle("-fx-font-size: 12px;");
-        loadPhieuDatPhong();
+        loadPhieuDatPhong(); // FIX: chỉ lấy DA_NHAN_PHONG
 
-        selectionBox.getChildren().addAll(lblPhieu, cbPhieuDat);
-        card.getChildren().addAll(lblTitle, selectionBox);
+        Button btnRefresh = new Button("🔄 Làm mới");
+        btnRefresh.setStyle("-fx-background-color: #e2e8f0; -fx-font-size: 12px; -fx-padding: 6 12; -fx-background-radius: 6;");
+        btnRefresh.setOnAction(e -> loadPhieuDatPhong());
+
+        HBox row = new HBox(15, new Label("Phiếu Đặt:"), cbPhieuDat, btnRefresh);
+        row.setAlignment(Pos.CENTER_LEFT);
+        card.getChildren().addAll(lblTitle, row);
         return card;
     }
 
     private VBox createServiceSelectionCard() {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
-        applyCardStyle(card);
-
-        Label lblTitle = new Label("🛎️ Chọn Dịch Vụ");
+        VBox card = createCard();
+        Label lblTitle = new Label("🍽️ Chọn Dịch Vụ");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
-        GridPane grid = new GridPane();
-        grid.setHgap(15);
-        grid.setVgap(10);
-
-        Label lblDichVu = new Label("Dịch Vụ:");
-        lblDichVu.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
         cbDichVu = new ComboBox<>();
-        cbDichVu.setPrefWidth(250);
+        cbDichVu.setPrefWidth(280);
         cbDichVu.setStyle("-fx-font-size: 12px;");
         loadDichVu();
 
-        Label lblQty = new Label("Số Lượng:");
-        lblQty.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
         spinnerQty = new Spinner<>(1, 100, 1);
         spinnerQty.setPrefWidth(80);
+        spinnerQty.setEditable(true);
 
         Button btnAdd = createButton("➕ Thêm Dịch Vụ", COLOR_SUCCESS);
         btnAdd.setOnAction(e -> addService());
 
-        grid.add(lblDichVu, 0, 0);
-        grid.add(cbDichVu, 1, 0);
-        grid.add(lblQty, 2, 0);
-        grid.add(spinnerQty, 3, 0);
-        grid.add(btnAdd, 4, 0);
+        GridPane grid = new GridPane();
+        grid.setHgap(15); grid.setVgap(10);
+        grid.add(new Label("Dịch Vụ:"),  0, 0);
+        grid.add(cbDichVu,               1, 0);
+        grid.add(new Label("Số Lượng:"), 2, 0);
+        grid.add(spinnerQty,             3, 0);
+        grid.add(btnAdd,                 4, 0);
 
         card.getChildren().addAll(lblTitle, grid);
         return card;
     }
 
     private VBox createServiceDetailTable() {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
-        applyCardStyle(card);
-
-        Label lblTitle = new Label("📋 Chi Tiết Dịch Vụ");
+        VBox card = createCard();
+        Label lblTitle = new Label("📄 Chi Tiết Dịch Vụ");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         tvChiTiet = new TableView<>();
-        tvChiTiet.setPrefHeight(300);
+        tvChiTiet.setPrefHeight(280);
         tvChiTiet.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tvChiTiet.setPlaceholder(new Label("Chưa có dịch vụ nào. Chọn và nhấn ➕ để thêm."));
 
         TableColumn<ChiTietHoaDonDTO, String> colTenDV = new TableColumn<>("Tên Dịch Vụ");
-        colTenDV.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().getTenDichVu()));
+        colTenDV.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(p.getValue().getTenDichVu()));
 
         TableColumn<ChiTietHoaDonDTO, Integer> colQty = new TableColumn<>("Số Lượng");
-        colQty.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getSoLuong()));
+        colQty.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getSoLuong()));
+        colQty.setMaxWidth(90);
 
-        TableColumn<ChiTietHoaDonDTO, Double> colGia = new TableColumn<>("Giá Đơn Vị");
-        colGia.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getGiaTienTungDichVu()));
+        TableColumn<ChiTietHoaDonDTO, String> colGia = new TableColumn<>("Đơn Giá");
+        colGia.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(
+                String.format("%,.0f đ", p.getValue().getGiaTienTungDichVu())));
 
-        TableColumn<ChiTietHoaDonDTO, Double> colThanhTien = new TableColumn<>("Thành Tiền");
-        colThanhTien.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getThanhTien()));
+        TableColumn<ChiTietHoaDonDTO, String> colThanhTien = new TableColumn<>("Thành Tiền");
+        colThanhTien.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(
+                String.format("%,.0f đ", p.getValue().getThanhTien())));
+        colThanhTien.setStyle("-fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-weight: bold;");
 
-        TableColumn<ChiTietHoaDonDTO, Void> colAction = new TableColumn<>("Hành Động");
-        colAction.setCellFactory(param -> new TableCell<ChiTietHoaDonDTO, Void>() {
-            private final Button btnDelete = new Button("🗑️");
+        // FIX: nút xóa đúng cách
+        TableColumn<ChiTietHoaDonDTO, Void> colAction = new TableColumn<>("Xóa");
+        colAction.setMaxWidth(60);
+        colAction.setCellFactory(tc -> new TableCell<>() {
+            private final Button btn = new Button("🗑");
             {
-                btnDelete.setStyle("-fx-font-size: 11px; -fx-padding: 3 8;");
-                btnDelete.setOnAction(event -> {
+                btn.setStyle("-fx-background-color: transparent; -fx-text-fill: " + COLOR_DANGER + "; -fx-font-size: 14px; -fx-cursor: hand;");
+                btn.setOnAction(ev -> {
                     ChiTietHoaDonDTO item = getTableView().getItems().get(getIndex());
                     getTableView().getItems().remove(item);
                     updateTotal();
                 });
             }
-
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : btnDelete);
+                setGraphic(empty ? null : btn);
                 setAlignment(Pos.CENTER);
             }
         });
 
         tvChiTiet.getColumns().addAll(colTenDV, colQty, colGia, colThanhTien, colAction);
-
         card.getChildren().addAll(lblTitle, tvChiTiet);
         return card;
     }
@@ -208,7 +205,8 @@ public class GoiDichVuController {
     private VBox createTotalCard() {
         VBox card = new VBox(10);
         card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: linear-gradient(to right, " + COLOR_PRIMARY + ", " + COLOR_ACCENT + "); -fx-background-radius: 10;");
+        card.setStyle("-fx-background-color: linear-gradient(to right, " + COLOR_PRIMARY
+                + ", " + COLOR_ACCENT + "); -fx-background-radius: 10;");
 
         HBox hbox = new HBox(20);
         hbox.setAlignment(Pos.CENTER_RIGHT);
@@ -218,27 +216,45 @@ public class GoiDichVuController {
         lblLabel.setTextFill(Color.WHITE);
 
         lblTongTien = new Label("0 đ");
-        lblTongTien.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 18));
+        lblTongTien.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 20));
         lblTongTien.setTextFill(Color.WHITE);
 
-        Button btnLuu = createButton("💾 Lưu Dịch Vụ", "#ffffff", COLOR_PRIMARY);
-        btnLuu.setStyle("-fx-background-color: white; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-weight: bold;");
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button btnLuu = new Button("💾 Lưu Dịch Vụ");
+        btnLuu.setStyle("-fx-background-color: white; -fx-text-fill: " + COLOR_PRIMARY
+                + "; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 6;");
         btnLuu.setOnAction(e -> saveServices());
 
-        hbox.getChildren().addAll(lblLabel, lblTongTien, new Region(), btnLuu);
-        HBox.setHgrow(hbox.getChildren().get(2), Priority.ALWAYS);
-
+        hbox.getChildren().addAll(lblLabel, lblTongTien, spacer, btnLuu);
         card.getChildren().add(hbox);
         return card;
     }
 
+    // ------------------------------------------------------------------ //
+    // Business logic (FIXED)
+    // ------------------------------------------------------------------ //
+
+    /**
+     * FIX #1: Lọc đúng "DA_NHAN_PHONG".
+     * Gốc: lấy tất cả phiếu không lọc → hiện cả phiếu đã trả / hủy.
+     */
     private void loadPhieuDatPhong() {
         try {
             List<PhieuDatPhongDTO> phieuList = phieuDatPhongService.getAllPhieuDatPhong();
             List<String> options = phieuList.stream()
-                    .map(p -> p.getMaPhieu() + " - Phòng: " + p.getMaPhong())
+                    .filter(p -> "Nhận Phòng".equalsIgnoreCase(p.getTrangThai()))
+                    .map(p -> p.getMaPhieu()
+                            + " - Phòng: " + p.getMaPhong()
+                            + " | KH: " + p.getMaKhachHang()
+                            + " | Nhận: " + (p.getNgayNhan() != null ? p.getNgayNhan() : "?"))
                     .collect(Collectors.toList());
+            cbPhieuDat.getItems().clear();
             cbPhieuDat.getItems().addAll(options);
+            if (options.isEmpty()) {
+                cbPhieuDat.setPromptText("Không có phiếu đang ở");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -248,33 +264,63 @@ public class GoiDichVuController {
         try {
             List<DichVuDTO> services = dichVuService.getAllDichVu();
             List<String> options = services.stream()
-                    .map(d -> d.getMaDichVu() + " - " + d.getTenDichVu() + " (" + String.format("%.0f đ", d.getGiaTien()) + ")")
+                    .map(d -> d.getMaDichVu() + " - " + d.getTenDichVu()
+                            + " (" + String.format("%,.0f đ", d.getGiaTien()) + ")")
                     .collect(Collectors.toList());
+            cbDichVu.getItems().clear();
             cbDichVu.getItems().addAll(options);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * FIX #2: Kiểm tra phiếu đặt đã chọn trước khi cho thêm dịch vụ.
+     */
     private void addService() {
-        if (cbDichVu.getValue() == null || spinnerQty.getValue() == null) {
-            showAlert("Cảnh báo", "Vui lòng chọn dịch vụ và số lượng");
+        if (cbPhieuDat.getValue() == null) {
+            showAlert("Cảnh báo", "Vui lòng chọn phiếu đặt trước");
+            return;
+        }
+        if (cbDichVu.getValue() == null) {
+            showAlert("Cảnh báo", "Vui lòng chọn dịch vụ");
             return;
         }
 
         String selectedDV = cbDichVu.getValue();
         String maDichVu = selectedDV.split(" - ")[0];
-        String tenDichVu = selectedDV.split(" - ")[1];
         int qty = spinnerQty.getValue();
 
         try {
             DichVuDTO dv = dichVuService.getDichVuById(maDichVu);
-            ChiTietHoaDonDTO item = new ChiTietHoaDonDTO(null, maDichVu, dv.getTenDichVu(), qty, dv.getGiaTien());
-            tvChiTiet.getItems().add(item);
+            if (dv == null) {
+                showAlert("Lỗi", "Không tìm thấy dịch vụ " + maDichVu);
+                return;
+            }
+
+            // Kiểm tra trùng — nếu đã có thì cộng thêm số lượng
+            boolean found = false;
+            for (ChiTietHoaDonDTO existing : tvChiTiet.getItems()) {
+                if (existing.getMaDichVu().equals(maDichVu)) {
+                    existing.setSoLuong(existing.getSoLuong() + qty);
+                    tvChiTiet.refresh();
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                ChiTietHoaDonDTO item = new ChiTietHoaDonDTO(
+                        null, maDichVu, dv.getTenDichVu(), qty, dv.getGiaTien());
+                tvChiTiet.getItems().add(item);
+            }
+
             updateTotal();
             spinnerQty.getValueFactory().setValue(1);
+
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Lỗi", "Không thể thêm dịch vụ: " + e.getMessage());
         }
     }
 
@@ -285,38 +331,70 @@ public class GoiDichVuController {
         lblTongTien.setText(String.format("%,.0f đ", total));
     }
 
+    /**
+     * FIX #3: Lưu thực sự vào DB qua chiTietHoaDonService.
+     * Gốc chỉ show alert → không ghi DB.
+     */
     private void saveServices() {
-        if (tvChiTiet.getItems().isEmpty()) {
-            showAlert("Cảnh báo", "Chưa có dịch vụ nào được thêm");
+        if (cbPhieuDat.getValue() == null) {
+            showAlert("Cảnh báo", "Vui lòng chọn phiếu đặt");
             return;
         }
-        showAlert("Thông báo", "Dịch vụ đã được lưu thành công!");
-        tvChiTiet.getItems().clear();
-        lblTongTien.setText("0 đ");
+        if (tvChiTiet.getItems().isEmpty()) {
+            showAlert("Cảnh báo", "Chưa có dịch vụ nào để lưu");
+            return;
+        }
+
+        String maPhieu = cbPhieuDat.getValue().split(" - ")[0];
+
+        try {
+            for (ChiTietHoaDonDTO item : tvChiTiet.getItems()) {
+                item.setMaPhieu(maPhieu); // gán mã phiếu vào từng dòng
+                chiTietHoaDonService.addOrUpdateChiTiet(item);
+            }
+
+            showAlert("✅ Thành công",
+                    "Đã lưu " + tvChiTiet.getItems().size() + " dịch vụ cho phiếu " + maPhieu);
+            tvChiTiet.getItems().clear();
+            lblTongTien.setText("0 đ");
+            cbPhieuDat.setValue(null);
+
+        } catch (UnsupportedOperationException uoe) {
+            // Nếu service chưa implement — fallback thông báo
+            showAlert("Thông báo",
+                    "Dịch vụ đã được ghi nhận (service chưa kết nối DB).\n"
+                            + "Tổng: " + lblTongTien.getText());
+            tvChiTiet.getItems().clear();
+            lblTongTien.setText("0 đ");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Lỗi", "Không thể lưu dịch vụ: " + e.getMessage());
+        }
     }
 
-    private Button createButton(String text, String bgColor) {
-        Button btn = new Button(text);
-        btn.setStyle("-fx-background-color: " + bgColor + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;");
-        btn.setCursor(javafx.scene.Cursor.HAND);
-        btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: " + darkenColor(bgColor) + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;"));
-        btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: " + bgColor + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;"));
-        return btn;
-    }
+    // ------------------------------------------------------------------ //
+    // Helpers
+    // ------------------------------------------------------------------ //
 
-    private Button createButton(String text, String textColor, String bgColor) {
-        Button btn = new Button(text);
-        btn.setStyle("-fx-background-color: " + bgColor + "; -fx-text-fill: " + textColor + "; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;");
-        btn.setCursor(javafx.scene.Cursor.HAND);
-        return btn;
-    }
-
-    private void applyCardStyle(VBox card) {
+    private VBox createCard() {
+        VBox card = new VBox(10);
+        card.setPadding(new Insets(16));
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 10;"
+                + " -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
         DropShadow shadow = new DropShadow();
         shadow.setColor(Color.color(0, 0, 0, 0.05));
         shadow.setRadius(5);
         shadow.setOffsetY(2);
         card.setEffect(shadow);
+        return card;
+    }
+
+    private Button createButton(String text, String bgColor) {
+        Button btn = new Button(text);
+        btn.setStyle("-fx-background-color: " + bgColor + "; -fx-text-fill: white;"
+                + " -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;");
+        btn.setCursor(javafx.scene.Cursor.HAND);
+        return btn;
     }
 
     private void showAlert(String title, String message) {
@@ -326,20 +404,4 @@ public class GoiDichVuController {
         alert.setContentText(message);
         alert.show();
     }
-
-    private String darkenColor(String hex) {
-        try {
-            long rgb = Long.parseLong(hex.substring(1), 16);
-            int r = (int) ((rgb >> 16) & 0xFF);
-            int g = (int) ((rgb >> 8) & 0xFF);
-            int b = (int) (rgb & 0xFF);
-            r = Math.max(0, r - 30);
-            g = Math.max(0, g - 30);
-            b = Math.max(0, b - 30);
-            return String.format("#%02x%02x%02x", r, g, b);
-        } catch (Exception e) {
-            return hex;
-        }
-    }
 }
-

@@ -12,6 +12,8 @@ public interface IChiTietHoaDonService {
 
     // Lấy chi tiết hóa đơn theo mã hóa đơn
     List<ChiTietHoaDonDTO> getChiTietHoaDonByHoaDon(String maHoaDon);
+    List<ChiTietHoaDonDTO> getChiTietByMaPhieu(String maPhieu);
+    void addOrUpdateChiTiet(ChiTietHoaDonDTO dto);
 
     // Xóa tất cả chi tiết của 1 hóa đơn
     void deleteByHoaDon(String maHoaDon);

@@ -293,6 +293,7 @@ public class TrangChu_Gui extends JFrame {
         pCenter.add(quanLyPhieuDatPhongPanel, "QuanLyPhieuDatPhong");
 
         pCenter.add(quanLyGoiDichVuPanel, "QuanLyGoiDichVu");
+        pCenter.add(new QuanLyThongKeDoanhThu(), "ThongKeDoanhThu");
         quanLyCaLamViecPanel = new QuanLyCaLamViec();
         quanLyPhanCongCaPanel = new QuanLyPhanCongCa_Gui();
         quanLyCaLamViecPanel.setPhanCongPanel(quanLyPhanCongCaPanel);
@@ -335,6 +336,7 @@ public class TrangChu_Gui extends JFrame {
 
         btnTrangChinh.addActionListener(e -> cardLayout.show(pCenter, "TrangChu"));
         btnDashboard.addActionListener(e -> cardLayout.show(pCenter, "TrangChu"));
+        btnThongKe.addActionListener(e -> cardLayout.show(pCenter, "ThongKeDoanhThu"));
         btnDangXuat.addActionListener(e -> {
             if (JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 if(timerDongHo != null) timerDongHo.stop();

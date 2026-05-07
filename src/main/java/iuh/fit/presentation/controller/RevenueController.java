@@ -78,7 +78,7 @@ public class RevenueController {
 
     private VBox createTitleBar() {
         VBox vbox = new VBox(3);
-        Label title = new Label("💰 Thống Kê Doanh Thu");
+        Label title = new Label(" Thống Kê Doanh Thu");
         title.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 24));
         title.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
@@ -107,11 +107,11 @@ public class RevenueController {
         dpEndDate = new DatePicker(LocalDate.now());
         dpEndDate.setStyle("-fx-font-size: 12px;");
 
-        Button btnSearch = new Button("🔍 Tìm Kiếm");
+        Button btnSearch = new Button(" Tìm Kiếm");
         btnSearch.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;");
         btnSearch.setOnAction(e -> loadRevenueData());
 
-        Button btnExport = new Button("📥 Xuất Excel");
+        Button btnExport = new Button(" Xuất Excel");
         btnExport.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;");
         btnExport.setOnAction(e -> showAlert("Thông báo", "Chức năng xuất Excel sẽ được bổ sung sau"));
 
@@ -151,7 +151,7 @@ public class RevenueController {
         card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
         applyCardStyle(card);
 
-        Label lblTitle = new Label("📊 Biểu Đồ Doanh Thu Theo Ngày");
+        Label lblTitle = new Label(" Biểu Đồ Doanh Thu Theo Ngày");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
@@ -174,7 +174,7 @@ public class RevenueController {
         card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
         applyCardStyle(card);
 
-        Label lblTitle = new Label("📋 Danh Sách Hóa Đơn");
+        Label lblTitle = new Label(" Danh Sách Hóa Đơn");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 

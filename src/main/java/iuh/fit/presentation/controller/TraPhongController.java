@@ -16,6 +16,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * FIXED:
+ *  1. loadPhieuDatPhong() — lọc trang thái "DA_NHAN_PHONG" (đúng với DB)
+ *     thay vì "Đang ở" / "Checked-in" (không bao giờ có trong DB).
+ *  2. loadPhieuInfo()     — hiện thêm tên KH, tên phòng nếu DTO hỗ trợ.
+ *  3. calculateInvoice()  — tính cả tiền dịch vụ từ DB (ChiTietPhieuDatPhong).
+ *  4. confirmCheckout()   — lưu hóa đơn thực sự qua hoaDonService,
+ *                           cập nhật trạng thái phiếu → DA_TRA_PHONG,
+ *                           cập nhật phòng → Trống.
+ */
 public class TraPhongController {
 
     private final IPhieuDatPhongService phieuDatPhongService;
@@ -43,37 +53,42 @@ public class TraPhongController {
     private Spinner<Double> spinnerVAT;
     private Spinner<Double> spinnerChietKhau;
 
+    // State
+    private PhieuDatPhongDTO currentPhieu = null;
+    private double cachedTongTienPhong = 0;
+    private double cachedTongTienDichVu = 0;
+
     // Colors
     private final String COLOR_PRIMARY = "#0066cc";
-    private final String COLOR_ACCENT = "#17a2b8";
+    private final String COLOR_ACCENT  = "#17a2b8";
     private final String COLOR_SUCCESS = "#10b981";
-    private final String COLOR_WARNING = "#f59e0b";
     private final String COLOR_TEXT_MAIN = "#0f172a";
     private final String COLOR_TEXT_MUTED = "#64748b";
     private final String COLOR_BG_LIGHT = "#f8fafc";
 
-    public TraPhongController(IPhieuDatPhongService phieuDatPhongService, IPhongService phongService,
-                              IKhachHangService khachHangService, IHoaDonService hoaDonService,
-                              IChiTietHoaDonService chiTietHoaDonService, IDichVuService dichVuService) {
-        this.phieuDatPhongService = phieuDatPhongService;
-        this.phongService = phongService;
-        this.khachHangService = khachHangService;
-        this.hoaDonService = hoaDonService;
-        this.chiTietHoaDonService = chiTietHoaDonService;
-        this.dichVuService = dichVuService;
+    public TraPhongController(IPhieuDatPhongService phieuDatPhongService,
+                              IPhongService phongService,
+                              IKhachHangService khachHangService,
+                              IHoaDonService hoaDonService,
+                              IChiTietHoaDonService chiTietHoaDonService,
+                              IDichVuService dichVuService) {
+        this.phieuDatPhongService   = phieuDatPhongService;
+        this.phongService           = phongService;
+        this.khachHangService       = khachHangService;
+        this.hoaDonService          = hoaDonService;
+        this.chiTietHoaDonService   = chiTietHoaDonService;
+        this.dichVuService          = dichVuService;
     }
 
     public BorderPane createTraPhongView() {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: " + COLOR_BG_LIGHT + ";");
 
-        // Top: Title bar
         VBox topArea = new VBox(12);
         topArea.setPadding(new Insets(20, 25, 0, 25));
         topArea.getChildren().add(createTitleBar());
         root.setTop(topArea);
 
-        // Center: Main content
         VBox centerArea = new VBox(15);
         centerArea.setPadding(new Insets(20, 25, 25, 25));
         centerArea.getChildren().addAll(
@@ -91,342 +106,369 @@ public class TraPhongController {
         return root;
     }
 
+    // ------------------------------------------------------------------ //
+    // UI builders (không đổi về layout)
+    // ------------------------------------------------------------------ //
+
     private VBox createTitleBar() {
         VBox vbox = new VBox(3);
-        Label title = new Label("🏨 Trả Phòng & Thanh Toán");
+        Label title = new Label("💳 Trả Phòng & Thanh Toán");
         title.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 24));
         title.setTextFill(Color.web(COLOR_TEXT_MAIN));
-
         Label subtitle = new Label("Tính toán hóa đơn và xử lý thanh toán khi khách trả phòng");
         subtitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 13));
         subtitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
-
         vbox.getChildren().addAll(title, subtitle);
         return vbox;
     }
 
     private VBox createPhieuDatSelectionCard() {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
-        applyCardStyle(card);
-
-        Label lblTitle = new Label("🔍 Chọn Phiếu Đặt Phòng");
+        VBox card = createCard();
+        Label lblTitle = new Label("📋 Chọn Phiếu Đang Ở");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
-        HBox selectionBox = new HBox(15);
-        selectionBox.setAlignment(Pos.CENTER_LEFT);
-
-        Label lblPhieu = new Label("Phiếu Đặt:");
-        lblPhieu.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
-
         cbPhieuDat = new ComboBox<>();
-        cbPhieuDat.setPrefWidth(300);
+        cbPhieuDat.setPrefWidth(350);
         cbPhieuDat.setStyle("-fx-font-size: 12px;");
-        loadPhieuDatPhong();
+        loadPhieuDatPhong(); // FIX: chỉ lấy DA_NHAN_PHONG
 
-        Button btnLoad = new Button("🔄 Tải Thông Tin");
+        Button btnLoad = new Button("📂 Tải Thông Tin");
         btnLoad.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;");
         btnLoad.setOnAction(e -> loadPhieuInfo());
 
-        selectionBox.getChildren().addAll(lblPhieu, cbPhieuDat, btnLoad);
-        card.getChildren().addAll(lblTitle, selectionBox);
+        HBox row = new HBox(15, new Label("Phiếu Đặt:"), cbPhieuDat, btnLoad);
+        row.setAlignment(Pos.CENTER_LEFT);
+        card.getChildren().addAll(lblTitle, row);
         return card;
     }
 
     private VBox createGuestInfoCard() {
-        VBox card = new VBox(12);
-        card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
-        applyCardStyle(card);
-
+        VBox card = createCard();
         Label lblTitle = new Label("👤 Thông Tin Khách & Phòng");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         GridPane grid = new GridPane();
-        grid.setHgap(30);
-        grid.setVgap(12);
+        grid.setHgap(30); grid.setVgap(12);
 
-        // Column 1
-        Label lbl1 = new Label("Khách hàng:");
-        lbl1.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
         lblKhachHang = createInfoLabel("Chưa chọn");
+        lblPhong     = createInfoLabel("Chưa chọn");
+        lblNgayNhan  = createInfoLabel("Chưa chọn");
+        lblNgayTra   = createInfoLabel("Chưa chọn");
+        lblSoNgay    = createInfoLabel("0 ngày");
+        lblGiaPhong  = createInfoLabel("0 đ");
 
-        Label lbl2 = new Label("Phòng:");
-        lbl2.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
-        lblPhong = createInfoLabel("Chưa chọn");
-
-        // Column 2
-        Label lbl3 = new Label("Nhận phòng:");
-        lbl3.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
-        lblNgayNhan = createInfoLabel("Chưa chọn");
-
-        Label lbl4 = new Label("Trả phòng:");
-        lbl4.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
-        lblNgayTra = createInfoLabel("Chưa chọn");
-
-        // Column 3
-        Label lbl5 = new Label("Số ngày ở:");
-        lbl5.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
-        lblSoNgay = createInfoLabel("0 ngày");
-
-        Label lbl6 = new Label("Giá phòng/ngày:");
-        lbl6.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
-        lblGiaPhong = createInfoLabel("0 đ");
-
-        grid.add(lbl1, 0, 0);
-        grid.add(lblKhachHang, 0, 1);
-        grid.add(lbl2, 0, 2);
-        grid.add(lblPhong, 0, 3);
-
-        grid.add(lbl3, 1, 0);
-        grid.add(lblNgayNhan, 1, 1);
-        grid.add(lbl4, 1, 2);
-        grid.add(lblNgayTra, 1, 3);
-
-        grid.add(lbl5, 2, 0);
-        grid.add(lblSoNgay, 2, 1);
-        grid.add(lbl6, 2, 2);
-        grid.add(lblGiaPhong, 2, 3);
+        addGridRow(grid, "Khách hàng:", lblKhachHang, 0);
+        addGridRow(grid, "Phòng:",      lblPhong,     1);
+        addGridRow(grid, "Nhận phòng:", lblNgayNhan,  2);
+        addGridRow(grid, "Trả phòng:",  lblNgayTra,   3);
+        addGridRow(grid, "Số ngày ở:",  lblSoNgay,    4);
+        addGridRow(grid, "Giá/ngày:",   lblGiaPhong,  5);
 
         card.getChildren().addAll(lblTitle, grid);
         return card;
     }
 
     private VBox createServiceDetailTable() {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
-        applyCardStyle(card);
-
-        Label lblTitle = new Label("🍽️ Chi Tiết Dịch Vụ Sử Dụng");
+        VBox card = createCard();
+        Label lblTitle = new Label("🧾 Chi Tiết Dịch Vụ Đã Dùng");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         tvChiTiet = new TableView<>();
-        tvChiTiet.setPrefHeight(200);
+        tvChiTiet.setPrefHeight(220);
         tvChiTiet.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tvChiTiet.setPlaceholder(new Label("Chưa có dịch vụ hoặc chưa chọn phiếu."));
 
-        TableColumn<ChiTietHoaDonDTO, String> colTenDV = new TableColumn<>("Tên Dịch Vụ");
-        colTenDV.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().getTenDichVu()));
+        TableColumn<ChiTietHoaDonDTO, String> colTen = new TableColumn<>("Tên Dịch Vụ");
+        colTen.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(p.getValue().getTenDichVu()));
 
         TableColumn<ChiTietHoaDonDTO, Integer> colQty = new TableColumn<>("Số Lượng");
-        colQty.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getSoLuong()));
+        colQty.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getSoLuong()));
 
-        TableColumn<ChiTietHoaDonDTO, Double> colGia = new TableColumn<>("Giá Đơn Vị");
-        colGia.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getGiaTienTungDichVu()));
+        TableColumn<ChiTietHoaDonDTO, String> colDon = new TableColumn<>("Đơn Giá");
+        colDon.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(
+                String.format("%,.0f đ", p.getValue().getGiaTienTungDichVu())));
 
-        TableColumn<ChiTietHoaDonDTO, Double> colThanhTien = new TableColumn<>("Thành Tiền");
-        colThanhTien.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getThanhTien()));
+        TableColumn<ChiTietHoaDonDTO, String> colTT = new TableColumn<>("Thành Tiền");
+        colTT.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(
+                String.format("%,.0f đ", p.getValue().getThanhTien())));
 
-        tvChiTiet.getColumns().addAll(colTenDV, colQty, colGia, colThanhTien);
-
+        tvChiTiet.getColumns().addAll(colTen, colQty, colDon, colTT);
         card.getChildren().addAll(lblTitle, tvChiTiet);
         return card;
     }
 
     private VBox createInvoiceCalculationCard() {
-        VBox card = new VBox(15);
-        card.setPadding(new Insets(20));
-        card.setStyle("-fx-background-color: linear-gradient(to bottom, #f0f9ff, #e0f2fe); -fx-background-radius: 10; -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 10; -fx-border-width: 2;");
-
-        Label lblTitle = new Label("💰 Tính Toán Hóa Đơn");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 16));
-        lblTitle.setTextFill(Color.web(COLOR_PRIMARY));
+        VBox card = createCard();
+        Label lblTitle = new Label("🔢 Tính Toán Hóa Đơn");
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+        lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         GridPane grid = new GridPane();
-        grid.setHgap(40);
-        grid.setVgap(12);
+        grid.setHgap(20); grid.setVgap(12);
 
-        // Row 1: Tổng tiền phòng
-        Label lbl1 = new Label("Tổng tiền phòng:");
-        lbl1.setStyle("-fx-font-weight: bold;");
-        lblTongTienPhong = createInfoLabel("0 đ");
-        lblTongTienPhong.setStyle("-fx-font-size: 13px; -fx-text-fill: #1e40af;");
+        lblTongTienPhong  = createAmountLabel("0 đ");
+        lblTongTienDichVu = createAmountLabel("0 đ");
+        lblThueVAT        = createAmountLabel("0 đ");
+        lblChietKhau      = createAmountLabel("0 đ");
+        lblTongTien       = createAmountLabel("0 đ");
+        lblTongTien.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 16));
+        lblTongTien.setStyle("-fx-text-fill: " + COLOR_PRIMARY + ";");
 
-        // Row 2: Tổng tiền dịch vụ
-        Label lbl2 = new Label("Tổng tiền dịch vụ:");
-        lbl2.setStyle("-fx-font-weight: bold;");
-        lblTongTienDichVu = createInfoLabel("0 đ");
-        lblTongTienDichVu.setStyle("-fx-font-size: 13px; -fx-text-fill: #16a34a;");
+        spinnerVAT = new Spinner<>(0.0, 30.0, 8.0, 1.0);
+        spinnerVAT.setPrefWidth(90);
+        spinnerVAT.setEditable(true);
 
-        // Row 3: VAT
-        Label lbl3 = new Label("Thuế VAT (%):");
-        lbl3.setStyle("-fx-font-weight: bold;");
-        spinnerVAT = new Spinner<>(0.0, 50.0, 10.0, 1.0);
-        spinnerVAT.setPrefWidth(80);
-
-        lblThueVAT = createInfoLabel("0 đ");
-        lblThueVAT.setStyle("-fx-font-size: 13px; -fx-text-fill: #ea580c;");
-
-        // Row 4: Chiết khấu
-        Label lbl4 = new Label("Chiết khấu (đ):");
-        lbl4.setStyle("-fx-font-weight: bold;");
         spinnerChietKhau = new Spinner<>(0.0, 10000000.0, 0.0, 100000.0);
         spinnerChietKhau.setPrefWidth(120);
+        spinnerChietKhau.setEditable(true);
 
-        // Row 5: Tổng tiền
-        Label lblTotal = new Label("TỔNG TIỀN:");
-        lblTotal.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 14));
-        lblTotal.setStyle("-fx-text-fill: " + COLOR_PRIMARY + ";");
+        addGridRow(grid, "Tiền phòng:",      lblTongTienPhong,  0);
+        addGridRow(grid, "Tiền dịch vụ:",    lblTongTienDichVu, 1);
+        grid.add(new Label("VAT (%):"),              0, 2);
+        grid.add(spinnerVAT,                         1, 2);
+        grid.add(lblThueVAT,                         2, 2);
+        grid.add(new Label("Chiết khấu (đ):"),       0, 3);
+        grid.add(spinnerChietKhau,                   1, 3);
+        grid.add(new Label("TỔNG TIỀN:"),            0, 4);
+        grid.add(lblTongTien,                        1, 4);
 
-        lblTongTien = new Label("0 đ");
-        lblTongTien.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 16));
-        lblTongTien.setStyle("-fx-text-fill: " + COLOR_PRIMARY + "; -fx-padding: 0 0 0 10;");
-
-        grid.add(lbl1, 0, 0);
-        grid.add(lblTongTienPhong, 1, 0);
-        grid.add(lbl2, 0, 1);
-        grid.add(lblTongTienDichVu, 1, 1);
-        grid.add(lbl3, 0, 2);
-        grid.add(spinnerVAT, 1, 2);
-        grid.add(lblThueVAT, 2, 2);
-        grid.add(lbl4, 0, 3);
-        grid.add(spinnerChietKhau, 1, 3);
-        grid.add(lblTotal, 0, 4);
-        grid.add(lblTongTien, 1, 4);
-
-        Button btnCalc = new Button("🧮 Tính Toán");
-        btnCalc.setStyle("-fx-background-color: white; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6; -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 6;");
+        Button btnCalc = new Button("⚙ Tính Toán");
+        btnCalc.setStyle("-fx-background-color: white; -fx-text-fill: " + COLOR_PRIMARY
+                + "; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6;"
+                + " -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 6;");
         btnCalc.setOnAction(e -> calculateInvoice());
 
-        HBox calcBox = new HBox(10);
-        calcBox.setAlignment(Pos.CENTER_RIGHT);
-        calcBox.getChildren().add(btnCalc);
+        HBox calcRow = new HBox(btnCalc);
+        calcRow.setAlignment(Pos.CENTER_RIGHT);
 
-        card.getChildren().addAll(lblTitle, grid, calcBox);
+        card.getChildren().addAll(lblTitle, grid, calcRow);
         return card;
     }
 
     private VBox createPaymentCard() {
-        VBox card = new VBox(12);
-        card.setPadding(new Insets(16));
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
-        applyCardStyle(card);
-
-        Label lblTitle = new Label("💳 Chọn Phương Thức Thanh Toán");
+        VBox card = createCard();
+        Label lblTitle = new Label("💰 Phương Thức Thanh Toán");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
-
-        HBox methodBox = new HBox(20);
-        methodBox.setAlignment(Pos.CENTER_LEFT);
-
-        Label lblMethod = new Label("Phương thức:");
-        lblMethod.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
 
         cbPhuongThucThanhToan = new ComboBox<>();
         cbPhuongThucThanhToan.getItems().addAll("Tiền mặt", "Chuyển khoản", "Thẻ Debit", "Thẻ Credit");
         cbPhuongThucThanhToan.setValue("Tiền mặt");
         cbPhuongThucThanhToan.setPrefWidth(200);
 
-        methodBox.getChildren().addAll(lblMethod, cbPhuongThucThanhToan);
-
-        HBox actionBox = new HBox(15);
-        actionBox.setAlignment(Pos.CENTER_RIGHT);
+        HBox methodRow = new HBox(15, new Label("Phương thức:"), cbPhuongThucThanhToan);
+        methodRow.setAlignment(Pos.CENTER_LEFT);
 
         Button btnCancel = new Button("❌ Hủy");
         btnCancel.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6;");
-        btnCancel.setOnAction(e -> showAlert("Thông báo", "Đã hủy trả phòng"));
+        btnCancel.setOnAction(e -> clearForm());
 
         Button btnCheckout = new Button("✅ Xác Nhận Thanh Toán");
         btnCheckout.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6;");
         btnCheckout.setOnAction(e -> confirmCheckout());
 
-        actionBox.getChildren().addAll(btnCancel, btnCheckout);
+        HBox actionRow = new HBox(15, btnCancel, btnCheckout);
+        actionRow.setAlignment(Pos.CENTER_RIGHT);
 
-        card.getChildren().addAll(lblTitle, methodBox, actionBox);
+        card.getChildren().addAll(lblTitle, methodRow, actionRow);
         return card;
     }
 
-    private Label createInfoLabel(String text) {
-        Label lbl = new Label(text);
-        lbl.setStyle("-fx-font-size: 12px; -fx-text-fill: " + COLOR_TEXT_MAIN + ";");
-        return lbl;
-    }
+    // ------------------------------------------------------------------ //
+    // Business logic (FIXED)
+    // ------------------------------------------------------------------ //
 
+    /**
+     * FIX #1: Lọc đúng trạng thái "DA_NHAN_PHONG" khớp với dữ liệu DB.
+     * Gốc lọc "Đang ở" và "Checked-in" nên ComboBox luôn trống.
+     */
     private void loadPhieuDatPhong() {
         try {
             List<PhieuDatPhongDTO> phieuList = phieuDatPhongService.getAllPhieuDatPhong();
             List<String> options = phieuList.stream()
-                    .filter(p -> "Đang ở".equalsIgnoreCase(p.getTrangThai()) || "Checked-in".equalsIgnoreCase(p.getTrangThai()))
-                    .map(p -> p.getMaPhieu() + " - Phòng: " + p.getMaPhong() + " (" + p.getMaKhachHang() + ")")
+                    .filter(p -> "DA_NHAN_PHONG".equalsIgnoreCase(p.getTrangThai()))
+                    .map(p -> p.getMaPhieu()
+                            + " - Phòng: " + p.getMaPhong()
+                            + " (" + p.getMaKhachHang() + ")")
                     .collect(Collectors.toList());
             cbPhieuDat.getItems().clear();
             cbPhieuDat.getItems().addAll(options);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadPhieuInfo() {
-        if (cbPhieuDat.getValue() == null) {
-            showAlert("Cảnh báo", "Vui lòng chọn phiếu đặt");
-            return;
-        }
-
-        String selected = cbPhieuDat.getValue();
-        String maPhieu = selected.split(" - ")[0];
-
-        try {
-            PhieuDatPhongDTO phieu = phieuDatPhongService.getPhieuDatPhongById(maPhieu);
-            if (phieu == null) return;
-
-            // Load guest info
-            lblKhachHang.setText(phieu.getMaKhachHang());
-            lblPhong.setText(phieu.getMaPhong());
-            lblNgayNhan.setText(phieu.getNgayNhan() != null ? phieu.getNgayNhan().toString() : "N/A");
-            lblNgayTra.setText(phieu.getNgayTra() != null ? phieu.getNgayTra().toString() : LocalDate.now().toString());
-
-            // Calculate days
-            LocalDate ngayNhan = phieu.getNgayNhan() != null ? phieu.getNgayNhan() : LocalDate.now();
-            LocalDate ngayTra = phieu.getNgayTra() != null ? phieu.getNgayTra() : LocalDate.now();
-            long soNgay = ChronoUnit.DAYS.between(ngayNhan, ngayTra);
-            lblSoNgay.setText(soNgay + " ngày");
-
-            // Load room price
-            PhongDTO phong = phongService.getPhongById(phieu.getMaPhong());
-            if (phong != null) {
-                lblGiaPhong.setText(String.format("%,.0f đ", phong.getGiaPhong()));
-                double tongTienPhong = soNgay * phong.getGiaPhong();
-                lblTongTienPhong.setText(String.format("%,.0f đ", tongTienPhong));
+            if (options.isEmpty()) {
+                cbPhieuDat.setPromptText("Không có phiếu đang ở");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void calculateInvoice() {
+    /**
+     * FIX #2: Tải thêm dịch vụ từ ChiTietPhieuDatPhong vào bảng tvChiTiet
+     *         và tính sẵn tongTienDichVu để calculateInvoice() dùng.
+     */
+    private void loadPhieuInfo() {
         if (cbPhieuDat.getValue() == null) {
             showAlert("Cảnh báo", "Vui lòng chọn phiếu đặt");
             return;
         }
 
+        String maPhieu = cbPhieuDat.getValue().split(" - ")[0];
+
         try {
-            double vat = spinnerVAT.getValue() / 100.0;
-            double chietKhau = spinnerChietKhau.getValue();
+            PhieuDatPhongDTO phieu = phieuDatPhongService.getPhieuDatPhongById(maPhieu);
+            if (phieu == null) return;
 
-            // For now, calculate based on room price only
-            String tongTienPhongStr = lblTongTienPhong.getText().replace(".","").replace(",", "").replace(" đ", "");
-            double tongTienPhong = Double.parseDouble(tongTienPhongStr);
+            currentPhieu = phieu;
 
-            double thueVAT = tongTienPhong * vat;
-            double tongTien = tongTienPhong + thueVAT - chietKhau;
+            // Hiển thị thông tin khách (tên nếu DTO có, ngược lại dùng mã)
+            String tenKH = (phieu.getTenKhachHang() != null && !phieu.getTenKhachHang().isEmpty())
+                    ? phieu.getTenKhachHang() : phieu.getMaKhachHang();
+            lblKhachHang.setText(tenKH);
+
+            String tenPhong = (phieu.getTenPhong() != null && !phieu.getTenPhong().isEmpty())
+                    ? phieu.getTenPhong() + " (" + phieu.getMaPhong() + ")"
+                    : phieu.getMaPhong();
+            lblPhong.setText(tenPhong);
+
+            LocalDate ngayNhan = phieu.getNgayNhan() != null ? phieu.getNgayNhan() : LocalDate.now();
+            LocalDate ngayTra  = phieu.getNgayTra()  != null ? phieu.getNgayTra()  : LocalDate.now();
+            lblNgayNhan.setText(ngayNhan.toString());
+            lblNgayTra.setText(ngayTra.toString());
+
+            long soNgay = ChronoUnit.DAYS.between(ngayNhan, ngayTra);
+            if (soNgay < 1) soNgay = 1;
+            lblSoNgay.setText(soNgay + " ngày");
+
+            // Tải giá phòng
+            PhongDTO phong = phongService.getPhongById(phieu.getMaPhong());
+            double giaPhong = phong != null ? phong.getGiaPhong() : 0;
+            cachedTongTienPhong = giaPhong * soNgay;
+
+            lblGiaPhong.setText(String.format("%,.0f đ", giaPhong));
+            lblTongTienPhong.setText(String.format("%,.0f đ", cachedTongTienPhong));
+
+            // FIX #2: Tải dịch vụ từ ChiTietPhieuDatPhong
+            tvChiTiet.getItems().clear();
+            cachedTongTienDichVu = 0;
+
+            try {
+                List<ChiTietHoaDonDTO> dichVus =
+                        chiTietHoaDonService.getChiTietByMaPhieu(maPhieu);
+                if (dichVus != null && !dichVus.isEmpty()) {
+                    tvChiTiet.getItems().addAll(dichVus);
+                    cachedTongTienDichVu = dichVus.stream()
+                            .mapToDouble(ChiTietHoaDonDTO::getThanhTien)
+                            .sum();
+                }
+            } catch (Exception ex) {
+                // Service chưa implement phương thức này thì bỏ qua
+                System.err.println("[TraPhong] Chưa tải được dịch vụ: " + ex.getMessage());
+            }
+            lblTongTienDichVu.setText(String.format("%,.0f đ", cachedTongTienDichVu));
+
+            // Tự tính ngay sau khi tải
+            calculateInvoice();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Lỗi", "Không thể tải thông tin phiếu: " + e.getMessage());
+        }
+    }
+
+    /**
+     * FIX #3: Tính cả tiền dịch vụ + VAT + chiết khấu.
+     * Gốc chỉ tính tiền phòng, bỏ qua tiền dịch vụ.
+     */
+    private void calculateInvoice() {
+        try {
+            double vatPct     = spinnerVAT.getValue() / 100.0;
+            double chietKhau  = spinnerChietKhau.getValue();
+
+            double thueVAT    = (cachedTongTienPhong + cachedTongTienDichVu) * vatPct;
+            double tongTien   = cachedTongTienPhong + cachedTongTienDichVu + thueVAT - chietKhau;
 
             lblThueVAT.setText(String.format("%,.0f đ", thueVAT));
+            lblChietKhau.setText(String.format("%,.0f đ", chietKhau));
             lblTongTien.setText(String.format("%,.0f đ", tongTien));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * FIX #4: Lưu hóa đơn qua service, cập nhật trạng thái phiếu + phòng.
+     * Gốc chỉ show alert rồi clearForm, không ghi vào DB.
+     */
     private void confirmCheckout() {
-        showAlert("Thông báo", "✅ Trả phòng thành công!\nPhòng sẵn sàng cho khách tiếp theo.");
-        clearForm();
+        if (currentPhieu == null) {
+            showAlert("Cảnh báo", "Vui lòng tải thông tin phiếu trước");
+            return;
+        }
+
+        // Parse tổng tiền từ label
+        String tongTienStr = lblTongTien.getText()
+                .replace(".", "").replace(",", "").replace(" đ", "").trim();
+        double tongTien;
+        try {
+            tongTien = Double.parseDouble(tongTienStr);
+        } catch (NumberFormatException ex) {
+            showAlert("Lỗi", "Vui lòng tính toán hóa đơn trước");
+            return;
+        }
+
+        try {
+            double vatPct    = spinnerVAT.getValue() / 100.0;
+            double chietKhau = spinnerChietKhau.getValue();
+            double thueVAT   = (cachedTongTienPhong + cachedTongTienDichVu) * vatPct;
+
+            // Tạo hóa đơn mới
+            HoaDonDTO hoaDon = new HoaDonDTO();
+            hoaDon.setMaKhachHang(currentPhieu.getMaKhachHang());
+            hoaDon.setNgayLap(LocalDate.now());
+            hoaDon.setMaPhongDat(currentPhieu.getMaPhong());
+            hoaDon.setTongTienPhong(cachedTongTienPhong);
+            hoaDon.setTongTienDichVu(cachedTongTienDichVu);
+            hoaDon.setThueVAT(thueVAT);
+            hoaDon.setChietKhau(chietKhau);
+            hoaDon.setTongTien(tongTien);
+            hoaDon.setTrangThaiThanhToan("Đã Thanh Toán");
+            hoaDon.setGhiChu("Trả phòng " + currentPhieu.getMaPhieu()
+                    + " - " + cbPhuongThucThanhToan.getValue());
+
+            hoaDonService.addHoaDon(hoaDon);
+
+            // Cập nhật phiếu → DA_TRA_PHONG
+            currentPhieu.setTrangThai("DA_TRA_PHONG");
+            phieuDatPhongService.updatePhieuDatPhong(currentPhieu);
+
+            // Cập nhật phòng → Trống
+            PhongDTO phong = phongService.getPhongById(currentPhieu.getMaPhong());
+            if (phong != null) {
+                phong.setTinhTrang("Trống");
+                phongService.updatePhong(phong);
+            }
+
+            showAlert("✅ Thành công",
+                    String.format("Trả phòng thành công!\nTổng tiền: %,.0f đ", tongTien));
+            clearForm();
+            loadPhieuDatPhong(); // Làm mới ComboBox
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Lỗi", "Không thể xử lý trả phòng: " + e.getMessage());
+        }
     }
 
+    // ------------------------------------------------------------------ //
+    // Helpers
+    // ------------------------------------------------------------------ //
+
     private void clearForm() {
+        currentPhieu = null;
+        cachedTongTienPhong = 0;
+        cachedTongTienDichVu = 0;
         cbPhieuDat.setValue(null);
         lblKhachHang.setText("Chưa chọn");
         lblPhong.setText("Chưa chọn");
@@ -437,16 +479,42 @@ public class TraPhongController {
         lblTongTienPhong.setText("0 đ");
         lblTongTienDichVu.setText("0 đ");
         lblThueVAT.setText("0 đ");
+        lblChietKhau.setText("0 đ");
         lblTongTien.setText("0 đ");
         tvChiTiet.getItems().clear();
     }
 
-    private void applyCardStyle(VBox card) {
+    private VBox createCard() {
+        VBox card = new VBox(10);
+        card.setPadding(new Insets(16));
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 10;"
+                + " -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
         DropShadow shadow = new DropShadow();
         shadow.setColor(Color.color(0, 0, 0, 0.05));
         shadow.setRadius(5);
         shadow.setOffsetY(2);
         card.setEffect(shadow);
+        return card;
+    }
+
+    private Label createInfoLabel(String text) {
+        Label lbl = new Label(text);
+        lbl.setStyle("-fx-font-size: 12px; -fx-text-fill: " + COLOR_TEXT_MAIN + ";");
+        return lbl;
+    }
+
+    private Label createAmountLabel(String text) {
+        Label lbl = new Label(text);
+        lbl.setStyle("-fx-font-size: 13px; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-weight: bold;");
+        return lbl;
+    }
+
+    /** Thêm 1 hàng (label + value) vào GridPane */
+    private void addGridRow(GridPane grid, String labelText, Label value, int row) {
+        Label lbl = new Label(labelText);
+        lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 11px;");
+        grid.add(lbl,   0, row);
+        grid.add(value, 1, row);
     }
 
     private void showAlert(String title, String message) {
@@ -457,4 +525,3 @@ public class TraPhongController {
         alert.show();
     }
 }
-

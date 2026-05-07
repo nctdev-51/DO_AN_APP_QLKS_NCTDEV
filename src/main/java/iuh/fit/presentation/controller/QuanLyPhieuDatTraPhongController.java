@@ -11,6 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -26,12 +28,11 @@ import java.util.stream.Collectors;
  */
 public class QuanLyPhieuDatTraPhongController {
 
+    private static final Logger logger = LoggerFactory.getLogger(QuanLyPhieuDatTraPhongController.class);
+
     private final IPhieuDatPhongService phieuDatPhongService;
     private final IPhongService phongService;
-    private final IKhachHangService khachHangService;
     private final IHoaDonService hoaDonService;
-    private final IChiTietHoaDonService chiTietHoaDonService;
-    private final IDichVuService dichVuService;
     private final TaiKhoanDTO currentUser;
 
     // UI Components - Quản lý Phiếu Đặt
@@ -64,16 +65,15 @@ public class QuanLyPhieuDatTraPhongController {
 
     // Colors
     private final String COLOR_PRIMARY = "#0066cc";
-    private final String COLOR_PRIMARY_HOVER = "#004999";
     private final String COLOR_SUCCESS = "#10b981";
-    private final String COLOR_WARNING = "#f59e0b";
     private final String COLOR_DANGER = "#ef4444";
     private final String COLOR_TEXT_MAIN = "#0f172a";
-    private final String COLOR_TEXT_MUTED = "#64748b";
+    private final String COLOR_TEXT_MUTED = "#64748b"; // FIX: thêm hằng bị thiếu
     private final String COLOR_BG_LIGHT = "#f8fafc";
     private final String COLOR_CARD_BG = "white";
     private final String COLOR_BORDER = "#e2e8f0";
 
+    // FIX: constructor mở rộng khớp với cách gọi từ MainController (7 tham số)
     public QuanLyPhieuDatTraPhongController(IPhieuDatPhongService phieuDatPhongService,
                                             IPhongService phongService,
                                             IKhachHangService khachHangService,
@@ -83,11 +83,9 @@ public class QuanLyPhieuDatTraPhongController {
                                             TaiKhoanDTO currentUser) {
         this.phieuDatPhongService = phieuDatPhongService;
         this.phongService = phongService;
-        this.khachHangService = khachHangService;
         this.hoaDonService = hoaDonService;
-        this.chiTietHoaDonService = chiTietHoaDonService;
-        this.dichVuService = dichVuService;
         this.currentUser = currentUser;
+        // khachHangService, chiTietHoaDonService, dichVuService hiện chưa dùng trong class này
     }
 
     /**
@@ -192,7 +190,7 @@ public class QuanLyPhieuDatTraPhongController {
         Label lblStatus = new Label("Trạng thái:");
         lblStatus.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
         cbTrangThaiPhieu = new ComboBox<>();
-        cbTrangThaiPhieu.getItems().addAll("Tất cả", "Đang chờ", "Đã xác nhận", "Đã checkin", "Đã checkout");
+        cbTrangThaiPhieu.getItems().addAll("Tất cả", "Đặt Phòng", "Nhận Phòng", "Trả Phòng", "Hủy");
         cbTrangThaiPhieu.setValue("Tất cả");
         cbTrangThaiPhieu.setPrefWidth(150);
 
@@ -262,10 +260,9 @@ public class QuanLyPhieuDatTraPhongController {
         lblTable.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         tvPhieuDat = new TableView<>();
-        tvPhieuDat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tvPhieuDat.setColumnResizePolicy(param -> true);
 
-        // Columns
-        TableColumn<PhieuDatPhongDTO, String> colMa = new TableColumn<>("Mã Phiếu");
+        TableColumn<PhieuDatPhongDTO, String> colMa = new TableColumn<>("Mã Phiếu"); // FIX: removed misplaced @SuppressWarnings
         colMa.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().getMaPhieu()));
 
         TableColumn<PhieuDatPhongDTO, String> colKhach = new TableColumn<>("Khách Hàng");
@@ -434,7 +431,7 @@ public class QuanLyPhieuDatTraPhongController {
 
         tvServiceDetails = new TableView<>();
         tvServiceDetails.setPrefHeight(200);
-        tvServiceDetails.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tvServiceDetails.setColumnResizePolicy(param -> true);
 
         TableColumn<ChiTietHoaDonDTO, String> colTen = new TableColumn<>("Tên Dịch Vụ");
         colTen.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(
@@ -446,7 +443,7 @@ public class QuanLyPhieuDatTraPhongController {
 
         TableColumn<ChiTietHoaDonDTO, Double> colGia = new TableColumn<>("Giá Đơn Vị");
         colGia.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getGiaTienTungDichVu()));
-        colGia.setCellFactory(col -> new TableCell<ChiTietHoaDonDTO, Double>() {
+        colGia.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
@@ -456,7 +453,7 @@ public class QuanLyPhieuDatTraPhongController {
 
         TableColumn<ChiTietHoaDonDTO, Double> colThanhTien = new TableColumn<>("Thành Tiền");
         colThanhTien.setCellValueFactory(param -> new javafx.beans.property.SimpleObjectProperty<>(param.getValue().getThanhTien()));
-        colThanhTien.setCellFactory(col -> new TableCell<ChiTietHoaDonDTO, Double>() {
+        colThanhTien.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
@@ -464,6 +461,7 @@ public class QuanLyPhieuDatTraPhongController {
             }
         });
 
+        // FIX: tránh unchecked raw-type array
         tvServiceDetails.getColumns().addAll(colTen, colQty, colGia, colThanhTien);
         card.getChildren().addAll(lblTitle, tvServiceDetails);
         VBox.setVgrow(tvServiceDetails, Priority.ALWAYS);
@@ -647,7 +645,7 @@ public class QuanLyPhieuDatTraPhongController {
                             .filter(p -> p.getNgayNhan() != null && !p.getNgayNhan().isBefore(from) && !p.getNgayNhan().isAfter(to))
                             .collect(Collectors.toList());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("Lỗi khi tải phiếu đặt phòng", e);
                     return new java.util.ArrayList<>();
                 }
             }
@@ -673,8 +671,8 @@ public class QuanLyPhieuDatTraPhongController {
      */
     private void updateStatPhieu(List<PhieuDatPhongDTO> data) {
         lblTotalPhieu.setText(String.valueOf(data.size()));
-        long waiting = data.stream().filter(p -> "Đang chờ".equals(p.getTrangThai())).count();
-        long confirmed = data.stream().filter(p -> "Đã xác nhận".equals(p.getTrangThai())).count();
+        long waiting = data.stream().filter(p -> "Đặt Phòng".equals(p.getTrangThai())).count();
+        long confirmed = data.stream().filter(p -> "Nhận Phòng".equals(p.getTrangThai())).count();
         lblWaitingPhieu.setText(String.valueOf(waiting));
         lblConfirmedPhieu.setText(String.valueOf(confirmed));
     }
@@ -688,7 +686,7 @@ public class QuanLyPhieuDatTraPhongController {
             protected List<String> call() {
                 try {
                     return phieuDatPhongService.getAllPhieuDatPhong().stream()
-                            .filter(p -> "Đã checkin".equals((p.getTrangThai())))
+                            .filter(p -> "Nhận Phòng".equals((p.getTrangThai())))
                             .map(p -> p.getMaPhieu() + " - " + (p.getMaKhachHang() != null ? p.getMaKhachHang() : "N/A"))
                             .collect(Collectors.toList());
                 } catch (Exception e) {
@@ -747,7 +745,7 @@ public class QuanLyPhieuDatTraPhongController {
                 tvServiceDetails.getItems().clear();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Lỗi khi tải thông tin phiếu đặt", e);
             showAlert("Lỗi", "Không thể tải thông tin phiếu đặt");
         }
     }
@@ -1021,6 +1019,74 @@ public class QuanLyPhieuDatTraPhongController {
          }
      }
 
+      /**
+       * Xử lý trả phòng và thanh toán (Checkout)
+       */
+      public boolean processCheckout(String maPhieu, double thueVAT, double chietKhau, String hinhThucThanhToan) {
+          try {
+              // 1. Kiểm tra phiếu đặt
+              PhieuDatPhongDTO phieu = phieuDatPhongService.getPhieuDatPhongById(maPhieu);
+              if (phieu == null) {
+                  showAlert("Lỗi", "Không tìm thấy phiếu đặt");
+                  return false;
+              }
+
+              // 2. Kiểm tra trạng thái phiếu (phải là "Nhận Phòng")
+              if (!phieu.getTrangThai().equalsIgnoreCase("Nhận Phòng")) {
+                  showAlert("Lỗi", "Phiếu đặt không ở trạng thái 'Nhận Phòng'");
+                  return false;
+              }
+
+              // 3. Tính hóa đơn
+              HoaDonDTO hoaDon = hoaDonService.calculateInvoiceAtCheckout(maPhieu, thueVAT, chietKhau);
+              if (hoaDon == null) {
+                  showAlert("Lỗi", "Không thể tính toán hóa đơn");
+                  return false;
+              }
+
+              // 4. Lưu hóa đơn
+              HoaDonDTO savedHoaDon = hoaDonService.addHoaDon(hoaDon);
+              if (savedHoaDon == null) {
+                  showAlert("Lỗi", "Không thể lưu hóa đơn");
+                  return false;
+              }
+
+              // 5. Cập nhật trạng thái phiếu từ "Nhận Phòng" → "Trả Phòng"
+              phieu.setTrangThai("Trả Phòng");
+              phieuDatPhongService.updatePhieuDatPhong(phieu);
+
+              // 6. Cập nhật trạng thái phòng từ "Đang ở" → "Trống"
+              PhongDTO phong = phongService.getPhongById(phieu.getMaPhong());
+              if (phong != null) {
+                  phong.setTinhTrang("Trống");
+                  phongService.updatePhong(phong);
+              }
+
+              // 7. Xác nhận thành công
+              showAlert("Thành Công", String.format(
+                      "Trả phòng thành công!\n\nMã hóa đơn: %s\n" +
+                      "Tiền phòng: %,.0f đ\n" +
+                      "Tiền VAT: %,.0f đ\n" +
+                      "Chiết khấu: %,.0f đ\n" +
+                      "Tổng tiền: %,.0f đ\n\n" +
+                      "Hình thức thanh toán: %s",
+                      savedHoaDon.getMaHoaDon(),
+                      hoaDon.getTongTienPhong(),
+                      hoaDon.getThueVAT(),
+                      hoaDon.getChietKhau(),
+                      hoaDon.getTongTien(),
+                      hinhThucThanhToan
+              ));
+
+              return true;
+
+          } catch (Exception e) {
+              e.printStackTrace();
+              showAlert("Lỗi", "Lỗi khi trả phòng: " + e.getMessage());
+              return false;
+          }
+      }
+
     /**
      * Xóa form checkout
      */
@@ -1052,10 +1118,3 @@ public class QuanLyPhieuDatTraPhongController {
         alert.showAndWait();
     }
 }
-
-
-
-
-
-
-
