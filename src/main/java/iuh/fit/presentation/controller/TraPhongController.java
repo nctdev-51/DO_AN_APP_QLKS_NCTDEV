@@ -428,7 +428,7 @@ public class TraPhongController {
             hoaDon.setMaKhachHang(currentPhieu.getMaKhachHang());
             hoaDon.setNgayLap(LocalDate.now());
             hoaDon.setMaPhongDat(currentPhieu.getMaPhong());
-            hoaDon.setTongTienPhong(cachedTongTienPhong);
+            hoaDon.setTongTien(cachedTongTienPhong);
             hoaDon.setTongTienDichVu(cachedTongTienDichVu);
             hoaDon.setThueVAT(thueVAT);
             hoaDon.setChietKhau(chietKhau);

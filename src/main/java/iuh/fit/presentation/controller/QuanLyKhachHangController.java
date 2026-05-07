@@ -78,7 +78,7 @@ public class QuanLyKhachHangController {
 
         tableView = new TableView<>();
         tableView.setStyle("-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-radius: 5;");
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);        VBox.setVgrow(tableView, Priority.ALWAYS);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);        VBox.setVgrow(tableView, Priority.ALWAYS);
 
         TableColumn<KhachHangDTO, String> maCol   = new TableColumn<>("Mã KH");
         maCol.setCellValueFactory(new PropertyValueFactory<>("maKhachHang"));
@@ -140,9 +140,29 @@ public class QuanLyKhachHangController {
 
         formCard.getChildren().addAll(lblFormTitle, gridPane, new Separator(), buttonBox);
         mainVBox.getChildren().addAll(lblTitle, tableCard, formCard);
+
+//        khachHangList = FXCollections.observableArrayList();
+//        FilteredList<KhachHangDTO> filteredData = new FilteredList<>(khachHangList, b -> true);
+//
+//        searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+//            filteredData.setPredicate(kh -> {
+//                if (newVal == null || newVal.isEmpty()) return true;
+//                String lc = newVal.toLowerCase();
+//                return (kh.getHoTen() != null && kh.getHoTen().toLowerCase().contains(lc))
+//                        || (kh.getSoDienThoai() != null && kh.getSoDienThoai().contains(lc))
+//                        || (kh.getMaKhachHang() != null && kh.getMaKhachHang().toLowerCase().contains(lc));
+//            });
+//        });
+//
+//        SortedList<KhachHangDTO> sortedData = new SortedList<>(filteredData);
+//        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+//        tableView.setItems(sortedData);
+
         loadKhachHangData();
         return mainVBox;
     }
+    
+    
 
     private VBox createInputBox(String labelText, Control inputControl) {
         VBox box = new VBox(5);

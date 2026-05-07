@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class KhachHang {
     @Id
-    @Column(name = "maKhachHang", length = 5)
+    @Column(name = "maKhachHang")
     private String maKhachHang;
 
     @Column(name = "hoTen", length = 50, nullable = false)

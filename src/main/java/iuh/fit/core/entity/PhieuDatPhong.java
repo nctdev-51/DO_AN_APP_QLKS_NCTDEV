@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PhieuDatPhong {
     @Id
-    @Column(name = "maPhieu", length = 10)
+    @Column(name = "maPhieu")
     private String maPhieu;
 
     @Column(name = "ngayDat")

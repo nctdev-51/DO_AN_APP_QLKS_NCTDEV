@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @IdClass(ChiTietHoaDonId.class)
 public class ChiTietHoaDon {
     @Id
-    @Column(name = "maHoaDon", length = 10)
+    @Column(name = "maHoaDon")
     private String maHoaDon;
 
     @Id

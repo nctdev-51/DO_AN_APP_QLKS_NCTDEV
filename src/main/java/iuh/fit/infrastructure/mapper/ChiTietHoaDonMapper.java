@@ -5,33 +5,27 @@ import iuh.fit.core.entity.ChiTietHoaDon;
 
 public class ChiTietHoaDonMapper {
 
-    public static ChiTietHoaDonDTO toDTO(ChiTietHoaDon chiTiet) {
-        if (chiTiet == null) return null;
-
+    public static ChiTietHoaDonDTO toDTO(ChiTietHoaDon entity) {
+        if (entity == null) return null;
         ChiTietHoaDonDTO dto = new ChiTietHoaDonDTO();
-        if (chiTiet.getId() != null) {
-            dto.setMaHoaDon(chiTiet.getId().getMaHoaDon());
-            dto.setMaDichVu(chiTiet.getId().getMaDichVu());
+        dto.setMaHoaDon(entity.getMaHoaDon());
+        dto.setMaDichVu(entity.getMaDichVu());
+        dto.setSoLuong(entity.getSoLuong());
+        if (entity.getDichVu() != null) {
+            dto.setTenDichVu(entity.getDichVu().getTenDichVu());
+            dto.setGiaTienTungDichVu(entity.getDichVu().getGiaTien());
         }
-        dto.setSoLuong(chiTiet.getSoLuong());
-        dto.setGiaTienTungDichVu(chiTiet.getGiaTienTungDichVu());
-        dto.setThanhTien(chiTiet.getThanhTien());
-
-        if (chiTiet.getDichVu() != null) {
-            dto.setTenDichVu(chiTiet.getDichVu().getTenDichVu());
-        }
-
+        dto.setThanhTien(dto.getSoLuong() * dto.getGiaTienTungDichVu());
         return dto;
     }
 
     public static ChiTietHoaDon toEntity(ChiTietHoaDonDTO dto) {
         if (dto == null) return null;
-
-        ChiTietHoaDon chiTiet = new ChiTietHoaDon();
-        chiTiet.setSoLuong(dto.getSoLuong());
-        chiTiet.setGiaTienTungDichVu(dto.getGiaTienTungDichVu());
-
-        return chiTiet;
+        ChiTietHoaDon entity = new ChiTietHoaDon();
+        entity.setMaHoaDon(dto.getMaHoaDon());
+        entity.setMaDichVu(dto.getMaDichVu());
+        entity.setSoLuong(dto.getSoLuong());
+        return entity;
     }
 }
 

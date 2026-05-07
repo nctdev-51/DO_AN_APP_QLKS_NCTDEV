@@ -12,15 +12,6 @@ import iuh.fit.core.service.IPhongService;
 import iuh.fit.core.service.IDichVuService;
 import iuh.fit.core.service.IHoaDonService;
 import iuh.fit.core.service.IChiTietHoaDonService;
-import iuh.fit.presentation.controller.QuanLyKhachHangController;
-import iuh.fit.presentation.controller.QuanLyNhanVienController;
-import iuh.fit.presentation.controller.QuanLyDatPhongController;
-import iuh.fit.presentation.controller.QuanLyPhongController;
-import iuh.fit.presentation.controller.GoiDichVuController;
-import iuh.fit.presentation.controller.TraPhongController;
-import iuh.fit.presentation.controller.QuanLyPhieuDatTraPhongController;
-import iuh.fit.presentation.controller.RevenueController;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -239,7 +230,7 @@ public class MainController {
         lblUser.setTextFill(Color.WHITE);
         lblUser.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
 
-        Label lblRole = new Label(currentUser.getTaiKhoan().equals("admin") ? "Quản Lý" : "Lễ Tân");
+        Label lblRole = new Label(currentUser.getTenDangNhap().equals("admin") ? "Quản Lý" : "Lễ Tân");
         lblRole.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 3 10; -fx-background-radius: 12; -fx-font-size: 11px; -fx-font-weight: bold;");
 
         profileBox.getChildren().addAll(avatarPane, lblUser, lblRole);
@@ -815,13 +806,44 @@ public class MainController {
          btnBook.setStyle("-fx-background-color: " + COLOR_AVAILABLE + "; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;");
          btnBook.setOnMouseEntered(e -> btnBook.setStyle("-fx-background-color: " + COLOR_AVAILABLE + "DD; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"));
          btnBook.setOnMouseExited(e -> btnBook.setStyle("-fx-background-color: " + COLOR_AVAILABLE + "; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"));
-         btnBook.setOnAction(e -> showBookingDialog(phong, (Stage) btnBook.getScene().getWindow()));
+         btnBook.setOnAction(e -> {
+             // 1. Đóng cái bảng chi tiết phòng hiện tại
+             Window window = btnBook.getScene().getWindow();
+             if (window instanceof Stage) {
+                 ((Stage) window).close();
+             }
+             // 2. Chuyển sang màn hình Đặt phòng Full và tự động thêm phòng này vào Giỏ Hàng
+             openFullBookingView(phong);
+         });
 
          content.getChildren().addAll(title, subtitle, infoBox, spacer, btnBook);
          return content;
      }
 
-     // ===== NỘI DUNG PHÒNG ĐANG PHỤC VỤ =====
+    private void openFullBookingView(PhongDTO phong) {
+        try {
+            contentArea.getChildren().clear();
+
+            // 1. Khởi tạo ĐÚNG 6 THAM SỐ giống như trên
+            QuanLyDatPhongController dpController = new QuanLyDatPhongController(
+                    phongService, phieuDatPhongService, khachHangService, dichVuService, currentUser, this::showDashboard
+            );
+
+            // 2. Gọi hàm createQuanLyDatPhongView()
+            Pane bookingView = dpController.createQuanLyDatPhongView();
+
+            // 3. Tự động đưa phòng vừa click vào Giỏ Hàng
+            dpController.preselectRoom(phong);
+
+            // 4. Hiển thị full lên vùng làm việc chính
+            contentArea.getChildren().add(bookingView);
+
+        } catch (Exception ex) {
+            showErrorBox("Lỗi mở giao diện Đặt Phòng", ex);
+        }
+    }
+
+    // ===== NỘI DUNG PHÒNG ĐANG PHỤC VỤ =====
      private VBox createOccupiedRoomContent(PhongDTO phong) {
          VBox content = new VBox(18);
 
@@ -1544,7 +1566,21 @@ public class MainController {
     }
 
     private void loadQuanLyDatPhong() {
-        loadQuanLyPhieuDatTraPhong();
+        try {
+            contentArea.getChildren().clear();
+
+            // 1. Khởi tạo ĐÚNG 6 THAM SỐ
+            QuanLyDatPhongController dpController = new QuanLyDatPhongController(
+                    phongService, phieuDatPhongService, khachHangService, dichVuService, currentUser, this::showDashboard
+            );
+
+            // 2. Gọi hàm createQuanLyDatPhongView() (trả về BorderPane/Node, KHÔNG CÒN LÀ Scene nữa)
+            contentArea.getChildren().add(dpController.createQuanLyDatPhongView());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showErrorBox("LỖI KHI MỞ GIAO DIỆN ĐẶT PHÒNG", ex);
+        }
     }
 
     private void loadQuanLyPhieuDatTraPhong() {

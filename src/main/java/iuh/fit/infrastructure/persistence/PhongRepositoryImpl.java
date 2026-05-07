@@ -39,7 +39,7 @@ public class PhongRepositoryImpl implements IPhongRepository {
     @Override
     public List<Phong> findByMaLoaiPhong(String maLoaiPhong) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
-            return em.createQuery("SELECT p FROM Phong p WHERE p.maLoaiPhong = :ml", Phong.class)
+            return em.createQuery("SELECT p FROM Phong p WHERE p.loaiPhong = :ml", Phong.class)
                     .setParameter("ml", maLoaiPhong)
                     .getResultList();
         }
@@ -100,16 +100,16 @@ public class PhongRepositoryImpl implements IPhongRepository {
     @Override
     public List<Phong> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, double minPrice, double maxPrice) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
-            String jpql = """
-                SELECT p FROM Phong p
-                WHERE p.giaPhong BETWEEN :min AND :max
-                  AND p.tinhTrang <> 'Bảo Trì'
-                  AND p.maPhong NOT IN (
-                      SELECT pdp.maPhong FROM PhieuDatPhong pdp
-                      WHERE pdp.trangThai NOT IN ('DA_HUY', 'DA_TRA_PHONG')
-                        AND (pdp.ngayNhan < :checkOut AND pdp.ngayTra > :checkIn)
-                  )
-                """;
+            // Đã đổi "SELECT pdp.maPhong" thành "SELECT pdp.phong"
+            String jpql = "SELECT p FROM Phong p " +
+                    "WHERE p.giaPhong BETWEEN :min AND :max " +
+                    "  AND p.tinhTrang <> 'Bảo Trì' " +
+                    "  AND p NOT IN (" +
+                    "      SELECT pdp.phong FROM PhieuDatPhong pdp " +
+                    "      WHERE pdp.trangThai NOT IN ('DA_HUY', 'DA_TRA_PHONG', 'Đã checkout', 'Trả Phòng') " +
+                    "        AND (pdp.ngayNhan < :checkOut AND pdp.ngayTra > :checkIn)" +
+                    "  )";
+
             return em.createQuery(jpql, Phong.class)
                     .setParameter("min", minPrice)
                     .setParameter("max", maxPrice)

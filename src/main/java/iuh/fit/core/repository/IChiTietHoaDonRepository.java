@@ -1,29 +1,16 @@
 package iuh.fit.core.repository;
 
 import iuh.fit.core.entity.ChiTietHoaDon;
-
+import iuh.fit.core.entity.ChiTietHoaDonId;
 import java.util.List;
+import java.util.Optional;
 
-/**
- * Interface: IChiTietHoaDonRepository (Repository Port)
- * 
- * Tầng: CORE - Repository Layer
- * Trách nhiệm: Định nghĩa hợp đồng để thao tác dữ liệu Chi Tiết Hóa Đơn
- */
 public interface IChiTietHoaDonRepository {
-    /**
-     * Tìm chi tiết hóa đơn theo mã hóa đơn
-     */
-    List<ChiTietHoaDon> findByMaHoaDon(String maHoaDon);
-    
-    /**
-     * Lưu chi tiết hóa đơn
-     */
-    ChiTietHoaDon save(ChiTietHoaDon chiTiet);
-    
-    /**
-     * Xóa chi tiết hóa đơn theo mã hóa đơn
-     */
-    void deleteByMaHoaDon(String maHoaDon);
+    List<ChiTietHoaDon> findAll();
+    Optional<ChiTietHoaDon> findById(ChiTietHoaDonId id);
+    List<ChiTietHoaDon> findByHoaDon(String maHoaDon);   // ← đúng tên này
+    ChiTietHoaDon save(ChiTietHoaDon entity);
+    ChiTietHoaDon update(ChiTietHoaDon entity);
+    void deleteById(ChiTietHoaDonId id);
+    void deleteByHoaDon(String maHoaDon);                 // ← đúng tên này
 }
-

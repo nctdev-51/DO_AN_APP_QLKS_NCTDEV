@@ -1,78 +1,51 @@
 package iuh.fit.core.service.impl;
 
 import iuh.fit.core.dto.HoaDonDTO;
-import iuh.fit.core.entity.HoaDon;
-import iuh.fit.core.repository.IHoaDonRepository;
+import iuh.fit.core.repository.*;
 import iuh.fit.core.service.IHoaDonService;
-import iuh.fit.infrastructure.mapper.HoaDonMapper;
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-/**
- * Class: HoaDonServiceImpl (Service Implementation)
- * 
- * Tầng: CORE - Service Layer Implementation
- * Trách nhiệm: Implement IHoaDonService - xử lý logic nghiệp vụ cho Hóa Đơn
- */
 public class HoaDonServiceImpl implements IHoaDonService {
-    
+
     private final IHoaDonRepository hoaDonRepository;
-    
-    public HoaDonServiceImpl(IHoaDonRepository hoaDonRepository) {
+    private final IChiTietHoaDonRepository chiTietHDRepository;
+    private final IPhieuDatPhongRepository phieuDatPhongRepository;
+    private final IPhongRepository phongRepository;
+
+    public HoaDonServiceImpl(IHoaDonRepository hoaDonRepository,
+                             IChiTietHoaDonRepository chiTietHDRepository,
+                             IPhieuDatPhongRepository phieuDatPhongRepository,
+                             IPhongRepository phongRepository) {
         this.hoaDonRepository = hoaDonRepository;
+        this.chiTietHDRepository = chiTietHDRepository;
+        this.phieuDatPhongRepository = phieuDatPhongRepository;
+        this.phongRepository = phongRepository;
     }
-    
+
     @Override
-    public Optional<HoaDonDTO> findById(String maHoaDon) {
-        return hoaDonRepository.findById(maHoaDon)
-                .map(HoaDonMapper::entityToDTO);
+    public List<HoaDonDTO> getHoaDonByDateRange(LocalDate start, LocalDate end) {
+        return new ArrayList<>();
     }
-    
+
     @Override
-    public List<HoaDonDTO> findAll() {
-        return hoaDonRepository.findAll().stream()
-                .map(HoaDonMapper::entityToDTO)
-                .collect(Collectors.toList());
+    public double getTotalServiceRevenueByDateRange(LocalDate start, LocalDate end) {
+        return 0.0;
     }
-    
+
     @Override
-    public HoaDonDTO create(HoaDonDTO dto) {
-        if (dto.getMaHoaDon() == null || dto.getMaHoaDon().isEmpty()) {
-            throw new IllegalArgumentException("Mã hóa đơn không được để trống");
-        }
-        if (dto.getTongTien() < 0) {
-            throw new IllegalArgumentException("Tổng tiền không được âm");
-        }
-        HoaDon entity = HoaDonMapper.dtoToEntity(dto);
-        HoaDon saved = hoaDonRepository.save(entity);
-        return HoaDonMapper.entityToDTO(saved);
+    public List<HoaDonDTO> getHoaDonByPhieuDat(String maPhieu) {
+        return new ArrayList<>();
     }
-    
+
     @Override
-    public HoaDonDTO update(HoaDonDTO dto) {
-        if (dto.getMaHoaDon() == null || dto.getMaHoaDon().isEmpty()) {
-            throw new IllegalArgumentException("Mã hóa đơn không được để trống");
-        }
-        if (dto.getTongTien() < 0) {
-            throw new IllegalArgumentException("Tổng tiền không được âm");
-        }
-        HoaDon entity = HoaDonMapper.dtoToEntity(dto);
-        HoaDon updated = hoaDonRepository.update(entity);
-        return HoaDonMapper.entityToDTO(updated);
+    public HoaDonDTO calculateInvoiceAtCheckout(String maPhieu, double thueVAT, double chietKhau) {
+        return new HoaDonDTO();
     }
-    
+
     @Override
-    public void delete(String maHoaDon) {
-        hoaDonRepository.deleteById(maHoaDon);
-    }
-    
-    @Override
-    public List<HoaDonDTO> findByMaKhachHang(String maKhachHang) {
-        return hoaDonRepository.findByMaKhachHang(maKhachHang).stream()
-                .map(HoaDonMapper::entityToDTO)
-                .collect(Collectors.toList());
+    public HoaDonDTO addHoaDon(HoaDonDTO hoaDon) {
+        return hoaDon;
     }
 }
-

@@ -2,6 +2,7 @@ package iuh.fit.app;
 
 import iuh.fit.core.repository.*;
 import iuh.fit.core.service.*;
+import iuh.fit.core.service.IHoaDonService;
 import iuh.fit.core.service.impl.*;
 import iuh.fit.infrastructure.persistence.*;
 import iuh.fit.presentation.controller.LoginController;
@@ -27,7 +28,9 @@ public class MainApp extends Application {
         // Khởi tạo service
         IKhachHangService khService = new KhachHangServiceImpl(khRepo);
         INhanVienService nvService = new NhanVienServiceImpl(nvRepo);
-        IPhongService phongService = new PhongServiceImpl(phongRepo);
+        IPhieuDatPhongRepository phieuDatPhongRepo = new PhieuDatPhongRepositoryImpl();
+        IPhongRepository phongRepository = new PhongRepositoryImpl();
+        IPhongService phongService = new PhongServiceImpl(phongRepository, phieuDatPhongRepo);
         IPhieuDatPhongService phieuService = new PhieuDatPhongServiceImpl(phieuRepo);
         IAuthenticationService authService = new AuthenticationServiceImpl(tkRepo);
         IDichVuService dvService = new DichVuServiceImpl(dvRepo);

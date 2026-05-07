@@ -14,4 +14,5 @@ public interface IPhongService {
     boolean deletePhong(String maPhong);
 
     List<PhongDTO> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, double minPrice, double maxPrice);
+    List<PhongDTO> getPhongByPhieuDat(String maPhieu);
 }

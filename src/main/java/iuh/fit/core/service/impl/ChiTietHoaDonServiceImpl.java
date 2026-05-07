@@ -26,7 +26,7 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
     }
 
     @Override
-    public ChiTietHoaDonDTO getChiTietHoaDonById(String maHoaDon, String maDichVu) throws IllegalArgumentException {
+    public ChiTietHoaDonDTO getChiTietHoaDonById(String maHoaDon, String maDichVu) {
         if (maHoaDon == null || maDichVu == null) {
             throw new IllegalArgumentException("Mã hóa đơn và mã dịch vụ không được trống");
         }
@@ -37,36 +37,37 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
     }
 
     @Override
-    public ChiTietHoaDonDTO addChiTietHoaDon(ChiTietHoaDonDTO chiTietHoaDonDTO) throws IllegalArgumentException {
-        if (chiTietHoaDonDTO.getMaHoaDon() == null || chiTietHoaDonDTO.getMaDichVu() == null) {
+    public ChiTietHoaDonDTO addChiTietHoaDon(ChiTietHoaDonDTO dto) {
+        if (dto.getMaHoaDon() == null || dto.getMaDichVu() == null) {
             throw new IllegalArgumentException("Mã hóa đơn và mã dịch vụ không được trống");
         }
-        if (chiTietHoaDonDTO.getSoLuong() <= 0) {
+        if (dto.getSoLuong() <= 0) {
             throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
         }
 
-        ChiTietHoaDon chiTiet = ChiTietHoaDonMapper.toEntity(chiTietHoaDonDTO);
-        ChiTietHoaDonId id = new ChiTietHoaDonId(chiTietHoaDonDTO.getMaHoaDon(), chiTietHoaDonDTO.getMaDichVu());
-        chiTiet.setId(id);
+        ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
+        // Gán khóa chính trực tiếp
+        entity.setMaHoaDon(dto.getMaHoaDon());
+        entity.setMaDichVu(dto.getMaDichVu());
 
-        ChiTietHoaDon saved = chiTietHoaDonRepository.save(chiTiet);
+        ChiTietHoaDon saved = chiTietHoaDonRepository.save(entity);
         return ChiTietHoaDonMapper.toDTO(saved);
     }
 
     @Override
-    public ChiTietHoaDonDTO updateChiTietHoaDon(ChiTietHoaDonDTO chiTietHoaDonDTO) throws IllegalArgumentException {
-        if (chiTietHoaDonDTO.getMaHoaDon() == null || chiTietHoaDonDTO.getMaDichVu() == null) {
+    public ChiTietHoaDonDTO updateChiTietHoaDon(ChiTietHoaDonDTO dto) {
+        if (dto.getMaHoaDon() == null || dto.getMaDichVu() == null) {
             throw new IllegalArgumentException("Mã hóa đơn và mã dịch vụ không được trống");
         }
-        if (chiTietHoaDonDTO.getSoLuong() <= 0) {
+        if (dto.getSoLuong() <= 0) {
             throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
         }
 
-        ChiTietHoaDon chiTiet = ChiTietHoaDonMapper.toEntity(chiTietHoaDonDTO);
-        ChiTietHoaDonId id = new ChiTietHoaDonId(chiTietHoaDonDTO.getMaHoaDon(), chiTietHoaDonDTO.getMaDichVu());
-        chiTiet.setId(id);
+        ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
+        entity.setMaHoaDon(dto.getMaHoaDon());
+        entity.setMaDichVu(dto.getMaDichVu());
 
-        ChiTietHoaDon updated = chiTietHoaDonRepository.update(chiTiet);
+        ChiTietHoaDon updated = chiTietHoaDonRepository.update(entity);
         return ChiTietHoaDonMapper.toDTO(updated);
     }
 
@@ -88,15 +89,14 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
                 .collect(Collectors.toList());
     }
 
-    // FIX: thêm phương thức còn thiếu - lấy chi tiết theo mã phiếu đặt
     @Override
     public List<ChiTietHoaDonDTO> getChiTietByMaPhieu(String maPhieu) {
+        // Tạm thời dùng findByHoaDon (cần sửa logic thực tế sau)
         return chiTietHoaDonRepository.findByHoaDon(maPhieu).stream()
                 .map(ChiTietHoaDonMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    // FIX: thêm phương thức còn thiếu - thêm hoặc cập nhật chi tiết hóa đơn
     @Override
     public void addOrUpdateChiTiet(ChiTietHoaDonDTO dto) {
         if (dto == null || dto.getMaHoaDon() == null || dto.getMaDichVu() == null) return;
@@ -104,13 +104,14 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
         ChiTietHoaDonId id = new ChiTietHoaDonId(dto.getMaHoaDon(), dto.getMaDichVu());
         Optional<ChiTietHoaDon> existing = chiTietHoaDonRepository.findById(id);
 
-        ChiTietHoaDon chiTiet = ChiTietHoaDonMapper.toEntity(dto);
-        chiTiet.setId(id);
+        ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
+        entity.setMaHoaDon(dto.getMaHoaDon());
+        entity.setMaDichVu(dto.getMaDichVu());
 
         if (existing.isPresent()) {
-            chiTietHoaDonRepository.update(chiTiet);
+            chiTietHoaDonRepository.update(entity);
         } else {
-            chiTietHoaDonRepository.save(chiTiet);
+            chiTietHoaDonRepository.save(entity);
         }
     }
 

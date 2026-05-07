@@ -10,38 +10,44 @@ import iuh.fit.core.dto.KhachHangDTO;
  * ThemKhachHangDialogController: Dialog thêm/sửa khách hàng
  */
 public class ThemKhachHangDialogController {
-    
-    @FXML private TextField tfMaKhach;
-    @FXML private TextField tfTenKhach;
-    @FXML private TextField tfSoDienThoai;
-    @FXML private DatePicker dpNgaySinh;
-    @FXML private ComboBox<String> cbLoaiKhach;
-    
+
+    @FXML
+    private TextField tfMaKhach;
+    @FXML
+    private TextField tfTenKhach;
+    @FXML
+    private TextField tfSoDienThoai;
+    @FXML
+    private DatePicker dpNgaySinh;
+    @FXML
+    private ComboBox<String> cbLoaiKhach;
+
     private KhachHangDTO khachHangDTO;
     private boolean isEditMode = false;
-    
+
     @FXML
     public void initialize() {
         setupComboBoxes();
     }
-    
+
     /**
      * Setup ComboBoxes
      */
     private void setupComboBoxes() {
         ObservableList<String> loaiKhachList = FXCollections.observableArrayList(
-            "Khách vãng lai", "Khách hội viên"
+                "KHACH_HOI_VIEN", "KHACH_THUONG_XUYEN",
+                "KHACH_VANG_LAI", "KHACH_MOI"
         );
         cbLoaiKhach.setItems(loaiKhachList);
     }
-    
+
     /**
      * Set mode Edit khi sửa khách hàng
      */
     public void setEditMode(KhachHangDTO khachHang) {
         this.khachHangDTO = khachHang;
         this.isEditMode = true;
-        
+
         tfMaKhach.setText(khachHang.getMaKhachHang());
         tfMaKhach.setDisable(true);
         tfTenKhach.setText(khachHang.getHoTen());
@@ -49,7 +55,7 @@ public class ThemKhachHangDialogController {
         dpNgaySinh.setValue(khachHang.getNgaySinh());
         cbLoaiKhach.setValue(khachHang.getLoaiKhachHang());
     }
-    
+
     /**
      * Get dữ liệu từ form
      */
@@ -62,7 +68,7 @@ public class ThemKhachHangDialogController {
         dto.setLoaiKhachHang(cbLoaiKhach.getValue());
         return dto;
     }
-    
+
     /**
      * Validate input
      */
@@ -89,7 +95,7 @@ public class ThemKhachHangDialogController {
         }
         return true;
     }
-    
+
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Lỗi");

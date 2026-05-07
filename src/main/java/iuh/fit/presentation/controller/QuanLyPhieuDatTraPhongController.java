@@ -33,6 +33,9 @@ public class QuanLyPhieuDatTraPhongController {
     private final IPhieuDatPhongService phieuDatPhongService;
     private final IPhongService phongService;
     private final IHoaDonService hoaDonService;
+    private final IKhachHangService khachHangService;         // <-- Phải có dòng này
+    private final IChiTietHoaDonService chiTietHoaDonService; // <-- Phải có dòng này
+    private final IDichVuService dichVuService;               // <-- Phải có dòng này
     private final TaiKhoanDTO currentUser;
 
     // UI Components - Quản lý Phiếu Đặt
@@ -74,18 +77,24 @@ public class QuanLyPhieuDatTraPhongController {
     private final String COLOR_BORDER = "#e2e8f0";
 
     // FIX: constructor mở rộng khớp với cách gọi từ MainController (7 tham số)
-    public QuanLyPhieuDatTraPhongController(IPhieuDatPhongService phieuDatPhongService,
-                                            IPhongService phongService,
-                                            IKhachHangService khachHangService,
-                                            IHoaDonService hoaDonService,
-                                            IChiTietHoaDonService chiTietHoaDonService,
-                                            IDichVuService dichVuService,
-                                            TaiKhoanDTO currentUser) {
+    public QuanLyPhieuDatTraPhongController(
+            IPhieuDatPhongService phieuDatPhongService,
+            IPhongService phongService,
+            IKhachHangService khachHangService,
+            IHoaDonService hoaDonService,
+            IChiTietHoaDonService chiTietHoaDonService,
+            IDichVuService dichVuService,
+            TaiKhoanDTO currentUser) {
+
         this.phieuDatPhongService = phieuDatPhongService;
         this.phongService = phongService;
         this.hoaDonService = hoaDonService;
         this.currentUser = currentUser;
-        // khachHangService, chiTietHoaDonService, dichVuService hiện chưa dùng trong class này
+
+        // BẠN ĐANG BỊ THIẾU 3 DÒNG NÀY NÊN NÓ MỚI BỊ NULL ĐÓ:
+        this.khachHangService = khachHangService;
+        this.chiTietHoaDonService = chiTietHoaDonService;
+        this.dichVuService = dichVuService;
     }
 
     /**
@@ -819,7 +828,7 @@ public class QuanLyPhieuDatTraPhongController {
              // Tạo hoá đơn mới
              HoaDonDTO hoaDon = new HoaDonDTO();
              hoaDon.setMaKhachHang(phieu.getMaKhachHang());
-             hoaDon.setMaNhanVien(currentUser.getTaiKhoan());
+             hoaDon.setMaNhanVien(currentUser.getTenDangNhap());
              hoaDon.setNgayLap(LocalDate.now());
              hoaDon.setTongTienPhong(tongTienPhong);
              hoaDon.setTongTienDichVu(tongTienDichVu);
@@ -919,7 +928,7 @@ public class QuanLyPhieuDatTraPhongController {
              phieu.setNgayTra(ngayTra);
              phieu.setTongTien(tongTien);
              phieu.setTrangThai("Đặt Phòng");
-             phieu.setMaNhanVien(currentUser.getTaiKhoan());
+             phieu.setMaNhanVien(currentUser.getTenDangNhap());
 
              // Lưu phiếu đặt phòng
              PhieuDatPhongDTO result = phieuDatPhongService.addPhieuDatPhong(phieu);
