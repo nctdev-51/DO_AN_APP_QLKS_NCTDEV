@@ -27,4 +27,8 @@ public interface IPhieuDatPhongService {
     // ✅ Thêm mới: Transaction Checkout (Lưu phiếu + cập nhật phòng + lưu hóa đơn)
     boolean checkoutTransaction(String maPhieu, HoaDonDTO hoaDonDTO);
     List<PhieuDatPhong> findByTrangThai(String trangThai);
+
+    List<PhieuDatPhong> findAll();
+
+    String phatSinhMaPhieuMoi();
 }

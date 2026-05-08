@@ -40,7 +40,9 @@ public class DatNhanPhongController {
     private List<PhongDTO> allRoomsCache = new ArrayList<>();
 
     // Các Component của Bộ lọc
-    private TextField txtSearch, txtGiaMin, txtGiaMax;
+    // Các Component của Bộ lọc
+    private TextField txtSearch, txtGiaMax;
+    private Slider sliderPrice; // Thêm thanh trượt
     private ComboBox<String> cbLoai;
     private ComboBox<String> cbTrangThai;
     private DatePicker dpIn;
@@ -132,14 +134,14 @@ public class DatNhanPhongController {
 
         String inputStyle = "-fx-font-size: 14px; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #cbd5e1; -fx-background-color: #f8fafc; -fx-padding: 8 12; -fx-pref-height: 40px;";
 
-        // Dòng 1: Tìm kiếm & Combo Box được căn chỉnh hoàn hảo
+        // --- DÒNG 1: TÌM KIẾM & PHÂN LOẠI ---
         HBox row1 = new HBox(15);
         row1.setAlignment(Pos.CENTER_LEFT);
 
         txtSearch = new TextField();
         txtSearch.setPromptText("🔍 Tìm số phòng, tên phòng...");
         txtSearch.setStyle(inputStyle);
-        HBox.setHgrow(txtSearch, Priority.ALWAYS); // Cho ô tìm kiếm dài ra tự nhiên
+        HBox.setHgrow(txtSearch, Priority.ALWAYS);
         txtSearch.textProperty().addListener((obs, old, nw) -> filterRooms());
 
         cbLoai = new ComboBox<>();
@@ -158,42 +160,95 @@ public class DatNhanPhongController {
 
         row1.getChildren().addAll(txtSearch, cbLoai, cbTrangThai);
 
-        // Dòng 2: Ngày & Giá & Nút Reset
-        HBox row2 = new HBox(15);
+        // --- DÒNG 2: THANH TRƯỢT GIÁ (NÂNG CẤP) & THỜI GIAN ---
+        FlowPane row2 = new FlowPane();
+        row2.setHgap(15);
+        row2.setVgap(15);
         row2.setAlignment(Pos.CENTER_LEFT);
 
-        Label lblGia = new Label("Mức giá:");
+        Label lblGia = new Label("Giá tối đa:");
         lblGia.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblGia.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        txtGiaMin = new TextField(); txtGiaMin.setPromptText("Từ (VNĐ)"); txtGiaMin.setStyle(inputStyle); txtGiaMin.setPrefWidth(120);
-        txtGiaMin.textProperty().addListener((obs, old, nw) -> filterRooms());
+        // 👉 THANH TRƯỢT THÔNG MINH (Tự động hít vào các mốc chẵn)
+        sliderPrice = new Slider(0, 10000000, 10000000);
+        sliderPrice.setPrefWidth(200);
+        sliderPrice.setStyle("-fx-cursor: hand;");
+        sliderPrice.setMajorTickUnit(500000); // Mốc lớn: 500k
+        sliderPrice.setMinorTickCount(4);     // Mốc nhỏ: 100k
+        sliderPrice.setSnapToTicks(true);     // BẮT BUỘC: Ép slider hít vào các mốc chẵn (VD: 500k, 600k, không có số lẻ)
 
-        Label lblDash1 = new Label("-"); lblDash1.setTextFill(Color.web(COLOR_TEXT_MUTED));
+        // Ô nhập giá hiển thị số rõ ràng có dấu phẩy (VD: 10,000,000)
+        txtGiaMax = new TextField("10,000,000");
+        txtGiaMax.setStyle(inputStyle + " -fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + ";");
+        txtGiaMax.setPrefWidth(130);
+        txtGiaMax.setAlignment(Pos.CENTER_RIGHT);
 
-        txtGiaMax = new TextField(); txtGiaMax.setPromptText("Đến (VNĐ)"); txtGiaMax.setStyle(inputStyle); txtGiaMax.setPrefWidth(120);
-        txtGiaMax.textProperty().addListener((obs, old, nw) -> filterRooms());
+        Label lblUnit = new Label("VNĐ");
+        lblUnit.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+        lblUnit.setTextFill(Color.web(COLOR_TEXT_MUTED));
+
+        // Logic 1: Khi kéo thanh trượt -> Cập nhật chữ (Có format dấu phẩy)
+        sliderPrice.valueProperty().addListener((obs, oldV, newV) -> {
+            if (!txtGiaMax.isFocused()) {
+                txtGiaMax.setText(String.format("%,.0f", newV.doubleValue()));
+                filterRooms();
+            }
+        });
+
+        // Logic 2: Khi gõ số và bấm Enter hoặc click ra ngoài -> Cập nhật thanh trượt an toàn
+        Runnable updatePriceFromText = () -> {
+            try {
+                // Xóa mọi ký tự không phải số (để cho phép khách gõ cả 5,000,000 hoặc 5000000 đều được)
+                String cleanStr = txtGiaMax.getText().replaceAll("[^\\d]", "");
+                if (cleanStr.isEmpty()) cleanStr = "0";
+
+                double val = Double.parseDouble(cleanStr);
+                if (val > 10000000) val = 10000000;
+
+                sliderPrice.setValue(val); // Update slider
+                txtGiaMax.setText(String.format("%,.0f", val)); // Re-format lại chữ cho đẹp
+                filterRooms();
+            } catch (Exception e) {
+                // Trả về giá trị cũ nếu gõ bậy
+                txtGiaMax.setText(String.format("%,.0f", sliderPrice.getValue()));
+            }
+        };
+
+        txtGiaMax.setOnAction(e -> updatePriceFromText.run()); // Bấm Enter
+        txtGiaMax.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
+            if (!isFocused) updatePriceFromText.run(); // Click ra chỗ khác
+        });
 
         Label lblNgay = new Label("   |   Thời gian:");
         lblNgay.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblNgay.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        dpIn = new DatePicker(); dpIn.setPromptText("Ngày nhận"); dpIn.setStyle(inputStyle); dpIn.setPrefWidth(140);
+        // Ngày giờ hiện tại
+        dpIn = new DatePicker(LocalDate.now());
+        dpIn.setPromptText("Ngày nhận");
+        dpIn.setStyle(inputStyle);
+        dpIn.setPrefWidth(140);
         dpIn.setOnAction(e -> filterRooms());
 
-        Label lblDash2 = new Label("-"); lblDash2.setTextFill(Color.web(COLOR_TEXT_MUTED));
+        Label lblDash2 = new Label("-");
+        lblDash2.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        dpOut = new DatePicker(); dpOut.setPromptText("Ngày trả"); dpOut.setStyle(inputStyle); dpOut.setPrefWidth(140);
+        dpOut = new DatePicker(LocalDate.now().plusDays(1));
+        dpOut.setPromptText("Ngày trả");
+        dpOut.setStyle(inputStyle);
+        dpOut.setPrefWidth(140);
         dpOut.setOnAction(e -> filterRooms());
 
-        Region spacer = new Region(); HBox.setHgrow(spacer, Priority.ALWAYS);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button btnClear = new Button("🔄 Làm mới");
         btnClear.setCursor(Cursor.HAND);
         btnClear.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8 25; -fx-background-radius: 6; -fx-pref-height: 40px;");
         btnClear.setOnAction(e -> resetFilters());
 
-        row2.getChildren().addAll(lblGia, txtGiaMin, lblDash1, txtGiaMax, lblNgay, dpIn, lblDash2, dpOut, spacer, btnClear);
+        row2.getChildren().addAll(lblGia, sliderPrice, txtGiaMax, lblUnit, lblNgay, dpIn, lblDash2, dpOut, spacer, btnClear);
 
         card.getChildren().addAll(row1, row2);
         return card;
@@ -204,22 +259,33 @@ public class DatNhanPhongController {
         String loaiSel = cbLoai.getValue();
         String ttSel = cbTrangThai.getValue();
 
-        double minP = 0, maxP = Double.MAX_VALUE;
-        try { if(!txtGiaMin.getText().isEmpty()) minP = Double.parseDouble(txtGiaMin.getText()); } catch(Exception ignored){}
-        try { if(!txtGiaMax.getText().isEmpty()) maxP = Double.parseDouble(txtGiaMax.getText()); } catch(Exception ignored){}
-
-        // FIX LỖI LAMBDA BẰNG CÁCH TẠO BIẾN FINAL
-        final double finalMinP = minP;
-        final double finalMaxP = maxP;
+        // Lấy giá tối đa từ thanh trượt (chính xác tuyệt đối)
+        final double finalMaxP = sliderPrice.getValue();
 
         List<PhongDTO> filtered = allRoomsCache.stream()
                 .filter(p -> kw.isEmpty() || p.getMaPhong().toLowerCase().contains(kw) || p.getTenPhong().toLowerCase().contains(kw))
                 .filter(p -> loaiSel.equals("Tất cả loại phòng") || mapMaLoaiToTen(p.getMaLoaiPhong()).equals(loaiSel))
                 .filter(p -> matchStatus(p.getTinhTrang(), ttSel))
-                .filter(p -> p.getGiaPhong() >= finalMinP && p.getGiaPhong() <= finalMaxP)
+                .filter(p -> p.getGiaPhong() <= finalMaxP)
                 .collect(Collectors.toList());
 
         renderRoomsGrid(filtered);
+    }
+
+    private void resetFilters() {
+        txtSearch.clear();
+        cbLoai.setValue("Tất cả loại phòng");
+        cbTrangThai.setValue("Tất cả trạng thái");
+
+        // Reset thời gian về hiện tại (Hôm nay -> Ngày mai)
+        dpIn.setValue(LocalDate.now());
+        dpOut.setValue(LocalDate.now().plusDays(1));
+
+        // Reset thanh trượt về max 10 Triệu và format đẹp
+        sliderPrice.setValue(10000000);
+        txtGiaMax.setText("10,000,000");
+
+        filterRooms();
     }
 
     private void renderRoomsGrid(List<PhongDTO> rooms) {
@@ -239,22 +305,23 @@ public class DatNhanPhongController {
                 lblFloor.setFont(Font.font("Segoe UI", FontWeight.BOLD, 20));
                 lblFloor.setTextFill(Color.web(COLOR_PRIMARY));
 
-                // --- GRID 2 HÀNG x 5 CỘT CỐ ĐỊNH ---
-                GridPane grid = new GridPane();
-                grid.setHgap(20); grid.setVgap(20);
-                for (int i = 0; i < 5; i++) {
-                    ColumnConstraints cc = new ColumnConstraints();
-                    cc.setPercentWidth(20);
-                    grid.getColumnConstraints().add(cc);
-                }
+                // 👉 ĐÃ SỬA: Thay GridPane bằng FlowPane
+                FlowPane flowPane = new FlowPane();
+                flowPane.setHgap(20);
+                flowPane.setVgap(20);
 
                 List<PhongDTO> floorRooms = byFloor.get(floor);
                 for (int i = 0; i < floorRooms.size(); i++) {
-                    if (i >= 10) break; // Chỉ hiển thị tối đa 10 phòng / tầng
-                    grid.add(createEnhancedRoomCard(floorRooms.get(i)), i % 5, i / 5);
+                    VBox card = createEnhancedRoomCard(floorRooms.get(i));
+                    // Ép khung kích thước chuẩn để thẻ phòng không bị méo.
+                    // Nếu màn hình to nó xếp 5, 6 cái. Màn hình bé nó tự xếp 3, 4 cái rồi xuống dòng.
+                    card.setPrefWidth(240);
+                    card.setMinWidth(220);
+
+                    flowPane.getChildren().add(card);
                 }
 
-                floorBox.getChildren().addAll(lblFloor, grid);
+                floorBox.getChildren().addAll(lblFloor, flowPane);
                 roomContainer.getChildren().add(floorBox);
             }
         });
@@ -413,12 +480,7 @@ public class DatNhanPhongController {
         new Thread(task).start();
     }
 
-    private void resetFilters() {
-        txtSearch.clear(); txtGiaMin.clear(); txtGiaMax.clear();
-        cbLoai.setValue("Tất cả loại phòng"); cbTrangThai.setValue("Tất cả trạng thái");
-        dpIn.setValue(null); dpOut.setValue(null);
-        filterRooms();
-    }
+
 
     // Hàm loại bỏ dấu Tiếng Việt chuẩn xác
     private String removeAccents(String input) {

@@ -14,39 +14,61 @@ import java.util.logging.Logger;
 public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
     private static final Logger logger = Logger.getLogger(PhieuDatPhongRepositoryImpl.class.getName());
 
-    @Override
-    public List<PhieuDatPhong> findAll() {
-        try (EntityManager em = JpaConfig.getEntityManager()) {
-            return em.createQuery("SELECT p FROM PhieuDatPhong p", PhieuDatPhong.class).getResultList();
-        }
-    }
 
     @Override
-    public List<PhieuDatPhong> findByTrangThai(String trangThai) {
+    public List<PhieuDatPhong> findAll() {
+        // Phải dùng EntityManager mới để đảm bảo session không bị đóng
         EntityManager em = JpaConfig.getEntityManager();
         try {
-            // Dùng JPQL để query danh sách phiếu theo trạng thái
-            String jpql = "SELECT p FROM PhieuDatPhong p WHERE p.trangThai = :trangThai";
-            return em.createQuery(jpql, PhieuDatPhong.class)
-                    .setParameter("trangThai", trangThai)
-                    .getResultList();
+            // 👉 ÉP BUỘC lấy thêm thông tin Khách và Phòng bằng JOIN FETCH
+            String jpql = "SELECT DISTINCT p FROM PhieuDatPhong p " +
+                    "JOIN FETCH p.khachHang " +
+                    "JOIN FETCH p.phong";
+            return em.createQuery(jpql, PhieuDatPhong.class).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
         } finally {
             em.close();
         }
     }
 
     @Override
+    public List<PhieuDatPhong> findByTrangThai(String trangThai) {
+        try (EntityManager em = JpaConfig.getEntityManager()) {
+            String jpql = "SELECT p FROM PhieuDatPhong p " +
+                    "JOIN FETCH p.khachHang JOIN FETCH p.phong " +
+                    "WHERE p.trangThai = :trangThai";
+            return em.createQuery(jpql, PhieuDatPhong.class)
+                    .setParameter("trangThai", trangThai)
+                    .getResultList();
+        }
+    }
+
+    @Override
     public Optional<PhieuDatPhong> findById(String maPhieu) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
-            return Optional.ofNullable(em.find(PhieuDatPhong.class, maPhieu));
+            // Dùng JOIN FETCH ngay cả khi tìm 1 ID để đảm bảo đủ dữ liệu hiển thị Chi tiết
+            String jpql = "SELECT p FROM PhieuDatPhong p " +
+                    "JOIN FETCH p.khachHang JOIN FETCH p.phong " +
+                    "WHERE p.maPhieu = :id";
+            try {
+                PhieuDatPhong p = em.createQuery(jpql, PhieuDatPhong.class)
+                        .setParameter("id", maPhieu)
+                        .getSingleResult();
+                return Optional.of(p);
+            } catch (Exception e) {
+                return Optional.empty();
+            }
         }
     }
 
     @Override
     public List<PhieuDatPhong> findByMaKhachHang(String maKhachHang) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
-            return em.createQuery("SELECT p FROM PhieuDatPhong p WHERE p.maKhachHang = :maKhachHang", PhieuDatPhong.class)
-                    .setParameter("maKhachHang", maKhachHang)
+            // Sửa lại query cho đúng tên field trong Entity (p.khachHang.maKhachHang)
+            return em.createQuery("SELECT p FROM PhieuDatPhong p WHERE p.khachHang.maKhachHang = :maKH", PhieuDatPhong.class)
+                    .setParameter("maKH", maKhachHang)
                     .getResultList();
         }
     }
@@ -54,8 +76,8 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
     @Override
     public List<PhieuDatPhong> findByMaPhong(String maPhong) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
-            return em.createQuery("SELECT p FROM PhieuDatPhong p WHERE p.maPhong = :maPhong", PhieuDatPhong.class)
-                    .setParameter("maPhong", maPhong)
+            return em.createQuery("SELECT p FROM PhieuDatPhong p WHERE p.phong.maPhong = :maP", PhieuDatPhong.class)
+                    .setParameter("maP", maPhong)
                     .getResultList();
         }
     }
@@ -63,7 +85,8 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
     @Override
     public List<PhieuDatPhong> findByNgayDatBetween(LocalDate startDate, LocalDate endDate) {
         try (EntityManager em = JpaConfig.getEntityManager()) {
-            return em.createQuery("SELECT p FROM PhieuDatPhong p WHERE p.ngayDat BETWEEN :start AND :end", PhieuDatPhong.class)
+            return em.createQuery("SELECT p FROM PhieuDatPhong p JOIN FETCH p.khachHang JOIN FETCH p.phong " +
+                            "WHERE p.ngayDat BETWEEN :start AND :end", PhieuDatPhong.class)
                     .setParameter("start", startDate)
                     .setParameter("end", endDate)
                     .getResultList();
@@ -81,7 +104,7 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
             return phieuDatPhong;
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
-            logger.severe("❌ Lỗi lưu phiếu đặt phòng: " + e.getMessage());
+            logger.severe("❌ Lỗi save phiếu: " + e.getMessage());
             return null;
         } finally {
             em.close();
@@ -99,7 +122,7 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
             return merged;
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
-            logger.severe("❌ Lỗi cập nhật phiếu đặt phòng: " + e.getMessage());
+            logger.severe("❌ Lỗi update phiếu: " + e.getMessage());
             return null;
         } finally {
             em.close();
@@ -113,14 +136,11 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
         try {
             tx.begin();
             PhieuDatPhong p = em.find(PhieuDatPhong.class, maPhieu);
-            if (p != null) {
-                em.remove(p);
-            }
+            if (p != null) em.remove(p);
             tx.commit();
-            logger.info("✅ Xóa phiếu đặt phòng thành công: " + maPhieu);
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
-            logger.severe("❌ Lỗi xóa phiếu đặt phòng: " + e.getMessage());
+            logger.severe("❌ Lỗi xóa phiếu: " + e.getMessage());
         } finally {
             em.close();
         }
@@ -132,22 +152,58 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            // Lưu phiếu đặt phòng
+
+            // Nạp lại các đối tượng từ DB để đảm bảo không bị lỗi Detached Entity
+            if (pdp.getKhachHang() != null)
+                pdp.setKhachHang(em.find(iuh.fit.core.entity.KhachHang.class, pdp.getKhachHang().getMaKhachHang()));
+            if (pdp.getPhong() != null)
+                pdp.setPhong(em.find(iuh.fit.core.entity.Phong.class, pdp.getPhong().getMaPhong()));
+            if (pdp.getNhanVien() != null)
+                pdp.setNhanVien(em.find(iuh.fit.core.entity.NhanVien.class, pdp.getNhanVien().getMaNhanVien()));
+            if (pdp.getKhachHang() != null) {
+                iuh.fit.core.entity.KhachHang khEntity = em.find(iuh.fit.core.entity.KhachHang.class, pdp.getKhachHang().getMaKhachHang());
+                if (khEntity == null) {
+                    // Nếu tìm không ra thì ngưng luôn, không cố lưu nữa
+                    throw new Exception("Không tìm thấy Khách hàng trong Database với mã: " + pdp.getKhachHang().getMaKhachHang());
+                }
+                pdp.setKhachHang(khEntity);
+            }
             em.persist(pdp);
-
-            // Xử lý các logic cập nhật trạng thái phòng bằng Cascade hoặc JPQL
-            // Nếu bạn đã map Cascade.ALL trong Entity thì dòng persist(pdp) là đủ!
-
+            em.flush(); // 👉 Ép xuống Database ngay lập tức
             tx.commit();
-            logger.info("✅ Tạo phiếu đặt phòng thành công: " + pdp.getMaPhieu());
             return true;
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
-            logger.severe("❌ Lỗi tạo phiếu đặt phòng: " + e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(); // 🔍 NHÌN VÀO ĐÂY: Nếu lỗi, nó sẽ hiện chữ đỏ ở Console
             return false;
         } finally {
             em.close();
+        }
+    }
+
+    public String phatSinhMaPhieuMoi() {
+        try (EntityManager em = JpaConfig.getEntityManager()) {
+            // Tìm mã PDP lớn nhất trong Database
+            String jpql = "SELECT p.maPhieu FROM PhieuDatPhong p WHERE p.maPhieu LIKE 'PDP%' " +
+                    "ORDER BY LENGTH(p.maPhieu) DESC, p.maPhieu DESC";
+            List<String> listMa = em.createQuery(jpql, String.class)
+                    .setMaxResults(1)
+                    .getResultList();
+
+            if (listMa.isEmpty()) {
+                return "PDP001"; // Phiếu đầu tiên nếu DB trống
+            }
+
+            String maxMa = listMa.get(0); // Ví dụ: lấy được "PDP018"
+            try {
+                // Cắt chữ "PDP" (3 ký tự), lấy số 18 + 1 = 19
+                int so = Integer.parseInt(maxMa.substring(3));
+                so++;
+                // Format lại thành PDP019
+                return String.format("PDP%03d", so);
+            } catch (Exception e) {
+                return "PDP" + (System.currentTimeMillis() % 100000); // Sơ cua nếu mã cũ bị lỗi
+            }
         }
     }
 }

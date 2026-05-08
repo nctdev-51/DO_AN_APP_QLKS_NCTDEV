@@ -4,7 +4,6 @@ import iuh.fit.core.dto.KhachHangDTO;
 import iuh.fit.core.entity.KhachHang;
 import iuh.fit.core.repository.IKhachHangRepository;
 import iuh.fit.core.service.IKhachHangService;
-// Chú ý: Đã xóa dòng import LoaiKhachHang vì không còn dùng Enum nữa
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,26 +44,28 @@ public class KhachHangServiceImpl implements IKhachHangService {
                 .orElse(null);
     }
 
+    // 👉 HÀM ADD ĐÃ ĐƯỢC GỘP LẠI (Vừa Validate, vừa sinh mã xịn)
     @Override
     public KhachHangDTO addKhachHang(KhachHangDTO khachHangDTO) throws IllegalArgumentException {
-        // Business Logic: Validate input
+        // 1. Validate input
         validateKhachHang(khachHangDTO);
 
-        // Kiểm tra số điện thoại không trùng lặp
+        // 2. Kiểm tra số điện thoại không trùng lặp
         if (khachHangRepository.findBySoDienThoai(khachHangDTO.getSoDienThoai()).isPresent()) {
             throw new IllegalArgumentException("Số điện thoại đã tồn tại");
         }
 
-        // Tạo mã khách hàng tự động (ví dụ: KH001, KH002, ...)
-        String maKhachHang = generateMaKhachHang();
+        // 3. Sinh mã khách hàng tự động theo thứ tự (KH016, KH017...)
+        String maMoi = khachHangRepository.phatSinhMaKhachHangMoi();
+        khachHangDTO.setMaKhachHang(maMoi);
 
-        // Chuyển DTO → Entity
+        // 4. Chuyển DTO → Entity
         KhachHang entity = convertToEntity(khachHangDTO);
-        entity.setMaKhachHang(maKhachHang);
 
-        // Lưu vào repository
+        // 5. Lưu vào database
         KhachHang saved = khachHangRepository.save(entity);
 
+        // 6. Trả về đối tượng đã lưu (chứa mã ID thật) cho Controller dùng
         return convertToDTO(saved);
     }
 
@@ -115,14 +116,11 @@ public class KhachHangServiceImpl implements IKhachHangService {
         if (entity == null) return null;
 
         KhachHangDTO dto = new KhachHangDTO();
-        dto.setMaKhachHang(entity.getMaKhachHang());
+        dto.setMaKhachHang(entity.getMaKhachHang().trim()); // Thêm trim() cho an toàn
         dto.setHoTen(entity.getHoTen());
         dto.setSoDienThoai(entity.getSoDienThoai());
         dto.setNgaySinh(entity.getNgaySinh());
         dto.setLoaiKhachHang(entity.getLoaiKhachHang());
-
-        // (Tùy chọn) Nếu trong Entity KhachHang của bạn cũng đã thêm trường này
-        // dto.setDoiTuongKhach(entity.getDoiTuongKhach());
 
         return dto;
     }
@@ -140,16 +138,6 @@ public class KhachHangServiceImpl implements IKhachHangService {
         entity.setNgaySinh(dto.getNgaySinh());
         entity.setLoaiKhachHang(dto.getLoaiKhachHang());
 
-        // (Tùy chọn) Map ngược lại nếu entity có
-        // entity.setDoiTuongKhach(dto.getDoiTuongKhach());
-
         return entity;
-    }
-
-    private String generateMaKhachHang() {
-        // Sử dụng timestamp đơn giản để tạo mã duy nhất
-        return "KH" + java.time.LocalDateTime.now().format(
-                java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
-        );
     }
 }

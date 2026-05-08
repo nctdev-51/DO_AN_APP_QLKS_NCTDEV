@@ -95,8 +95,22 @@ public class PhieuDatPhongServiceImpl implements IPhieuDatPhongService {
         if (phieuDTO.getMaPhieu() == null || phieuDTO.getMaPhieu().trim().isEmpty()) {
             throw new IllegalArgumentException("Mã phiếu không được để trống");
         }
-        PhieuDatPhong entity = PhieuDatPhongMapper.dtoToEntity(phieuDTO);
-        PhieuDatPhong updated = phieuRepository.update(entity);
+
+        // 👉 CÁCH SỬA: Lấy phiếu "xịn" đầy đủ thông tin từ Database lên trước
+        PhieuDatPhong entityGoc = phieuRepository.findById(phieuDTO.getMaPhieu())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy phiếu trong Database"));
+
+        // 👉 CẬP NHẬT: Chỉ đổi đúng trạng thái (và các trường cho phép đổi), giữ nguyên Khách và Phòng
+        entityGoc.setTrangThai(phieuDTO.getTrangThai());
+
+        // Lưu lại xuống DB
+        PhieuDatPhong updated = phieuRepository.update(entityGoc);
+
+        // Bắt lỗi Thất bại ngầm (Silent Fail) từ Repository
+        if (updated == null) {
+            throw new RuntimeException("Cập nhật thất bại tại Database (Lỗi ngầm)");
+        }
+
         return PhieuDatPhongMapper.entityToDTO(updated);
     }
 
@@ -121,7 +135,9 @@ public class PhieuDatPhongServiceImpl implements IPhieuDatPhongService {
             }
 
             PhieuDatPhong entity = PhieuDatPhongMapper.dtoToEntity(phieuDTO);
-            entity.setTrangThai("DA_NHAN_PHONG");
+
+            // ❌ XÓA DÒNG NÀY ĐI NHÉ:
+            // entity.setTrangThai("DA_NHAN_PHONG");
 
             return phieuRepository.saveBookingTransaction(entity);
         } catch (Exception e) {
@@ -170,4 +186,30 @@ public class PhieuDatPhongServiceImpl implements IPhieuDatPhongService {
             em.close();
         }
     }
+
+    @Override
+    public List<PhieuDatPhong> findAll() {
+        // Sử dụng try-with-resources để tự động đóng EntityManager
+        try (EntityManager em = JpaConfig.getEntityManager()) {
+
+            // 👉 CHIÊU CUỐI: JOIN FETCH giúp nạp luôn Khách hàng và Phòng
+            // Việc này giúp Mapper không bị get ra null nữa.
+            String jpql = "SELECT p FROM PhieuDatPhong p " +
+                    "JOIN FETCH p.khachHang " +
+                    "JOIN FETCH p.phong";
+
+            return em.createQuery(jpql, PhieuDatPhong.class).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(); // Trả về danh sách rỗng nếu lỗi
+        }
+    }
+
+    // 👉 BỔ SUNG HÀM NÀY VÀO LỚP SERVICE ĐỂ HẾT BÁO LỖI ĐỎ
+    @Override
+    public String phatSinhMaPhieuMoi() {
+        // Gọi hàm sinh mã từ tầng Repository lên
+        return phieuRepository.phatSinhMaPhieuMoi();
+    }
+
 }

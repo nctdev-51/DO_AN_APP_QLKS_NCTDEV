@@ -17,4 +17,6 @@ public interface IPhieuDatPhongRepository {
 
     List<PhieuDatPhong> findByTrangThai(String trangThai);
     boolean saveBookingTransaction(PhieuDatPhong entity);
+
+    String phatSinhMaPhieuMoi();
 }

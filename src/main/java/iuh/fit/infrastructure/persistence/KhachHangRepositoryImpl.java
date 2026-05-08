@@ -129,5 +129,35 @@ public class KhachHangRepositoryImpl implements IKhachHangRepository {
             em.close();
         }
     }
+
+    // Thêm hàm này vào KhachHangRepositoryImpl.java
+    public String phatSinhMaKhachHangMoi() {
+        try (EntityManager em = JpaConfig.getEntityManager()) {
+            // Lấy mã KH lớn nhất. Mẹo: Sắp xếp theo chiều dài chuỗi trước, sau đó sắp xếp theo chuỗi
+            // để tránh lỗi chuỗi "KH99" lớn hơn "KH100"
+            String jpql = "SELECT k.maKhachHang FROM KhachHang k WHERE k.maKhachHang LIKE 'KH%' " +
+                    "ORDER BY LENGTH(k.maKhachHang) DESC, k.maKhachHang DESC";
+
+            List<String> listMa = em.createQuery(jpql, String.class)
+                    .setMaxResults(1) // Chỉ lấy 1 dòng lớn nhất
+                    .getResultList();
+
+            if (listMa.isEmpty()) {
+                return "KH001"; // Nếu chưa có khách hàng nào trong DB
+            }
+
+            String maxMa = listMa.get(0); // VD: "KH015"
+            try {
+                // Cắt 2 ký tự "KH" đầu tiên, lấy phần số phía sau và cộng 1
+                int so = Integer.parseInt(maxMa.substring(2));
+                so++;
+                // Trả về định dạng KH + số (luôn có ít nhất 3 chữ số, VD: KH016)
+                return String.format("KH%03d", so);
+            } catch (NumberFormatException e) {
+                // Rơi vào đây nếu mã cũ bị lộn xộn (như KH2026...). Sẽ tự động lấy thời gian để không bị lỗi.
+                return "KH" + (System.currentTimeMillis() % 100000);
+            }
+        }
+    }
 }
 

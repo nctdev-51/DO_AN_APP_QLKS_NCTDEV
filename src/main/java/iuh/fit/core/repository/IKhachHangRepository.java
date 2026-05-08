@@ -52,5 +52,7 @@ public interface IKhachHangRepository {
      * @return Optional chứa KhachHang nếu tồn tại
      */
     Optional<KhachHang> findBySoDienThoai(String soDienThoai);
+
+    String phatSinhMaKhachHangMoi();
 }
 

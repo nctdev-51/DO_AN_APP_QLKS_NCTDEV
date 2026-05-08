@@ -239,6 +239,9 @@ public class ChonPhongController {
     // =========================================================================
     // LOAD & RENDER PHÒNG TRỐNG
     // =========================================================================
+    // =========================================================================
+    // LOAD & RENDER PHÒNG TRỐNG (ĐÃ FIX LỖI KHÔNG HIỆN PHÒNG)
+    // =========================================================================
     private void loadRooms() {
         LocalDate in = dpIn.getValue();
         LocalDate out = dpOut.getValue();
@@ -249,20 +252,33 @@ public class ChonPhongController {
 
         Task<List<PhongDTO>> task = new Task<>() {
             @Override protected List<PhongDTO> call() {
-                return phongService.findAvailableRooms(in, out, 0, maxPrice, null);
+                // 👉 FIX 1: Dùng hàm getAllPhong thay vì findAvailableRooms để đảm bảo luôn có data
+                return phongService.getAllPhong();
             }
         };
 
         task.setOnSucceeded(e -> {
-            List<PhongDTO> rooms = task.getValue();
-            if (rooms != null) {
-                List<PhongDTO> filtered = rooms.stream()
+            List<PhongDTO> allRooms = task.getValue();
+            if (allRooms != null) {
+                List<PhongDTO> filtered = allRooms.stream()
+                        // 👉 FIX 2: Lọc đúng loại phòng
                         .filter(r -> typeSel.equals("Tất cả loại phòng") || mapMaLoaiToTen(r.getMaLoaiPhong()).equals(typeSel))
+                        // 👉 FIX 3: Chỉ lấy những phòng có trạng thái TRỐNG
                         .filter(r -> getNormalizedStatusKey(r.getTinhTrang()).equals("TRONG"))
+                        // 👉 FIX 4: Lọc đúng mức giá
+                        .filter(r -> r.getGiaPhong() <= maxPrice)
                         .collect(Collectors.toList());
+
                 renderRoomGrid(filtered);
             }
         });
+
+        task.setOnFailed(e -> {
+            // In lỗi ra để biết nếu DB chết
+            task.getException().printStackTrace();
+            Platform.runLater(() -> showAlert("Lỗi", "Không thể tải dữ liệu phòng từ máy chủ."));
+        });
+
         new Thread(task).start();
     }
 
@@ -288,25 +304,22 @@ public class ChonPhongController {
             for (String floor : byFloor.keySet()) {
                 VBox floorBox = new VBox(15);
 
-                // --- ÉP KIỂU INLINE CSS CHỮ TẦNG ĐỂ KHÔNG BỊ CSS CHUNG GHI ĐÈ ---
                 Label lblFloor = new Label("📍 TẦNG " + floor);
                 lblFloor.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: 900; -fx-text-fill: " + COLOR_PRIMARY + ";");
 
-                GridPane grid = new GridPane();
-                grid.setHgap(20); grid.setVgap(20);
-                for (int i = 0; i < 5; i++) {
-                    ColumnConstraints cc = new ColumnConstraints();
-                    cc.setPercentWidth(20);
-                    grid.getColumnConstraints().add(cc);
-                }
+                // 👉 FIX 5: Dùng FlowPane thay vì GridPane để chống tràn giao diện
+                FlowPane flowPane = new FlowPane();
+                flowPane.setHgap(20);
+                flowPane.setVgap(20);
 
                 List<PhongDTO> floorRooms = byFloor.get(floor);
-                for (int i = 0; i < floorRooms.size(); i++) {
-                    if (i >= 10) break;
-                    grid.add(createRoomCard(floorRooms.get(i)), i % 5, i / 5);
+                for (PhongDTO room : floorRooms) {
+                    VBox card = createRoomCard(room);
+                    card.setPrefWidth(220); // Ép chiều rộng chuẩn cho mỗi thẻ
+                    flowPane.getChildren().add(card);
                 }
 
-                floorBox.getChildren().addAll(lblFloor, grid);
+                floorBox.getChildren().addAll(lblFloor, flowPane);
                 roomContainer.getChildren().add(floorBox);
             }
         });

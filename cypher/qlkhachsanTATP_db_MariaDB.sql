@@ -395,7 +395,3 @@ FROM PhieuDatPhong pdp
          LEFT JOIN Phong p      ON pdp.maPhong      = p.maPhong
          LEFT JOIN NhanVien nv  ON pdp.maNhanVien   = nv.maNhanVien;
 
--- ============================================================
--- MIGRATION COMPLETE
--- ============================================================
-Bạn hãy cho tôi file ddl update lại các Entity trong hệ thống để nó match với db hiện tại

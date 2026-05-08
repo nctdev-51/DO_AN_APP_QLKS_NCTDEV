@@ -377,70 +377,89 @@ public class DatPhongController {
     // =========================================================================
     // ✅ CẢI THIỆN: LOGIC LƯU DB CHUẨN VÀO HÓA ĐƠN VÀ PHIẾU
     // =========================================================================
+    // =========================================================================
+    // ✅ CẢI THIỆN: LOGIC LƯU DB KẾT HỢP GIAO DIỆN THANH TOÁN
+    // =========================================================================
+    // =========================================================================
+    // ✅ CẢI THIỆN: LOGIC LƯU DB KẾT HỢP GIAO DIỆN THANH TOÁN & ĐỔI TRẠNG THÁI PHÒNG
+    // =========================================================================
     private void xuLyLuu(boolean coThanhToan, Stage stage) {
         if (txtSdt.getText().trim().isEmpty() || txtHoTen.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Lỗi", "Vui lòng nhập thông tin khách hàng!"); return;
         }
 
+        // --- BƯỚC 1: THANH TOÁN ---
+        String loaiThanhToanDB = "CHUA_THANH_TOAN";
+        if (coThanhToan) {
+            ThanhToanController paymentCtrl = new ThanhToanController(tongThanhToan);
+            String resultMethod = paymentCtrl.showThanhToanDialog(stage);
+            if (resultMethod == null) return;
+            loaiThanhToanDB = resultMethod;
+        }
+
         try {
-            // 1. Tìm hoặc thêm mới Khách Hàng
+            // 1. Xử lý Khách Hàng
             String sdt = txtSdt.getText().trim();
             KhachHangDTO kh = khachHangService.getAllKhachHang().stream()
                     .filter(k -> sdt.equals(k.getSoDienThoai())).findFirst().orElse(null);
 
+            // Trong DatPhongController.java (Hàm xuLyLuu)
+
             if (kh == null) {
                 kh = new KhachHangDTO();
-                kh.setMaKhachHang("KH" + System.currentTimeMillis());
+                // Mã này giờ chỉ là mã tạm, Service của Tú sẽ ghi đè mã mới
+                kh.setMaKhachHang("KH" + (System.currentTimeMillis() % 100000));
                 kh.setSoDienThoai(sdt);
                 kh.setHoTen(txtHoTen.getText());
-                kh.setNgaySinh(dpNgaySinh.getValue());
+                kh.setNgaySinh(dpNgaySinh.getValue() != null ? dpNgaySinh.getValue() : LocalDate.of(2000, 1, 1));
                 kh.setLoaiKhachHang(cboLoaiKhach.getValue());
-                kh.setDoiTuongKhach("THUONG");
-                // Cần interface addKhachHang trong IKhachHangService
-                // khachHangService.addKhachHang(kh);
+
+                // 👉 THỦ PHẠM ĐÂY: Bạn phải gán "kh =" để lấy lại cái DTO chứa mã ID thật từ Database
+                kh = khachHangService.addKhachHang(kh);
             }
 
             int soNgay = Integer.parseInt(txtSoNgayThue.getText());
+            String nextMaPhieu = phieuDatPhongService.phatSinhMaPhieuMoi();
+            int soThuTuPhieu = Integer.parseInt(nextMaPhieu.substring(3));// Cắt lấy số 19
 
-            // 2. Tạo Phiếu Đặt Phòng cho TỪNG PHÒNG
+            // 2. Tạo Phiếu Đặt Phòng
             for (PhongDTO p : phongList) {
                 PhieuDatPhongDTO phieu = new PhieuDatPhongDTO();
-                phieu.setMaPhieu("PDP" + System.nanoTime()); // Randomize ID
+                phieu.setMaPhieu(String.format("PDP%03d", soThuTuPhieu++));
                 phieu.setMaKhachHang(kh.getMaKhachHang());
                 phieu.setMaPhong(p.getMaPhong());
                 phieu.setNgayDat(LocalDate.now());
                 phieu.setNgayNhan(dpNgayDat.getValue());
                 phieu.setNgayTra(dpNgayTra.getValue());
-                phieu.setMaNhanVien(nhanVien != null ? nhanVien.getMaNhanVien() : "NV_SYS");
 
-                double tienPhongGoc = p.getGiaPhong() * soNgay;
-                phieu.setTongTien(tienPhongGoc);
+                // 👉 FIX LỖI: Dùng mã nhân viên hợp lệ (5 ký tự và có trong DB)
+                String maNV = (nhanVien != null) ? nhanVien.getMaNhanVien() : "NV001";
+                phieu.setMaNhanVien(maNV);
+
+                // 👉 FIX LỖI NULL: Phải gán tổng tiền
+                phieu.setTongTien(p.getGiaPhong() * soNgay);
 
                 if (coThanhToan) {
-                    phieu.setTrangThai("DA_NHAN_PHONG"); // Check-in luôn
-                    phieu.setLoaiThanhToan("TIEN_MAT");
-                    phieu.setTienTamUng(tienPhongGoc);
-                    phieu.setTienConNo(0.0);
+                    phieu.setTrangThai("DA_NHAN_PHONG");
+                    phongService.updatePhongTrangThai(p.getMaPhong(), "Đang ở");
                 } else {
-                    phieu.setTrangThai("DA_DAT"); // Chờ check-in
-                    phieu.setLoaiThanhToan("CHUA_THANH_TOAN");
-                    phieu.setTienTamUng(0.0);
-                    phieu.setTienConNo(tienPhongGoc);
+                    phieu.setTrangThai("CHO_NHAN_PHONG");
+                    phongService.updatePhongTrangThai(p.getMaPhong(), "Đã Đặt");
                 }
 
-                // Gọi Transaction lưu phiếu
                 phieuDatPhongService.bookRoomTransaction(phieu);
             }
 
-            showAlert(Alert.AlertType.INFORMATION, "Thành công",
-                    coThanhToan ? "Đã đặt và thanh toán thành công!" : "Đã lưu phiếu chờ khách thành công!");
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã lưu phiếu thành công!");
 
+            // 👉 KÍCH HOẠT REFRESH: Báo cho màn hình Quản lý tải lại dữ liệu
             if (onRefresh != null) onRefresh.run();
             stage.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi Hệ Thống", "Không thể lưu dữ liệu: " + e.getMessage());
+            System.err.println("--- LỖI LƯU DỮ LIỆU ---");
+            e.printStackTrace(); // Tú xem lỗi đỏ ở Console nếu vẫn không lưu được
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể lưu: " + e.getMessage());
         }
     }
 

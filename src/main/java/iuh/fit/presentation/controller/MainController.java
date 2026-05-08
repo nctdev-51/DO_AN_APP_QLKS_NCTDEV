@@ -163,36 +163,37 @@ public class MainController {
     }
 
     // =========================================================================
-    // 2. CẢI TIẾN SIDEBAR (MENU TRÁI CAO CẤP)
+    // 2. CẢI TIẾN SIDEBAR (KHOẢNG CÁCH CÂN BẰNG)
     // =========================================================================
     private VBox createSidebar() {
+        // 👉 ĐÃ TĂNG: Khoảng cách giữa các phần tử lên 5 (thay vì 2)
         VBox sidebar = new VBox(5);
-        sidebar.setPadding(new Insets(30, 15, 20, 15));
+        sidebar.setPadding(new Insets(20, 15, 15, 15));
         sidebar.setPrefWidth(260);
-        // Nền dải màu đen nhám (Slate) xuống Midnight
         sidebar.setStyle("-fx-background-color: linear-gradient(to bottom, #0f172a, #1e293b);");
 
-        VBox profileBox = new VBox(8);
+        // --- PROFILE ---
+        VBox profileBox = new VBox(5);
         profileBox.setAlignment(Pos.CENTER);
-        profileBox.setPadding(new Insets(0, 0, 30, 0));
+        profileBox.setPadding(new Insets(0, 0, 15, 0));
 
         Label lblAvatar = new Label("👨‍💼");
-        lblAvatar.setFont(Font.font(50));
-        lblAvatar.setStyle("-fx-background-color: #334155; -fx-background-radius: 50; -fx-padding: 10;");
+        lblAvatar.setFont(Font.font(38));
+        lblAvatar.setStyle("-fx-background-color: #334155; -fx-background-radius: 50; -fx-padding: 8;");
 
         Label lblUser = new Label(currentUser.getHoTenNhanVien());
         lblUser.setTextFill(Color.WHITE);
-        lblUser.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        lblUser.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
 
         Label lblRole = new Label("Quản lý / Lễ tân");
         lblRole.setTextFill(Color.web("#94a3b8"));
-        lblRole.setFont(Font.font("Segoe UI", 12));
+        lblRole.setFont(Font.font("Segoe UI", 11));
         profileBox.getChildren().addAll(lblAvatar, lblUser, lblRole);
 
+        // --- MENU NGHIỆP VỤ ---
         Label lblMenuSection = new Label("NGHIỆP VỤ CHÍNH");
-        lblMenuSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 10 0 5 10;");
+        lblMenuSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 5 0 2 10;");
 
-        // Các nút Menu kiểu bo tròn (Pill shape)
         Button btnTrangChu = createMenuButton("🏠 Trang Chủ", true);
         Button btnDatPhong = createMenuButton("🏨 Đặt & Nhận Phòng", false);
         Button btnPhong_ = createMenuButton("🔑 Chọn Phòng Nhanh", false);
@@ -200,21 +201,24 @@ public class MainController {
         Button btnTraPhong = createMenuButton("💳 Thanh Toán & Trả Phòng", false);
         Button btnThongKe = createMenuButton("📈 Thống Kê Doanh Thu", false);
 
+        // --- MENU DANH MỤC ---
         Label lblListSection = new Label("QUẢN LÝ DANH MỤC");
-        lblListSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 20 0 5 10;");
+        lblListSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 10 0 2 10;");
 
         Button btnQuanLyPhieu = createMenuButton("📋 Quản lý Phiếu Đặt", false);
         Button btnPhong = createMenuButton("🚪 Quản Lý Phòng", false);
         Button btnKhachHang = createMenuButton("👥 Khách Hàng", false);
         Button btnNhanVien = createMenuButton("👔 Nhân Viên", false);
 
+        // --- NÚT ĐĂNG XUẤT ---
         Button btnDangXuat = createMenuButton("🚪 Đăng xuất", false);
-        btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 14px; -fx-alignment: center-left; -fx-padding: 12 15; -fx-cursor: hand;");
-        btnDangXuat.setOnMouseEntered(e -> btnDangXuat.setStyle("-fx-background-color: #fee2e21A; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 8; -fx-alignment: center-left; -fx-padding: 12 15; -fx-cursor: hand;"));
-        btnDangXuat.setOnMouseExited(e -> btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 14px; -fx-alignment: center-left; -fx-padding: 12 15; -fx-cursor: hand;"));
+        btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: center-left; -fx-padding: 10 15; -fx-cursor: hand;");
+        btnDangXuat.setOnMouseEntered(e -> btnDangXuat.setStyle("-fx-background-color: #fee2e21A; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px; -fx-background-radius: 8; -fx-alignment: center-left; -fx-padding: 10 15; -fx-cursor: hand;"));
+        btnDangXuat.setOnMouseExited(e -> btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: center-left; -fx-padding: 10 15; -fx-cursor: hand;"));
 
         List<Button> menuButtons = Arrays.asList(btnTrangChu, btnDatPhong, btnPhong_, btnGoiDichVu, btnTraPhong, btnThongKe, btnQuanLyPhieu, btnPhong, btnKhachHang, btnNhanVien);
 
+        // Khai báo sự kiện click
         btnTrangChu.setOnAction(e -> { setActiveMenu(btnTrangChu, menuButtons); showDashboard(); });
         btnDatPhong.setOnAction(e -> { setActiveMenu(btnDatPhong, menuButtons); loadQuanLyDatPhong(); });
         btnGoiDichVu.setOnAction(e -> { setActiveMenu(btnGoiDichVu, menuButtons); loadGoiDichVu(); });
@@ -230,7 +234,13 @@ public class MainController {
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        sidebar.getChildren().addAll(profileBox, lblMenuSection, btnTrangChu, btnDatPhong, btnPhong_, btnGoiDichVu, btnTraPhong, btnThongKe, lblListSection, btnQuanLyPhieu, btnPhong, btnKhachHang, btnNhanVien, spacer, btnDangXuat);
+        sidebar.getChildren().addAll(
+                profileBox,
+                lblMenuSection, btnTrangChu, btnDatPhong, btnPhong_, btnGoiDichVu, btnTraPhong, btnThongKe,
+                lblListSection, btnQuanLyPhieu, btnPhong, btnKhachHang, btnNhanVien,
+                spacer, btnDangXuat
+        );
+
         return sidebar;
     }
 
@@ -240,9 +250,10 @@ public class MainController {
         btn.setAlignment(Pos.CENTER_LEFT);
         btn.setCursor(Cursor.HAND);
 
-        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 15; -fx-background-radius: 8;";
-        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 12 15; -fx-background-radius: 8;";
-        String hoverStyle = "-fx-background-color: #334155; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 15; -fx-background-radius: 8;";
+        // 👉 ĐÃ TĂNG: Padding từ 8 lên 10 để nút có độ dày vừa phải, không bị lép
+        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 13px; -fx-font-weight: 600; -fx-padding: 10 15; -fx-background-radius: 8;";
+        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 15; -fx-background-radius: 8;";
+        String hoverStyle = "-fx-background-color: #334155; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: 600; -fx-padding: 10 15; -fx-background-radius: 8;";
 
         btn.setStyle(isDefaultActive ? activeStyle : defaultStyle);
         btn.setUserData(isDefaultActive ? "active" : "inactive");
@@ -254,8 +265,9 @@ public class MainController {
     }
 
     private void setActiveMenu(Button activeBtn, List<Button> allButtons) {
-        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 15; -fx-background-radius: 8;";
-        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 12 15; -fx-background-radius: 8;";
+        // 👉 ĐÃ TĂNG: Đồng bộ padding 10 15 giống hàm trên
+        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 13px; -fx-font-weight: 600; -fx-padding: 10 15; -fx-background-radius: 8;";
+        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 15; -fx-background-radius: 8;";
 
         for (Button btn : allButtons) {
             btn.setStyle(defaultStyle);
@@ -275,6 +287,9 @@ public class MainController {
     // =========================================================================
     // 3. CẢI TIẾN DASHBOARD (GIAO DIỆN CHÍNH THOÁNG & SẠCH SẼ)
     // =========================================================================
+    // =========================================================================
+    // 3. CẢI TIẾN DASHBOARD (TỰ ĐỘNG CO GIÃN - KHÔNG THANH CUỘN)
+    // =========================================================================
     private void showDashboard() {
         try {
             contentArea.getChildren().clear();
@@ -282,11 +297,13 @@ public class MainController {
             dashRoot.setStyle("-fx-background-color: transparent;");
 
             VBox topArea = new VBox(10);
-            topArea.setPadding(new Insets(10, 0, 30, 0));
+            topArea.setPadding(new Insets(10, 0, 20, 0)); // Giảm khoảng cách một chút
             topArea.getChildren().add(createDashboardTitleBar());
             dashRoot.setTop(topArea);
 
             VBox centerArea = buildDashboardContent();
+
+            // 👉 ĐÃ BỎ SCROLLPANE: Đưa thẳng centerArea vào giữa
             dashRoot.setCenter(centerArea);
             contentArea.getChildren().add(dashRoot);
 
@@ -295,6 +312,74 @@ public class MainController {
         } catch (Exception ex) {
             showErrorBox("LỖI HIỂN THỊ TRANG CHỦ", ex);
         }
+    }
+
+    private VBox buildDashboardContent() {
+        VBox col = new VBox(20); // Khoảng cách giữa hàng Thống kê và hàng Biểu đồ
+        col.setFillWidth(true);
+
+        // --- HÀNG 1: THẺ THỐNG KÊ ---
+        HBox statRow = new HBox(20);
+        statRow.setAlignment(Pos.CENTER);
+
+        VBox c1 = makeStatCard("TỔNG SỐ PHÒNG", "0", "🏢", "#3b82f6", "#2563eb");
+        VBox c2 = makeStatCard("PHÒNG TRỐNG", "0", "✨", "#10b981", "#059669");
+        VBox c3 = makeStatCard("ĐANG PHỤC VỤ", "0", "🔑", "#f59e0b", "#d97706");
+        VBox c4 = makeStatCard("ĐANG BẢO TRÌ", "0", "🔧", "#64748b", "#475569");
+
+        HBox.setHgrow(c1, Priority.ALWAYS); HBox.setHgrow(c2, Priority.ALWAYS);
+        HBox.setHgrow(c3, Priority.ALWAYS); HBox.setHgrow(c4, Priority.ALWAYS);
+        statRow.getChildren().addAll(c1, c2, c3, c4);
+
+        // --- HÀNG 2: KHU VỰC BIỂU ĐỒ (Dành cho việc mở rộng sau này) ---
+        HBox chartsContainer = new HBox(20); // Dùng HBox để xếp các biểu đồ cạnh nhau ngang màn hình
+        chartsContainer.setAlignment(Pos.CENTER);
+        // 👉 QUAN TRỌNG: Ép hàng chứa biểu đồ chiếm TOÀN BỘ khoảng trống còn lại của màn hình
+        VBox.setVgrow(chartsContainer, Priority.ALWAYS);
+
+        // 1. Biểu đồ Tròn (Tình trạng phòng)
+        VBox chartCard1 = new VBox(15);
+        chartCard1.setPadding(new Insets(20));
+        chartCard1.setAlignment(Pos.CENTER);
+        chartCard1.setStyle("-fx-background-color: white; -fx-background-radius: 16; -fx-border-color: #e2e8f0;");
+        // 👉 QUAN TRỌNG: Ép thẻ biểu đồ 1 chia đều không gian ngang
+        HBox.setHgrow(chartCard1, Priority.ALWAYS);
+
+        Label chartLbl1 = new Label("TỈ LỆ TÌNH TRẠNG PHÒNG");
+        chartLbl1.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+
+        PieChart chart = new PieChart();
+        chart.setLegendSide(javafx.geometry.Side.BOTTOM);
+        chart.setLabelsVisible(true);
+        // Cho biểu đồ tự do phình to / thu nhỏ vừa khít với thẻ Card
+        chart.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        VBox.setVgrow(chart, Priority.ALWAYS);
+
+        Label insight = new Label("Đang phân tích dữ liệu...");
+        insight.setPadding(new Insets(10, 15, 10, 15));
+        insight.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 10; -fx-font-weight: bold;");
+
+        chartCard1.getChildren().addAll(chartLbl1, chart, insight);
+
+        // 2. Vùng chờ Biểu đồ 2 (Ví dụ: Doanh thu) - Hiện tại mình tạo 1 ô giữ chỗ để Tú dễ hình dung
+        VBox chartCard2 = new VBox(15);
+        chartCard2.setPadding(new Insets(20));
+        chartCard2.setAlignment(Pos.CENTER);
+        chartCard2.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 16; -fx-border-color: #e2e8f0; -fx-border-style: dashed; -fx-border-width: 2;");
+        HBox.setHgrow(chartCard2, Priority.ALWAYS);
+
+        Label lblPlaceholder = new Label("Khu vực thêm biểu đồ Doanh Thu\n(Sẽ làm sau)");
+        lblPlaceholder.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        lblPlaceholder.setTextFill(Color.web("#94a3b8"));
+        chartCard2.getChildren().add(lblPlaceholder);
+
+        // Thêm cả 2 biểu đồ vào hàng
+        chartsContainer.getChildren().addAll(chartCard1, chartCard2);
+
+        col.getChildren().addAll(statRow, chartsContainer);
+
+        col.setUserData(new Object[]{c1, c2, c3, c4, chart, insight});
+        return col;
     }
 
     private HBox createDashboardTitleBar() {
@@ -315,46 +400,7 @@ public class MainController {
         return bar;
     }
 
-    private VBox buildDashboardContent() {
-        VBox col = new VBox(30);
-        col.setFillWidth(true);
 
-        HBox statRow = new HBox(20);
-        statRow.setAlignment(Pos.CENTER);
-
-        // Truyền cặp màu (Start - End) để đổ full ô
-        VBox c1 = makeStatCard("TỔNG SỐ PHÒNG", "0", "🏢", "#3b82f6", "#2563eb");
-        VBox c2 = makeStatCard("PHÒNG TRỐNG", "0", "✨", "#10b981", "#059669");
-        VBox c3 = makeStatCard("ĐANG PHỤC VỤ", "0", "🔑", "#f59e0b", "#d97706");
-        VBox c4 = makeStatCard("ĐANG BẢO TRÌ", "0", "🔧", "#64748b", "#475569");
-
-        HBox.setHgrow(c1, Priority.ALWAYS); HBox.setHgrow(c2, Priority.ALWAYS);
-        HBox.setHgrow(c3, Priority.ALWAYS); HBox.setHgrow(c4, Priority.ALWAYS);
-        statRow.getChildren().addAll(c1, c2, c3, c4);
-
-        VBox chartCard = new VBox(20);
-        chartCard.setPadding(new Insets(30));
-        chartCard.setAlignment(Pos.CENTER);
-        chartCard.setStyle("-fx-background-color: white; -fx-background-radius: 16; -fx-border-color: #e2e8f0;");
-
-        Label chartLbl = new Label("TỈ LỆ TÌNH TRẠNG PHÒNG THỰC TẾ");
-        chartLbl.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
-
-        PieChart chart = new PieChart();
-        chart.setLegendSide(javafx.geometry.Side.BOTTOM);
-        chart.setLabelsVisible(true);
-        chart.setPrefSize(500, 400);
-
-        Label insight = new Label("Đang phân tích dữ liệu...");
-        insight.setPadding(new Insets(15));
-        insight.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 10; -fx-font-weight: bold;");
-
-        chartCard.getChildren().addAll(chartLbl, chart, insight);
-        col.getChildren().addAll(statRow, chartCard);
-
-        col.setUserData(new Object[]{c1, c2, c3, c4, chart, insight});
-        return col;
-    }
 
     private VBox makeStatCard(String label, String value, String icon, String colorStart, String colorEnd) {
         VBox card = new VBox(5);
