@@ -4,24 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="abc">
+    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="Tu update 15h19 08/05/2026">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypher/qlkhachsanTATP_db_MariaDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/cypher/qlkhachsanTATP_db_MariaDB.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IKhachHangRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IKhachHangRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IPhieuDatPhongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IPhieuDatPhongRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IPhieuDatPhongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IPhieuDatPhongService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/KhachHangServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/PhieuDatPhongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/PhieuDatPhongServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/PhieuDatPhongMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/mapper/PhieuDatPhongMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/KhachHangRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/KhachHangRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/PhieuDatPhongRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/PhieuDatPhongRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ChonPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ChonPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatNhanPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatNhanPhongController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThanhToanController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThanhToanController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThongKeDoanhThuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThongKeDoanhThuController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,7 +247,8 @@
       <workItem from="1778168406296" duration="1148000" />
       <workItem from="1778212463780" duration="113000" />
       <workItem from="1778212624999" duration="332000" />
-      <workItem from="1778212991367" duration="15216000" />
+      <workItem from="1778212991367" duration="15764000" />
+      <workItem from="1778232110944" duration="6193000" />
     </task>
     <task id="LOCAL-00001" summary="10g30 Tam di ngủ">
       <option name="closed" value="true" />
@@ -276,7 +266,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778045124692</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Tu update 15h19 08/05/2026">
+      <option name="closed" value="true" />
+      <created>1778228394788</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1778228394788</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,7 +294,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="10g30 Tam di ngủ" />
     <MESSAGE value="Tu update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tu update" />
+    <MESSAGE value="Tu update 15h19 08/05/2026" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tu update 15h19 08/05/2026" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

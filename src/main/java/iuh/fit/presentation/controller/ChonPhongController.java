@@ -10,12 +10,14 @@ import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.text.Normalizer;
@@ -239,9 +241,6 @@ public class ChonPhongController {
     // =========================================================================
     // LOAD & RENDER PHÒNG TRỐNG
     // =========================================================================
-    // =========================================================================
-    // LOAD & RENDER PHÒNG TRỐNG (ĐÃ FIX LỖI KHÔNG HIỆN PHÒNG)
-    // =========================================================================
     private void loadRooms() {
         LocalDate in = dpIn.getValue();
         LocalDate out = dpOut.getValue();
@@ -252,7 +251,6 @@ public class ChonPhongController {
 
         Task<List<PhongDTO>> task = new Task<>() {
             @Override protected List<PhongDTO> call() {
-                // 👉 FIX 1: Dùng hàm getAllPhong thay vì findAvailableRooms để đảm bảo luôn có data
                 return phongService.getAllPhong();
             }
         };
@@ -261,11 +259,8 @@ public class ChonPhongController {
             List<PhongDTO> allRooms = task.getValue();
             if (allRooms != null) {
                 List<PhongDTO> filtered = allRooms.stream()
-                        // 👉 FIX 2: Lọc đúng loại phòng
                         .filter(r -> typeSel.equals("Tất cả loại phòng") || mapMaLoaiToTen(r.getMaLoaiPhong()).equals(typeSel))
-                        // 👉 FIX 3: Chỉ lấy những phòng có trạng thái TRỐNG
                         .filter(r -> getNormalizedStatusKey(r.getTinhTrang()).equals("TRONG"))
-                        // 👉 FIX 4: Lọc đúng mức giá
                         .filter(r -> r.getGiaPhong() <= maxPrice)
                         .collect(Collectors.toList());
 
@@ -274,7 +269,6 @@ public class ChonPhongController {
         });
 
         task.setOnFailed(e -> {
-            // In lỗi ra để biết nếu DB chết
             task.getException().printStackTrace();
             Platform.runLater(() -> showAlert("Lỗi", "Không thể tải dữ liệu phòng từ máy chủ."));
         });
@@ -307,7 +301,6 @@ public class ChonPhongController {
                 Label lblFloor = new Label("📍 TẦNG " + floor);
                 lblFloor.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: 900; -fx-text-fill: " + COLOR_PRIMARY + ";");
 
-                // 👉 FIX 5: Dùng FlowPane thay vì GridPane để chống tràn giao diện
                 FlowPane flowPane = new FlowPane();
                 flowPane.setHgap(20);
                 flowPane.setVgap(20);
@@ -315,7 +308,7 @@ public class ChonPhongController {
                 List<PhongDTO> floorRooms = byFloor.get(floor);
                 for (PhongDTO room : floorRooms) {
                     VBox card = createRoomCard(room);
-                    card.setPrefWidth(220); // Ép chiều rộng chuẩn cho mỗi thẻ
+                    card.setPrefWidth(220);
                     flowPane.getChildren().add(card);
                 }
 
@@ -325,25 +318,22 @@ public class ChonPhongController {
         });
     }
 
-    // --- THIẾT KẾ CARD PHÒNG BẢO VỆ CHỐNG LỖI MẤT CHỮ ---
     private VBox createRoomCard(PhongDTO r) {
         VBox card = new VBox(10);
         card.setPadding(new Insets(18));
         card.setAlignment(Pos.TOP_LEFT);
         card.setCursor(Cursor.HAND);
 
-        // BẢO VỆ DỮ LIỆU: Cắt khoảng trắng, nếu rỗng gán chuỗi báo lỗi để chắc chắn hiển thị
         String rawMa = r.getMaPhong();
         String maPhong = (rawMa != null && !rawMa.trim().isEmpty()) ? rawMa.trim() : "Lỗi Mã";
 
         String rawLoai = r.getMaLoaiPhong();
         String tenLoai = (rawLoai != null && !rawLoai.trim().isEmpty()) ? mapMaLoaiToTen(rawLoai.trim()) : "Chưa rõ";
 
-        double gia = r.getGiaPhong(); // Primitive mặc định là 0.0
+        double gia = r.getGiaPhong();
 
         boolean isSelected = currentSelectedRoomIds.contains(maPhong);
 
-        // THIẾT KẾ MỚI: Viền trái dày màu xanh ngọc (SUCCESS) giống trang Đặt Phòng
         String defaultStyle = "-fx-background-color: white; -fx-background-radius: 12; -fx-border-radius: 12; " +
                 "-fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 " + COLOR_SUCCESS + "; -fx-border-width: 1 1 1 6;";
 
@@ -354,12 +344,10 @@ public class ChonPhongController {
         DropShadow ds = new DropShadow(isSelected ? 15 : 8, Color.web("#000000", isSelected ? 0.1 : 0.04));
         card.setEffect(ds);
 
-        // 1. Dòng Mã Phòng
         HBox topBox = new HBox();
         topBox.setAlignment(Pos.CENTER_LEFT);
 
         Label lblMa = new Label(maPhong);
-        // Ép Style nội tuyến (Inline) để chống bị CSS ngoài ghi đè thành màu trắng
         lblMa.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: " + (isSelected ? COLOR_PRIMARY : COLOR_TEXT_MAIN) + ";");
 
         Region sp = new Region(); HBox.setHgrow(sp, Priority.ALWAYS);
@@ -369,23 +357,19 @@ public class ChonPhongController {
 
         topBox.getChildren().addAll(lblMa, sp, lblCheck);
 
-        // 2. Dòng Loại Phòng
         Label lblType = new Label(tenLoai.toUpperCase());
         lblType.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + COLOR_TEXT_MUTED + ";");
 
-        // 3. Dòng Trạng thái (Cố định là TRỐNG)
         Label lblStatus = new Label("TRỐNG");
         lblStatus.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-font-weight: 900; " +
                 "-fx-background-color: " + COLOR_SUCCESS + "15; -fx-text-fill: " + COLOR_SUCCESS + "; -fx-padding: 4 10; -fx-background-radius: 6;");
 
-        // 4. Dòng Giá
         Label lblPrice = new Label(String.format("%,.0f đ", gia));
         lblPrice.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: " + (isSelected ? COLOR_PRIMARY : COLOR_SUCCESS) + ";");
 
         card.getChildren().addAll(topBox, lblType, lblStatus, new Region(), lblPrice);
-        VBox.setVgrow(card.getChildren().get(3), Priority.ALWAYS); // Đẩy giá xuống đáy
+        VBox.setVgrow(card.getChildren().get(3), Priority.ALWAYS);
 
-        // --- SỰ KIỆN CLICK CHỌN PHÒNG ---
         card.setOnMouseClicked(e -> {
             if (currentSelectedRoomIds.contains(maPhong)) {
                 currentSelectedRoomIds.remove(maPhong);
@@ -404,7 +388,6 @@ public class ChonPhongController {
             }
         });
 
-        // Hiệu ứng Hover
         card.setOnMouseEntered(e -> {
             if (!currentSelectedRoomIds.contains(maPhong)) {
                 card.setStyle(defaultStyle + "-fx-background-color: #f8fafc; -fx-translate-y: -3;");
@@ -418,10 +401,6 @@ public class ChonPhongController {
 
         return card;
     }
-
-    // =========================================================================
-    // HỆ THỐNG MAPPING VÀ HELPER
-    // =========================================================================
 
     private String getNormalizedStatusKey(String rawStatus) {
         if (rawStatus == null || rawStatus.trim().isEmpty()) return "BAO_TRI";
@@ -467,15 +446,65 @@ public class ChonPhongController {
         tempBookingsList.add(new TempBooking(id, in, out, rooms));
 
         currentSelectedRoomIds.clear();
-        loadRooms(); // Render lại để xóa các viền xanh
+        loadRooms();
     }
 
+    // =========================================================================
+    // XỬ LÝ XÁC NHẬN ĐẶT PHÒNG
+    // =========================================================================
+    // =========================================================================
+    // XỬ LÝ XÁC NHẬN ĐẶT PHÒNG (ĐÃ FIX KHỚP CONSTRUCTOR CỦA DATPHONGCONTROLLER)
+    // =========================================================================
     private void handleConfirmAll() {
         if (tempBookingsList.isEmpty()) {
             showAlert("Danh sách trống", "Không có phiếu nào trong danh sách chờ để xác nhận.");
             return;
         }
-        showAlert("Thành công", "Chuyển dữ liệu thành công. Vui lòng nhập thông tin khách hàng...");
+
+        // 1. Gom danh sách mã phòng
+        List<String> allSelectedRoomIds = new ArrayList<>();
+        for (TempBooking tb : tempBookingsList) {
+            allSelectedRoomIds.addAll(tb.roomIds);
+        }
+
+        // 2. Lấy ngày nhận, ngày trả từ giao diện
+        LocalDate ngayNhan = dpIn.getValue() != null ? dpIn.getValue() : LocalDate.now();
+        LocalDate ngayTra = dpOut.getValue() != null ? dpOut.getValue() : LocalDate.now().plusDays(1);
+
+        try {
+            // 3. Tạo một NhanVienDTO tạm từ currentUser để truyền qua
+            iuh.fit.core.dto.NhanVienDTO nhanVienTam = new iuh.fit.core.dto.NhanVienDTO();
+            if (currentUser != null) {
+                nhanVienTam.setMaNhanVien(currentUser.getMaNhanVien());
+            }
+
+            // 4. Khởi tạo DatPhongController ĐÚNG THỨ TỰ THAM SỐ
+            DatPhongController datPhongCtrl = new DatPhongController(
+                    allSelectedRoomIds,        // 1. List<String> danhSachMaPhong
+                    nhanVienTam,               // 2. NhanVienDTO
+                    ngayNhan,                  // 3. LocalDate ngayNhan
+                    ngayTra,                   // 4. LocalDate ngayTra
+                    khachHangService,          // 5. IKhachHangService
+                    phongService,              // 6. IPhongService
+                    phieuDatPhongService,      // 7. IPhieuDatPhongService
+                    null,                      // 8. IDichVuService (Truyền null vì class này không có)
+                    () -> {                    // 9. Runnable onBookingSuccess (Hành động khi lưu thành công)
+                        Platform.runLater(() -> {
+                            tempBookingsList.clear();
+                            currentSelectedRoomIds.clear();
+                            loadRooms();
+                        });
+                    }
+            );
+
+            // 5. Gọi hàm hiển thị Dialog (Sử dụng đúng hàm showDialog của bạn)
+            // 5. Gọi hàm hiển thị Dialog và truyền cửa sổ cha vào
+            datPhongCtrl.showDialog(primaryStage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Lỗi Hệ Thống", "Không thể mở giao diện Đặt phòng: " + e.getMessage());
+        }
     }
 
     private void showAlert(String title, String content) {
@@ -486,7 +515,6 @@ public class ChonPhongController {
         alert.showAndWait();
     }
 
-    // --- LỚP INNER CHO GIAO DIỆN DANH SÁCH CHỜ ---
     public static class TempBooking {
         String id; LocalDate from, to; List<String> roomIds;
         TempBooking(String id, LocalDate f, LocalDate t, List<String> r) { this.id = id; this.from = f; this.to = t; this.roomIds = r; }

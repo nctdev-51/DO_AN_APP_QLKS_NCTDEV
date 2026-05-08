@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatPhongController {
@@ -50,7 +51,16 @@ public class DatPhongController {
     // Bảng dữ liệu phòng
     private TableView<PhongDTO> tablePhong;
     private ObservableList<PhongDTO> phongList;
+    // Biến lưu danh sách phòng được truyền từ màn hình Chọn Phòng sang
+    private List<PhongDTO> danhSachPhong = new ArrayList<>();
 
+    // Hàm để ChonPhongController bơm dữ liệu vào
+    public void setDanhSachPhongChon(List<PhongDTO> danhSachPhong) {
+        this.danhSachPhong = danhSachPhong;
+        // Nếu giao diện đặt phòng của bạn có TableView hoặc ListView hiện danh sách phòng,
+        // bạn có thể gọi hàm cập nhật giao diện ở đây.
+        // Ví dụ: updateRoomTable();
+    }
     // Tính tiền
     private Label lblTongTienPhongVal, lblTongTienDichVuVal, lblKhuyenMaiVal, lblTongThanhToanVal;
     private double tongTienPhong = 0.0;
@@ -374,69 +384,61 @@ public class DatPhongController {
         lblTongThanhToanVal.setText(String.format("%,.0f đ", tongThanhToan));
     }
 
-    // =========================================================================
-    // ✅ CẢI THIỆN: LOGIC LƯU DB CHUẨN VÀO HÓA ĐƠN VÀ PHIẾU
-    // =========================================================================
-    // =========================================================================
-    // ✅ CẢI THIỆN: LOGIC LƯU DB KẾT HỢP GIAO DIỆN THANH TOÁN
-    // =========================================================================
-    // =========================================================================
-    // ✅ CẢI THIỆN: LOGIC LƯU DB KẾT HỢP GIAO DIỆN THANH TOÁN & ĐỔI TRẠNG THÁI PHÒNG
-    // =========================================================================
     private void xuLyLuu(boolean coThanhToan, Stage stage) {
         if (txtSdt.getText().trim().isEmpty() || txtHoTen.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Lỗi", "Vui lòng nhập thông tin khách hàng!"); return;
         }
 
-        // --- BƯỚC 1: THANH TOÁN ---
-        String loaiThanhToanDB = "CHUA_THANH_TOAN";
+        // --- BƯỚC 1: THANH TOÁN (GIỮ NGUYÊN) ---
         if (coThanhToan) {
             ThanhToanController paymentCtrl = new ThanhToanController(tongThanhToan);
-            String resultMethod = paymentCtrl.showThanhToanDialog(stage);
-            if (resultMethod == null) return;
-            loaiThanhToanDB = resultMethod;
+            if (paymentCtrl.showThanhToanDialog(stage) == null) return;
         }
 
         try {
-            // 1. Xử lý Khách Hàng
+            // 1. Xử lý Khách Hàng (Giữ nguyên logic tìm/thêm khách của bạn)
             String sdt = txtSdt.getText().trim();
             KhachHangDTO kh = khachHangService.getAllKhachHang().stream()
                     .filter(k -> sdt.equals(k.getSoDienThoai())).findFirst().orElse(null);
 
-            // Trong DatPhongController.java (Hàm xuLyLuu)
-
             if (kh == null) {
                 kh = new KhachHangDTO();
-                // Mã này giờ chỉ là mã tạm, Service của Tú sẽ ghi đè mã mới
                 kh.setMaKhachHang("KH" + (System.currentTimeMillis() % 100000));
                 kh.setSoDienThoai(sdt);
                 kh.setHoTen(txtHoTen.getText());
                 kh.setNgaySinh(dpNgaySinh.getValue() != null ? dpNgaySinh.getValue() : LocalDate.of(2000, 1, 1));
                 kh.setLoaiKhachHang(cboLoaiKhach.getValue());
-
-                // 👉 THỦ PHẠM ĐÂY: Bạn phải gán "kh =" để lấy lại cái DTO chứa mã ID thật từ Database
                 kh = khachHangService.addKhachHang(kh);
             }
 
-            int soNgay = Integer.parseInt(txtSoNgayThue.getText());
-            String nextMaPhieu = phieuDatPhongService.phatSinhMaPhieuMoi();
-            int soThuTuPhieu = Integer.parseInt(nextMaPhieu.substring(3));// Cắt lấy số 19
+            // 👉 BƯỚC 2: PHÁT SINH MÃ GỐC THEO THỨ TỰ (VÍ DỤ: PDP020)
+            // Hàm này sẽ lấy MAX trong DB rồi cộng thêm 1, đảm bảo thứ tự 020, 021, 022...
+            String maPhieuGoc = phieuDatPhongService.phatSinhMaPhieuMoi();
 
-            // 2. Tạo Phiếu Đặt Phòng
+            int subIndex = 1;
+            int soNgay = Integer.parseInt(txtSoNgayThue.getText());
+
+            // 3. Tạo các Phiếu Đặt Phòng
             for (PhongDTO p : phongList) {
                 PhieuDatPhongDTO phieu = new PhieuDatPhongDTO();
-                phieu.setMaPhieu(String.format("PDP%03d", soThuTuPhieu++));
+
+                // 👉 ĐÂY LÀ ĐOẠN QUAN TRỌNG:
+                // Nếu đặt ĐOÀN (nhiều phòng): Mã sẽ là PDP020-01, PDP020-02...
+                // Nếu đặt LẺ (1 phòng): Mã sẽ là PDP020 (không có hậu tố)
+                if (phongList.size() > 1) {
+                    phieu.setMaPhieu(maPhieuGoc + "-" + String.format("%02d", subIndex++));
+                } else {
+                    phieu.setMaPhieu(maPhieuGoc);
+                }
+
                 phieu.setMaKhachHang(kh.getMaKhachHang());
                 phieu.setMaPhong(p.getMaPhong());
                 phieu.setNgayDat(LocalDate.now());
                 phieu.setNgayNhan(dpNgayDat.getValue());
                 phieu.setNgayTra(dpNgayTra.getValue());
 
-                // 👉 FIX LỖI: Dùng mã nhân viên hợp lệ (5 ký tự và có trong DB)
                 String maNV = (nhanVien != null) ? nhanVien.getMaNhanVien() : "NV001";
                 phieu.setMaNhanVien(maNV);
-
-                // 👉 FIX LỖI NULL: Phải gán tổng tiền
                 phieu.setTongTien(p.getGiaPhong() * soNgay);
 
                 if (coThanhToan) {
@@ -450,15 +452,12 @@ public class DatPhongController {
                 phieuDatPhongService.bookRoomTransaction(phieu);
             }
 
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã lưu phiếu thành công!");
-
-            // 👉 KÍCH HOẠT REFRESH: Báo cho màn hình Quản lý tải lại dữ liệu
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã lưu đợt đặt phòng: " + maPhieuGoc);
             if (onRefresh != null) onRefresh.run();
             stage.close();
 
         } catch (Exception e) {
-            System.err.println("--- LỖI LƯU DỮ LIỆU ---");
-            e.printStackTrace(); // Tú xem lỗi đỏ ở Console nếu vẫn không lưu được
+            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể lưu: " + e.getMessage());
         }
     }

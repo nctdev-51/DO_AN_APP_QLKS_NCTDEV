@@ -181,29 +181,37 @@ public class PhieuDatPhongRepositoryImpl implements IPhieuDatPhongRepository {
         }
     }
 
+    @Override
     public String phatSinhMaPhieuMoi() {
-        try (EntityManager em = JpaConfig.getEntityManager()) {
-            // Tìm mã PDP lớn nhất trong Database
-            String jpql = "SELECT p.maPhieu FROM PhieuDatPhong p WHERE p.maPhieu LIKE 'PDP%' " +
-                    "ORDER BY LENGTH(p.maPhieu) DESC, p.maPhieu DESC";
-            List<String> listMa = em.createQuery(jpql, String.class)
-                    .setMaxResults(1)
-                    .getResultList();
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            // Lấy tất cả mã phiếu đang có
+            String jpql = "SELECT p.maPhieu FROM PhieuDatPhong p";
+            List<String> ids = em.createQuery(jpql, String.class).getResultList();
 
-            if (listMa.isEmpty()) {
-                return "PDP001"; // Phiếu đầu tiên nếu DB trống
+            if (ids.isEmpty()) return "PDP001";
+
+            // Tìm số lớn nhất
+            int max = 0;
+            for (String id : ids) {
+                try {
+                    // Bước 1: Bỏ chữ "PDP"
+                    String s = id.substring(3);
+                    // Bước 2: Nếu có dấu "-" (như PDP020-1) thì chỉ lấy phần trước dấu "-"
+                    if (s.contains("-")) {
+                        s = s.split("-")[0];
+                    }
+                    // Bước 3: Chuyển về số để so sánh
+                    int num = Integer.parseInt(s);
+                    if (num > max) max = num;
+                } catch (Exception ignored) {}
             }
 
-            String maxMa = listMa.get(0); // Ví dụ: lấy được "PDP018"
-            try {
-                // Cắt chữ "PDP" (3 ký tự), lấy số 18 + 1 = 19
-                int so = Integer.parseInt(maxMa.substring(3));
-                so++;
-                // Format lại thành PDP019
-                return String.format("PDP%03d", so);
-            } catch (Exception e) {
-                return "PDP" + (System.currentTimeMillis() % 100000); // Sơ cua nếu mã cũ bị lỗi
-            }
+            // Bước 4: Tăng số lớn nhất lên 1 và định dạng lại thành PDP0xx
+            return String.format("PDP%03d", max + 1);
+
+        } finally {
+            em.close();
         }
     }
 }
