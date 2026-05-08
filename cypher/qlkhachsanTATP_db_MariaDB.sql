@@ -395,3 +395,4 @@ FROM PhieuDatPhong pdp
          LEFT JOIN Phong p      ON pdp.maPhong      = p.maPhong
          LEFT JOIN NhanVien nv  ON pdp.maNhanVien   = nv.maNhanVien;
 
+ALTER TABLE PhieuDatPhong ADD COLUMN tienCoc DECIMAL(18, 2) DEFAULT 0;

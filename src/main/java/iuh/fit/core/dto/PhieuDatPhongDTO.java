@@ -27,8 +27,13 @@ public class PhieuDatPhongDTO {
     private String maNhanVien;
     private String hoTenNhanVien; // Thêm để hiển thị trên UI
 
-    // ✅ Thêm mới: Các trường theo dõi thanh toán
-    private String loaiThanhToan; // Ví dụ: TIEN_MAT, CHUYEN_KHOAN, THE_TIN_DUNG
-    private Double tienTamUng;    // Số tiền khách đã trả trước/cọc
-    private Double tienConNo;     // Số tiền còn lại phải thanh toán
+    // ✅ Các trường theo dõi thanh toán / Đặt cọc
+    private Double tienCoc;       // Số tiền khách đã cọc trước
+    private String loaiThanhToan; // Phương thức: TIEN_MAT, CHUYEN_KHOAN, GHI_NO (Trả sau)
+
+    public Double getTienConNo() {
+        double tong = (tongTien != null) ? tongTien : 0.0;
+        double coc = (tienCoc != null) ? tienCoc : 0.0;
+        return tong - coc;
+    }
 }

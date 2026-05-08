@@ -42,6 +42,9 @@ public class PhieuDatPhong {
     @Column(name = "trangThai", length = 30, nullable = false)
     private String trangThai = "CHO_NHAN_PHONG";
 
+    @Column(name = "tienCoc")
+    private Double tienCoc;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maKhachHang")
     private KhachHang khachHang;
