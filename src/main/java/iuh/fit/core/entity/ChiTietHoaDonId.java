@@ -1,26 +1,22 @@
 package iuh.fit.core.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 
-/**
- * Composite Primary Key Class: ChiTietHoaDonId
- * 
- * Được dùng để biểu diễn khóa chính ghép (maHoaDon + maDichVu)
- * của bảng ChiTietHoaDon
- * 
- * QUAN TRỌNG: Phải override equals() và hashCode() cho Composite Key
- */
+@Embeddable // BẮT BUỘC PHẢI CÓ
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ChiTietHoaDonId implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
+    @Column(name = "maHoaDon", length = 30)
     public String maHoaDon;
+
+    @Column(name = "maDichVu", length = 20)
     public String maDichVu;
 }
-

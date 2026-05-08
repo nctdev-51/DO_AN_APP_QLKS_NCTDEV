@@ -5,11 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Entity: LoaiPhong (Loại phòng)
- * Bảng: LoaiPhong
- * Mô tả: Lưu trữ thông tin các loại phòng (Đơn, Đôi, Gia đình, VIP)
- */
 @Entity
 @Table(name = "LoaiPhong")
 @Data
@@ -23,6 +18,6 @@ public class LoaiPhong {
     @Column(name = "tenLoaiPhong", length = 50, nullable = false)
     private String tenLoaiPhong;
 
-    @Column(name = "moTa", length = 50, nullable = false)
+    @Column(name = "moTa", length = 100, nullable = false)
     private String moTa;
 }

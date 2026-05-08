@@ -5,17 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Entity: ChiTietHoaDon (Chi tiết hóa đơn)
- * Bảng: ChiTietHoaDon
- * Mô tả: Lưu trữ chi tiết các dịch vụ trong mỗi hóa đơn (Composite Primary Key)
- */
 @Entity
 @Table(name = "ChiTietHoaDon")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-// CHÚ Ý: Đã xóa dòng @IdClass ở đây để không bị xung đột với @EmbeddedId bên dưới
 public class ChiTietHoaDon {
 
     @EmbeddedId
@@ -32,7 +26,6 @@ public class ChiTietHoaDon {
     @JoinColumn(name = "maDichVu", insertable = false, updatable = false)
     private DichVu dichVu;
 
-    // Tiện ích getter/setter cho mã
     public String getMaHoaDon() { return id != null ? id.maHoaDon : null; }
     public void setMaHoaDon(String maHoaDon) {
         if (id == null) id = new ChiTietHoaDonId();

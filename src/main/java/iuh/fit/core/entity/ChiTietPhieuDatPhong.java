@@ -5,25 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Entity: ChiTietPhieuDatPhong (Chi tiết phiếu đặt phòng)
- * Bảng: ChiTietPhieuDatPhong
- * Mô tả: Lưu trữ chi tiết các dịch vụ trong mỗi phiếu đặt phòng (Composite Primary Key)
- */
 @Entity
 @Table(name = "ChiTietPhieuDatPhong")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(ChiTietPhieuDatPhongId.class)
 public class ChiTietPhieuDatPhong {
-    @Id
-    @Column(name = "maPhieu")
-    private String maPhieu;
 
-    @Id
-    @Column(name = "maDichVu", length = 20)
-    private String maDichVu;
+    @EmbeddedId
+    private ChiTietPhieuDatPhongId id;
 
     @Column(name = "soLuong")
     private int soLuong;
@@ -31,7 +21,6 @@ public class ChiTietPhieuDatPhong {
     @Column(name = "ghiChu", length = 500)
     private String ghiChu;
 
-    // Relationships (mapped but not part of ID)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maPhieu", insertable = false, updatable = false)
     private PhieuDatPhong phieuDatPhong;
@@ -39,4 +28,16 @@ public class ChiTietPhieuDatPhong {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maDichVu", insertable = false, updatable = false)
     private DichVu dichVu;
+
+    public String getMaPhieu() { return id != null ? id.maPhieu : null; }
+    public void setMaPhieu(String maPhieu) {
+        if (id == null) id = new ChiTietPhieuDatPhongId();
+        id.maPhieu = maPhieu;
+    }
+
+    public String getMaDichVu() { return id != null ? id.maDichVu : null; }
+    public void setMaDichVu(String maDichVu) {
+        if (id == null) id = new ChiTietPhieuDatPhongId();
+        id.maDichVu = maDichVu;
+    }
 }

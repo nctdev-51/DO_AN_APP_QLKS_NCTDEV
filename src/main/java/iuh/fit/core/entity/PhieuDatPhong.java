@@ -4,16 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * Entity: PhieuDatPhong (Phiếu đặt phòng)
- * Bảng: PhieuDatPhong
- * Mô tả: Lưu trữ thông tin các phiếu đặt phòng của khách hàng
- */
 @Entity
 @Table(name = "PhieuDatPhong")
 @Data
@@ -27,16 +21,11 @@ public class PhieuDatPhong {
     @Column(name = "maKhachHang", length = 30, insertable = false, updatable = false)
     private String maKhachHang;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "maKhachHang")
-    private KhachHang khachHang;
-
     @Column(name = "maPhong", length = 4, insertable = false, updatable = false)
     private String maPhong;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "maPhong")
-    private Phong phong;
+    @Column(name = "maNhanVien", length = 5, insertable = false, updatable = false)
+    private String maNhanVien;
 
     @Column(name = "ngayDat")
     private LocalDate ngayDat;
@@ -50,11 +39,16 @@ public class PhieuDatPhong {
     @Column(name = "tongTien")
     private Double tongTien;
 
-    @Column(name = "trangThai", length = 30)
-    private String trangThai;
+    @Column(name = "trangThai", length = 30, nullable = false)
+    private String trangThai = "CHO_NHAN_PHONG";
 
-    @Column(name = "maNhanVien", length = 5, insertable = false, updatable = false)
-    private String maNhanVien;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maKhachHang")
+    private KhachHang khachHang;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "maPhong")
+    private Phong phong;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maNhanVien")
