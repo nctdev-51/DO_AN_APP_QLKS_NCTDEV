@@ -82,11 +82,11 @@ public class ChonPhongController {
         // Header khu vực chính
         VBox header = new VBox(5);
         Label lblTitle = new Label("CHỌN PHÒNG NHANH");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 32));
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 28));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         Label lblSub = new Label("Tìm và chọn các phòng đang trống để đưa vào danh sách chờ lập phiếu.");
-        lblSub.setFont(Font.font("Segoe UI", 15));
+        lblSub.setFont(Font.font("Segoe UI", 14));
         lblSub.setTextFill(Color.web(COLOR_TEXT_MUTED));
         header.getChildren().addAll(lblTitle, lblSub);
 

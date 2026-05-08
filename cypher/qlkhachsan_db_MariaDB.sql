@@ -5,9 +5,9 @@
 --      để tương thích với auto-generate ID từ Java (System.currentTimeMillis())
 -- ============================================================
 
-DROP DATABASE IF EXISTS qlkhachsanTATP_db;
-CREATE DATABASE qlkhachsanTATP_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE qlkhachsanTATP_db;
+DROP DATABASE IF EXISTS qlkhachsan_db;
+CREATE DATABASE qlkhachsan_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE qlkhachsan_db;
 
 -- ============================================================
 -- TABLE CREATION

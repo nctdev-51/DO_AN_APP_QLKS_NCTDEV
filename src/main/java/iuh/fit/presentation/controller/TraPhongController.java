@@ -28,12 +28,8 @@ import java.util.stream.Collectors;
  */
 public class TraPhongController {
 
-    private final IPhieuDatPhongService phieuDatPhongService;
+    private final ITraPhongService traPhongService;
     private final IPhongService phongService;
-    private final IKhachHangService khachHangService;
-    private final IHoaDonService hoaDonService;
-    private final IChiTietHoaDonService chiTietHoaDonService;
-    private final IDichVuService dichVuService;
 
     // UI Components
     private ComboBox<String> cbPhieuDat;
@@ -55,8 +51,7 @@ public class TraPhongController {
 
     // State
     private PhieuDatPhongDTO currentPhieu = null;
-    private double cachedTongTienPhong = 0;
-    private double cachedTongTienDichVu = 0;
+    private HoaDonDTO cachedHoaDon = null;
 
     // Colors
     private final String COLOR_PRIMARY = "#0066cc";
@@ -66,18 +61,10 @@ public class TraPhongController {
     private final String COLOR_TEXT_MUTED = "#64748b";
     private final String COLOR_BG_LIGHT = "#f8fafc";
 
-    public TraPhongController(IPhieuDatPhongService phieuDatPhongService,
-                              IPhongService phongService,
-                              IKhachHangService khachHangService,
-                              IHoaDonService hoaDonService,
-                              IChiTietHoaDonService chiTietHoaDonService,
-                              IDichVuService dichVuService) {
-        this.phieuDatPhongService   = phieuDatPhongService;
-        this.phongService           = phongService;
-        this.khachHangService       = khachHangService;
-        this.hoaDonService          = hoaDonService;
-        this.chiTietHoaDonService   = chiTietHoaDonService;
-        this.dichVuService          = dichVuService;
+    public TraPhongController(ITraPhongService traPhongService,
+                              IPhongService phongService) {
+        this.traPhongService = traPhongService;
+        this.phongService = phongService;
     }
 
     public BorderPane createTraPhongView() {
@@ -282,14 +269,12 @@ public class TraPhongController {
     // ------------------------------------------------------------------ //
 
     /**
-     * FIX #1: Lọc đúng trạng thái "DA_NHAN_PHONG" khớp với dữ liệu DB.
-     * Gốc lọc "Đang ở" và "Checked-in" nên ComboBox luôn trống.
+     * Load phiếu đang ở từ Service (chỉ lọc dữ liệu)
      */
     private void loadPhieuDatPhong() {
         try {
-            List<PhieuDatPhongDTO> phieuList = phieuDatPhongService.getAllPhieuDatPhong();
+            List<PhieuDatPhongDTO> phieuList = traPhongService.getPhieuDangO();
             List<String> options = phieuList.stream()
-                    .filter(p -> "DA_NHAN_PHONG".equalsIgnoreCase(p.getTrangThai()))
                     .map(p -> p.getMaPhieu()
                             + " - Phòng: " + p.getMaPhong()
                             + " (" + p.getMaKhachHang() + ")")
@@ -301,12 +286,12 @@ public class TraPhongController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Lỗi", "Không thể tải phiếu: " + e.getMessage());
         }
     }
 
     /**
-     * FIX #2: Tải thêm dịch vụ từ ChiTietPhieuDatPhong vào bảng tvChiTiet
-     *         và tính sẵn tongTienDichVu để calculateInvoice() dùng.
+     * Load thông tin phiếu từ Service
      */
     private void loadPhieuInfo() {
         if (cbPhieuDat.getValue() == null) {
@@ -317,12 +302,11 @@ public class TraPhongController {
         String maPhieu = cbPhieuDat.getValue().split(" - ")[0];
 
         try {
-            PhieuDatPhongDTO phieu = phieuDatPhongService.getPhieuDatPhongById(maPhieu);
-            if (phieu == null) return;
-
+            // Lấy chi tiết phiếu từ Service
+            PhieuDatPhongDTO phieu = traPhongService.loadPhieuDetail(maPhieu);
             currentPhieu = phieu;
 
-            // Hiển thị thông tin khách (tên nếu DTO có, ngược lại dùng mã)
+            // Hiển thị thông tin khách
             String tenKH = (phieu.getTenKhachHang() != null && !phieu.getTenKhachHang().isEmpty())
                     ? phieu.getTenKhachHang() : phieu.getMaKhachHang();
             lblKhachHang.setText(tenKH);
@@ -333,7 +317,7 @@ public class TraPhongController {
             lblPhong.setText(tenPhong);
 
             LocalDate ngayNhan = phieu.getNgayNhan() != null ? phieu.getNgayNhan() : LocalDate.now();
-            LocalDate ngayTra  = phieu.getNgayTra()  != null ? phieu.getNgayTra()  : LocalDate.now();
+            LocalDate ngayTra = phieu.getNgayTra() != null ? phieu.getNgayTra() : LocalDate.now();
             lblNgayNhan.setText(ngayNhan.toString());
             lblNgayTra.setText(ngayTra.toString());
 
@@ -344,29 +328,14 @@ public class TraPhongController {
             // Tải giá phòng
             PhongDTO phong = phongService.getPhongById(phieu.getMaPhong());
             double giaPhong = phong != null ? phong.getGiaPhong() : 0;
-            cachedTongTienPhong = giaPhong * soNgay;
-
             lblGiaPhong.setText(String.format("%,.0f đ", giaPhong));
-            lblTongTienPhong.setText(String.format("%,.0f đ", cachedTongTienPhong));
 
-            // FIX #2: Tải dịch vụ từ ChiTietPhieuDatPhong
+            // Tải dịch vụ từ Service (chỉ cần call 1 method)
             tvChiTiet.getItems().clear();
-            cachedTongTienDichVu = 0;
-
-            try {
-                List<ChiTietHoaDonDTO> dichVus =
-                        chiTietHoaDonService.getChiTietByMaPhieu(maPhieu);
-                if (dichVus != null && !dichVus.isEmpty()) {
-                    tvChiTiet.getItems().addAll(dichVus);
-                    cachedTongTienDichVu = dichVus.stream()
-                            .mapToDouble(ChiTietHoaDonDTO::getThanhTien)
-                            .sum();
-                }
-            } catch (Exception ex) {
-                // Service chưa implement phương thức này thì bỏ qua
-                System.err.println("[TraPhong] Chưa tải được dịch vụ: " + ex.getMessage());
+            List<ChiTietHoaDonDTO> dichVus = traPhongService.getChiTietDichVu(maPhieu);
+            if (dichVus != null && !dichVus.isEmpty()) {
+                tvChiTiet.getItems().addAll(dichVus);
             }
-            lblTongTienDichVu.setText(String.format("%,.0f đ", cachedTongTienDichVu));
 
             // Tự tính ngay sau khi tải
             calculateInvoice();
@@ -378,80 +347,58 @@ public class TraPhongController {
     }
 
     /**
-     * FIX #3: Tính cả tiền dịch vụ + VAT + chiết khấu.
-     * Gốc chỉ tính tiền phòng, bỏ qua tiền dịch vụ.
+     * Tính hóa đơn từ Service
      */
     private void calculateInvoice() {
+        if (currentPhieu == null) {
+            showAlert("Cảnh báo", "Vui lòng tải phiếu trước");
+            return;
+        }
+
         try {
-            double vatPct     = spinnerVAT.getValue() / 100.0;
-            double chietKhau  = spinnerChietKhau.getValue();
+            double vatPercent = spinnerVAT.getValue() / 100.0;
+            double chietKhau = spinnerChietKhau.getValue();
 
-            double thueVAT    = (cachedTongTienPhong + cachedTongTienDichVu) * vatPct;
-            double tongTien   = cachedTongTienPhong + cachedTongTienDichVu + thueVAT - chietKhau;
+            // Gọi Service để tính toán
+            cachedHoaDon = traPhongService.calculateCheckoutInvoice(
+                    currentPhieu.getMaPhieu(),
+                    vatPercent,
+                    chietKhau
+            );
 
-            lblThueVAT.setText(String.format("%,.0f đ", thueVAT));
+            // Cập nhật UI từ kết quả
+            lblTongTienPhong.setText(String.format("%,.0f đ", cachedHoaDon.getTongTienPhong()));
+            lblTongTienDichVu.setText(String.format("%,.0f đ", cachedHoaDon.getTongTienDichVu()));
+            lblThueVAT.setText(String.format("%,.0f đ", cachedHoaDon.getThueVAT()));
             lblChietKhau.setText(String.format("%,.0f đ", chietKhau));
-            lblTongTien.setText(String.format("%,.0f đ", tongTien));
+            lblTongTien.setText(String.format("%,.0f đ", cachedHoaDon.getTongTien()));
+
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Lỗi", "Lỗi tính toán: " + e.getMessage());
         }
     }
 
     /**
-     * FIX #4: Lưu hóa đơn qua service, cập nhật trạng thái phiếu + phòng.
-     * Gốc chỉ show alert rồi clearForm, không ghi vào DB.
+     * Xác nhận trả phòng từ Service
      */
     private void confirmCheckout() {
-        if (currentPhieu == null) {
-            showAlert("Cảnh báo", "Vui lòng tải thông tin phiếu trước");
-            return;
-        }
-
-        // Parse tổng tiền từ label
-        String tongTienStr = lblTongTien.getText()
-                .replace(".", "").replace(",", "").replace(" đ", "").trim();
-        double tongTien;
-        try {
-            tongTien = Double.parseDouble(tongTienStr);
-        } catch (NumberFormatException ex) {
-            showAlert("Lỗi", "Vui lòng tính toán hóa đơn trước");
+        if (currentPhieu == null || cachedHoaDon == null) {
+            showAlert("Cảnh báo", "Vui lòng tải và tính toán hóa đơn trước");
             return;
         }
 
         try {
-            double vatPct    = spinnerVAT.getValue() / 100.0;
-            double chietKhau = spinnerChietKhau.getValue();
-            double thueVAT   = (cachedTongTienPhong + cachedTongTienDichVu) * vatPct;
-
-            // Tạo hóa đơn mới
-            HoaDonDTO hoaDon = new HoaDonDTO();
-            hoaDon.setMaKhachHang(currentPhieu.getMaKhachHang());
-            hoaDon.setNgayLap(LocalDate.now());
-            hoaDon.setMaPhongDat(currentPhieu.getMaPhong());
-            hoaDon.setTongTien(cachedTongTienPhong);
-            hoaDon.setTongTienDichVu(cachedTongTienDichVu);
-            hoaDon.setThueVAT(thueVAT);
-            hoaDon.setChietKhau(chietKhau);
-            hoaDon.setTongTien(tongTien);
-            hoaDon.setTrangThaiThanhToan("Đã Thanh Toán");
-            hoaDon.setGhiChu("Trả phòng " + currentPhieu.getMaPhieu()
-                    + " - " + cbPhuongThucThanhToan.getValue());
-
-            hoaDonService.addHoaDon(hoaDon);
-
-            // Cập nhật phiếu → DA_TRA_PHONG
-            currentPhieu.setTrangThai("DA_TRA_PHONG");
-            phieuDatPhongService.updatePhieuDatPhong(currentPhieu);
-
-            // Cập nhật phòng → Trống
-            PhongDTO phong = phongService.getPhongById(currentPhieu.getMaPhong());
-            if (phong != null) {
-                phong.setTinhTrang("Trống");
-                phongService.updatePhong(phong);
-            }
+            // Gọi Service để xác nhận
+            traPhongService.confirmCheckout(
+                    currentPhieu.getMaPhieu(),
+                    cachedHoaDon,
+                    cbPhuongThucThanhToan.getValue()
+            );
 
             showAlert("✅ Thành công",
-                    String.format("Trả phòng thành công!\nTổng tiền: %,.0f đ", tongTien));
+                    String.format("Trả phòng thành công!\nTổng tiền: %,.0f đ", cachedHoaDon.getTongTien()));
+
             clearForm();
             loadPhieuDatPhong(); // Làm mới ComboBox
 
@@ -467,8 +414,7 @@ public class TraPhongController {
 
     private void clearForm() {
         currentPhieu = null;
-        cachedTongTienPhong = 0;
-        cachedTongTienDichVu = 0;
+        cachedHoaDon = null;
         cbPhieuDat.setValue(null);
         lblKhachHang.setText("Chưa chọn");
         lblPhong.setText("Chưa chọn");

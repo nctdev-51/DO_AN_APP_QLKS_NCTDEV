@@ -62,11 +62,11 @@ public class QuanLyNhanVienController {
         // 1. HEADER CHÍNH
         VBox headerBox = new VBox(2);
         Label lblTitle = new Label("QUẢN LÝ NHÂN VIÊN");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 24));
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 28));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         Label lblSubTitle = new Label("Quản lý hồ sơ, chức vụ và trạng thái làm việc của nhân sự");
-        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 13));
+        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
         lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
         headerBox.getChildren().addAll(lblTitle, lblSubTitle);
 

@@ -1,5 +1,6 @@
 package iuh.fit.presentation.controller;
 
+import iuh.fit.core.dto.PhieuDatPhongDTO;
 import iuh.fit.core.dto.PhongDTO;
 import iuh.fit.core.dto.TaiKhoanDTO;
 import iuh.fit.core.service.*;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -38,11 +40,11 @@ public class DatNhanPhongController {
 
     private VBox roomContainer;
     private List<PhongDTO> allRoomsCache = new ArrayList<>();
+    private Map<String, PhieuDatPhongDTO> activeBookingsMap = new HashMap<>();
 
     // Các Component của Bộ lọc
-    // Các Component của Bộ lọc
     private TextField txtSearch, txtGiaMax;
-    private Slider sliderPrice; // Thêm thanh trượt
+    private Slider sliderPrice;
     private ComboBox<String> cbLoai;
     private ComboBox<String> cbTrangThai;
     private DatePicker dpIn;
@@ -56,7 +58,7 @@ public class DatNhanPhongController {
     private final String COLOR_TEXT_MUTED = "#64748b";
     private final String COLOR_BORDER = "#e2e8f0";
 
-    // Màu trạng thái phòng (Khớp với trang chủ)
+    // Màu trạng thái phòng
     private final String COLOR_TRONG = "#10b981";    // Trống - Xanh lá
     private final String COLOR_DA_DAT = "#3b82f6";   // Đã Đặt - Xanh dương
     private final String COLOR_DANG_O = "#f59e0b";   // Đang ở - Cam
@@ -86,11 +88,11 @@ public class DatNhanPhongController {
 
         VBox titleBox = new VBox(5);
         Label lblTitle = new Label("SƠ ĐỒ PHÒNG TRỰC TUYẾN");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 32));
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 28));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         Label lblSubTitle = new Label("Quản lý trạng thái phòng và thực hiện nghiệp vụ đặt/nhận nhanh.");
-        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 15));
+        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
         lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
         titleBox.getChildren().addAll(lblTitle, lblSubTitle);
 
@@ -104,7 +106,7 @@ public class DatNhanPhongController {
 
         headerBox.getChildren().addAll(titleBox, spacer, lblResultCount);
 
-        // --- 2. BỘ LỌC TÌM KIẾM GỌN GÀNG HƠN ---
+        // --- 2. BỘ LỌC TÌM KIẾM ---
         VBox filterBar = createFilterBar();
 
         // --- 3. LƯỚI DANH SÁCH PHÒNG ---
@@ -134,7 +136,6 @@ public class DatNhanPhongController {
 
         String inputStyle = "-fx-font-size: 14px; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #cbd5e1; -fx-background-color: #f8fafc; -fx-padding: 8 12; -fx-pref-height: 40px;";
 
-        // --- DÒNG 1: TÌM KIẾM & PHÂN LOẠI ---
         HBox row1 = new HBox(15);
         row1.setAlignment(Pos.CENTER_LEFT);
 
@@ -160,7 +161,6 @@ public class DatNhanPhongController {
 
         row1.getChildren().addAll(txtSearch, cbLoai, cbTrangThai);
 
-        // --- DÒNG 2: THANH TRƯỢT GIÁ (NÂNG CẤP) & THỜI GIAN ---
         FlowPane row2 = new FlowPane();
         row2.setHgap(15);
         row2.setVgap(15);
@@ -170,15 +170,13 @@ public class DatNhanPhongController {
         lblGia.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblGia.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        // 👉 THANH TRƯỢT THÔNG MINH (Tự động hít vào các mốc chẵn)
         sliderPrice = new Slider(0, 10000000, 10000000);
         sliderPrice.setPrefWidth(200);
         sliderPrice.setStyle("-fx-cursor: hand;");
-        sliderPrice.setMajorTickUnit(500000); // Mốc lớn: 500k
-        sliderPrice.setMinorTickCount(4);     // Mốc nhỏ: 100k
-        sliderPrice.setSnapToTicks(true);     // BẮT BUỘC: Ép slider hít vào các mốc chẵn (VD: 500k, 600k, không có số lẻ)
+        sliderPrice.setMajorTickUnit(500000);
+        sliderPrice.setMinorTickCount(4);
+        sliderPrice.setSnapToTicks(true);
 
-        // Ô nhập giá hiển thị số rõ ràng có dấu phẩy (VD: 10,000,000)
         txtGiaMax = new TextField("10,000,000");
         txtGiaMax.setStyle(inputStyle + " -fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + ";");
         txtGiaMax.setPrefWidth(130);
@@ -188,7 +186,6 @@ public class DatNhanPhongController {
         lblUnit.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblUnit.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        // Logic 1: Khi kéo thanh trượt -> Cập nhật chữ (Có format dấu phẩy)
         sliderPrice.valueProperty().addListener((obs, oldV, newV) -> {
             if (!txtGiaMax.isFocused()) {
                 txtGiaMax.setText(String.format("%,.0f", newV.doubleValue()));
@@ -196,35 +193,31 @@ public class DatNhanPhongController {
             }
         });
 
-        // Logic 2: Khi gõ số và bấm Enter hoặc click ra ngoài -> Cập nhật thanh trượt an toàn
         Runnable updatePriceFromText = () -> {
             try {
-                // Xóa mọi ký tự không phải số (để cho phép khách gõ cả 5,000,000 hoặc 5000000 đều được)
                 String cleanStr = txtGiaMax.getText().replaceAll("[^\\d]", "");
                 if (cleanStr.isEmpty()) cleanStr = "0";
 
                 double val = Double.parseDouble(cleanStr);
                 if (val > 10000000) val = 10000000;
 
-                sliderPrice.setValue(val); // Update slider
-                txtGiaMax.setText(String.format("%,.0f", val)); // Re-format lại chữ cho đẹp
+                sliderPrice.setValue(val);
+                txtGiaMax.setText(String.format("%,.0f", val));
                 filterRooms();
             } catch (Exception e) {
-                // Trả về giá trị cũ nếu gõ bậy
                 txtGiaMax.setText(String.format("%,.0f", sliderPrice.getValue()));
             }
         };
 
-        txtGiaMax.setOnAction(e -> updatePriceFromText.run()); // Bấm Enter
+        txtGiaMax.setOnAction(e -> updatePriceFromText.run());
         txtGiaMax.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
-            if (!isFocused) updatePriceFromText.run(); // Click ra chỗ khác
+            if (!isFocused) updatePriceFromText.run();
         });
 
         Label lblNgay = new Label("   |   Thời gian:");
         lblNgay.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblNgay.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        // Ngày giờ hiện tại
         dpIn = new DatePicker(LocalDate.now());
         dpIn.setPromptText("Ngày nhận");
         dpIn.setStyle(inputStyle);
@@ -259,7 +252,6 @@ public class DatNhanPhongController {
         String loaiSel = cbLoai.getValue();
         String ttSel = cbTrangThai.getValue();
 
-        // Lấy giá tối đa từ thanh trượt (chính xác tuyệt đối)
         final double finalMaxP = sliderPrice.getValue();
 
         List<PhongDTO> filtered = allRoomsCache.stream()
@@ -276,18 +268,16 @@ public class DatNhanPhongController {
         txtSearch.clear();
         cbLoai.setValue("Tất cả loại phòng");
         cbTrangThai.setValue("Tất cả trạng thái");
-
-        // Reset thời gian về hiện tại (Hôm nay -> Ngày mai)
         dpIn.setValue(LocalDate.now());
         dpOut.setValue(LocalDate.now().plusDays(1));
-
-        // Reset thanh trượt về max 10 Triệu và format đẹp
         sliderPrice.setValue(10000000);
         txtGiaMax.setText("10,000,000");
-
         filterRooms();
     }
 
+    // =========================================================================
+    // RENDER LƯỚI DANH SÁCH PHÒNG (5 CỘT MỖI TẦNG)
+    // =========================================================================
     private void renderRoomsGrid(List<PhongDTO> rooms) {
         Platform.runLater(() -> {
             roomContainer.getChildren().clear();
@@ -305,34 +295,41 @@ public class DatNhanPhongController {
                 lblFloor.setFont(Font.font("Segoe UI", FontWeight.BOLD, 20));
                 lblFloor.setTextFill(Color.web(COLOR_PRIMARY));
 
-                // 👉 ĐÃ SỬA: Thay GridPane bằng FlowPane
-                FlowPane flowPane = new FlowPane();
-                flowPane.setHgap(20);
-                flowPane.setVgap(20);
+                GridPane gridPane = new GridPane();
+                gridPane.setHgap(20);
+                gridPane.setVgap(20);
+
+                for (int i = 0; i < 5; i++) {
+                    ColumnConstraints col = new ColumnConstraints();
+                    col.setPercentWidth(20);
+                    gridPane.getColumnConstraints().add(col);
+                }
 
                 List<PhongDTO> floorRooms = byFloor.get(floor);
                 for (int i = 0; i < floorRooms.size(); i++) {
-                    VBox card = createEnhancedRoomCard(floorRooms.get(i));
-                    // Ép khung kích thước chuẩn để thẻ phòng không bị méo.
-                    // Nếu màn hình to nó xếp 5, 6 cái. Màn hình bé nó tự xếp 3, 4 cái rồi xuống dòng.
-                    card.setPrefWidth(240);
-                    card.setMinWidth(220);
+                    PhieuDatPhongDTO activePhieu = activeBookingsMap.get(floorRooms.get(i).getMaPhong());
+                    VBox card = createEnhancedRoomCard(floorRooms.get(i), activePhieu);
+                    card.setMaxWidth(Double.MAX_VALUE);
 
-                    flowPane.getChildren().add(card);
+                    int col = i % 5;
+                    int row = i / 5;
+                    gridPane.add(card, col, row);
                 }
 
-                floorBox.getChildren().addAll(lblFloor, flowPane);
+                floorBox.getChildren().addAll(lblFloor, gridPane);
                 roomContainer.getChildren().add(floorBox);
             }
         });
     }
 
-    private VBox createEnhancedRoomCard(PhongDTO room) {
-        VBox card = new VBox(12);
-        card.setPadding(new Insets(20));
+    // =========================================================================
+    // THIẾT KẾ THẺ PHÒNG
+    // =========================================================================
+    private VBox createEnhancedRoomCard(PhongDTO room, PhieuDatPhongDTO phieu) {
+        VBox card = new VBox(10);
+        card.setPadding(new Insets(15, 15, 20, 15));
         card.setAlignment(Pos.TOP_LEFT);
 
-        // Lấy mã trạng thái chuẩn để set màu
         String statusKey = getNormalizedStatusKey(room.getTinhTrang());
         String color = getStatusColorByKey(statusKey);
 
@@ -353,23 +350,42 @@ public class DatNhanPhongController {
         lblIcon.setFont(Font.font(20));
         top.getChildren().addAll(lblMa, sp, lblIcon);
 
+        HBox mid = new HBox(10);
+        mid.setAlignment(Pos.CENTER_LEFT);
+
         Label lblTenLoai = new Label(mapMaLoaiToTen(room.getMaLoaiPhong()).toUpperCase());
-        lblTenLoai.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
+        lblTenLoai.setFont(Font.font("Segoe UI", FontWeight.BOLD, 11));
         lblTenLoai.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        // Nhãn trạng thái màu nền nhạt
         Label lblStatus = new Label(mapStatusToVietnameseByKey(statusKey).toUpperCase());
-        lblStatus.setFont(Font.font("Segoe UI", FontWeight.BLACK, 11));
-        lblStatus.setStyle("-fx-background-color: " + color + "15; -fx-text-fill: " + color + "; -fx-padding: 5 12; -fx-background-radius: 6;");
+        lblStatus.setFont(Font.font("Segoe UI", FontWeight.BLACK, 10));
+        lblStatus.setStyle("-fx-background-color: " + color + "15; -fx-text-fill: " + color + "; -fx-padding: 4 8; -fx-background-radius: 6;");
+        mid.getChildren().addAll(lblTenLoai, lblStatus);
 
-        Label lblPrice = new Label(String.format("%,.0f đ", room.getGiaPhong()));
-        lblPrice.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
-        lblPrice.setTextFill(Color.web(COLOR_PRIMARY));
+        card.getChildren().addAll(top, mid, new Region());
+        VBox.setVgrow(card.getChildren().get(2), Priority.ALWAYS);
 
-        card.getChildren().addAll(top, lblTenLoai, lblStatus, new Region(), lblPrice);
-        VBox.setVgrow(card.getChildren().get(3), Priority.ALWAYS);
+        VBox bottomInfo = new VBox(5);
+        if (statusKey.equals("DANG_O") && phieu != null) {
+            Label lblKhach = new Label("👤 " + (phieu.getTenKhachHang() != null ? phieu.getTenKhachHang() : "Khách Vãng Lai"));
+            lblKhach.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
+            lblKhach.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
-        // Hiệu ứng Hover chuyên nghiệp
+            String ngayTraStr = phieu.getNgayTra() != null ?
+                    phieu.getNgayTra().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "Chưa xác định";
+            Label lblNgayTra = new Label("⏳ Ra: " + ngayTraStr);
+            lblNgayTra.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 12));
+            lblNgayTra.setTextFill(Color.web(COLOR_DANG_O));
+
+            bottomInfo.getChildren().addAll(lblKhach, lblNgayTra);
+        } else {
+            Label lblPrice = new Label(String.format("%,.0f đ", room.getGiaPhong()));
+            lblPrice.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
+            lblPrice.setTextFill(Color.web(COLOR_PRIMARY));
+            bottomInfo.getChildren().add(lblPrice);
+        }
+        card.getChildren().add(bottomInfo);
+
         card.setCursor(Cursor.HAND);
         card.setOnMouseEntered(e -> {
             card.setStyle(card.getStyle() + "-fx-background-color: #f8fafc; -fx-translate-y: -5;");
@@ -399,27 +415,25 @@ public class DatNhanPhongController {
     }
 
     // =========================================================================
-    // HỆ THỐNG MAPPING TRẠNG THÁI (FIX LỖI TOÀN "BẢO TRÌ")
+    // FIX CỐT LÕI: LOGIC CHUYỂN ĐỔI TRẠNG THÁI SIÊU AN TOÀN
     // =========================================================================
-
-    // Hàm này loại bỏ hoàn toàn dấu Tiếng Việt, khoảng trắng thừa để so sánh an toàn 100%
-    // =========================================================================
-    // HỆ THỐNG MAPPING TRẠNG THÁI (ĐÃ FIX LỖI "O" TRONG "BẢO TRÌ")
-    // =========================================================================
-
     private String getNormalizedStatusKey(String rawStatus) {
         if (rawStatus == null || rawStatus.trim().isEmpty()) return "BAO_TRI";
-        String normalized = removeAccents(rawStatus).trim().toUpperCase();
+        String s = rawStatus.trim();
 
-        // 1. Ưu tiên bắt đích danh Bảo Trì trước để tránh bị nhầm lẫn
-        if (normalized.contains("BAO TRI") || normalized.contains("HONG")) return "BAO_TRI";
+        // 1. ƯU TIÊN SO SÁNH CHÍNH XÁC (Tuyệt đối an toàn, không sợ lỗi Regex)
+        if (s.equalsIgnoreCase("Trống") || s.equalsIgnoreCase("Trong")) return "TRONG";
+        if (s.equalsIgnoreCase("Đã Đặt") || s.equalsIgnoreCase("Da Dat")) return "DA_DAT";
+        if (s.equalsIgnoreCase("Đang ở") || s.equalsIgnoreCase("Dang o")) return "DANG_O";
+        if (s.equalsIgnoreCase("Bảo Trì") || s.equalsIgnoreCase("Bao Tri")) return "BAO_TRI";
 
-        // 2. Các trạng thái còn lại
+        // 2. PHƯƠNG ÁN DỰ PHÒNG (Fallback)
+        String normalized = removeAccents(s).toUpperCase();
         if (normalized.contains("TRONG")) return "TRONG";
         if (normalized.contains("DAT")) return "DA_DAT";
-        if (normalized.contains("DANG") || normalized.contains("SU DUNG") || normalized.equals("O")) return "DANG_O";
+        if (normalized.contains("DANG") || normalized.equals("O")) return "DANG_O";
 
-        return "BAO_TRI"; // Mặc định nếu chuỗi rác không khớp cái nào
+        return "BAO_TRI";
     }
 
     private String getStatusColorByKey(String key) {
@@ -456,8 +470,6 @@ public class DatNhanPhongController {
         return mappedUI.equalsIgnoreCase(uiStatus);
     }
 
-    // =========================================================================
-
     private String mapMaLoaiToTen(String maLoai) {
         if (maLoai == null) return "PHÒNG TIÊU CHUẨN";
         return switch (maLoai.toUpperCase()) {
@@ -470,19 +482,30 @@ public class DatNhanPhongController {
     }
 
     private void loadDataAsync() {
-        Task<List<PhongDTO>> task = new Task<>() {
-            @Override protected List<PhongDTO> call() { return phongService.getAllPhong(); }
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                allRoomsCache = phongService.getAllPhong();
+
+                List<PhieuDatPhongDTO> phieus = phieuDatPhongService.getAllPhieuDatPhong();
+                activeBookingsMap.clear();
+                if (phieus != null) {
+                    for (PhieuDatPhongDTO p : phieus) {
+                        if (p.getTrangThai() != null &&
+                                (p.getTrangThai().contains("Nhận Phòng") ||
+                                        p.getTrangThai().equals("DA_NHAN_PHONG") ||
+                                        p.getTrangThai().equalsIgnoreCase("Chưa Nhận Phòng"))) {
+                            activeBookingsMap.put(p.getMaPhong(), p);
+                        }
+                    }
+                }
+                return null;
+            }
         };
-        task.setOnSucceeded(evt -> {
-            allRoomsCache = task.getValue();
-            filterRooms();
-        });
+        task.setOnSucceeded(evt -> filterRooms());
         new Thread(task).start();
     }
 
-
-
-    // Hàm loại bỏ dấu Tiếng Việt chuẩn xác
     private String removeAccents(String input) {
         if (input == null) return "";
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);

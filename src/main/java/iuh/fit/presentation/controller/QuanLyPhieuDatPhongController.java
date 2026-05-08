@@ -50,6 +50,8 @@ public class QuanLyPhieuDatPhongController {
     private final String STATUS_WAITING = "CHO_NHAN_PHONG";
     private final String STATUS_STAYING = "DA_NHAN_PHONG";
     private final String STATUS_CANCELLED = "DA_HUY";
+    private final String COLOR_TEXT_MAIN = "#0f172a";
+    private final String COLOR_TEXT_MUTED = "#64748b";
 
     private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -71,9 +73,14 @@ public class QuanLyPhieuDatPhongController {
 
         VBox headerBox = new VBox(5);
         Label lblTitle = new Label("QUẢN LÝ PHIẾU ĐẶT PHÒNG");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 32));
-        lblTitle.setTextFill(Color.web("#0f172a"));
-        headerBox.getChildren().addAll(lblTitle, new Label("Quản lý phiếu đặt, nhận/trả phòng và trạng thái cọc"));
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 28));
+        lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
+
+        Label lblSubTitle = new Label("Quản lý phiếu đặt, nhận/trả phòng và trạng thái cọc.");
+        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
+        lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
+
+        headerBox.getChildren().addAll(lblTitle, lblSubTitle);
 
         HBox filterBox = createFilterBar();
 

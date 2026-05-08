@@ -2,6 +2,7 @@ package iuh.fit.presentation.controller;
 
 import iuh.fit.core.dto.HoaDonDTO;
 import iuh.fit.core.service.IHoaDonService;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -36,7 +37,7 @@ public class ThongKeDoanhThuController {
     private TableView<HoaDonDTO> tvHoaDon;
     private BarChart<String, Number> chartRevenue;
 
-    // Bảng màu thiết kế chuẩn (Khớp hệ thống)
+    // Bảng màu thiết kế chuẩn
     private final String COLOR_PRIMARY = "#2563eb";
     private final String COLOR_PRIMARY_DARK = "#1e3a8a";
     private final String COLOR_BG_MAIN = "#f8fafc";
@@ -59,11 +60,11 @@ public class ThongKeDoanhThuController {
         topArea.setPadding(new Insets(30, 30, 10, 30));
 
         Label lblTitle = new Label("THỐNG KÊ DOANH THU");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 32));
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 28));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
 
         Label lblSubTitle = new Label("Phân tích luồng doanh thu, hiệu suất phòng và dịch vụ theo thời gian thực.");
-        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 15));
+        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
         lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
         topArea.getChildren().addAll(lblTitle, lblSubTitle);
@@ -85,14 +86,14 @@ public class ThongKeDoanhThuController {
         scrollPane.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-border-color: transparent;");
         root.setCenter(scrollPane);
 
-        // Tải dữ liệu ban đầu
-        loadRevenueData();
+        // Đẩy việc tải dữ liệu ra sau khi UI đã render xong để tránh giật lag
+        Platform.runLater(this::loadRevenueData);
 
         return root;
     }
 
     // =========================================================================
-    // KHU VỰC BỘ LỌC TÌM KIẾM (ĐÃ NÂNG CẤP QUICK FILTERS)
+    // KHU VỰC BỘ LỌC TÌM KIẾM
     // =========================================================================
     private VBox createFilterBar() {
         VBox card = new VBox(15);
@@ -100,7 +101,6 @@ public class ThongKeDoanhThuController {
         card.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 12; -fx-border-width: 1;");
         card.setEffect(new DropShadow(10, Color.web("#000000", 0.03)));
 
-        // Dòng trên: Chọn ngày thủ công & Nút tìm kiếm
         HBox topFilter = new HBox(15);
         topFilter.setAlignment(Pos.CENTER_LEFT);
 
@@ -110,8 +110,8 @@ public class ThongKeDoanhThuController {
         lblStart.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         lblStart.setTextFill(Color.web(COLOR_TEXT_MUTED));
 
-        // 👉 MẶC ĐỊNH LÀ THỜI GIAN HIỆN TẠI (HÔM NAY)
-        dpStartDate = new DatePicker(LocalDate.now());
+        // SỬA ĐỔI: Mặc định lấy từ đầu tháng để dễ thấy dữ liệu
+        dpStartDate = new DatePicker(LocalDate.now().withDayOfMonth(1));
         dpStartDate.setStyle(inputStyle);
         dpStartDate.setPrefWidth(160);
 
@@ -138,7 +138,6 @@ public class ThongKeDoanhThuController {
 
         topFilter.getChildren().addAll(lblStart, dpStartDate, lblEnd, dpEndDate, btnSearch, spacer, btnExport);
 
-        // Dòng dưới: Chọn nhanh (Hôm nay, Tuần này, Tháng này)
         HBox quickFilters = new HBox(10);
         quickFilters.setAlignment(Pos.CENTER_LEFT);
 
@@ -163,20 +162,19 @@ public class ThongKeDoanhThuController {
         btn.setCursor(Cursor.HAND);
         btn.setStyle("-fx-background-color: transparent; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 20; -fx-background-radius: 20; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-padding: 5 15;");
 
-        // Hiệu ứng hover
         btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: " + COLOR_HOVER + "; -fx-border-color: " + COLOR_PRIMARY + "; -fx-border-radius: 20; -fx-background-radius: 20; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-padding: 5 15;"));
         btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: transparent; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 20; -fx-background-radius: 20; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-padding: 5 15;"));
 
         btn.setOnAction(e -> {
             dpStartDate.setValue(start);
             dpEndDate.setValue(end);
-            loadRevenueData(); // Auto search
+            loadRevenueData();
         });
         return btn;
     }
 
     // =========================================================================
-    // KHU VỰC THẺ THỐNG KÊ (ĐÃ TINH CHỈNH ĐỔ BÓNG VÀ FONT)
+    // KHU VỰC THẺ THỐNG KÊ
     // =========================================================================
     private HBox createStatCardsRow() {
         HBox row = new HBox(20);
@@ -250,7 +248,7 @@ public class ThongKeDoanhThuController {
 
         chartRevenue = new BarChart<>(xAxis, yAxis);
         chartRevenue.setLegendVisible(false);
-        chartRevenue.setAnimated(true); // Thêm hiệu ứng chạy mượt mà
+        chartRevenue.setAnimated(true);
         chartRevenue.setPrefHeight(380);
 
         card.getChildren().addAll(lblTitle, chartRevenue);
@@ -276,7 +274,6 @@ public class ThongKeDoanhThuController {
         tvHoaDon.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tvHoaDon.setStyle("-fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 8; -fx-font-size: 14px;");
 
-        // Hiện thông báo trống khi không có dữ liệu
         Label emptyLabel = new Label("📭 Không có dữ liệu doanh thu trong khoảng thời gian này.");
         emptyLabel.setTextFill(Color.web(COLOR_TEXT_MUTED));
         emptyLabel.setFont(Font.font("Segoe UI", 14));
@@ -332,10 +329,9 @@ public class ThongKeDoanhThuController {
     // =========================================================================
     private void loadRevenueData() {
         try {
-            LocalDate startDate = dpStartDate.getValue() != null ? dpStartDate.getValue() : LocalDate.now();
+            LocalDate startDate = dpStartDate.getValue() != null ? dpStartDate.getValue() : LocalDate.now().withDayOfMonth(1);
             LocalDate endDate = dpEndDate.getValue() != null ? dpEndDate.getValue() : LocalDate.now();
 
-            // Nếu ngày kết thúc nhỏ hơn ngày bắt đầu, tự động fix lại
             if (endDate.isBefore(startDate)) {
                 endDate = startDate;
                 dpEndDate.setValue(endDate);
@@ -343,12 +339,20 @@ public class ThongKeDoanhThuController {
 
             List<HoaDonDTO> hoaDons = hoaDonService.getHoaDonByDateRange(startDate, endDate);
 
+            // Cập nhật giao diện nếu danh sách trống
+            if (hoaDons == null || hoaDons.isEmpty()) {
+                lblTotalRevenue.setText("0 đ");
+                lblTotalInvoices.setText("0");
+                lblAverageInvoice.setText("0 đ");
+                lblServiceRevenue.setText("0 đ");
+                tvHoaDon.getItems().clear();
+                chartRevenue.getData().clear();
+                return;
+            }
+
             double totalRevenue = hoaDons.stream().mapToDouble(HoaDonDTO::getTongTien).sum();
             int totalInvoices = hoaDons.size();
-            double avgInvoice = totalInvoices > 0 ? totalRevenue / totalInvoices : 0;
-
-            // Nếu bạn chưa viết hàm getTotalServiceRevenueByDateRange trong DB thì tạm tính bằng Java như sau:
-            // THAY BẰNG DÒNG NÀY (Bỏ check null vì double thì không bao giờ null)
+            double avgInvoice = totalRevenue / totalInvoices;
             double serviceRevenue = hoaDons.stream().mapToDouble(HoaDonDTO::getTongTienDichVu).sum();
 
             lblTotalRevenue.setText(String.format("%,.0f đ", totalRevenue));
@@ -363,6 +367,7 @@ public class ThongKeDoanhThuController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Lỗi dữ liệu", "Không thể lấy dữ liệu doanh thu: " + e.getMessage());
         }
     }
 
@@ -372,11 +377,11 @@ public class ThongKeDoanhThuController {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Doanh Thu");
 
-        // Gom nhóm hóa đơn theo ngày và tính tổng
         Map<LocalDate, Double> dailyRevenue = new TreeMap<>(
                 hoaDons.stream()
                         .collect(Collectors.groupingBy(
-                                HoaDonDTO::getNgayLap,
+                                // Ép kiểu cẩn thận đề phòng dữ liệu bị lệch chuẩn
+                                hd -> hd.getNgayLap() != null ? hd.getNgayLap() : LocalDate.now(),
                                 Collectors.summingDouble(HoaDonDTO::getTongTien)
                         ))
         );

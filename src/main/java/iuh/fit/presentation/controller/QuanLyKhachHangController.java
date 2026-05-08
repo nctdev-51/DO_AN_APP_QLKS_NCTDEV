@@ -38,7 +38,8 @@ public class QuanLyKhachHangController {
     private final String COLOR_PRIMARY   = "#2563eb";
     private final String COLOR_SUCCESS   = "#10b981";
     private final String COLOR_DANGER    = "#ef4444";
-    private final String COLOR_TEXT_MAIN = "#1e293b";
+    private final String COLOR_TEXT_MAIN = "#0f172a";
+    private final String COLOR_TEXT_MUTED = "#64748b";
     private final String COLOR_BORDER    = "#cbd5e1";
 
     public QuanLyKhachHangController(IKhachHangService khachHangService) {
@@ -49,9 +50,17 @@ public class QuanLyKhachHangController {
         VBox mainVBox = new VBox(20);
         mainVBox.setStyle("-fx-background-color: #f1f5f9; -fx-padding: 25;");
 
-        Label lblTitle = new Label("👥 QUẢN LÝ KHÁCH HÀNG");
-        lblTitle.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 24));
-        lblTitle.setTextFill(Color.web(COLOR_PRIMARY));
+        VBox headerBox = new VBox(5);
+
+        Label lblTitle = new Label("QUẢN LÝ KHÁCH HÀNG");
+        lblTitle.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 28));
+        lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
+
+        Label lblSubTitle = new Label("Quản lý danh sách, theo dõi trạng thái và cập nhật thông tin khách hàng.");
+        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
+        lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
+
+        headerBox.getChildren().addAll(lblTitle, lblSubTitle);
 
         DropShadow cardShadow = new DropShadow();
         cardShadow.setColor(Color.color(0, 0, 0, 0.05));

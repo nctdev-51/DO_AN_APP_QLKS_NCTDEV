@@ -10,6 +10,7 @@
 
         <!-- ========== ENTITIES PACKAGE ========== -->
         <!-- Tất cả Entity classes được định nghĩa ở đây -->
+        <class>iuh.fit.core.entity.LoaiPhong</class>
         <class>iuh.fit.core.entity.TaiKhoan</class>
         <class>iuh.fit.core.entity.NhanVien</class>
         <class>iuh.fit.core.entity.KhachHang</class>
@@ -20,6 +21,8 @@
         <class>iuh.fit.core.entity.KhuyenMai</class>
         <class>iuh.fit.core.entity.CaLamViec</class>
         <class>iuh.fit.core.entity.PhanCongCaLamViec</class>
+        <class>iuh.fit.core.entity.ChiTietHoaDon</class>
+        <class>iuh.fit.core.entity.ChiTietPhieuDatPhong</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
@@ -28,7 +31,7 @@
             <!-- Cầu hình kết nối MariaDB -->
             <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mariadb://localhost:3306/qlkhachsantatp_db"/>
+                      value="jdbc:mariadb://localhost:3306/qlkhachsan_db"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="sapassword"/>
 
@@ -42,7 +45,18 @@
             <property name="hibernate.highlight_sql" value="true"/>
 
             <!-- SQL Generation Strategy: update | create-drop | create | validate -->
-<!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
+            <!-- 'update': Chỉ update schema, giữ dữ liệu cũ (DÙNG CHO DEVELOPMENT) -->
+            <!-- 'create': DROP + CREATE mỗi lần (LỖI: mất dữ liệu) -->
+            <!-- 'validate': Chỉ check (dùng cho PRODUCTION) -->
+
+<!--            &lt;!&ndash; Trước &ndash;&gt;-->
+<!--            <property name="hibernate.hbm2ddl.auto" value="create"/>-->
+            <!-- Sau (lần đầu) -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+
+            <!-- ❌ BỎ auto-load: INSERT 1 lần thôi, không lặp lại -->
+            <!-- <property name="jakarta.persistence.sql-load-script-source" value="data.sql"/> -->
 
             <!-- Connection Pool Configuration (HikariCP) -->
             <property name="hibernate.hikari.maximumPoolSize" value="20"/>

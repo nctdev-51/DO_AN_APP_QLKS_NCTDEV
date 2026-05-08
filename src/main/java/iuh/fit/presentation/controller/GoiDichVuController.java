@@ -41,7 +41,8 @@ public class GoiDichVuController {
     private final String COLOR_BG = "#f1f5f9";
     private final String COLOR_PRIMARY = "#2563eb";
     private final String COLOR_SUCCESS = "#10b981";
-    private final String COLOR_TEXT_MAIN = "#1e293b";
+    private final String COLOR_TEXT_MAIN = "#0f172a";
+    private final String COLOR_TEXT_MUTED = "#64748b";
 
     public GoiDichVuController(IDichVuService dichVuService,
                                IPhieuDatPhongService phieuDatPhongService,
@@ -56,12 +57,28 @@ public class GoiDichVuController {
         root.setStyle("-fx-background-color: " + COLOR_BG + ";");
 
         // ==========================================
+        // 0. KHU VỰC TIÊU ĐỀ (HEADER)
+        // ==========================================
+        VBox headerBox = new VBox(5);
+        headerBox.setPadding(new Insets(25, 20, 5, 20));
+
+        Label lblMainTitle = new Label("GỌI DỊCH VỤ POS");
+        lblMainTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 28));
+        lblMainTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
+
+        Label lblSubTitle = new Label("Cung cấp dịch vụ ăn uống, tiện ích nhanh chóng cho khách lưu trú hoặc theo đoàn.");
+        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
+        lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
+
+        headerBox.getChildren().addAll(lblMainTitle, lblSubTitle);
+        root.setTop(headerBox); // Đặt Tiêu đề lên đầu trang
+
+        // ==========================================
         // 1. CỘT TRÁI: DANH SÁCH ĐOÀN / GIA ĐÌNH
         // ==========================================
         VBox leftCol = new VBox(15);
         leftCol.setPrefWidth(280);
         leftCol.setPadding(new Insets(20));
-        // Đã chuẩn hóa CSS
         leftCol.setStyle("-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-width: 0 1px 0 0;");
 
         Label lblGroupTitle = new Label("👥 ĐOÀN / GIA ĐÌNH");
@@ -71,7 +88,6 @@ public class GoiDichVuController {
         pnlGroups = new VBox(10);
         ScrollPane scrollGroups = new ScrollPane(pnlGroups);
         scrollGroups.setFitToWidth(true);
-        // Bỏ các thuộc tính sai, dùng chuẩn JavaFX CSS
         scrollGroups.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-padding: 0;");
         scrollGroups.setBorder(Border.EMPTY);
 

@@ -69,6 +69,21 @@ public class QuanLyPhongController {
         softShadow.setOffsetY(8);
 
         // =================================================================================
+        // 0. KHU VỰC TIÊU ĐỀ (HEADER)
+        // =================================================================================
+        VBox headerBox = new VBox(5);
+
+        Label lblMainTitle = new Label("QUẢN LÝ PHÒNG");
+        lblMainTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 28));
+        lblMainTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
+
+        Label lblSubTitle = new Label("Quản lý danh sách, theo dõi tình trạng và cập nhật thông tin phòng.");
+        lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
+        lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
+
+        headerBox.getChildren().addAll(lblMainTitle, lblSubTitle);
+
+        // =================================================================================
         // 1. KHU VỰC THỐNG KÊ (DASHBOARD STATS)
         // =================================================================================
         HBox statsContainer = new HBox(15);
@@ -83,7 +98,6 @@ public class QuanLyPhongController {
         VBox cardDangO = createStatCard("🔑 ĐANG PHỤC VỤ", "0", "-fx-background-color: linear-gradient(to right bottom, #f59e0b, #d97706);", softShadow);
         lblDangONum = (Label) cardDangO.getChildren().get(1);
 
-        // ✅ THÊM: Thẻ thống kê phòng đang bảo trì
         VBox cardBaoTri = createStatCard("🔧 BẢO TRÌ", "0", "-fx-background-color: linear-gradient(to right bottom, #64748b, #475569);", softShadow);
         lblBaoTriNum = (Label) cardBaoTri.getChildren().get(1);
 
@@ -128,7 +142,6 @@ public class QuanLyPhongController {
 
         btnLamMoi = createButton("Làm Mới", COLOR_TEXT_MUTED, "#475569"); btnLamMoi.setOnAction(e -> lamMoiForm());
 
-        // ✅ THÊM: Nút Quản lý Bảo Trì
         btnBaoTri = createButton("🔧 Đưa vào Bảo Trì", COLOR_MAINTENANCE, "#334155");
         btnBaoTri.setDisable(true);
         btnBaoTri.setOnAction(e -> quanLyBaoTri());
@@ -217,7 +230,9 @@ public class QuanLyPhongController {
         });
 
         tableCard.getChildren().addAll(toolbar, table);
-        rootBox.getChildren().addAll(statsContainer, formCard, tableCard);
+
+        // CẬP NHẬT: Thêm headerBox vào đầu tiên
+        rootBox.getChildren().addAll(headerBox, statsContainer, formCard, tableCard);
 
         loadPhongData();
         setupAutoRefresh(); // Khởi chạy Real-time
@@ -229,9 +244,7 @@ public class QuanLyPhongController {
     // REAL-TIME AUTO REFRESH LOGIC
     // =================================================================================
     private void setupAutoRefresh() {
-        // Tự động load lại dữ liệu phòng mỗi 15 giây để giao diện luôn "Real-time"
         autoRefreshTimer = new Timeline(new KeyFrame(Duration.seconds(15), event -> {
-            // Chỉ load lại bảng nếu người dùng không đang nhập liệu tìm kiếm (để tránh mất focus)
             if (searchField.getText().isEmpty()) {
                 loadPhongDataSilently();
             }
@@ -247,7 +260,6 @@ public class QuanLyPhongController {
             phongList.setAll(list);
             updateStats(list);
 
-            // Phục hồi lại dòng đang chọn sau khi refresh
             if (selectedIndex >= 0) {
                 table.getSelectionModel().select(selectedIndex);
             }
@@ -272,7 +284,6 @@ public class QuanLyPhongController {
     // LOGIC NGHIỆP VỤ (CRUD & BẢO TRÌ)
     // =================================================================================
 
-    // ✅ THÊM: Logic Quản Lý Bảo Trì
     private void quanLyBaoTri() {
         if (txtMaPhong.getText().isEmpty()) {
             showError("Vui lòng chọn một phòng từ bảng!");
@@ -288,7 +299,6 @@ public class QuanLyPhongController {
         String trangThaiMoi = tinhTrangHienTai.equalsIgnoreCase("Bảo Trì") ? "Trống" : "Bảo Trì";
 
         try {
-            // Dùng hàm cập nhật trạng thái nhanh nếu Service đã hỗ trợ, nếu không dùng Update toàn phần
             PhongDTO dto = getFormData();
             dto.setTinhTrang(trangThaiMoi);
             phongService.updatePhong(dto);
@@ -308,7 +318,6 @@ public class QuanLyPhongController {
         txtGiaPhong.setText(String.valueOf(p.getGiaPhong()));
         cbTinhTrang.setValue(p.getTinhTrang());
 
-        // Điều khiển giao diện nút Bảo Trì dựa vào trạng thái hiện tại
         btnBaoTri.setDisable(false);
         if (p.getTinhTrang().equalsIgnoreCase("Bảo Trì")) {
             btnBaoTri.setText("✅ Hoàn tất Bảo Trì");
@@ -319,7 +328,7 @@ public class QuanLyPhongController {
         }
 
         if (p.getTinhTrang().equalsIgnoreCase("Đang ở") || p.getTinhTrang().equalsIgnoreCase("Đã Đặt")) {
-            btnBaoTri.setDisable(true); // Khóa nút nếu phòng đang có khách
+            btnBaoTri.setDisable(true);
         }
     }
 
@@ -359,9 +368,26 @@ public class QuanLyPhongController {
 
     private boolean validateForm() {
         if (txtTenPhong.getText().trim().isEmpty() || txtGiaPhong.getText().trim().isEmpty()) {
-            showError("Vui lòng nhập đầy đủ tên và giá phòng!"); return false;
+            showError("Vui lòng nhập đầy đủ tên và giá phòng!");
+            return false;
         }
-        try { Double.parseDouble(txtGiaPhong.getText().trim()); } catch (Exception e) { showError("Giá phòng phải là số hợp lệ!"); return false; }
+
+        // 👉 BỔ SUNG BẮT BỘC CHỌN LOẠI PHÒNG VÀ TÌNH TRẠNG
+        if (cbLoaiPhong.getValue() == null || cbLoaiPhong.getValue().isEmpty()) {
+            showError("Vui lòng chọn Loại phòng!");
+            return false;
+        }
+        if (cbTinhTrang.getValue() == null || cbTinhTrang.getValue().isEmpty()) {
+            showError("Vui lòng chọn Tình trạng phòng!");
+            return false;
+        }
+
+        try {
+            Double.parseDouble(txtGiaPhong.getText().trim());
+        } catch (Exception e) {
+            showError("Giá phòng phải là số hợp lệ!");
+            return false;
+        }
         return true;
     }
 

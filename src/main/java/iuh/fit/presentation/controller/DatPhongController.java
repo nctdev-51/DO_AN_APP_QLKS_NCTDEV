@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -51,16 +52,12 @@ public class DatPhongController {
     // Bảng dữ liệu phòng
     private TableView<PhongDTO> tablePhong;
     private ObservableList<PhongDTO> phongList;
-    // Biến lưu danh sách phòng được truyền từ màn hình Chọn Phòng sang
     private List<PhongDTO> danhSachPhong = new ArrayList<>();
 
-    // Hàm để ChonPhongController bơm dữ liệu vào
     public void setDanhSachPhongChon(List<PhongDTO> danhSachPhong) {
         this.danhSachPhong = danhSachPhong;
-        // Nếu giao diện đặt phòng của bạn có TableView hoặc ListView hiện danh sách phòng,
-        // bạn có thể gọi hàm cập nhật giao diện ở đây.
-        // Ví dụ: updateRoomTable();
     }
+
     // Tính tiền
     private Label lblTongTienPhongVal, lblTongTienDichVuVal, lblKhuyenMaiVal, lblTongThanhToanVal;
     private double tongTienPhong = 0.0;
@@ -93,17 +90,85 @@ public class DatPhongController {
         this.onRefresh = onRefresh;
     }
 
-    public void showDialog(Stage parentStage) {
-        Stage stage = new Stage();
-        stage.setTitle("Lập Phiếu Đặt Phòng");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setMaximized(true);
+    // =========================================================================
+    // KỸ THUẬT SPA: NHÚNG GIAO DIỆN TRỰC TIẾP VÀO KHUNG CHÍNH (KHÔNG MỞ POPUP)
+    // =========================================================================
+    public void showDialog(Stage sourceStage) {
+        Stage mainStage = sourceStage;
+        if (sourceStage != null && sourceStage.getOwner() instanceof Stage) {
+            mainStage = (Stage) sourceStage.getOwner();
+        }
 
+        // 👉 Cố gắng tìm StackPane (khung nội dung chính bên phải) của MainController
+        if (mainStage != null && mainStage.getScene() != null) {
+            javafx.scene.Parent root = mainStage.getScene().getRoot();
+            if (root instanceof BorderPane borderPane) {
+                if (borderPane.getCenter() instanceof StackPane contentArea) {
+
+                    // Hành động đóng giao diện này (gỡ nó ra khỏi khung chính)
+                    Runnable closeAction = () -> {
+                        contentArea.getChildren().removeIf(n -> n.getId() != null && n.getId().equals("DAT_PHONG_LAYER"));
+                        if (onRefresh != null) onRefresh.run();
+                    };
+
+                    VBox mainLayout = createMainLayout(closeAction);
+
+                    // Bọc Layout vào ScrollPane để đảm bảo hiển thị tốt trên màn hình nhỏ
+                    ScrollPane scrollWrapper = new ScrollPane(mainLayout);
+                    scrollWrapper.setId("DAT_PHONG_LAYER"); // Đặt ID để gỡ ra khi cần
+                    scrollWrapper.setFitToWidth(true);
+                    scrollWrapper.setFitToHeight(true);
+                    scrollWrapper.setStyle("-fx-background-color: " + COLOR_BG + "; -fx-control-inner-background: " + COLOR_BG + "; -fx-border-color: transparent;");
+
+                    // Nhúng đè lên trên Sơ đồ phòng hiện tại
+                    contentArea.getChildren().add(scrollWrapper);
+
+                    setupDateValidation();
+                    loadPhongData();
+                    tinhSoNgayVaTien();
+                    return; // Thoát hàm, không mở Popup
+                }
+            }
+        }
+
+        // FALLBACK: Nếu vì lý do nào đó không tìm thấy khung chính, mở dạng Popup như cũ
+        Stage popupStage = new Stage();
+        popupStage.setTitle("Lập Phiếu Đặt Phòng");
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initOwner(sourceStage);
+        popupStage.setWidth(1100);
+        popupStage.setHeight(750);
+
+        Runnable closeAction = () -> {
+            popupStage.close();
+            if (onRefresh != null) onRefresh.run();
+        };
+
+        VBox mainLayout = createMainLayout(closeAction);
+        ScrollPane scrollPane = new ScrollPane(mainLayout);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setStyle("-fx-background-color: " + COLOR_BG + "; -fx-control-inner-background: " + COLOR_BG + "; -fx-border-color: transparent;");
+
+        popupStage.setScene(new Scene(scrollPane));
+        popupStage.centerOnScreen();
+
+        setupDateValidation();
+        loadPhongData();
+        tinhSoNgayVaTien();
+
+        popupStage.showAndWait();
+    }
+
+    private VBox createMainLayout(Runnable closeAction) {
         VBox rootPane = new VBox(20);
         rootPane.setStyle("-fx-background-color: " + COLOR_BG + "; -fx-padding: 25;");
 
-        // --- 1. HEADER ---
-        VBox headerBox = new VBox(5);
+        // --- 1. HEADER (Có thêm nút Đóng) ---
+        HBox headerBox = new HBox(15);
+        headerBox.setAlignment(Pos.CENTER_LEFT);
+
+        VBox titleBox = new VBox(5);
         Label lblTitle = new Label("LẬP PHIẾU ĐẶT PHÒNG");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.EXTRA_BOLD, 26));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
@@ -111,7 +176,18 @@ public class DatPhongController {
         Label lblSubTitle = new Label("Tạo mới phiếu đặt phòng cho " + danhSachMaPhong.size() + " phòng đã chọn");
         lblSubTitle.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
         lblSubTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
-        headerBox.getChildren().addAll(lblTitle, lblSubTitle);
+        titleBox.getChildren().addAll(lblTitle, lblSubTitle);
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        // 👉 NÚT ĐÓNG (Quay lại)
+        Button btnClose = new Button("✖ Đóng & Quay lại");
+        btnClose.setCursor(Cursor.HAND);
+        btnClose.setStyle("-fx-background-color: #fee2e2; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 8;");
+        btnClose.setOnAction(e -> closeAction.run());
+
+        headerBox.getChildren().addAll(titleBox, spacer, btnClose);
 
         // --- 2. KHU VỰC THÔNG TIN (TOP) ---
         HBox topInfoBox = new HBox(20);
@@ -127,32 +203,15 @@ public class DatPhongController {
 
         VBox pnlTable = createTablePhongPanel();
         HBox.setHgrow(pnlTable, Priority.ALWAYS);
-        VBox pnlTinhTien = createTinhTienPanel(stage);
+        VBox pnlTinhTien = createTinhTienPanel(closeAction);
 
         bottomMainBox.getChildren().addAll(pnlTable, pnlTinhTien);
         rootPane.getChildren().addAll(headerBox, topInfoBox, bottomMainBox);
 
-        ScrollPane scrollPane = new ScrollPane(rootPane);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setStyle("-fx-background-color: " + COLOR_BG + "; -fx-control-inner-background: " + COLOR_BG + "; -fx-border-color: transparent;");
-
-        Scene scene = new Scene(scrollPane);
-        stage.setScene(scene);
-
-        // ✅ Khởi tạo Logic và Validate
-        setupDateValidation();
-        loadPhongData();
-        tinhSoNgayVaTien();
-
-        stage.showAndWait();
+        return rootPane;
     }
 
-    // =========================================================================
-    // ✅ CẢI THIỆN: VALIDATE NGÀY CHẶT CHẼ TRÊN GIAO DIỆN
-    // =========================================================================
     private void setupDateValidation() {
-        // Chặn chọn ngày quá khứ cho Ngày nhận phòng
         dpNgayDat.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -160,7 +219,6 @@ public class DatPhongController {
             }
         });
 
-        // Ngày trả phòng luôn phải lớn hơn ngày nhận phòng
         dpNgayTra.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -170,7 +228,6 @@ public class DatPhongController {
         });
 
         dpNgayDat.valueProperty().addListener((obs, oldV, newV) -> {
-            // Tự động đẩy ngày trả lên nếu ngày nhận bị dời qua ngày trả hiện tại
             if (dpNgayTra.getValue() != null && newV != null && !dpNgayTra.getValue().isAfter(newV)) {
                 dpNgayTra.setValue(newV.plusDays(1));
             }
@@ -180,9 +237,6 @@ public class DatPhongController {
         dpNgayTra.valueProperty().addListener((obs, oldV, newV) -> tinhSoNgayVaTien());
     }
 
-    // =========================================================================
-    // 1. PANEL KHÁCH HÀNG
-    // =========================================================================
     private VBox createKhachHangPanel() {
         VBox box = createCardBox("👤 Thông tin Khách hàng");
         GridPane grid = new GridPane();
@@ -249,9 +303,6 @@ public class DatPhongController {
         return box;
     }
 
-    // =========================================================================
-    // ✅ CẢI THIỆN: BẢNG PHÒNG HIỂN THỊ ĐỘNG (Tính tiền theo ngày)
-    // =========================================================================
     private VBox createTablePhongPanel() {
         VBox box = createCardBox("🏨 Tổ hợp Phòng (" + danhSachMaPhong.size() + " phòng)");
 
@@ -266,7 +317,6 @@ public class DatPhongController {
         TableColumn<PhongDTO, String> colGia = new TableColumn<>("Đơn Giá / Đêm");
         colGia.setCellValueFactory(p -> new SimpleStringProperty(String.format("%,.0f đ", p.getValue().getGiaPhong())));
 
-        // Cột Thành Tiền = Giá phòng * Số ngày (Cập nhật động)
         TableColumn<PhongDTO, String> colThanhTien = new TableColumn<>("Thành Tiền");
         colThanhTien.setCellValueFactory(p -> {
             int days = 1;
@@ -280,7 +330,7 @@ public class DatPhongController {
         return box;
     }
 
-    private VBox createTinhTienPanel(Stage stage) {
+    private VBox createTinhTienPanel(Runnable closeAction) {
         VBox rightCol = new VBox(15);
         rightCol.setPrefWidth(320);
 
@@ -307,13 +357,15 @@ public class DatPhongController {
         VBox btnBox = new VBox(10);
         Button btnLuuTT = new Button("💵 Lưu & Thanh Toán");
         btnLuuTT.setMaxWidth(Double.MAX_VALUE); btnLuuTT.setPrefHeight(40);
+        btnLuuTT.setCursor(Cursor.HAND);
         btnLuuTT.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold;");
-        btnLuuTT.setOnAction(e -> xuLyLuu(true, stage));
+        btnLuuTT.setOnAction(e -> xuLyLuu(true, closeAction));
 
         Button btnLuuCho = new Button("⏳ Lưu (Chờ Khách)");
         btnLuuCho.setMaxWidth(Double.MAX_VALUE); btnLuuCho.setPrefHeight(40);
+        btnLuuCho.setCursor(Cursor.HAND);
         btnLuuCho.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-weight: bold;");
-        btnLuuCho.setOnAction(e -> xuLyLuu(false, stage));
+        btnLuuCho.setOnAction(e -> xuLyLuu(false, closeAction));
 
         btnBox.getChildren().addAll(btnLuuTT, btnLuuCho);
         rightCol.getChildren().addAll(boxTien, btnBox);
@@ -324,7 +376,6 @@ public class DatPhongController {
         String sdt = txtSdt.getText().trim();
         if (sdt.isEmpty()) { showAlert(Alert.AlertType.WARNING, "Lỗi", "Vui lòng nhập số điện thoại!"); return; }
 
-        // Cần có hàm tìm KH theo SĐT trong service, tạm filter từ list
         try {
             KhachHangDTO found = khachHangService.getAllKhachHang().stream()
                     .filter(k -> sdt.equals(k.getSoDienThoai())).findFirst().orElse(null);
@@ -358,7 +409,7 @@ public class DatPhongController {
             if (days < 1) days = 1;
             txtSoNgayThue.setText(String.valueOf(days));
 
-            tablePhong.refresh(); // ✅ Refresh bảng để cập nhật lại cột Thành Tiền
+            tablePhong.refresh();
             capNhatTongTien();
         }
     }
@@ -384,19 +435,31 @@ public class DatPhongController {
         lblTongThanhToanVal.setText(String.format("%,.0f đ", tongThanhToan));
     }
 
-    private void xuLyLuu(boolean coThanhToan, Stage stage) {
+    // 1. Thay thế hàm xuLyLuu cũ bằng hàm này
+    private void xuLyLuu(boolean coThanhToan, Runnable closeAction) {
         if (txtSdt.getText().trim().isEmpty() || txtHoTen.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Lỗi", "Vui lòng nhập thông tin khách hàng!"); return;
         }
 
-        // --- BƯỚC 1: THANH TOÁN (GIỮ NGUYÊN) ---
         if (coThanhToan) {
+            Stage currentStage = (Stage) txtSdt.getScene().getWindow();
             ThanhToanController paymentCtrl = new ThanhToanController(tongThanhToan);
-            if (paymentCtrl.showThanhToanDialog(stage) == null) return;
-        }
 
+            // 👉 ĐÃ FIX: Truyền 2 tham số (Stage và Callback)
+            paymentCtrl.showThanhToanDialog(currentStage, phuongThuc -> {
+                if (phuongThuc != null) { // Khách đã nhấn Hoàn tất (không bấm Hủy)
+                    thucHienLuuVaoDB(coThanhToan, closeAction);
+                }
+            });
+        } else {
+            // Lưu chờ khách (Không mở cổng thanh toán)
+            thucHienLuuVaoDB(coThanhToan, closeAction);
+        }
+    }
+
+    // 2. Thêm hàm này ngay bên dưới hàm xuLyLuu
+    private void thucHienLuuVaoDB(boolean coThanhToan, Runnable closeAction) {
         try {
-            // 1. Xử lý Khách Hàng (Giữ nguyên logic tìm/thêm khách của bạn)
             String sdt = txtSdt.getText().trim();
             KhachHangDTO kh = khachHangService.getAllKhachHang().stream()
                     .filter(k -> sdt.equals(k.getSoDienThoai())).findFirst().orElse(null);
@@ -411,20 +474,14 @@ public class DatPhongController {
                 kh = khachHangService.addKhachHang(kh);
             }
 
-            // 👉 BƯỚC 2: PHÁT SINH MÃ GỐC THEO THỨ TỰ (VÍ DỤ: PDP020)
-            // Hàm này sẽ lấy MAX trong DB rồi cộng thêm 1, đảm bảo thứ tự 020, 021, 022...
             String maPhieuGoc = phieuDatPhongService.phatSinhMaPhieuMoi();
-
             int subIndex = 1;
-            int soNgay = Integer.parseInt(txtSoNgayThue.getText());
+            int soNgay = 1;
+            try { soNgay = Integer.parseInt(txtSoNgayThue.getText()); } catch (Exception ignored) {}
 
-            // 3. Tạo các Phiếu Đặt Phòng
             for (PhongDTO p : phongList) {
                 PhieuDatPhongDTO phieu = new PhieuDatPhongDTO();
 
-                // 👉 ĐÂY LÀ ĐOẠN QUAN TRỌNG:
-                // Nếu đặt ĐOÀN (nhiều phòng): Mã sẽ là PDP020-01, PDP020-02...
-                // Nếu đặt LẺ (1 phòng): Mã sẽ là PDP020 (không có hậu tố)
                 if (phongList.size() > 1) {
                     phieu.setMaPhieu(maPhieuGoc + "-" + String.format("%02d", subIndex++));
                 } else {
@@ -453,8 +510,7 @@ public class DatPhongController {
             }
 
             showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã lưu đợt đặt phòng: " + maPhieuGoc);
-            if (onRefresh != null) onRefresh.run();
-            stage.close();
+            closeAction.run(); // Đóng giao diện Lập Phiếu
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -462,7 +518,6 @@ public class DatPhongController {
         }
     }
 
-    // Helpers UI
     private VBox createCardBox(String title) {
         VBox box = new VBox(12);
         box.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 18; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 10;");
