@@ -4,23 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="abc">
+    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="Tu update 13h43 09/05/2026">
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyHoaDonController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/PhieuDatPhong.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IPhongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IPhongRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/PhongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/PhongServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/TraPhongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/TraPhongServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IHoaDonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IHoaDonService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/HoaDonServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/HoaDonServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ChonPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ChonPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatNhanPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatNhanPhongController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LapPhieuDatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LapPhieuDatPhongController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyDatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyDatPhongController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThanhToanTraPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThanhToanTraPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/TraPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/TraPhongController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +26,7 @@
       <entry key="_D:/HK2_Nam3/JAVA/BTNhom/DO_AN_APP_QLKS_NCTDEV" value="3DMG8DfFaLUXAs6LQTtDEaoHrwz" />
       <entry key="_F:/My_Document/lesson/PhanTan/BTL_PT_QLKS" value="3Ccsmfu7bB3FiSa6IOlj3v8xdqS" />
       <entry key="_F:/My_Document/lesson/PhanTan/onTapCK/BTL_PT_QLKS" value="3CcscaMwr3NQZXKQklMFUPVG8j7" />
+      <entry key="_T:/BTLJV" value="3DTfAwch3sstx6wD6l2l24FLOvZ" />
       <entry key="_T:/BaiTapLon" value="3DKyCjK1XVJBzjY0oa1HNZL1rsI" />
     </persistenceIdMap>
   </component>
@@ -77,7 +72,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/nctdev-51/DO_AN_APP_QLKS_NCTDEV.git&quot;,
-    &quot;accountId&quot;: &quot;bc0dd656-8bb1-4d69-9847-b5f2008e2a72&quot;
+    &quot;accountId&quot;: &quot;b8ccd20b-ae2a-4dd6-8951-3b75d86e5595&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -259,6 +254,9 @@
       <workItem from="1778168406296" duration="1148000" />
       <workItem from="1778257457166" duration="3257000" />
       <workItem from="1778299844357" duration="1003000" />
+      <workItem from="1778310836034" duration="5761000" />
+      <workItem from="1778316964541" duration="269000" />
+      <workItem from="1778317491914" duration="235000" />
     </task>
     <task id="LOCAL-00001" summary="10g30 Tam di ngủ">
       <option name="closed" value="true" />
@@ -284,7 +282,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778296056587</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Tu update 13h43 09/05/2026">
+      <option name="closed" value="true" />
+      <created>1778309009756</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1778309009756</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,7 +311,8 @@
     <MESSAGE value="10g30 Tam di ngủ" />
     <MESSAGE value="Tu update" />
     <MESSAGE value="yeu em 10g06" />
-    <option name="LAST_COMMIT_MESSAGE" value="yeu em 10g06" />
+    <MESSAGE value="Tu update 13h43 09/05/2026" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tu update 13h43 09/05/2026" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -319,6 +326,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java</url>
           <line>63</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java</url>
+          <line>729</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatNhanPhongController.java</url>

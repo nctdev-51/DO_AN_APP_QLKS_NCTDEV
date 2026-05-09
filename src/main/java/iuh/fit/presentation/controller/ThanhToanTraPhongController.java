@@ -32,6 +32,7 @@ public class ThanhToanTraPhongController {
     private final IDichVuService dichVuService;
     private final TaiKhoanDTO currentUser;
 
+
     // UI Components - Trả Phòng
     private ComboBox<String> cbPhieuDatCheckout;
     private Label lblGuestNameCheckout, lblRoomCheckout, lblCheckInDateCheckout, lblCheckOutDateCheckout, lblNumDaysCheckout, lblRoomPriceCheckout;
@@ -45,6 +46,7 @@ public class ThanhToanTraPhongController {
     private double currentRoomTotal = 0.0;
     private double currentServiceTotal = 0.0;
 
+
     // Bảng màu thiết kế chuẩn
     private final String COLOR_PRIMARY = "#2563eb";
     private final String COLOR_PRIMARY_DARK = "#1e3a8a";
@@ -55,6 +57,8 @@ public class ThanhToanTraPhongController {
     private final String COLOR_SUCCESS = "#10b981";
     private final String COLOR_DANGER = "#ef4444";
 
+
+    private String preselectedMaPhieu = null;
     public ThanhToanTraPhongController(
             IPhieuDatPhongService phieuDatPhongService,
             IPhongService phongService,
@@ -62,7 +66,8 @@ public class ThanhToanTraPhongController {
             IHoaDonService hoaDonService,
             IChiTietHoaDonService chiTietHoaDonService,
             IDichVuService dichVuService,
-            TaiKhoanDTO currentUser) {
+            TaiKhoanDTO currentUser, // 👉 ĐÃ THÊM DẤU PHẨY
+            String preselectedMaPhieu) {
 
         this.phieuDatPhongService = phieuDatPhongService;
         this.phongService = phongService;
@@ -71,6 +76,7 @@ public class ThanhToanTraPhongController {
         this.chiTietHoaDonService = chiTietHoaDonService;
         this.dichVuService = dichVuService;
         this.currentUser = currentUser;
+        this.preselectedMaPhieu = preselectedMaPhieu;
     }
 
     public BorderPane createMainView() {
@@ -406,12 +412,24 @@ public class ThanhToanTraPhongController {
                 }
             }
         };
+        // 3. Tìm đến hàm loadPhieuDatForCheckout() và sửa lại đoạn task.setOnSucceeded
         task.setOnSucceeded(evt -> {
             cbPhieuDatCheckout.getItems().setAll(task.getValue());
             if (cbPhieuDatCheckout.getItems().isEmpty()) {
                 cbPhieuDatCheckout.setPromptText("Không có phòng nào đang sử dụng!");
             } else {
-                cbPhieuDatCheckout.setPromptText("Bấm để chọn phòng cần thanh toán...");
+                // 👉 TỰ ĐỘNG TÌM VÀ CHỌN PHIẾU NẾU ĐƯỢC TRUYỀN TỪ MÀN HÌNH QUẢN LÝ SANG
+                if (preselectedMaPhieu != null && !preselectedMaPhieu.isEmpty()) {
+                    for (String item : cbPhieuDatCheckout.getItems()) {
+                        if (item.contains(preselectedMaPhieu)) {
+                            cbPhieuDatCheckout.setValue(item);
+                            // SetValue sẽ tự động kích hoạt hàm loadCheckoutInfo() luôn
+                            break;
+                        }
+                    }
+                } else {
+                    cbPhieuDatCheckout.setPromptText("Bấm để chọn phòng cần thanh toán...");
+                }
             }
         });
         new Thread(task).start();

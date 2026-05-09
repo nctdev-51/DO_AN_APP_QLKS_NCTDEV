@@ -510,42 +510,34 @@ public class DatPhongController {
             // 2. Chuẩn bị dữ liệu mã phiếu và thời gian
             String maPhieuGoc = phieuDatPhongService.phatSinhMaPhieuMoi();
             int subIndex = 1;
-            int soNgay = 1;
-            try { soNgay = Integer.parseInt(txtSoNgayThue.getText()); } catch (Exception ignored) {}
-
-            // 👉 LẤY GIỜ TỪ COMBOBOX (Ví dụ: "14:00" -> lấy số 14)
+            int soNgay = Integer.parseInt(txtSoNgayThue.getText());
             int gioNhan = Integer.parseInt(cboGioNhan.getValue().split(":")[0]);
             int gioTra = Integer.parseInt(cboGioTra.getValue().split(":")[0]);
 
-            // 3. Vòng lặp lưu từng phòng
             for (PhongDTO p : phongList) {
                 PhieuDatPhongDTO phieu = new PhieuDatPhongDTO();
 
-                // Đánh mã phiếu theo đợt (PDPxxx-01, PDPxxx-02...)
-                if (phongList.size() > 1) {
-                    phieu.setMaPhieu(maPhieuGoc + "-" + String.format("%02d", subIndex++));
-                } else {
-                    phieu.setMaPhieu(maPhieuGoc);
-                }
+                if (phongList.size() > 1) phieu.setMaPhieu(maPhieuGoc + "-" + String.format("%02d", subIndex++));
+                else phieu.setMaPhieu(maPhieuGoc);
 
                 phieu.setMaKhachHang(kh.getMaKhachHang());
                 phieu.setMaPhong(p.getMaPhong());
                 phieu.setNgayDat(LocalDate.now());
-
-                // 👉 GHÉP NGÀY VÀ GIỜ: Chuyển LocalDate thành LocalDateTime
-                // Lưu ý: Nếu DTO của Tú đang để kiểu LocalDate, hãy đổi sang LocalDateTime trong DTO và Entity
                 phieu.setNgayNhan(dpNgayDat.getValue().atTime(gioNhan, 0));
                 phieu.setNgayTra(dpNgayTra.getValue().atTime(gioTra, 0));
+                phieu.setMaNhanVien(nhanVien != null ? nhanVien.getMaNhanVien() : "NV001");
 
-                String maNV = (nhanVien != null) ? nhanVien.getMaNhanVien() : "NV001";
-                phieu.setMaNhanVien(maNV);
-                phieu.setTongTien(p.getGiaPhong() * soNgay);
+                double giaTriPhongNay = p.getGiaPhong() * soNgay;
+                phieu.setTongTien(giaTriPhongNay);
 
-                // Xử lý trạng thái phòng và phiếu
+                // 👉 FIX CỐT LÕI: Gán tiền cọc khi khách thanh toán
                 if (coThanhToan) {
+                    phieu.setTienCoc(giaTriPhongNay); // Đã thu đủ tiền nên Cọc = Tổng tiền
                     phieu.setTrangThai("DA_NHAN_PHONG");
+                    phieu.setLoaiThanhToan("TIEN_MAT");
                     phongService.updatePhongTrangThai(p.getMaPhong(), "Đang ở");
                 } else {
+                    phieu.setTienCoc(0.0); // Chưa thu tiền
                     phieu.setTrangThai("CHO_NHAN_PHONG");
                     phongService.updatePhongTrangThai(p.getMaPhong(), "Đã Đặt");
                 }

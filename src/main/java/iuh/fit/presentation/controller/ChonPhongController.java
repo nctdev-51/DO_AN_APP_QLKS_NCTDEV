@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -68,6 +69,14 @@ public class ChonPhongController {
         this.currentUser = currentUser;
         this.primaryStage = primaryStage;
         this.tempBookingsList = FXCollections.observableArrayList();
+
+        // 1. Tải dữ liệu cũ lên ngay khi khởi tạo
+        loadDataFromFile();
+
+        // 2. Lắng nghe thay đổi: Bất cứ khi nào thêm hoặc xóa, hệ thống sẽ tự động lưu vào file
+        this.tempBookingsList.addListener((javafx.collections.ListChangeListener<TempBooking>) c -> {
+            saveDataToFile();
+        });
     }
 
     public HBox createView() {
@@ -445,9 +454,18 @@ public class ChonPhongController {
         dpOut.setDayCellFactory(p -> new DateCell() { @Override public void updateItem(LocalDate d, boolean e) { super.updateItem(d, e); setDisable(e || d.isBefore(dpIn.getValue().plusDays(1))); } });
     }
 
-    public static class TempBooking {
-        String id; LocalDate from, to; List<String> roomIds;
-        TempBooking(String id, LocalDate f, LocalDate t, List<String> r) { this.id = id; this.from = f; this.to = t; this.roomIds = r; }
+    // Thêm import này ở đầu file
+
+
+    public static class TempBooking implements Serializable {
+        private static final long serialVersionUID = 1L; // Đảm bảo tính tương thích dữ liệu
+        String id;
+        LocalDate from, to;
+        List<String> roomIds;
+
+        TempBooking(String id, LocalDate f, LocalDate t, List<String> r) {
+            this.id = id; this.from = f; this.to = t; this.roomIds = r;
+        }
     }
 
     private class TempBookingCell extends ListCell<TempBooking> {
@@ -508,6 +526,31 @@ public class ChonPhongController {
 
                 setGraphic(container);
             }
+        }
+    }
+
+    private final String DATA_FILE = "waitlist_data.dat";
+
+    private void saveDataToFile() {
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream(DATA_FILE))) {
+            // Chuyển ObservableList thành ArrayList thường để lưu
+            oos.writeObject(new ArrayList<>(tempBookingsList));
+        } catch (Exception e) {
+            System.err.println("Lỗi khi lưu danh sách chờ: " + e.getMessage());
+        }
+    }
+
+    private void loadDataFromFile() {
+        java.io.File file = new java.io.File(DATA_FILE);
+        if (!file.exists()) return;
+
+        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream(DATA_FILE))) {
+            List<TempBooking> data = (List<TempBooking>) ois.readObject();
+            if (data != null) {
+                tempBookingsList.setAll(data);
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tải danh sách chờ: " + e.getMessage());
         }
     }
 }

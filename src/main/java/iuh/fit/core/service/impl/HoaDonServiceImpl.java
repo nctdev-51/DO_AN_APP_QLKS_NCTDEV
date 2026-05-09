@@ -161,4 +161,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
         HoaDon saved = hoaDonRepository.save(entity);
         return HoaDonMapper.entityToDTO(saved);
     }
+
+    @Override
+    public List<HoaDonDTO> getAllHoaDon() {
+        return List.of();
+    }
 }

@@ -13,4 +13,6 @@ public interface IHoaDonService {
     HoaDonDTO calculateInvoiceAtCheckout(String maPhieu, double thueVAT, double chietKhau);
 
     HoaDonDTO addHoaDon(HoaDonDTO hoaDon);
+
+    List<HoaDonDTO> getAllHoaDon();
 }

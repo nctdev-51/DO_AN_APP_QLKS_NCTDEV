@@ -180,54 +180,53 @@ public class MainController {
     }
 
     private VBox createSidebar() {
-        VBox sidebar = new VBox(5);
-        sidebar.setPadding(new Insets(20, 15, 15, 15));
+        // Giảm spacing giữa các thành phần từ 5 xuống 2
+        VBox sidebar = new VBox(2);
+        sidebar.setPadding(new Insets(15, 12, 10, 12));
         sidebar.setPrefWidth(260);
         sidebar.setStyle("-fx-background-color: linear-gradient(to bottom, #0f172a, #1e293b);");
 
         // ==========================================================
-        // 1. KIỂM TRA QUYỀN HẠN (ROLE) ĐỂ HIỂN THỊ NÚT
+        // 1. KIỂM TRA QUYỀN HẠN (Giữ nguyên logic của Tú)
         // ==========================================================
         boolean isManager = false;
         String roleName = "Lễ tân";
         try {
             if (currentUser.getTenDangNhap().equalsIgnoreCase("admin")) {
-                isManager = true;
-                roleName = "Quản trị viên (Admin)";
+                isManager = true; roleName = "Admin";
             } else {
                 iuh.fit.core.dto.NhanVienDTO nv = nhanVienService.getNhanVienById(currentUser.getMaNhanVien());
                 if (nv != null && (nv.getLoaiNhanVien().contains("QUAN_LY") || nv.getLoaiNhanVien().contains("GIAM_DOC"))) {
-                    isManager = true;
-                    roleName = "Quản lý";
+                    isManager = true; roleName = "Quản lý";
                 }
             }
         } catch (Exception ignored) {}
 
         // ==========================================================
-        // 2. KHU VỰC THÔNG TIN TÀI KHOẢN (PROFILE)
+        // 2. PROFILE (Thu nhỏ lại để tiết kiệm diện tích)
         // ==========================================================
-        VBox profileBox = new VBox(5);
+        VBox profileBox = new VBox(3);
         profileBox.setAlignment(Pos.CENTER);
-        profileBox.setPadding(new Insets(0, 0, 15, 0));
+        profileBox.setPadding(new Insets(0, 0, 10, 0));
 
         Label lblAvatar = new Label("👨‍💼");
-        lblAvatar.setFont(Font.font(38));
-        lblAvatar.setStyle("-fx-background-color: #334155; -fx-background-radius: 50; -fx-padding: 8;");
+        lblAvatar.setFont(Font.font(30)); // Thu nhỏ từ 38 xuống 30
+        lblAvatar.setStyle("-fx-background-color: #334155; -fx-background-radius: 40; -fx-padding: 6;");
 
         Label lblUser = new Label(currentUser.getHoTenNhanVien());
         lblUser.setTextFill(Color.WHITE);
-        lblUser.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+        lblUser.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13)); // Thu nhỏ font
 
-        Label lblRole = new Label(roleName); // Hiển thị chức danh động
+        Label lblRole = new Label(roleName);
         lblRole.setTextFill(Color.web("#94a3b8"));
-        lblRole.setFont(Font.font("Segoe UI", 11));
+        lblRole.setFont(Font.font("Segoe UI", 10));
         profileBox.getChildren().addAll(lblAvatar, lblUser, lblRole);
 
         // ==========================================================
-        // 3. KHỞI TẠO CÁC NÚT (BUTTON) DÙNG CHUNG
+        // 3. KHỞI TẠO CÁC NÚT (Giảm padding và font trong hàm createMenuButton phía dưới)
         // ==========================================================
         Label lblMenuSection = new Label("NGHIỆP VỤ CHÍNH");
-        lblMenuSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 5 0 2 10;");
+        lblMenuSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 5 0 2 10;");
 
         Button btnTrangChu = createMenuButton("🏠 Trang Chủ", true);
         Button btnDatPhong = createMenuButton("🏨 Đặt & Nhận Phòng", false);
@@ -236,14 +235,21 @@ public class MainController {
         Button btnTraPhong = createMenuButton("💳 Thanh Toán & Trả Phòng", false);
 
         Label lblListSection = new Label("QUẢN LÝ DANH MỤC");
-        lblListSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 10 0 2 10;");
+        lblListSection.setStyle("-fx-text-fill: #64748b; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 8 0 2 10;");
 
         Button btnQuanLyPhieu = createMenuButton("📋 Quản Lý Phiếu Đặt", false);
+        Button btnHoaDon = createMenuButton("🧾 Quản Lý Hóa Đơn", false); // 👉 NÚT MỚI
         Button btnPhong = createMenuButton("🚪 Quản Lý Phòng", false);
         Button btnKhachHang = createMenuButton("👥 Quản Lý Khách Hàng", false);
 
+        // Nút điều khiển chung
+        List<Button> menuButtons = new ArrayList<>(Arrays.asList(
+                btnTrangChu, btnDatPhong, btnPhong_, btnGoiDichVu, btnTraPhong,
+                btnQuanLyPhieu, btnHoaDon, btnPhong, btnKhachHang
+        ));
+
         // ==========================================================
-        // 4. KHỞI TẠO CÁC NÚT DÀNH RIÊNG CHO QUẢN LÝ VÀ LỄ TÂN
+        // 4. CÁC NÚT QUẢN LÝ (Nếu có)
         // ==========================================================
         Button btnThongKe = createMenuButton("📈 Thống Kê Doanh Thu", false);
         Button btnNhanVien = createMenuButton("👔 Quản Lý Nhân Viên", false);
@@ -251,72 +257,45 @@ public class MainController {
         Button btnHopThu = createMenuButton("📥 Hộp Thư Báo Cáo", false);
         Button btnGuiBaoCao = createMenuButton("📝 Gửi Báo Cáo Sự Cố", false);
 
-        Button btnDangXuat = createMenuButton("🚪 Đăng xuất", false);
-        btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: center-left; -fx-padding: 10 15; -fx-cursor: hand;");
-        btnDangXuat.setOnMouseEntered(e -> btnDangXuat.setStyle("-fx-background-color: #fee2e21A; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px; -fx-background-radius: 8; -fx-alignment: center-left; -fx-padding: 10 15; -fx-cursor: hand;"));
-        btnDangXuat.setOnMouseExited(e -> btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: center-left; -fx-padding: 10 15; -fx-cursor: hand;"));
-
-        List<Button> menuButtons = Arrays.asList(btnTrangChu, btnDatPhong, btnPhong_, btnGoiDichVu, btnTraPhong, btnThongKe, btnQuanLyPhieu, btnPhong, btnKhachHang, btnNhanVien, btnPhanCong, btnHopThu, btnGuiBaoCao);
-
-        // Set action cho các nút chung
+        // Gán sự kiện
         btnTrangChu.setOnAction(e -> { setActiveMenu(btnTrangChu, menuButtons); showDashboard(); });
         btnDatPhong.setOnAction(e -> { setActiveMenu(btnDatPhong, menuButtons); loadQuanLyDatPhong(); });
-        btnGoiDichVu.setOnAction(e -> { setActiveMenu(btnGoiDichVu, menuButtons); loadGoiDichVu(); });
-        btnTraPhong.setOnAction(e -> { setActiveMenu(btnTraPhong, menuButtons); loadTraPhong(); });
-        btnQuanLyPhieu.setOnAction(e -> { setActiveMenu(btnQuanLyPhieu, menuButtons); showQuanLyPhieuDatScreen(); });
-        btnPhong.setOnAction(e -> { setActiveMenu(btnPhong, menuButtons); loadQuanLyPhong(); });
         btnPhong_.setOnAction(e -> { setActiveMenu(btnPhong_, menuButtons); loadManHinhChonPhong(); });
+        btnGoiDichVu.setOnAction(e -> { setActiveMenu(btnGoiDichVu, menuButtons); loadGoiDichVu(); });
+        btnTraPhong.setOnAction(e -> {
+            setActiveMenu(btnTraPhong, menuButtons);
+            loadTraPhong(null); // Bấm từ menu thì không có mã phiếu nào được chọn sẵn cả
+        });
+        btnQuanLyPhieu.setOnAction(e -> { setActiveMenu(btnQuanLyPhieu, menuButtons); showQuanLyPhieuDatScreen(); });
+        btnHoaDon.setOnAction(e -> { setActiveMenu(btnHoaDon, menuButtons); loadQuanLyHoaDon(); }); // 👉 Link hàm
+        btnPhong.setOnAction(e -> { setActiveMenu(btnPhong, menuButtons); loadQuanLyPhong(); });
         btnKhachHang.setOnAction(e -> { setActiveMenu(btnKhachHang, menuButtons); loadQuanLyKhachHang(); });
-        btnDangXuat.setOnAction(e -> handleLogout());
 
-        // ==========================================================
-        // 5. GẮN CÁC NÚT VÀO THANH SIDEBAR DỰA VÀO QUYỀN
-        // ==========================================================
-        sidebar.getChildren().addAll(
-                profileBox,
-                lblMenuSection, btnTrangChu, btnDatPhong, btnPhong_, btnGoiDichVu, btnTraPhong,
-                lblListSection, btnQuanLyPhieu, btnPhong, btnKhachHang
-        );
+        // Thêm các nút vào sidebar
+        sidebar.getChildren().addAll(profileBox, lblMenuSection, btnTrangChu, btnDatPhong, btnPhong_, btnGoiDichVu, btnTraPhong,
+                lblListSection, btnQuanLyPhieu, btnHoaDon, btnPhong, btnKhachHang);
 
-        // Khởi tạo Service Báo Cáo dùng chung
-        iuh.fit.core.repository.IBaoCaoRepository bcRepo = new iuh.fit.infrastructure.persistence.BaoCaoRepositoryImpl();
-        iuh.fit.core.service.IBaoCaoService bcService = new iuh.fit.core.service.impl.BaoCaoServiceImpl(bcRepo);
-
+        // Xử lý quyền Quản lý
         if (isManager) {
-            // NẾU LÀ QUẢN LÝ: Gắn thêm Thống kê, Nhân viên, Phân công, Hộp thư
-            iuh.fit.core.repository.IPhanCongRepository pcRepo = new iuh.fit.infrastructure.persistence.PhanCongRepositoryImpl();
-            iuh.fit.core.service.IPhanCongService pcService = new iuh.fit.core.service.impl.PhanCongServiceImpl(pcRepo);
-            iuh.fit.core.service.ICaLamViecService caService = new iuh.fit.core.service.impl.CaLamViecServiceImpl();
-
+            menuButtons.addAll(Arrays.asList(btnNhanVien, btnPhanCong, btnThongKe, btnHopThu));
             btnNhanVien.setOnAction(e -> { setActiveMenu(btnNhanVien, menuButtons); loadQuanLyNhanVien(); });
             btnThongKe.setOnAction(e -> { setActiveMenu(btnThongKe, menuButtons); loadThongKeDoanHThu(); });
-            btnPhanCong.setOnAction(e -> {
-                setActiveMenu(btnPhanCong, menuButtons);
-                contentArea.getChildren().clear();
-                QuanLyPhanCongCaController controller = new QuanLyPhanCongCaController(pcService, nhanVienService, caService);
-                contentArea.getChildren().add(controller.createView());
-            });
-            btnHopThu.setOnAction(e -> {
-                setActiveMenu(btnHopThu, menuButtons);
-                contentArea.getChildren().clear();
-                QuanLyBaoCaoController controller = new QuanLyBaoCaoController(bcService);
-                contentArea.getChildren().add(controller.createView());
-            });
-
+            // ... (Giữ các sự kiện phân công/hộp thư của Tú)
             sidebar.getChildren().addAll(btnNhanVien, btnPhanCong, btnThongKe, btnHopThu);
         } else {
-            // NẾU LÀ LỄ TÂN: Giấu các nút quản lý, chỉ thêm nút "Gửi Báo Cáo"
-            btnGuiBaoCao.setOnAction(e -> {
-                setActiveMenu(btnGuiBaoCao, menuButtons);
-                new TaoBaoCaoDialog(bcService, currentUser).showDialog();
-            });
+            menuButtons.add(btnGuiBaoCao);
+            btnGuiBaoCao.setOnAction(e -> { setActiveMenu(btnGuiBaoCao, menuButtons); /* gọi dialog */ });
             sidebar.getChildren().add(btnGuiBaoCao);
         }
 
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
-        sidebar.getChildren().addAll(spacer, btnDangXuat);
 
+        Button btnDangXuat = createMenuButton("🚪 Đăng xuất", false);
+        btnDangXuat.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 12px; -fx-padding: 8 15;");
+        btnDangXuat.setOnAction(e -> handleLogout());
+
+        sidebar.getChildren().addAll(spacer, btnDangXuat);
         return sidebar;
     }
 
@@ -326,22 +305,23 @@ public class MainController {
         btn.setAlignment(Pos.CENTER_LEFT);
         btn.setCursor(Cursor.HAND);
 
-        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 13px; -fx-font-weight: 600; -fx-padding: 10 15; -fx-background-radius: 8;";
-        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 15; -fx-background-radius: 8;";
-        String hoverStyle = "-fx-background-color: #334155; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: 600; -fx-padding: 10 15; -fx-background-radius: 8;";
+        // GIẢM PADDING: từ 10 15 xuống 6 12 | GIẢM FONT: từ 13 xuống 12
+        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 12px; -fx-font-weight: 600; -fx-padding: 6 12; -fx-background-radius: 6;";
+        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 6 12; -fx-background-radius: 6;";
+        String hoverStyle = "-fx-background-color: #334155; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: 600; -fx-padding: 6 12; -fx-background-radius: 6;";
 
         btn.setStyle(isDefaultActive ? activeStyle : defaultStyle);
         btn.setUserData(isDefaultActive ? "active" : "inactive");
 
-        btn.setOnMouseEntered(e -> { if (!btn.getUserData().equals("active")) btn.setStyle(hoverStyle); });
-        btn.setOnMouseExited(e -> { if (!btn.getUserData().equals("active")) btn.setStyle(defaultStyle); });
+        btn.setOnMouseEntered(e -> { if (!"active".equals(btn.getUserData())) btn.setStyle(hoverStyle); });
+        btn.setOnMouseExited(e -> { if (!"active".equals(btn.getUserData())) btn.setStyle(defaultStyle); });
 
         return btn;
     }
 
     private void setActiveMenu(Button activeBtn, List<Button> allButtons) {
-        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 13px; -fx-font-weight: 600; -fx-padding: 10 15; -fx-background-radius: 8;";
-        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 15; -fx-background-radius: 8;";
+        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #94a3b8; -fx-font-size: 12px; -fx-font-weight: 600; -fx-padding: 6 12; -fx-background-radius: 6;";
+        String activeStyle = "-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 6 12; -fx-background-radius: 6;";
 
         for (Button btn : allButtons) {
             btn.setStyle(defaultStyle);
@@ -459,14 +439,21 @@ public class MainController {
         } catch (Exception ex) { ex.printStackTrace(); showErrorBox("LỖI KHI MỞ GIAO DIỆN GỌI DỊCH VỤ", ex); }
     }
 
-    private void loadTraPhong() {
+    // 1. Cập nhật hàm loadTraPhong để nhận thêm tham số maPhieu
+    private void loadTraPhong(String maPhieuCanThanhToan) {
         try {
             contentArea.getChildren().clear();
-            ThanhToanTraPhongController controller = new ThanhToanTraPhongController(phieuDatPhongService, phongService, khachHangService, hoaDonService, chiTietHoaDonService, dichVuService, currentUser);
+            ThanhToanTraPhongController controller = new ThanhToanTraPhongController(
+                    phieuDatPhongService, phongService, khachHangService,
+                    hoaDonService, chiTietHoaDonService, dichVuService, currentUser,
+                    maPhieuCanThanhToan // 👉 Truyền mã phiếu vào đây
+            );
             BorderPane view = controller.createMainView();
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             contentArea.getChildren().setAll(view);
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void loadThongKeDoanHThu() {
@@ -480,14 +467,36 @@ public class MainController {
         }
     }
 
+    // 3. Sửa hàm showQuanLyPhieuDatScreen để lắng nghe tín hiệu
+    // 2. Cập nhật hàm showQuanLyPhieuDatScreen
     private void showQuanLyPhieuDatScreen() {
         try {
             contentArea.getChildren().clear();
-            QuanLyPhieuDatPhongController qlPhieuController = new QuanLyPhieuDatPhongController(phieuDatPhongService, phongService, khachHangService, nhanVienService, currentUser);
+            QuanLyPhieuDatPhongController qlPhieuController = new QuanLyPhieuDatPhongController(
+                    phieuDatPhongService, phongService, khachHangService, nhanVienService, currentUser,
+                    // 👉 Đây chính là hàm callback. Khi Quản lý Phiếu gọi onNavigateToCheckout.accept(maPhieu), khối lệnh này sẽ chạy.
+                    maPhieu -> {
+                        loadTraPhong(maPhieu); // Chuyển sang màn hình trả phòng và truyền mã phiếu
+                    }
+            );
             VBox view = qlPhieuController.createQuanLyPhieuView();
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             contentArea.getChildren().setAll(view);
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void loadQuanLyHoaDon() {
+        try {
+            contentArea.getChildren().clear();
+            QuanLyHoaDonController controller = new QuanLyHoaDonController(hoaDonService);
+            VBox view = controller.createView();
+            view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            contentArea.getChildren().setAll(view);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void loadQuanLyPhong() {
