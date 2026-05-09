@@ -1,13 +1,16 @@
 package iuh.fit.core.dto;
 
 import iuh.fit.core.entity.Phong;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * DTO: PhongFilterResult
  * Mô tả: Kết quả tìm kiếm phòng với các lựa chọn
  */
-public class PhongFilterResult {
+public class PhongFilterResult implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public enum ResultType {
         SINGLE_OPTIONS,    // Có phòng đơn

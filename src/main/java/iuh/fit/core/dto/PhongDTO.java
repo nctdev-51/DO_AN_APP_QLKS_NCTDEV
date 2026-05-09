@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * DTO: PhongDTO
  * Mô tả: Data Transfer Object cho Phòng
@@ -11,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhongDTO {
+public class PhongDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String maPhong;
     private String tenPhong;
     private String maLoaiPhong;

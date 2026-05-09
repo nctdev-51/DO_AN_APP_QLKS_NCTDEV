@@ -1,6 +1,18 @@
 package iuh.fit.core.dto;
 
-public class ChiTietHoaDonDTO {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ChiTietHoaDonDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String maHoaDon;
     private String maDichVu;
     private String tenDichVu;
@@ -9,43 +21,5 @@ public class ChiTietHoaDonDTO {
     private double thanhTien;
     private String maPhieu;  // dùng trong GoiDichVuController để lưu
 
-    public ChiTietHoaDonDTO() {
-    }
 
-    public ChiTietHoaDonDTO(String maHoaDon, String maDichVu, String tenDichVu, int soLuong, double giaTienTungDichVu) {
-        this.maHoaDon = maHoaDon;
-        this.maDichVu = maDichVu;
-        this.tenDichVu = tenDichVu;
-        this.soLuong = soLuong;
-        this.giaTienTungDichVu = giaTienTungDichVu;
-        this.thanhTien = soLuong * giaTienTungDichVu;
-    }
-
-    public String getMaHoaDon() { return maHoaDon; }
-    public void setMaHoaDon(String maHoaDon) { this.maHoaDon = maHoaDon; }
-
-    public String getMaDichVu() { return maDichVu; }
-    public void setMaDichVu(String maDichVu) { this.maDichVu = maDichVu; }
-
-    public String getTenDichVu() { return tenDichVu; }
-    public void setTenDichVu(String tenDichVu) { this.tenDichVu = tenDichVu; }
-
-    public int getSoLuong() { return soLuong; }
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
-        this.thanhTien = soLuong * giaTienTungDichVu;
-    }
-
-    public double getGiaTienTungDichVu() { return giaTienTungDichVu; }
-    public void setGiaTienTungDichVu(double giaTienTungDichVu) {
-        this.giaTienTungDichVu = giaTienTungDichVu;
-        this.thanhTien = soLuong * giaTienTungDichVu;
-    }
-
-    public double getThanhTien() { return thanhTien; }
-    public void setThanhTien(double thanhTien) { this.thanhTien = thanhTien; }
-
-    // FIX: thêm getter/setter cho maPhieu (trước đây thiếu)
-    public String getMaPhieu() { return maPhieu; }
-    public void setMaPhieu(String maPhieu) { this.maPhieu = maPhieu; }
 }
