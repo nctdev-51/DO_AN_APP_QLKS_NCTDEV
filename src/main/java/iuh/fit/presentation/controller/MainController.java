@@ -46,6 +46,7 @@ public class MainController {
     private IHoaDonService hoaDonService;
     private IChiTietHoaDonService chiTietHoaDonService;
     private IGiaoCaService giaoCaService;
+    private ChonPhongController chonPhongController;
 
 
     private Label lblClock;
@@ -416,14 +417,28 @@ public class MainController {
     // ĐIỀU HƯỚNG MODULES
     // =========================================================================
 
+    // Trong MainController.java
+
     private void loadManHinhChonPhong() {
         try {
             contentArea.getChildren().clear();
-            ChonPhongController controller = new ChonPhongController(phongService, khachHangService, phieuDatPhongService, currentUser, primaryStage);
-            HBox view = controller.createView();
+
+            // 👉 KIỂM TRA: Nếu chưa có thì mới tạo mới, có rồi thì dùng lại cái cũ để giữ dữ liệu
+            if (this.chonPhongController == null) {
+                this.chonPhongController = new ChonPhongController(
+                        phongService, khachHangService, phieuDatPhongService, currentUser, primaryStage
+                );
+            }
+
+            // Lấy View từ controller (Danh sách chờ sẽ được bảo toàn trong biến instance)
+            HBox view = chonPhongController.createView();
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             contentArea.getChildren().setAll(view);
-        } catch (Exception ex) { ex.printStackTrace(); }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showErrorBox("LỖI KHI MỞ GIAO DIỆN CHỌN PHÒNG", ex);
+        }
     }
 
     private void loadQuanLyDatPhong() {

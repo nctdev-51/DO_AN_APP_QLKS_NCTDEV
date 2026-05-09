@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -31,10 +32,10 @@ public class PhieuDatPhong {
     private LocalDate ngayDat;
 
     @Column(name = "ngayNhan")
-    private LocalDate ngayNhan;
+    private LocalDateTime ngayNhan;
 
     @Column(name = "ngayTra")
-    private LocalDate ngayTra;
+    private LocalDateTime ngayTra;
 
     @Column(name = "tongTien")
     private Double tongTien;

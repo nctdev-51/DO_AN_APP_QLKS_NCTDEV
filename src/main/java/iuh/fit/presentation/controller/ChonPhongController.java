@@ -10,14 +10,12 @@ import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.text.Normalizer;
@@ -40,14 +38,19 @@ public class ChonPhongController {
     private ListView<TempBooking> lvTempBookings;
     private ObservableList<TempBooking> tempBookingsList;
     private Set<String> currentSelectedRoomIds = new HashSet<>();
+    private List<PhongDTO> currentAvailableRoomsCache = new ArrayList<>(); // Lưu tạm để filter nhanh
 
     // Filters
     private DatePicker dpIn, dpOut;
     private ComboBox<String> cbType;
+    private ComboBox<String> cbSoNguoi;
     private Slider sliderPrice;
     private Label lblPriceValue;
+    private Label lblTotalHotelCapacity;
+    private Label lblCurrentSelectedCapacity;
+    private TextField txtSearch;
 
-    // Bảng màu thiết kế chuẩn (Khớp hệ thống)
+    // Bảng màu thiết kế chuẩn
     private final String COLOR_PRIMARY = "#2563eb";
     private final String COLOR_PRIMARY_DARK = "#1e3a8a";
     private final String COLOR_BG_MAIN = "#f8fafc";
@@ -71,32 +74,24 @@ public class ChonPhongController {
         HBox root = new HBox(0);
         root.setStyle("-fx-background-color: " + COLOR_BG_MAIN + ";");
 
-        // --- 1. SIDEBAR TRÁI: DANH SÁCH CHỜ ---
         VBox leftSidebar = createSidebar();
-
-        // --- 2. KHU VỰC CHÍNH ---
         VBox mainArea = new VBox(25);
         mainArea.setPadding(new Insets(30));
         HBox.setHgrow(mainArea, Priority.ALWAYS);
 
-        // Header khu vực chính
         VBox header = new VBox(5);
         Label lblTitle = new Label("CHỌN PHÒNG NHANH");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BLACK, 28));
         lblTitle.setTextFill(Color.web(COLOR_TEXT_MAIN));
-
-        Label lblSub = new Label("Tìm và chọn các phòng đang trống để đưa vào danh sách chờ lập phiếu.");
+        Label lblSub = new Label("Tìm và chọn các phòng trống thực sự trong khoảng thời gian đã chọn.");
         lblSub.setFont(Font.font("Segoe UI", 14));
         lblSub.setTextFill(Color.web(COLOR_TEXT_MUTED));
         header.getChildren().addAll(lblTitle, lblSub);
 
-        // Thanh bộ lọc gọn gàng
         VBox filterBar = createFilterBar();
 
-        // Lưới phòng
         roomContainer = new VBox(25);
         roomContainer.setPadding(new Insets(10, 0, 10, 0));
-
         ScrollPane scrollPane = new ScrollPane(roomContainer);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;");
@@ -106,12 +101,10 @@ public class ChonPhongController {
         root.getChildren().addAll(leftSidebar, mainArea);
 
         loadRooms();
+        setupDateValidation();
         return root;
     }
 
-    // =========================================================================
-    // SIDEBAR: DANH SÁCH PHIẾU TẠM
-    // =========================================================================
     private VBox createSidebar() {
         VBox sidebar = new VBox(20);
         sidebar.setPrefWidth(350);
@@ -131,388 +124,325 @@ public class ChonPhongController {
         VBox.setVgrow(lvTempBookings, Priority.ALWAYS);
         lvTempBookings.setCellFactory(param -> new TempBookingCell());
 
-        VBox btnBox = new VBox(12);
+        // --- BỘ CHỈ SỐ SỨC CHỨA ---
+        VBox capacityBox = new VBox(8);
+        capacityBox.setPadding(new Insets(15));
+        capacityBox.setStyle("-fx-background-color: #f1f5f9; -fx-background-radius: 10; -fx-border-color: #cbd5e1; -fx-border-radius: 10;");
 
+        lblTotalHotelCapacity = new Label("🏠 KS còn trống: 0 chỗ");
+        lblTotalHotelCapacity.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
+        lblTotalHotelCapacity.setTextFill(Color.web(COLOR_TEXT_MAIN));
+
+        lblCurrentSelectedCapacity = new Label("👥 Đã chọn cho: 0 người");
+        lblCurrentSelectedCapacity.setFont(Font.font("Segoe UI", FontWeight.BLACK, 14));
+        lblCurrentSelectedCapacity.setTextFill(Color.web(COLOR_PRIMARY));
+
+        capacityBox.getChildren().addAll(lblTotalHotelCapacity, lblCurrentSelectedCapacity);
+
+        VBox btnBox = new VBox(12);
         Button btnProceed = new Button("XÁC NHẬN ĐẶT PHÒNG");
         btnProceed.setMaxWidth(Double.MAX_VALUE);
         btnProceed.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
-        btnProceed.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-padding: 14; -fx-background-radius: 8;");
-        btnProceed.setCursor(Cursor.HAND);
+        btnProceed.setStyle("-fx-background-color: " + COLOR_PRIMARY + "; -fx-text-fill: white; -fx-padding: 14; -fx-background-radius: 8; -fx-cursor: hand;");
         btnProceed.setOnAction(e -> handleConfirmAll());
 
         Button btnClearAll = new Button("Xóa tất cả danh sách");
         btnClearAll.setMaxWidth(Double.MAX_VALUE);
-        btnClearAll.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
-        btnClearAll.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-border-color: #fecaca; -fx-border-radius: 8; -fx-padding: 10;");
-        btnClearAll.setCursor(Cursor.HAND);
+        btnClearAll.setStyle("-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-border-color: #fecaca; -fx-border-radius: 8; -fx-padding: 10; -fx-cursor: hand;");
         btnClearAll.setOnAction(e -> {
             tempBookingsList.clear();
             currentSelectedRoomIds.clear();
             loadRooms();
         });
 
-        btnBox.getChildren().addAll(btnProceed, btnClearAll);
+        btnBox.getChildren().addAll(capacityBox, btnProceed, btnClearAll);
         sidebar.getChildren().addAll(lblTitle, lvTempBookings, btnBox);
 
         return sidebar;
     }
 
-    // =========================================================================
-    // FILTER BAR: BỘ LỌC TÌM KIẾM CẢI TIẾN
-    // =========================================================================
     private VBox createFilterBar() {
-        VBox card = new VBox(15);
+        VBox card = new VBox();
         card.setPadding(new Insets(20));
         card.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: " + COLOR_BORDER + "; -fx-border-width: 1;");
         card.setEffect(new DropShadow(10, Color.web("#000000", 0.03)));
 
-        String inputStyle = "-fx-font-size: 14px; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #cbd5e1; -fx-background-color: #f8fafc; -fx-padding: 8 12;";
+        String inputStyle = "-fx-font-size: 13px; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #cbd5e1; -fx-background-color: #f8fafc; -fx-padding: 8 10; -fx-pref-height: 38px;";
+        String labelStyle = "-fx-font-weight: bold; -fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-font-size: 12px;";
 
-        HBox topRow = new HBox(15);
-        topRow.setAlignment(Pos.CENTER_LEFT);
+        GridPane grid = new GridPane();
+        grid.setHgap(15); grid.setVgap(15);
+        ColumnConstraints c0 = new ColumnConstraints(); c0.setPercentWidth(28);
+        ColumnConstraints c1 = new ColumnConstraints(); c1.setPercentWidth(22);
+        ColumnConstraints c2 = new ColumnConstraints(); c2.setPercentWidth(25);
+        ColumnConstraints c3 = new ColumnConstraints(); c3.setPercentWidth(25);
+        grid.getColumnConstraints().addAll(c0, c1, c2, c3);
 
-        Label lblDate = new Label("Thời gian thuê:");
-        lblDate.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
-        lblDate.setTextFill(Color.web(COLOR_TEXT_MUTED));
+        VBox bSearch = new VBox(5); bSearch.getChildren().addAll(new Label("TỪ KHÓA:"), txtSearch = new TextField());
+        ((Label)bSearch.getChildren().get(0)).setStyle(labelStyle);
+        txtSearch.setPromptText("🔍 Nhập số phòng hoặc tên..."); txtSearch.setStyle(inputStyle);
+        txtSearch.textProperty().addListener((o, old, nw) -> applyFilters());
 
-        dpIn = new DatePicker(LocalDate.now()); dpIn.setStyle(inputStyle); dpIn.setPrefWidth(140);
-        dpIn.setOnAction(e -> loadRooms());
-        Label lblDash = new Label("-"); lblDash.setTextFill(Color.web(COLOR_TEXT_MUTED));
-        dpOut = new DatePicker(LocalDate.now().plusDays(1)); dpOut.setStyle(inputStyle); dpOut.setPrefWidth(140);
-        dpOut.setOnAction(e -> loadRooms());
+        VBox bLoai = new VBox(5); bLoai.getChildren().addAll(new Label("LOẠI PHÒNG:"), cbType = new ComboBox<>(FXCollections.observableArrayList("Tất cả loại phòng", "Phòng Đơn", "Phòng Đôi", "Phòng Gia Đình", "Phòng VIP")));
+        ((Label)bLoai.getChildren().get(0)).setStyle(labelStyle);
+        cbType.setValue("Tất cả loại phòng"); cbType.setStyle(inputStyle); cbType.setMaxWidth(Double.MAX_VALUE);
+        cbType.setOnAction(e -> applyFilters());
 
-        Label lblType = new Label("   |   Loại phòng:");
-        lblType.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
-        lblType.setTextFill(Color.web(COLOR_TEXT_MUTED));
+        VBox bSucChua = new VBox(5); bSucChua.getChildren().addAll(new Label("SỨC CHỨA:"), cbSoNguoi = new ComboBox<>(FXCollections.observableArrayList("Sức chứa bất kỳ", "1 Người", "2 Người", "3 Người", "4 Người trở lên")));
+        ((Label)bSucChua.getChildren().get(0)).setStyle(labelStyle);
+        cbSoNguoi.setValue("Sức chứa bất kỳ"); cbSoNguoi.setStyle(inputStyle); cbSoNguoi.setMaxWidth(Double.MAX_VALUE);
+        cbSoNguoi.setOnAction(e -> applyFilters());
 
-        cbType = new ComboBox<>(FXCollections.observableArrayList("Tất cả loại phòng", "Phòng Đơn", "Phòng Đôi", "Phòng Gia Đình", "Phòng VIP"));
-        cbType.setValue("Tất cả loại phòng");
-        cbType.setStyle(inputStyle);
-        cbType.setPrefWidth(200);
-        cbType.setOnAction(e -> loadRooms());
+        VBox bAdd = new VBox(5); bAdd.setAlignment(Pos.BOTTOM_CENTER);
+        Button btnAdd = new Button("➕ THÊM ĐÃ CHỌN");
+        btnAdd.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-pref-height: 38px; -fx-cursor: hand;");
+        btnAdd.setMaxWidth(Double.MAX_VALUE); btnAdd.setOnAction(e -> handleAddToTemp());
+        bAdd.getChildren().add(btnAdd);
 
-        Region spacer1 = new Region(); HBox.setHgrow(spacer1, Priority.ALWAYS);
-        Button btnRefresh = new Button("🔄 Cập nhật");
-        btnRefresh.setStyle("-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 8;");
-        btnRefresh.setCursor(Cursor.HAND);
-        btnRefresh.setOnAction(e -> {
-            cbType.setValue("Tất cả loại phòng");
-            dpIn.setValue(LocalDate.now());
-            dpOut.setValue(LocalDate.now().plusDays(1));
-            sliderPrice.setValue(5000000);
-            loadRooms();
+        VBox bNgay = new VBox(5); bNgay.getChildren().addAll(new Label("THỜI GIAN THUÊ:"), new HBox(8, dpIn = new DatePicker(LocalDate.now()), new Label("-"), dpOut = new DatePicker(LocalDate.now().plusDays(1))));
+        ((Label)bNgay.getChildren().get(0)).setStyle(labelStyle);
+        dpIn.setStyle(inputStyle); dpOut.setStyle(inputStyle);
+        dpIn.valueProperty().addListener((o, v, n) -> loadRooms());
+        dpOut.valueProperty().addListener((o, v, n) -> loadRooms());
+        GridPane.setColumnSpan(bNgay, 2);
+
+        VBox bGia = new VBox(5); bGia.getChildren().addAll(new Label("GIÁ TỐI ĐA:"), new HBox(10, sliderPrice = new Slider(0, 10000000, 5000000), lblPriceValue = new Label("5.000.000 đ")));
+        ((Label)bGia.getChildren().get(0)).setStyle(labelStyle);
+        lblPriceValue.setStyle("-fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY);
+        sliderPrice.valueProperty().addListener((obs, old, nw) -> {
+            lblPriceValue.setText(String.format("%,.0f đ", nw.doubleValue()));
+            applyFilters();
         });
 
-        topRow.getChildren().addAll(lblDate, dpIn, lblDash, dpOut, lblType, cbType, spacer1, btnRefresh);
-
-        HBox botRow = new HBox(15);
-        botRow.setAlignment(Pos.CENTER_LEFT);
-
-        Label lblPriceTitle = new Label("Mức giá tối đa:");
-        lblPriceTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
-        lblPriceTitle.setTextFill(Color.web(COLOR_TEXT_MUTED));
-
-        sliderPrice = new Slider(0, 10000000, 5000000);
-        sliderPrice.setPrefWidth(300);
-
-        lblPriceValue = new Label("5.000.000 đ");
-        lblPriceValue.setFont(Font.font("Segoe UI", FontWeight.BLACK, 15));
-        lblPriceValue.setTextFill(Color.web(COLOR_PRIMARY));
-        lblPriceValue.setPrefWidth(120);
-
-        sliderPrice.valueProperty().addListener((obs, oldVal, newVal) -> {
-            lblPriceValue.setText(String.format("%,.0f đ", newVal.doubleValue()));
+        VBox bRes = new VBox(5); bRes.setAlignment(Pos.BOTTOM_RIGHT);
+        Button btnRes = new Button("🔄 LÀM MỚI");
+        btnRes.setStyle("-fx-background-color: #e2e8f0; -fx-font-weight: bold; -fx-background-radius: 6; -fx-pref-height: 38px;");
+        btnRes.setMaxWidth(Double.MAX_VALUE);
+        btnRes.setOnAction(e -> {
+            txtSearch.clear(); cbType.setValue("Tất cả loại phòng"); cbSoNguoi.setValue("Sức chứa bất kỳ");
+            dpIn.setValue(LocalDate.now()); dpOut.setValue(LocalDate.now().plusDays(1));
+            sliderPrice.setValue(10000000); loadRooms();
         });
-        sliderPrice.setOnMouseReleased(e -> loadRooms());
+        bRes.getChildren().add(btnRes);
 
-        Region spacer2 = new Region(); HBox.setHgrow(spacer2, Priority.ALWAYS);
+        grid.add(bSearch, 0, 0); grid.add(bLoai, 1, 0); grid.add(bSucChua, 2, 0); grid.add(bAdd, 3, 0);
+        grid.add(bNgay, 0, 1); grid.add(bGia, 2, 1); grid.add(bRes, 3, 1);
 
-        Button btnAddTemp = new Button("➕ Thêm Phòng Đã Chọn");
-        btnAddTemp.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25; -fx-background-radius: 8;");
-        btnAddTemp.setCursor(Cursor.HAND);
-        btnAddTemp.setOnAction(e -> handleAddToTemp());
-
-        botRow.getChildren().addAll(lblPriceTitle, sliderPrice, lblPriceValue, spacer2, btnAddTemp);
-        card.getChildren().addAll(topRow, botRow);
-
+        card.getChildren().add(grid);
         return card;
     }
 
-    // =========================================================================
-    // LOAD & RENDER PHÒNG TRỐNG
-    // =========================================================================
+    // 👉 Hàm Load từ DB (Chỉ gọi khi đổi ngày)
     private void loadRooms() {
-        LocalDate in = dpIn.getValue();
-        LocalDate out = dpOut.getValue();
+        LocalDate in = dpIn.getValue(); LocalDate out = dpOut.getValue();
         if (in == null || out == null || !out.isAfter(in)) return;
-
-        double maxPrice = sliderPrice.getValue();
-        String typeSel = cbType.getValue();
 
         Task<List<PhongDTO>> task = new Task<>() {
             @Override protected List<PhongDTO> call() {
-                return phongService.getAllPhong();
+                return phongService.findAvailableRooms(in, out, 0, Double.MAX_VALUE, null);
             }
         };
 
         task.setOnSucceeded(e -> {
-            List<PhongDTO> allRooms = task.getValue();
-            if (allRooms != null) {
-                List<PhongDTO> filtered = allRooms.stream()
-                        .filter(r -> typeSel.equals("Tất cả loại phòng") || mapMaLoaiToTen(r.getMaLoaiPhong()).equals(typeSel))
-                        .filter(r -> getNormalizedStatusKey(r.getTinhTrang()).equals("TRONG"))
-                        .filter(r -> r.getGiaPhong() <= maxPrice)
-                        .collect(Collectors.toList());
-
-                renderRoomGrid(filtered);
-            }
+            currentAvailableRoomsCache = task.getValue();
+            applyFilters(); // Sau khi load DB xong thì áp dụng filter UI
         });
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            Platform.runLater(() -> showAlert("Lỗi", "Không thể tải dữ liệu phòng từ máy chủ."));
-        });
-
         new Thread(task).start();
+    }
+
+    // 👉 Hàm Lọc từ bộ nhớ (Gọi khi gõ phím, chọn combo, kéo slider)
+    // =========================================================================
+    // 👉 FIX LỖI 2: CHỈ ẨN PHÒNG NẾU NGÀY CHỌN TRÙNG VỚI NGÀY TRONG WAITLIST
+    // =========================================================================
+    private void applyFilters() {
+        if (currentAvailableRoomsCache == null) return;
+
+        LocalDate curIn = dpIn.getValue();
+        LocalDate curOut = dpOut.getValue();
+
+        // Chỉ lấy ID các phòng đang nằm trong Waitlist MÀ CÓ NGÀY GIAO THOA với ngày đang lọc
+        Set<String> conflictRoomIds = new HashSet<>();
+        for (TempBooking tb : tempBookingsList) {
+            // Logic Overlap: (Đợt.Nhan < Lọc.Tra) AND (Đợt.Tra > Lọc.Nhan)
+            boolean isOverlap = tb.from.isBefore(curOut) && tb.to.isAfter(curIn);
+            if (isOverlap) {
+                conflictRoomIds.addAll(tb.roomIds);
+            }
+        }
+
+        final double maxP = sliderPrice.getValue();
+        final String typeS = cbType.getValue();
+        final String kw = txtSearch.getText() != null ? txtSearch.getText().toLowerCase().trim() : "";
+
+        List<PhongDTO> filtered = currentAvailableRoomsCache.stream()
+                .filter(r -> !conflictRoomIds.contains(r.getMaPhong())) // Chỉ ẩn nếu bị trùng lịch trong Waitlist
+                .filter(r -> kw.isEmpty() || r.getMaPhong().toLowerCase().contains(kw) || (r.getTenPhong() != null && r.getTenPhong().toLowerCase().contains(kw)))
+                .filter(r -> typeS.equals("Tất cả loại phòng") || mapMaLoaiToTen(r.getMaLoaiPhong()).equals(typeS))
+                .filter(r -> r.getGiaPhong() <= maxP)
+                .collect(Collectors.toList());
+
+        renderRoomGrid(filtered);
+        updateCapacityStatistics(currentAvailableRoomsCache);
     }
 
     private void renderRoomGrid(List<PhongDTO> rooms) {
         Platform.runLater(() -> {
             roomContainer.getChildren().clear();
-
-            if (rooms == null || rooms.isEmpty()) {
-                Label lblEmpty = new Label("📭 Không có phòng trống nào phù hợp với bộ lọc.");
-                lblEmpty.setFont(Font.font("Segoe UI", 16));
-                lblEmpty.setTextFill(Color.web(COLOR_TEXT_MUTED));
-                roomContainer.getChildren().add(lblEmpty);
+            if (rooms.isEmpty()) {
+                roomContainer.getChildren().add(new Label("📭 Không có phòng nào phù hợp."));
                 return;
             }
-
             Map<String, List<PhongDTO>> byFloor = new TreeMap<>();
             for (PhongDTO r : rooms) {
-                String ma = r.getMaPhong();
-                String floor = (ma != null && ma.length() > 0) ? ma.substring(0, 1) : "?";
+                String floor = (r.getMaPhong() != null) ? r.getMaPhong().substring(0, 1) : "?";
                 byFloor.computeIfAbsent(floor, k -> new ArrayList<>()).add(r);
             }
-
             for (String floor : byFloor.keySet()) {
-                VBox floorBox = new VBox(15);
-
-                Label lblFloor = new Label("📍 TẦNG " + floor);
-                lblFloor.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: 900; -fx-text-fill: " + COLOR_PRIMARY + ";");
-
-                FlowPane flowPane = new FlowPane();
-                flowPane.setHgap(20);
-                flowPane.setVgap(20);
-
-                List<PhongDTO> floorRooms = byFloor.get(floor);
-                for (PhongDTO room : floorRooms) {
-                    VBox card = createRoomCard(room);
-                    card.setPrefWidth(220);
-                    flowPane.getChildren().add(card);
-                }
-
-                floorBox.getChildren().addAll(lblFloor, flowPane);
-                roomContainer.getChildren().add(floorBox);
+                VBox fBox = new VBox(15);
+                Label lblF = new Label("📍 TẦNG " + floor); lblF.setStyle("-fx-font-weight: 900; -fx-font-size: 18; -fx-text-fill: " + COLOR_PRIMARY);
+                FlowPane flow = new FlowPane(20, 20);
+                for (PhongDTO room : byFloor.get(floor)) { flow.getChildren().add(createRoomCard(room)); }
+                fBox.getChildren().addAll(lblF, flow);
+                roomContainer.getChildren().add(fBox);
             }
         });
     }
 
     private VBox createRoomCard(PhongDTO r) {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(18));
-        card.setAlignment(Pos.TOP_LEFT);
-        card.setCursor(Cursor.HAND);
+        String ma = r.getMaPhong();
+        boolean isS = currentSelectedRoomIds.contains(ma);
+        VBox card = new VBox(10); card.setPadding(new Insets(18)); card.setPrefWidth(220); card.setCursor(Cursor.HAND);
 
-        String rawMa = r.getMaPhong();
-        String maPhong = (rawMa != null && !rawMa.trim().isEmpty()) ? rawMa.trim() : "Lỗi Mã";
+        String borderCol = isS ? COLOR_PRIMARY : COLOR_SUCCESS;
+        card.setStyle("-fx-background-color: " + (isS ? COLOR_SELECTED_BG : "white") + "; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-width: " + (isS?2:1) + " 1 1 6; -fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 " + borderCol + ";");
 
-        String rawLoai = r.getMaLoaiPhong();
-        String tenLoai = (rawLoai != null && !rawLoai.trim().isEmpty()) ? mapMaLoaiToTen(rawLoai.trim()) : "Chưa rõ";
+        Label lMa = new Label(ma); lMa.setStyle("-fx-font-size: 22; -fx-font-weight: 900; -fx-text-fill: " + (isS?COLOR_PRIMARY:COLOR_TEXT_MAIN));
+        Label lLoai = new Label(mapMaLoaiToTen(r.getMaLoaiPhong()).toUpperCase()); lLoai.setStyle("-fx-font-size: 11; -fx-text-fill: " + COLOR_TEXT_MUTED);
+        Label lP = new Label(String.format("%,.0f đ", r.getGiaPhong())); lP.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: " + (isS?COLOR_PRIMARY:COLOR_SUCCESS));
 
-        double gia = r.getGiaPhong();
-
-        boolean isSelected = currentSelectedRoomIds.contains(maPhong);
-
-        String defaultStyle = "-fx-background-color: white; -fx-background-radius: 12; -fx-border-radius: 12; " +
-                "-fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 " + COLOR_SUCCESS + "; -fx-border-width: 1 1 1 6;";
-
-        String selectedStyle = "-fx-background-color: " + COLOR_SELECTED_BG + "; -fx-background-radius: 12; -fx-border-radius: 12; " +
-                "-fx-border-color: " + COLOR_PRIMARY + "; -fx-border-width: 2;";
-
-        card.setStyle(isSelected ? selectedStyle : defaultStyle);
-        DropShadow ds = new DropShadow(isSelected ? 15 : 8, Color.web("#000000", isSelected ? 0.1 : 0.04));
-        card.setEffect(ds);
-
-        HBox topBox = new HBox();
-        topBox.setAlignment(Pos.CENTER_LEFT);
-
-        Label lblMa = new Label(maPhong);
-        lblMa.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: " + (isSelected ? COLOR_PRIMARY : COLOR_TEXT_MAIN) + ";");
-
-        Region sp = new Region(); HBox.setHgrow(sp, Priority.ALWAYS);
-
-        Label lblCheck = new Label(isSelected ? "✔️" : "");
-        lblCheck.setStyle("-fx-font-size: 16px; -fx-text-fill: " + COLOR_PRIMARY + ";");
-
-        topBox.getChildren().addAll(lblMa, sp, lblCheck);
-
-        Label lblType = new Label(tenLoai.toUpperCase());
-        lblType.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + COLOR_TEXT_MUTED + ";");
-
-        Label lblStatus = new Label("TRỐNG");
-        lblStatus.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-font-weight: 900; " +
-                "-fx-background-color: " + COLOR_SUCCESS + "15; -fx-text-fill: " + COLOR_SUCCESS + "; -fx-padding: 4 10; -fx-background-radius: 6;");
-
-        Label lblPrice = new Label(String.format("%,.0f đ", gia));
-        lblPrice.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: " + (isSelected ? COLOR_PRIMARY : COLOR_SUCCESS) + ";");
-
-        card.getChildren().addAll(topBox, lblType, lblStatus, new Region(), lblPrice);
-        VBox.setVgrow(card.getChildren().get(3), Priority.ALWAYS);
+        HBox top = new HBox(lMa, new Region(), new Label(isS ? "✔️" : "")); HBox.setHgrow(top.getChildren().get(1), Priority.ALWAYS);
+        card.getChildren().addAll(top, lLoai, new Region(), lP); VBox.setVgrow(card.getChildren().get(2), Priority.ALWAYS);
 
         card.setOnMouseClicked(e -> {
-            if (currentSelectedRoomIds.contains(maPhong)) {
-                currentSelectedRoomIds.remove(maPhong);
-                card.setStyle(defaultStyle);
-                lblCheck.setText("");
-                lblMa.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: " + COLOR_TEXT_MAIN + ";");
-                lblPrice.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: " + COLOR_SUCCESS + ";");
-                ds.setRadius(8); ds.setColor(Color.web("#000000", 0.04));
-            } else {
-                currentSelectedRoomIds.add(maPhong);
-                card.setStyle(selectedStyle);
-                lblCheck.setText("✔️");
-                lblMa.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: " + COLOR_PRIMARY + ";");
-                lblPrice.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + ";");
-                ds.setRadius(15); ds.setColor(Color.web("#000000", 0.1));
-            }
+            if (currentSelectedRoomIds.contains(ma)) currentSelectedRoomIds.remove(ma);
+            else currentSelectedRoomIds.add(ma);
+            applyFilters(); // Vẽ lại tích xanh và cập nhật số người
         });
-
-        card.setOnMouseEntered(e -> {
-            if (!currentSelectedRoomIds.contains(maPhong)) {
-                card.setStyle(defaultStyle + "-fx-background-color: #f8fafc; -fx-translate-y: -3;");
-            }
-        });
-        card.setOnMouseExited(e -> {
-            if (!currentSelectedRoomIds.contains(maPhong)) {
-                card.setStyle(defaultStyle);
-            }
-        });
-
         return card;
     }
 
-    private String getNormalizedStatusKey(String rawStatus) {
-        if (rawStatus == null || rawStatus.trim().isEmpty()) return "BAO_TRI";
-        String normalized = removeAccents(rawStatus).trim().toUpperCase();
+    private void updateCapacityStatistics(List<PhongDTO> availableRooms) {
+        int totalSlots = availableRooms.stream().mapToInt(r -> getSucChuaTuLoaiPhong(r.getMaLoaiPhong())).sum();
+        int selectedSlots = 0;
+        for (PhongDTO r : availableRooms) {
+            if (currentSelectedRoomIds.contains(r.getMaPhong())) {
+                selectedSlots += getSucChuaTuLoaiPhong(r.getMaLoaiPhong());
+            }
+        }
 
-        if (normalized.contains("BAO TRI") || normalized.contains("HONG")) return "BAO_TRI";
-        if (normalized.contains("TRONG")) return "TRONG";
-        if (normalized.contains("DAT")) return "DA_DAT";
-        if (normalized.contains("DANG") || normalized.contains("SU DUNG") || normalized.equals("O")) return "DANG_O";
+        final int finalTotal = totalSlots;
+        final int finalSelected = selectedSlots;
 
-        return "BAO_TRI";
+        Platform.runLater(() -> {
+            lblTotalHotelCapacity.setText("🏠 KS còn trống: " + finalTotal + " chỗ");
+            lblCurrentSelectedCapacity.setText("👥 Đã chọn cho: " + finalSelected + " người");
+
+            // Cảnh báo nếu khách đoàn đi quá đông mà KS không đủ chỗ
+            String reqStr = cbSoNguoi.getValue();
+            int required = 0;
+            if (reqStr.contains("1")) required = 1; else if (reqStr.contains("2")) required = 2; else if (reqStr.contains("3")) required = 3; else if (reqStr.contains("4")) required = 4;
+
+            if (finalTotal < required && required > 0) {
+                lblTotalHotelCapacity.setText("⚠️ KHÔNG ĐỦ CHỖ (Thiếu " + (required - finalTotal) + ")");
+                lblTotalHotelCapacity.setTextFill(Color.RED);
+            } else {
+                lblTotalHotelCapacity.setTextFill(Color.web(COLOR_TEXT_MAIN));
+            }
+        });
     }
 
-    private String removeAccents(String input) {
-        if (input == null) return "";
-        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
-        return Pattern.compile("\\p{InCombiningDiacriticalMarks}+").matcher(normalized)
-                .replaceAll("").replace('đ', 'd').replace('Đ', 'D');
+    private int getSucChuaTuLoaiPhong(String maLoai) {
+        if (maLoai == null) return 2;
+        return switch (maLoai.toUpperCase()) {
+            case "DON" -> 1; case "DOI", "VIP" -> 2; case "GIADINH" -> 4; default -> 2;
+        };
     }
 
     private String mapMaLoaiToTen(String maLoai) {
         if (maLoai == null) return "Tiêu Chuẩn";
         return switch (maLoai.toUpperCase()) {
-            case "DON" -> "Phòng Đơn";
-            case "DOI" -> "Phòng Đôi";
-            case "GIADINH" -> "Phòng Gia Đình";
-            case "VIP" -> "Phòng VIP";
-            default -> "Phòng " + maLoai;
+            case "DON" -> "Phòng Đơn"; case "DOI" -> "Phòng Đôi"; case "GIADINH" -> "Phòng Gia Đình"; case "VIP" -> "Phòng VIP"; default -> "Phòng " + maLoai;
         };
     }
 
     private void handleAddToTemp() {
         if (currentSelectedRoomIds.isEmpty()) {
-            showAlert("Chưa chọn phòng", "Vui lòng click chọn ít nhất một phòng trống trước khi thêm vào danh sách!");
+            showAlert("Thông báo", "Vui lòng chọn ít nhất một phòng trước khi thêm!");
             return;
         }
 
+        // Lấy ngày hiện tại từ bộ lọc
         LocalDate in = dpIn.getValue();
         LocalDate out = dpOut.getValue();
 
-        List<String> rooms = new ArrayList<>(currentSelectedRoomIds);
-        String id = "TẠM-" + (System.currentTimeMillis() % 10000);
-        tempBookingsList.add(new TempBooking(id, in, out, rooms));
+        // 👉 QUAN TRỌNG: Phải tạo một List mới để lưu, không dùng tham chiếu trực tiếp
+        List<String> selectedRoomsCopy = new ArrayList<>(currentSelectedRoomIds);
+        String batchId = "ĐỢT-" + (System.currentTimeMillis() % 10000);
 
+        // Thêm vào danh sách chờ (ObservableList sẽ tự cập nhật ListView)
+        tempBookingsList.add(new TempBooking(batchId, in, out, selectedRoomsCopy));
+
+        // Xóa dấu tích ở các phòng vừa chọn để chọn đợt tiếp theo
         currentSelectedRoomIds.clear();
-        loadRooms();
+        applyFilters(); // Vẽ lại lưới phòng
+
+        System.out.println("✅ Đã lưu đợt phòng vào danh sách chờ.");
     }
 
     // =========================================================================
-    // XỬ LÝ XÁC NHẬN ĐẶT PHÒNG
-    // =========================================================================
-    // =========================================================================
-    // XỬ LÝ XÁC NHẬN ĐẶT PHÒNG (ĐÃ FIX KHỚP CONSTRUCTOR CỦA DATPHONGCONTROLLER)
+    // 👉 FIX LỖI 1: CHỈ THANH TOÁN PHIẾU ĐANG ĐƯỢC CHỌN (KHÔNG GOM PHIẾU)
     // =========================================================================
     private void handleConfirmAll() {
-        if (tempBookingsList.isEmpty()) {
-            showAlert("Danh sách trống", "Không có phiếu nào trong danh sách chờ để xác nhận.");
+        // Lấy phiếu cụ thể mà Tú đang nhấn chọn (Select) trong ListView
+        TempBooking selectedBatch = lvTempBookings.getSelectionModel().getSelectedItem();
+
+        if (selectedBatch == null) {
+            showAlert("Thông báo", "Vui lòng click chọn 1 đợt trong danh sách chờ để tạo phiếu!");
             return;
         }
 
-        // 1. Gom danh sách mã phòng
-        List<String> allSelectedRoomIds = new ArrayList<>();
-        for (TempBooking tb : tempBookingsList) {
-            allSelectedRoomIds.addAll(tb.roomIds);
-        }
-
-        // 2. Lấy ngày nhận, ngày trả từ giao diện
-        LocalDate ngayNhan = dpIn.getValue() != null ? dpIn.getValue() : LocalDate.now();
-        LocalDate ngayTra = dpOut.getValue() != null ? dpOut.getValue() : LocalDate.now().plusDays(1);
-
         try {
-            // 3. Tạo một NhanVienDTO tạm từ currentUser để truyền qua
-            iuh.fit.core.dto.NhanVienDTO nhanVienTam = new iuh.fit.core.dto.NhanVienDTO();
-            if (currentUser != null) {
-                nhanVienTam.setMaNhanVien(currentUser.getMaNhanVien());
-            }
+            iuh.fit.core.dto.NhanVienDTO nv = new iuh.fit.core.dto.NhanVienDTO();
+            if (currentUser != null) nv.setMaNhanVien(currentUser.getMaNhanVien());
+            else nv.setMaNhanVien("ADMIN");
 
-            // 4. Khởi tạo DatPhongController ĐÚNG THỨ TỰ THAM SỐ
-            DatPhongController datPhongCtrl = new DatPhongController(
-                    allSelectedRoomIds,        // 1. List<String> danhSachMaPhong
-                    nhanVienTam,               // 2. NhanVienDTO
-                    ngayNhan,                  // 3. LocalDate ngayNhan
-                    ngayTra,                   // 4. LocalDate ngayTra
-                    khachHangService,          // 5. IKhachHangService
-                    phongService,              // 6. IPhongService
-                    phieuDatPhongService,      // 7. IPhieuDatPhongService
-                    null,                      // 8. IDichVuService (Truyền null vì class này không có)
-                    () -> {                    // 9. Runnable onBookingSuccess (Hành động khi lưu thành công)
+            // Mở form Đặt phòng CHỈ VỚI thông tin của đợt đang chọn
+            DatPhongController ctrl = new DatPhongController(
+                    selectedBatch.roomIds,
+                    nv,
+                    selectedBatch.from,
+                    selectedBatch.to,
+                    khachHangService,
+                    phongService,
+                    phieuDatPhongService,
+                    null,
+                    () -> {
                         Platform.runLater(() -> {
-                            tempBookingsList.clear();
-                            currentSelectedRoomIds.clear();
-                            loadRooms();
+                            tempBookingsList.remove(selectedBatch); // Xóa đợt đã thanh toán thành công
+                            applyFilters(); // Cập nhật lại lưới phòng
+                            showAlert("Thành công", "Đã lập phiếu đặt phòng thành công!");
                         });
                     }
             );
-
-            // 5. Gọi hàm hiển thị Dialog (Sử dụng đúng hàm showDialog của bạn)
-            // 5. Gọi hàm hiển thị Dialog và truyền cửa sổ cha vào
-            datPhongCtrl.showDialog(primaryStage);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Lỗi Hệ Thống", "Không thể mở giao diện Đặt phòng: " + e.getMessage());
-        }
+            ctrl.showDialog(primaryStage);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    private void showAlert(String t, String c) { Alert a = new Alert(Alert.AlertType.INFORMATION, c); a.setTitle(t); a.setHeaderText(null); a.showAndWait(); }
+
+    private void setupDateValidation() {
+        dpIn.setDayCellFactory(p -> new DateCell() { @Override public void updateItem(LocalDate d, boolean e) { super.updateItem(d, e); setDisable(e || d.isBefore(LocalDate.now())); } });
+        dpOut.setDayCellFactory(p -> new DateCell() { @Override public void updateItem(LocalDate d, boolean e) { super.updateItem(d, e); setDisable(e || d.isBefore(dpIn.getValue().plusDays(1))); } });
     }
 
     public static class TempBooking {
@@ -521,39 +451,62 @@ public class ChonPhongController {
     }
 
     private class TempBookingCell extends ListCell<TempBooking> {
-        @Override protected void updateItem(TempBooking item, boolean empty) {
+        private final VBox container = new VBox(5);
+        private final Label lblId = new Label();
+        private final Label lblInfo = new Label();
+        private final Label lblRooms = new Label();
+        private final Button btnXoa = new Button("✖");
+        private final HBox header = new HBox();
+
+        public TempBookingCell() {
+            container.setPadding(new Insets(12));
+            lblId.setStyle("-fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + "; -fx-font-size: 14px;");
+            lblInfo.setStyle("-fx-text-fill: " + COLOR_TEXT_MAIN + "; -fx-font-size: 12px;");
+            lblRooms.setStyle("-fx-text-fill: " + COLOR_TEXT_MUTED + "; -fx-font-size: 12px;");
+            lblRooms.setWrapText(true);
+            btnXoa.setStyle("-fx-background-color: #fee2e2; -fx-text-fill: #ef4444; -fx-cursor: hand; -fx-background-radius: 5;");
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            header.getChildren().addAll(lblId, spacer, btnXoa);
+            header.setAlignment(Pos.CENTER_LEFT);
+            container.getChildren().addAll(header, lblInfo, lblRooms);
+
+            this.setOnMouseClicked(e -> {
+                if (getItem() != null && !e.getTarget().equals(btnXoa)) {
+                    dpIn.setValue(getItem().from);
+                    dpOut.setValue(getItem().to);
+                    loadRooms();
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(TempBooking item, boolean empty) {
             super.updateItem(item, empty);
+            setStyle("-fx-background-color: transparent; -fx-padding: 0 0 10 0;");
+
             if (empty || item == null) {
-                setGraphic(null); setText(null);
-                setStyle("-fx-background-color: transparent;");
+                setGraphic(null);
             } else {
-                VBox box = new VBox(8);
-                box.setPadding(new Insets(15));
-                box.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 12; -fx-border-color: #e2e8f0; -fx-border-radius: 12;");
+                lblId.setText(item.id);
+                lblInfo.setText("🕒 " + item.from.format(DateTimeFormatter.ofPattern("dd/MM")) +
+                        " ⮕ " + item.to.format(DateTimeFormatter.ofPattern("dd/MM")));
+                lblRooms.setText("🔑 " + String.join(", ", item.roomIds));
+                btnXoa.setOnAction(e -> {
+                    tempBookingsList.remove(item);
+                    applyFilters(); // 👉 Cần gọi lại để các phòng vừa xóa hiện lại lên lưới
+                });
 
-                HBox top = new HBox();
-                Label lblId = new Label(item.id);
-                lblId.setFont(Font.font("Segoe UI", FontWeight.BLACK, 15));
-                lblId.setTextFill(Color.web(COLOR_PRIMARY));
+                // 👉 XỬ LÝ TÔ ĐẬM KHUNG KHI ĐƯỢC CHỌN
+                if (isSelected()) {
+                    container.setStyle("-fx-background-color: #eff6ff; -fx-border-color: " + COLOR_PRIMARY +
+                            "; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8;");
+                } else {
+                    container.setStyle("-fx-background-color: #ffffff; -fx-border-color: #e2e8f0; " +
+                            "-fx-border-width: 1; -fx-border-radius: 8; -fx-background-radius: 8;");
+                }
 
-                Button btnXoa = new Button("✖");
-                btnXoa.setStyle("-fx-background-color: #fee2e2; -fx-text-fill: #ef4444; -fx-padding: 3 8; -fx-background-radius: 5; -fx-cursor: hand;");
-                btnXoa.setOnAction(e -> tempBookingsList.remove(item));
-
-                Region sp = new Region(); HBox.setHgrow(sp, Priority.ALWAYS);
-                top.getChildren().addAll(lblId, sp, btnXoa);
-
-                Label lblDate = new Label("🕒 " + item.from.format(DateTimeFormatter.ofPattern("dd/MM")) + " ⮕ " + item.to.format(DateTimeFormatter.ofPattern("dd/MM")));
-                lblDate.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 13));
-                lblDate.setTextFill(Color.web(COLOR_TEXT_MAIN));
-
-                Label lblRooms = new Label("🔑 Phòng: " + String.join(", ", item.roomIds));
-                lblRooms.setFont(Font.font("Segoe UI", 13));
-                lblRooms.setTextFill(Color.web(COLOR_TEXT_MUTED));
-
-                box.getChildren().addAll(top, lblDate, lblRooms);
-                setGraphic(box);
-                setStyle("-fx-background-color: transparent; -fx-padding: 0 0 12 0;");
+                setGraphic(container);
             }
         }
     }

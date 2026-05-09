@@ -21,6 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,7 +54,8 @@ public class QuanLyPhieuDatPhongController {
     private final String COLOR_TEXT_MAIN = "#0f172a";
     private final String COLOR_TEXT_MUTED = "#64748b";
 
-    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    // 👉 FIX: Đổi format để hiển thị được cả Giờ và Phút
+    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public QuanLyPhieuDatPhongController(IPhieuDatPhongService phieuDatPhongService,
                                          IPhongService phongService,
@@ -192,8 +194,9 @@ public class QuanLyPhieuDatPhongController {
 
         filteredList.setPredicate(p -> {
             boolean matchNgay = true;
-            if (tu != null) matchNgay = (p.getNgayNhan() != null && !p.getNgayNhan().isBefore(tu));
-            if (matchNgay && den != null) matchNgay = (p.getNgayNhan() != null && !p.getNgayNhan().isAfter(den));
+            // 👉 FIX: Ép kiểu LocalDateTime về LocalDate để so sánh cho hợp lệ
+            if (tu != null) matchNgay = (p.getNgayNhan() != null && !p.getNgayNhan().toLocalDate().isBefore(tu));
+            if (matchNgay && den != null) matchNgay = (p.getNgayNhan() != null && !p.getNgayNhan().toLocalDate().isAfter(den));
 
             boolean matchSDT = true;
             if (!sdt.isEmpty()) {
@@ -261,7 +264,8 @@ public class QuanLyPhieuDatPhongController {
         String statusTextTemp = "Chờ Xác Nhận";
 
         if (status.contains("CHO_NHAN")) {
-            if (first.getNgayNhan() != null && LocalDate.now().isAfter(first.getNgayNhan())) {
+            // 👉 FIX: Dùng LocalDateTime.now() để so sánh chính xác theo giờ phút
+            if (first.getNgayNhan() != null && LocalDateTime.now().isAfter(first.getNgayNhan())) {
                 colorTemp = "#dc2626"; statusTextTemp = "Quá Hạn Nhận Phòng"; isOverdueLocal = true;
             } else { colorTemp = "#f59e0b"; statusTextTemp = "Chờ Nhận Phòng"; }
         }
@@ -314,6 +318,8 @@ public class QuanLyPhieuDatPhongController {
         Label lblTen = new Label("👤 Khách: " + ten); lblTen.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #1e293b;");
         Label lblSdt = new Label("📞 SĐT: " + sdt); lblSdt.setStyle("-fx-font-size: 13px; -fx-text-fill: #64748b;");
         Label lblRoom = new Label("🏨 Phòng: " + dsPhong); lblRoom.setStyle("-fx-font-weight: 900; -fx-font-size: 14px; -fx-text-fill: " + finalColor + ";");
+
+        // 👉 FIX: Sử dụng format mới (có ngày giờ)
         Label lblTime = new Label("📅 " + (first.getNgayNhan() != null ? first.getNgayNhan().format(DATE_FORMATTER) : "N/A") + " ➜ " + (first.getNgayTra() != null ? first.getNgayTra().format(DATE_FORMATTER) : "N/A"));
         lblTime.setStyle("-fx-text-fill: #2563eb; -fx-font-weight: bold;");
 
@@ -433,10 +439,15 @@ public class QuanLyPhieuDatPhongController {
         grid.setVgap(15); grid.setHgap(15);
 
         Label lIn = new Label("Ngày Nhận:"); lIn.setStyle("-fx-font-weight: bold; -fx-text-fill: #64748b;");
-        DatePicker dpIn = new DatePicker(first.getNgayNhan()); dpIn.setDisable(true);
+
+        // 👉 FIX: Chuyển LocalDateTime về LocalDate cho DatePicker
+        DatePicker dpIn = new DatePicker(first.getNgayNhan() != null ? first.getNgayNhan().toLocalDate() : LocalDate.now());
+        dpIn.setDisable(true);
 
         Label lOut = new Label("Ngày Trả (Gia hạn):"); lOut.setStyle("-fx-font-weight: bold; -fx-text-fill: #64748b;");
-        DatePicker dpOut = new DatePicker(first.getNgayTra());
+
+        // 👉 FIX: Chuyển LocalDateTime về LocalDate cho DatePicker
+        DatePicker dpOut = new DatePicker(first.getNgayTra() != null ? first.getNgayTra().toLocalDate() : LocalDate.now());
         if (first.getTrangThai().contains("TRA_PHONG") || first.getTrangThai().contains("HUY")) dpOut.setDisable(true);
 
         double totalCoc = group.stream().mapToDouble(p -> p.getTienCoc() != null ? p.getTienCoc() : 0).sum();
@@ -469,7 +480,10 @@ public class QuanLyPhieuDatPhongController {
 
         btnSave.setOnAction(e -> {
             try {
-                LocalDate newTra = dpOut.getValue();
+                // 👉 FIX: Chuyển LocalDate mới chọn thành LocalDateTime (mặc định trả 12h trưa)
+                LocalDate newTraDate = dpOut.getValue();
+                LocalDateTime newTra = newTraDate.atTime(12, 0);
+
                 double newCocTotal = Double.parseDouble(txtCoc.getText().replaceAll("[^\\d]", ""));
                 double cocPerRoom = newCocTotal / group.size();
 
@@ -479,7 +493,7 @@ public class QuanLyPhieuDatPhongController {
                 else if (valPT.equals("Chuyển khoản")) savePT = "CHUYEN_KHOAN";
 
                 for (PhieuDatPhongDTO p : group) {
-                    p.setNgayTra(newTra);
+                    p.setNgayTra(newTra); // Gán biến LocalDateTime
                     p.setTienCoc(cocPerRoom);
                     p.setLoaiThanhToan(savePT);
                     phieuDatPhongService.updatePhieuDatPhong(p);

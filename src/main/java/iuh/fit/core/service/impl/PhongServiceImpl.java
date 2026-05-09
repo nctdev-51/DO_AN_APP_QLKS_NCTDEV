@@ -77,17 +77,53 @@ public class PhongServiceImpl implements IPhongService {
         }
     }
 
-    // ✅ IMPLEMENTATION: Lọc phòng theo ngày + giá + tình trạng
+    // =========================================================================
+    // 👉 FIX CỐT LÕI: LOGIC CHỐNG TRÙNG LỊCH BẰNG EntityManager (JPA Thuần)
+    // =========================================================================
     @Override
     public List<PhongDTO> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, double minPrice, double maxPrice, String tinhTrang) {
-        // Giả định repository hỗ trợ lọc theo tình trạng, nếu chưa có thì lọc qua Stream API
-        return phongRepository.findAvailableRooms(checkIn, checkOut, minPrice, maxPrice).stream()
-                .filter(p -> tinhTrang == null || p.getTinhTrang().equalsIgnoreCase(tinhTrang))
-                .map(PhongMapper::entityToDTO)
-                .collect(Collectors.toList());
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            // 1. Chuyển LocalDate thành LocalDateTime để khớp chuẩn hệ thống (Nhận 14h, Trả 12h)
+            java.time.LocalDateTime inTime = checkIn.atTime(14, 0);
+            java.time.LocalDateTime outTime = checkOut.atTime(12, 0);
+
+            // 2. Câu lệnh JPQL quét sâu vào DB để loại bỏ các phòng bị trùng thời gian lưu trú
+            String jpql = "SELECT p FROM Phong p WHERE p.tinhTrang != 'Bảo Trì' " +
+                    "AND p.giaPhong >= :minPrice AND p.giaPhong <= :maxPrice " +
+                    "AND p.maPhong NOT IN (" +
+                    "    SELECT pdp.phong.maPhong FROM PhieuDatPhong pdp " +
+                    "    WHERE pdp.trangThai NOT IN ('DA_HUY', 'DA_TRA_PHONG', 'Đã checkout', 'Trả Phòng') " +
+                    "    AND pdp.ngayNhan < :outTime " +
+                    "    AND pdp.ngayTra > :inTime" +
+                    ")";
+
+            List<Phong> phongTrong = em.createQuery(jpql, Phong.class)
+                    .setParameter("minPrice", minPrice)
+                    .setParameter("maxPrice", maxPrice)
+                    .setParameter("outTime", outTime)
+                    .setParameter("inTime", inTime)
+                    .getResultList();
+
+            // 3. Map sang DTO và lọc thêm trạng thái UI (nếu Lễ tân chọn)
+            return phongTrong.stream()
+                    .filter(p -> tinhTrang == null || tinhTrang.equals("Tất cả trạng thái") || p.getTinhTrang().equalsIgnoreCase(tinhTrang))
+                    .map(PhongMapper::entityToDTO)
+                    .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            System.err.println("Lỗi quét trùng lịch: " + e.getMessage());
+            e.printStackTrace();
+            return List.of(); // Trả về rỗng để kích hoạt Fallback trên Controller
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
-    // ✅ IMPLEMENTATION: Cập nhật nhanh trạng thái phòng (Trống → Đặt → Đang sử dụng → Bảo trì)
+    // =========================================================================
+
     @Override
     public boolean updatePhongTrangThai(String maPhong, String trangThai) {
         EntityManager em = JpaConfig.getEntityManager();
@@ -121,7 +157,7 @@ public class PhongServiceImpl implements IPhongService {
     public List<Phong> findPhongByMaPhieu(String maPhieu) {
         EntityManager em = JpaConfig.getEntityManager();
         try {
-            String jpql = "SELECT p FROM Phong p WHERE p.maPhong = (SELECT pdp.maPhong FROM PhieuDatPhong pdp WHERE pdp.maPhieu = :maPhieu)";
+            String jpql = "SELECT p FROM Phong p WHERE p.maPhong = (SELECT pdp.phong.maPhong FROM PhieuDatPhong pdp WHERE pdp.maPhieu = :maPhieu)";
             return em.createQuery(jpql, Phong.class)
                     .setParameter("maPhieu", maPhieu)
                     .getResultList();

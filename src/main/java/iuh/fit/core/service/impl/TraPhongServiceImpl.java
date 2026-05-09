@@ -5,6 +5,7 @@ import iuh.fit.core.entity.PhieuDatPhong;
 import iuh.fit.core.repository.*;
 import iuh.fit.core.service.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime; // 👉 ĐÃ THÊM IMPORT NÀY
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +29,9 @@ public class TraPhongServiceImpl implements ITraPhongService {
     private final IChiTietHoaDonService chiTietHoaDonService;
 
     public TraPhongServiceImpl(IPhieuDatPhongService phieuDatPhongService,
-                              IPhongService phongService,
-                              IHoaDonService hoaDonService,
-                              IChiTietHoaDonService chiTietHoaDonService) {
+                               IPhongService phongService,
+                               IHoaDonService hoaDonService,
+                               IChiTietHoaDonService chiTietHoaDonService) {
         this.phieuDatPhongService = phieuDatPhongService;
         this.phongService = phongService;
         this.hoaDonService = hoaDonService;
@@ -94,10 +95,12 @@ public class TraPhongServiceImpl implements ITraPhongService {
             throw new IllegalArgumentException("Phòng không tồn tại");
         }
 
-        LocalDate ngayNhan = phieu.getNgayNhan() != null ? phieu.getNgayNhan() : LocalDate.now();
-        LocalDate ngayTra = phieu.getNgayTra() != null ? phieu.getNgayTra() : LocalDate.now();
+        // 👉 ĐÃ FIX: Chuyển sang sử dụng LocalDateTime
+        LocalDateTime ngayNhan = phieu.getNgayNhan() != null ? phieu.getNgayNhan() : LocalDateTime.now();
+        LocalDateTime ngayTra = phieu.getNgayTra() != null ? phieu.getNgayTra() : LocalDateTime.now();
 
-        long soNgay = ChronoUnit.DAYS.between(ngayNhan, ngayTra);
+        // 👉 ĐÃ FIX: Ép về LocalDate để tính chênh lệch số ngày
+        long soNgay = ChronoUnit.DAYS.between(ngayNhan.toLocalDate(), ngayTra.toLocalDate());
         if (soNgay < 1) soNgay = 1;
 
         double tongTienPhong = phong.getGiaPhong() * soNgay;
@@ -130,7 +133,7 @@ public class TraPhongServiceImpl implements ITraPhongService {
         hoaDon.setMaHoaDon("HD" + System.currentTimeMillis());
         hoaDon.setMaKhachHang(phieu.getMaKhachHang());
         hoaDon.setMaPhongDat(phieu.getMaPhong());
-        hoaDon.setNgayLap(LocalDate.now());
+        hoaDon.setNgayLap(LocalDate.now()); // Ngày lập hóa đơn vẫn là LocalDate (hôm nay)
         hoaDon.setTongTienPhong(tongTienPhong);
         hoaDon.setTongTienDichVu(tongTienDichVu);
         hoaDon.setThueVAT(tienVAT);
@@ -192,4 +195,3 @@ public class TraPhongServiceImpl implements ITraPhongService {
         }
     }
 }
-

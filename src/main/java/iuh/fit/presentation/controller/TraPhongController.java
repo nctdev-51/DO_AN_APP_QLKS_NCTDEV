@@ -316,12 +316,16 @@ public class TraPhongController {
                     : phieu.getMaPhong();
             lblPhong.setText(tenPhong);
 
-            LocalDate ngayNhan = phieu.getNgayNhan() != null ? phieu.getNgayNhan() : LocalDate.now();
-            LocalDate ngayTra = phieu.getNgayTra() != null ? phieu.getNgayTra() : LocalDate.now();
-            lblNgayNhan.setText(ngayNhan.toString());
-            lblNgayTra.setText(ngayTra.toString());
+            // 👉 ĐÃ SỬA: Đổi sang LocalDateTime và LocalDateTime.now()
+            java.time.LocalDateTime ngayNhan = phieu.getNgayNhan() != null ? phieu.getNgayNhan() : java.time.LocalDateTime.now();
+            java.time.LocalDateTime ngayTra = phieu.getNgayTra() != null ? phieu.getNgayTra() : java.time.LocalDateTime.now();
+            // Định dạng lại cho đẹp (Ví dụ: 08/05/2026 14:00)
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            lblNgayNhan.setText(ngayNhan.format(formatter));
+            lblNgayTra.setText(ngayTra.format(formatter));
 
-            long soNgay = ChronoUnit.DAYS.between(ngayNhan, ngayTra);
+            // 👉 SỬA TÍNH NGÀY: Ép về LocalDate để tính số ngày lưu trú cho chuẩn xác
+            long soNgay = ChronoUnit.DAYS.between(ngayNhan.toLocalDate(), ngayTra.toLocalDate());
             if (soNgay < 1) soNgay = 1;
             lblSoNgay.setText(soNgay + " ngày");
 

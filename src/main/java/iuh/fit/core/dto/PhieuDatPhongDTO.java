@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * DTO: PhieuDatPhongDTO
@@ -20,8 +21,8 @@ public class PhieuDatPhongDTO {
     private String maPhong;
     private String tenPhong; // Thêm để hiển thị trên UI
     private LocalDate ngayDat;
-    private LocalDate ngayNhan;
-    private LocalDate ngayTra;
+    private LocalDateTime ngayNhan;
+    private LocalDateTime ngayTra;
     private Double tongTien;
     private String trangThai;
     private String maNhanVien;

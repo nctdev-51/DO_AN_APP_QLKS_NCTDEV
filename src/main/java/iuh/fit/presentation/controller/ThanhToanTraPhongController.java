@@ -14,7 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
+import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -460,20 +460,23 @@ public class ThanhToanTraPhongController {
                     lblGuestNameCheckout.setText(tenKhach);
                     lblRoomCheckout.setText(phieu.getMaPhong() != null ? phieu.getMaPhong() : "—");
 
-                    LocalDate in = phieu.getNgayNhan();
-                    LocalDate out = phieu.getNgayTra() != null ? phieu.getNgayTra() : LocalDate.now();
+                    // 👉 ĐÃ FIX: Sử dụng LocalDateTime thay vì LocalDate
+                    LocalDateTime in = phieu.getNgayNhan();
+                    LocalDateTime out = phieu.getNgayTra() != null ? phieu.getNgayTra() : LocalDateTime.now();
 
-                    lblCheckInDateCheckout.setText(in != null ? in.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "—");
-                    lblCheckOutDateCheckout.setText(out.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    // Cập nhật giao diện với format có cả giờ và phút
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                    lblCheckInDateCheckout.setText(in != null ? in.format(formatter) : "—");
+                    lblCheckOutDateCheckout.setText(out.format(formatter));
 
                     // Tính tiền phòng
                     currentRoomTotal = 0;
                     if (in != null) {
-                        long days = ChronoUnit.DAYS.between(in, out);
+                        // 👉 ĐÃ FIX: Ép về LocalDate để đếm số ngày lưu trú chính xác
+                        long days = ChronoUnit.DAYS.between(in.toLocalDate(), out.toLocalDate());
                         if (days <= 0) days = 1;
                         lblNumDaysCheckout.setText(days + " ngày");
 
-                        // Đã xóa phần && finalRoom.getGiaPhong() != null
                         if (finalRoom != null) {
                             lblRoomPriceCheckout.setText(String.format("%,.0f đ", finalRoom.getGiaPhong()));
                             currentRoomTotal = finalRoom.getGiaPhong() * days;

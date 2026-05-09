@@ -7,6 +7,7 @@ import iuh.fit.core.dto.TaiKhoanDTO;
 import iuh.fit.core.service.IKhachHangService;
 import iuh.fit.core.service.IPhieuDatPhongService;
 import iuh.fit.core.service.IPhongService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +17,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime; // 👉 THÊM IMPORT NÀY
 import java.util.List;
 
 /**
@@ -80,6 +83,9 @@ public class QuanLyDatPhongController {
         ScrollPane scrollPane = new ScrollPane(mainVBox);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background-color: " + COLOR_BG_LIGHT + ";");
+
+        // 👉 Tải mã phiếu lúc vừa mở giao diện
+        refreshMaPhieu();
 
         return new Scene(scrollPane, 1400, 900);
     }
@@ -189,9 +195,8 @@ public class QuanLyDatPhongController {
         Label lbl1 = new Label("Mã Đơn:");
         lbl1.setFont(Font.font("Segoe UI", 11));
         tfMaDonTextField = new TextField();
-        tfMaDonTextField.setText(generateMaPhieu());
         tfMaDonTextField.setEditable(false);
-        tfMaDonTextField.setStyle("-fx-control-inner-background: #f1f5f9; -fx-border-radius: 5;");
+        tfMaDonTextField.setStyle("-fx-control-inner-background: #f1f5f9; -fx-border-radius: 5; -fx-font-weight: bold;");
         vbMaDon.getChildren().addAll(lbl1, tfMaDonTextField);
 
         VBox vbPhong = new VBox(5);
@@ -217,12 +222,12 @@ public class QuanLyDatPhongController {
 
         btnTaoDon = new Button("✅ TẠO PHIẾU ĐẶT");
         btnTaoDon.setMaxWidth(Double.MAX_VALUE);
-        btnTaoDon.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 5; -fx-font-size: 12px;");
+        btnTaoDon.setStyle("-fx-background-color: " + COLOR_SUCCESS + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 5; -fx-font-size: 12px; -fx-cursor: hand;");
         btnTaoDon.setOnAction(e -> createBooking());
 
         btnHuyDat = new Button("❌ HUỶ ĐẶT");
         btnHuyDat.setMaxWidth(Double.MAX_VALUE);
-        btnHuyDat.setStyle("-fx-background-color: " + COLOR_DANGER + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 5; -fx-font-size: 12px;");
+        btnHuyDat.setStyle("-fx-background-color: " + COLOR_DANGER + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 5; -fx-font-size: 12px; -fx-cursor: hand;");
         btnHuyDat.setOnAction(e -> cancelBooking());
 
         btnBox.getChildren().addAll(btnTaoDon, btnHuyDat);
@@ -258,7 +263,9 @@ public class QuanLyDatPhongController {
         }
 
         try {
-            List<PhongDTO> phongTrong = phongService.findAvailableRooms(checkIn, checkOut, 0, Double.MAX_VALUE, null);            lvPhongTrong.setItems(FXCollections.observableArrayList(phongTrong));
+            // Cập nhật hàm lọc phòng trống (Đảm bảo gọi hàm từ service chính xác)
+            List<PhongDTO> phongTrong = phongService.findAvailableRooms(checkIn, checkOut, 0, Double.MAX_VALUE, null);
+            lvPhongTrong.setItems(FXCollections.observableArrayList(phongTrong));
             if (phongTrong.isEmpty()) {
                 showAlert(Alert.AlertType.INFORMATION, "Thông báo", "Không có phòng trống trong khoảng thời gian này!");
             }
@@ -273,6 +280,7 @@ public class QuanLyDatPhongController {
         // Tính tổng tiền
         if (dpCheckIn.getValue() != null && dpCheckOut.getValue() != null) {
             long days = java.time.temporal.ChronoUnit.DAYS.between(dpCheckIn.getValue(), dpCheckOut.getValue());
+            if (days <= 0) days = 1;
             double total = days * phong.getGiaPhong();
             lblTongTien.setText(String.format("%,.0f", total));
         }
@@ -295,27 +303,39 @@ public class QuanLyDatPhongController {
             phieu.setMaKhachHang(khachHangDuocChon.getMaKhachHang());
             phieu.setMaPhong(phongDuocChon.getMaPhong());
             phieu.setNgayDat(LocalDate.now());
-            phieu.setNgayNhan(dpCheckIn.getValue());
-            phieu.setNgayTra(dpCheckOut.getValue());
+
+            // 👉 FIX: Nâng cấp thành LocalDateTime để khớp chuẩn hệ thống (Mặc định: Nhận 14:00, Trả 12:00)
+            LocalDateTime inTime = dpCheckIn.getValue().atTime(14, 0);
+            LocalDateTime outTime = dpCheckOut.getValue().atTime(12, 0);
+            phieu.setNgayNhan(inTime);
+            phieu.setNgayTra(outTime);
+
             phieu.setTrangThai("CHO_NHAN_PHONG");
 
+            String maNV = (currentUser != null) ? currentUser.getMaNhanVien() : "NV001";
+            phieu.setMaNhanVien(maNV);
+
             long days = java.time.temporal.ChronoUnit.DAYS.between(dpCheckIn.getValue(), dpCheckOut.getValue());
+            if (days <= 0) days = 1;
             double total = days * phongDuocChon.getGiaPhong();
             phieu.setTongTien(total);
 
-            phieuDatPhongService.addPhieuDatPhong(phieu);
+            // 👉 FIX: Sử dụng bookRoomTransaction để lưu an toàn và gọi updatePhongTrangThai
+            phieuDatPhongService.bookRoomTransaction(phieu);
+            phongService.updatePhongTrangThai(phongDuocChon.getMaPhong(), "Đã Đặt");
+
             showAlert(Alert.AlertType.INFORMATION, "Thành công", "Tạo phiếu đặt thành công!\nMã: " + phieu.getMaPhieu());
 
             // Reset form
             clearForm();
         } catch (Exception ex) {
+            ex.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Lỗi", "Lỗi tạo phiếu: " + ex.getMessage());
         }
     }
 
     private void cancelBooking() {
         clearForm();
-        showAlert(Alert.AlertType.INFORMATION, "Thông báo", "Đã hủy đặt phòng!");
     }
 
     private void clearForm() {
@@ -324,20 +344,32 @@ public class QuanLyDatPhongController {
         cbKhachHang.setValue(null);
         dpCheckIn.setValue(LocalDate.now());
         dpCheckOut.setValue(LocalDate.now().plusDays(1));
-        tfMaDonTextField.setText(generateMaPhieu());
+
         lblPhongChon.setText("(Chưa chọn phòng)");
         lblTongTien.setText("0");
         lvPhongTrong.getSelectionModel().clearSelection();
         lvPhongTrong.setItems(FXCollections.observableArrayList());
+
+        // Tải mã phiếu mới
+        refreshMaPhieu();
     }
 
-    private String generateMaPhieu() {
-        return "PDP" + System.currentTimeMillis() % 1000000;
+    // 👉 FIX: Lấy mã chuẩn từ Database thay vì Random
+    private void refreshMaPhieu() {
+        Platform.runLater(() -> {
+            try {
+                String newId = phieuDatPhongService.phatSinhMaPhieuMoi();
+                tfMaDonTextField.setText(newId);
+            } catch (Exception e) {
+                tfMaDonTextField.setText("Lỗi sinh mã");
+            }
+        });
     }
 
     private void showAlert(Alert.AlertType type, String title, String msg) {
         Alert alert = new Alert(type, msg);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.showAndWait();
     }
 }

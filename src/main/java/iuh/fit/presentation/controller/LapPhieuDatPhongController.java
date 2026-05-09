@@ -9,8 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,6 +16,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,7 @@ import java.util.Optional;
 public class LapPhieuDatPhongController {
 
     private IPhieuDatPhongService phieuDatPhongService;
+    private IPhongService phongService; // 👉 Cần thêm PhongService để đổi trạng thái
     private IKhachHangService khachHangService;
     private IDichVuService dichVuService;
     private TaiKhoanDTO currentUser;
@@ -50,11 +50,13 @@ public class LapPhieuDatPhongController {
     private final String COLOR_SUCCESS = "#10b981";
     private final String COLOR_TEXT_MAIN = "#1e293b";
 
-    public LapPhieuDatPhongController(IPhieuDatPhongService phieuDatPhongService,
+    // 👉 ĐÃ FIX: Thêm IPhongService vào Constructor
+    public LapPhieuDatPhongController(IPhieuDatPhongService phieuDatPhongService, IPhongService phongService,
                                       IKhachHangService khachHangService, IDichVuService dichVuService,
                                       TaiKhoanDTO currentUser, List<PhongDTO> selectedRooms,
                                       LocalDate checkIn, LocalDate checkOut, Runnable onBackToHome) {
         this.phieuDatPhongService = phieuDatPhongService;
+        this.phongService = phongService;
         this.khachHangService = khachHangService;
         this.dichVuService = dichVuService;
         this.currentUser = currentUser;
@@ -138,7 +140,6 @@ public class LapPhieuDatPhongController {
             lv.getItems().add("P." + p.getMaPhong() + " - " + String.format("%,.0f đ", p.getGiaPhong()));
             roomTotal += p.getGiaPhong();
         }
-        double totalRoomPriceFinal = roomTotal * totalDays;
 
         boxPhong.getChildren().addAll(lblHeaderP, new Label("Thời gian: " + totalDays + " ngày"), lv);
 
@@ -215,16 +216,12 @@ public class LapPhieuDatPhongController {
             card.setAlignment(Pos.CENTER);
             card.setStyle("-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-background-radius: 12; -fx-border-radius: 12; -fx-cursor: hand;");
 
-            // Hover effect
             card.setOnMouseEntered(e -> card.setStyle("-fx-background-color: #f0f7ff; -fx-border-color: " + COLOR_PRIMARY + "; -fx-background-radius: 12; -fx-border-radius: 12; -fx-cursor: hand;"));
             card.setOnMouseExited(e -> card.setStyle("-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-background-radius: 12; -fx-border-radius: 12; -fx-cursor: hand;"));
 
-            // Hình ảnh
             StackPane imgBox = new StackPane();
             imgBox.setPrefSize(100, 80);
             imgBox.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 8;");
-
-            // Tìm ảnh thật hoặc dùng Emoji
             Label icon = new Label("🍽️"); icon.setFont(Font.font(35));
             imgBox.getChildren().add(icon);
 
@@ -301,43 +298,77 @@ public class LapPhieuDatPhongController {
         else renderServiceMenu(allServices.stream().filter(d -> d.getTenDichVu().toLowerCase().contains(kw.toLowerCase())).toList());
     }
 
+    // =========================================================================
+    // 👉 ĐÃ FIX: ÁP DỤNG MÃ ĐỢT, LOCALDATETIME VÀ ĐỔI TRẠNG THÁI PHÒNG
+    // =========================================================================
     private void handleConfirmBooking() {
+        if (txtSDT.getText().trim().isEmpty() || txtHoTen.getText().trim().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Vui lòng nhập số điện thoại và họ tên khách hàng!").showAndWait();
+            return;
+        }
+
         try {
-            // 1. Xử lý khách hàng (như cũ)
-            KhachHangDTO kh = null;
-            if (!txtSDT.getText().isEmpty() && !txtHoTen.getText().isEmpty()) {
-                kh = khachHangService.getKhachHangBySoDienThoai(txtSDT.getText());
-                if (kh == null) {
-                    kh = new KhachHangDTO();
-                    kh.setSoDienThoai(txtSDT.getText());
-                    kh.setHoTen(txtHoTen.getText());
-                    kh.setLoaiKhachHang(cbLoaiKhach.getValue());
-                    kh.setNgaySinh(LocalDate.of(1990, 1, 1));
-                    kh = khachHangService.addKhachHang(kh);
-                }
+            // 1. Xử lý khách hàng
+            KhachHangDTO kh = khachHangService.getKhachHangBySoDienThoai(txtSDT.getText().trim());
+            if (kh == null) {
+                kh = new KhachHangDTO();
+                kh.setMaKhachHang("KH" + (System.currentTimeMillis() % 100000));
+                kh.setSoDienThoai(txtSDT.getText().trim());
+                kh.setHoTen(txtHoTen.getText().trim());
+                kh.setLoaiKhachHang(cbLoaiKhach.getValue());
+                kh.setNgaySinh(LocalDate.of(1990, 1, 1));
+                kh = khachHangService.addKhachHang(kh);
             }
 
-            // 2. Lưu Phiếu Đặt Phòng
+            // 2. Lấy mã đợt (Mã gốc)
+            String maPhieuGoc = phieuDatPhongService.phatSinhMaPhieuMoi();
+            int subIndex = 1;
+
+            // 3. Xử lý thời gian (Ép LocalDate sang LocalDateTime)
+            LocalDateTime ngayNhanTime = checkIn.atTime(14, 0); // Mặc định 14h nhận
+            LocalDateTime ngayTraTime = checkOut.atTime(12, 0); // Mặc định 12h trả
+
+            // 4. Lưu từng phòng
             for (PhongDTO p : selectedRooms) {
                 PhieuDatPhongDTO pdp = new PhieuDatPhongDTO();
-//                pdp.setMaPhieu("PDP_" + System.currentTimeMillis());
-                String shortId = String.format("%06d", new java.util.Random().nextInt(999999));
-                pdp.setMaPhieu("PDP_" + shortId);
-                pdp.setMaKhachHang(kh != null ? kh.getMaKhachHang() : null);
+
+                // Sinh mã theo nhóm
+                if (selectedRooms.size() > 1) {
+                    pdp.setMaPhieu(maPhieuGoc + "-" + String.format("%02d", subIndex++));
+                } else {
+                    pdp.setMaPhieu(maPhieuGoc);
+                }
+
+                pdp.setMaKhachHang(kh.getMaKhachHang());
                 pdp.setMaPhong(p.getMaPhong());
                 pdp.setNgayDat(LocalDate.now());
-                pdp.setNgayNhan(checkIn);
-                pdp.setNgayTra(checkOut);
+                pdp.setNgayNhan(ngayNhanTime);
+                pdp.setNgayTra(ngayTraTime);
                 pdp.setTrangThai("CHO_NHAN_PHONG");
-                pdp.setMaNhanVien(currentUser.getMaNhanVien());
+
+                String maNV = (currentUser != null) ? currentUser.getMaNhanVien() : "NV001";
+                pdp.setMaNhanVien(maNV);
                 pdp.setTongTien(p.getGiaPhong() * totalDays);
 
-                phieuDatPhongService.addPhieuDatPhong(pdp);
+                // Lưu phiếu vào DB
+                phieuDatPhongService.bookRoomTransaction(pdp);
 
-                // MẸO: Bạn có thể lưu item trong serviceCart vào bảng ChiTietPhieuDatPhong tại đây
+                // 👉 FIX: Cập nhật trạng thái phòng thành "Đã Đặt"
+                if (phongService != null) {
+                    phongService.updatePhongTrangThai(p.getMaPhong(), "Đã Đặt");
+                }
+
+                // 💡 LƯU Ý CHO TÚ VỀ DỊCH VỤ:
+                // Nếu Tú muốn lưu Giỏ hàng (serviceCart), hãy gọi vòng lặp ở đây để đẩy vào
+                // bảng ChiTietPhieuDatPhong. (Cần inject IChiTietPhieuDatPhongService nhé).
+                /*
+                for (CartItem item : serviceCart) {
+                    chiTietService.addChiTiet(pdp.getMaPhieu(), item.dto.getMaDichVu(), item.qty);
+                }
+                */
             }
 
-            new Alert(Alert.AlertType.INFORMATION, "Đặt phòng thành công!").showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, "Đặt phòng thành công đợt: " + maPhieuGoc).showAndWait();
             onBackToHome.run();
 
         } catch (Exception e) {

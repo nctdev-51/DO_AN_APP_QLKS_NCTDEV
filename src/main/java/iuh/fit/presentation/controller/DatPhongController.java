@@ -48,6 +48,8 @@ public class DatPhongController {
     private ComboBox<String> cboLoaiKhach, cboKhuyenMai;
     private DatePicker dpNgayDat, dpNgayTra;
     private TextField txtSoNgayThue;
+    // ... các biến cũ ...
+    private ComboBox<String> cboGioNhan, cboGioTra; // 👉 Thêm mới
 
     // Bảng dữ liệu phòng
     private TableView<PhongDTO> tablePhong;
@@ -274,30 +276,60 @@ public class DatPhongController {
     private VBox createThuePhongPanel() {
         VBox box = createCardBox("📅 Thông tin Thuê phòng");
         GridPane grid = new GridPane();
-        grid.setHgap(15); grid.setVgap(10);
+        grid.setHgap(15); grid.setVgap(12);
+
+        // Giữ nguyên tỷ lệ 2 cột bằng nhau (50-50)
         ColumnConstraints col1 = new ColumnConstraints(); col1.setPercentWidth(50);
         ColumnConstraints col2 = new ColumnConstraints(); col2.setPercentWidth(50);
         grid.getColumnConstraints().addAll(col1, col2);
 
-        String inputStyle = "-fx-padding: 8 10; -fx-background-radius: 6; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 6; -fx-font-size: 13px;";
+        String inputStyle = "-fx-padding: 8 10; -fx-background-radius: 6; -fx-border-color: " + COLOR_BORDER + "; -fx-border-radius: 6;";
 
-        dpNgayDat = new DatePicker(checkInDate); dpNgayDat.setStyle(inputStyle); dpNgayDat.setMaxWidth(Double.MAX_VALUE);
-        dpNgayTra = new DatePicker(checkOutDate); dpNgayTra.setStyle(inputStyle); dpNgayTra.setMaxWidth(Double.MAX_VALUE);
+        // Tạo danh sách giờ
+        ObservableList<String> hours = FXCollections.observableArrayList();
+        for (int i = 0; i < 24; i++) hours.add(String.format("%02d:00", i));
 
+        // --- HÀNG 1: NGÀY & GIỜ NHẬN ---
+        dpNgayDat = new DatePicker(checkInDate);
+        dpNgayDat.setStyle(inputStyle);
+        dpNgayDat.setMaxWidth(Double.MAX_VALUE);
+
+        cboGioNhan = new ComboBox<>(hours);
+        cboGioNhan.setValue("14:00");
+        cboGioNhan.setStyle(inputStyle);
+        cboGioNhan.setMaxWidth(Double.MAX_VALUE); // Cho phép tự giãn lấp đầy ô
+
+        // --- HÀNG 2: NGÀY & GIỜ TRẢ ---
+        dpNgayTra = new DatePicker(checkOutDate);
+        dpNgayTra.setStyle(inputStyle);
+        dpNgayTra.setMaxWidth(Double.MAX_VALUE);
+
+        cboGioTra = new ComboBox<>(hours);
+        cboGioTra.setValue("12:00");
+        cboGioTra.setStyle(inputStyle);
+        cboGioTra.setMaxWidth(Double.MAX_VALUE);
+
+        // --- HÀNG 3: SỐ NGÀY & KHUYẾN MÃI ---
         txtSoNgayThue = new TextField("1");
         txtSoNgayThue.setEditable(false);
         txtSoNgayThue.setStyle(inputStyle + " -fx-font-weight: bold; -fx-text-fill: " + COLOR_PRIMARY + ";");
 
         cboKhuyenMai = new ComboBox<>(FXCollections.observableArrayList("Không có", "Giảm 10%", "Voucher 200k"));
         cboKhuyenMai.setValue("Không có");
-        cboKhuyenMai.setStyle(inputStyle); cboKhuyenMai.setMaxWidth(Double.MAX_VALUE);
+        cboKhuyenMai.setStyle(inputStyle);
+        cboKhuyenMai.setMaxWidth(Double.MAX_VALUE);
 
         cboKhuyenMai.valueProperty().addListener((obs, oldV, newV) -> capNhatTongTien());
 
-        grid.add(createInputBox("Ngày nhận phòng", dpNgayDat), 0, 0);
-        grid.add(createInputBox("Ngày trả phòng", dpNgayTra), 1, 0);
-        grid.add(createInputBox("Số ngày lưu trú", txtSoNgayThue), 0, 1);
-        grid.add(createInputBox("Mã khuyến mãi", cboKhuyenMai), 1, 1);
+        // 👉 ĐÃ FIX: Sắp xếp lại vị trí trên Lưới (Cột, Hàng)
+        grid.add(createInputBox("Ngày nhận", dpNgayDat), 0, 0); // Cột trái, Hàng 1
+        grid.add(createInputBox("Giờ nhận", cboGioNhan), 1, 0); // Cột phải, Hàng 1
+
+        grid.add(createInputBox("Ngày trả", dpNgayTra), 0, 1);  // Cột trái, Hàng 2
+        grid.add(createInputBox("Giờ trả", cboGioTra), 1, 1);   // Cột phải, Hàng 2
+
+        grid.add(createInputBox("Số ngày lưu trú", txtSoNgayThue), 0, 2); // Cột trái, Hàng 3
+        grid.add(createInputBox("Mã khuyến mãi", cboKhuyenMai), 1, 2);    // Cột phải, Hàng 3
 
         box.getChildren().add(grid);
         return box;
@@ -460,6 +492,7 @@ public class DatPhongController {
     // 2. Thêm hàm này ngay bên dưới hàm xuLyLuu
     private void thucHienLuuVaoDB(boolean coThanhToan, Runnable closeAction) {
         try {
+            // 1. Xử lý Khách Hàng
             String sdt = txtSdt.getText().trim();
             KhachHangDTO kh = khachHangService.getAllKhachHang().stream()
                     .filter(k -> sdt.equals(k.getSoDienThoai())).findFirst().orElse(null);
@@ -474,14 +507,21 @@ public class DatPhongController {
                 kh = khachHangService.addKhachHang(kh);
             }
 
+            // 2. Chuẩn bị dữ liệu mã phiếu và thời gian
             String maPhieuGoc = phieuDatPhongService.phatSinhMaPhieuMoi();
             int subIndex = 1;
             int soNgay = 1;
             try { soNgay = Integer.parseInt(txtSoNgayThue.getText()); } catch (Exception ignored) {}
 
+            // 👉 LẤY GIỜ TỪ COMBOBOX (Ví dụ: "14:00" -> lấy số 14)
+            int gioNhan = Integer.parseInt(cboGioNhan.getValue().split(":")[0]);
+            int gioTra = Integer.parseInt(cboGioTra.getValue().split(":")[0]);
+
+            // 3. Vòng lặp lưu từng phòng
             for (PhongDTO p : phongList) {
                 PhieuDatPhongDTO phieu = new PhieuDatPhongDTO();
 
+                // Đánh mã phiếu theo đợt (PDPxxx-01, PDPxxx-02...)
                 if (phongList.size() > 1) {
                     phieu.setMaPhieu(maPhieuGoc + "-" + String.format("%02d", subIndex++));
                 } else {
@@ -491,13 +531,17 @@ public class DatPhongController {
                 phieu.setMaKhachHang(kh.getMaKhachHang());
                 phieu.setMaPhong(p.getMaPhong());
                 phieu.setNgayDat(LocalDate.now());
-                phieu.setNgayNhan(dpNgayDat.getValue());
-                phieu.setNgayTra(dpNgayTra.getValue());
+
+                // 👉 GHÉP NGÀY VÀ GIỜ: Chuyển LocalDate thành LocalDateTime
+                // Lưu ý: Nếu DTO của Tú đang để kiểu LocalDate, hãy đổi sang LocalDateTime trong DTO và Entity
+                phieu.setNgayNhan(dpNgayDat.getValue().atTime(gioNhan, 0));
+                phieu.setNgayTra(dpNgayTra.getValue().atTime(gioTra, 0));
 
                 String maNV = (nhanVien != null) ? nhanVien.getMaNhanVien() : "NV001";
                 phieu.setMaNhanVien(maNV);
                 phieu.setTongTien(p.getGiaPhong() * soNgay);
 
+                // Xử lý trạng thái phòng và phiếu
                 if (coThanhToan) {
                     phieu.setTrangThai("DA_NHAN_PHONG");
                     phongService.updatePhongTrangThai(p.getMaPhong(), "Đang ở");
@@ -509,8 +553,10 @@ public class DatPhongController {
                 phieuDatPhongService.bookRoomTransaction(phieu);
             }
 
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã lưu đợt đặt phòng: " + maPhieuGoc);
-            closeAction.run(); // Đóng giao diện Lập Phiếu
+            showAlert(Alert.AlertType.INFORMATION, "Thành công",
+                    "Đã lưu đợt đặt phòng: " + maPhieuGoc + "\nThời gian: " + cboGioNhan.getValue() + " - " + cboGioTra.getValue());
+
+            closeAction.run(); // Đóng giao diện và refresh sơ đồ phòng
 
         } catch (Exception e) {
             e.printStackTrace();
