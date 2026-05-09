@@ -24,9 +24,19 @@ public class PhieuDatPhongServiceImpl implements IPhieuDatPhongService {
     }
 
     // Lấy mã mới nhất từ Repo - Đây là đầu não của việc đánh số thứ tự
-    @Override
     public String phatSinhMaPhieuMoi() {
-        return phieuRepository.phatSinhMaPhieuMoi();
+        List<PhieuDatPhong> all = phieuRepository.findAll();
+        int max = 0;
+        for (PhieuDatPhong p : all) {
+            String ma = p.getMaPhieu();
+            if (ma != null && ma.startsWith("PDP")) {
+                try {
+                    int num = Integer.parseInt(ma.substring(3));
+                    if (num > max) max = num;
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        return String.format("PDP%03d", max + 1);
     }
 
     @Override

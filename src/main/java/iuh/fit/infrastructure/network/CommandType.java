@@ -55,5 +55,15 @@ public enum CommandType {
     // Bổ sung cho chức năng Yêu cầu phê duyệt
     TAO_YEU_CAU,
     DUYET_YEU_CAU,
-    GET_YEU_CAU_CHUA_DUYET
+    GET_YEU_CAU_CHUA_DUYET,
+
+    PHAT_SINH_MA_PHIEU_MOI,
+
+    UPDATE_PHAN_CONG,
+
+    UPDATE_PHONG_TRANG_THAI,
+
+    GET_ALL_HOA_DON,
+
+
 }

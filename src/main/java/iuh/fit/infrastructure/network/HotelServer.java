@@ -58,6 +58,7 @@ public class HotelServer {
         IChiTietPhieuDatPhongRepository ctPhieuRepo = new ChiTietPhieuDatPhongRepositoryImpl();
         IKhuyenMaiRepository khuyenMaiRepo = new KhuyenMaiRepositoryImpl();
 
+
         // 👉 FIX 1: Dùng ILichSuCaLamViecRepository thay vì IGiaoCaRepository cũ
         ILichSuCaLamViecRepository lichSuRepo = new LichSuCaLamViecRepositoryImpl();
 
@@ -80,7 +81,12 @@ public class HotelServer {
                 nvRepo,
                 khuyenMaiRepo
         );
-        chiTietHoaDonService = new ChiTietHoaDonServiceImpl(ctHoaDonRepo);
+        chiTietHoaDonService = new ChiTietHoaDonServiceImpl(
+                ctHoaDonRepo,
+                ctPhieuRepo,
+                dichVuRepo,
+                phieuRepo
+        );
         nhanVienService = new NhanVienServiceImpl(nvRepo);
         caLamViecService = new CaLamViecServiceImpl();
         phanCongService = new PhanCongServiceImpl(pcRepo);
@@ -157,6 +163,8 @@ public class HotelServer {
                         return success(khachHangService.deleteKhachHang((String) data));
 
                     // === Phiếu đặt phòng ===
+                    case PHAT_SINH_MA_PHIEU_MOI:
+                        return success(phieuDatPhongService.phatSinhMaPhieuMoi());
                     case GET_ALL_PHIEU_DAT_PHONG:
                         return success(phieuDatPhongService.getAllPhieuDatPhong());
                     case GET_PHIEU_DAT_PHONG_BY_ID:
@@ -192,6 +200,9 @@ public class HotelServer {
                         return success(dichVuService.deleteDichVu((String) data));
 
                     // === Hóa đơn ===
+                    case GET_ALL_HOA_DON: // 👉 THÊM CASE NÀY VÀO
+                        return success(hoaDonService.getAllHoaDon());
+
                     case GET_HOA_DON_BY_DATE_RANGE: {
                         Object[] arr = (Object[]) data;
                         return success(hoaDonService.getHoaDonByDateRange(

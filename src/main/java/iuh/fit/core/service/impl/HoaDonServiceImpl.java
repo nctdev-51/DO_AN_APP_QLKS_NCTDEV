@@ -164,6 +164,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Override
     public List<HoaDonDTO> getAllHoaDon() {
-        return List.of();
+        return hoaDonRepository.findAll().stream()
+                .map(HoaDonMapper::entityToDTO)
+                .collect(Collectors.toList());
     }
 }

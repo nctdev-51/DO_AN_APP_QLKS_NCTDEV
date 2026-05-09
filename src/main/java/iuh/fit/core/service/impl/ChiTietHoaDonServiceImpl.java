@@ -1,11 +1,12 @@
 package iuh.fit.core.service.impl;
 
+
 import iuh.fit.core.dto.ChiTietHoaDonDTO;
-import iuh.fit.core.entity.ChiTietHoaDon;
-import iuh.fit.core.entity.ChiTietHoaDonId;
-import iuh.fit.core.repository.IChiTietHoaDonRepository;
+import iuh.fit.core.entity.*;
+import iuh.fit.core.repository.*;
 import iuh.fit.core.service.IChiTietHoaDonService;
 import iuh.fit.infrastructure.mapper.ChiTietHoaDonMapper;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,9 +14,18 @@ import java.util.stream.Collectors;
 public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
 
     private final IChiTietHoaDonRepository chiTietHoaDonRepository;
+    private final IChiTietPhieuDatPhongRepository chiTietPhieuDatPhongRepository;
+    private final IDichVuRepository dichVuRepository;  // 👈 thêm
+    private final IPhieuDatPhongRepository phieuDatPhongRepository;
 
-    public ChiTietHoaDonServiceImpl(IChiTietHoaDonRepository chiTietHoaDonRepository) {
+    public ChiTietHoaDonServiceImpl(IChiTietHoaDonRepository chiTietHoaDonRepository,
+                                    IChiTietPhieuDatPhongRepository chiTietPhieuDatPhongRepository,
+                                    IDichVuRepository dichVuRepository,
+                                    IPhieuDatPhongRepository phieuDatPhongRepository) {
         this.chiTietHoaDonRepository = chiTietHoaDonRepository;
+        this.chiTietPhieuDatPhongRepository = chiTietPhieuDatPhongRepository;
+        this.dichVuRepository = dichVuRepository;
+        this.phieuDatPhongRepository = phieuDatPhongRepository;
     }
 
     @Override
@@ -88,31 +98,78 @@ public class ChiTietHoaDonServiceImpl implements IChiTietHoaDonService {
 
     @Override
     public List<ChiTietHoaDonDTO> getChiTietByMaPhieu(String maPhieu) {
-        // Tạm thời dùng findByHoaDon (cần sửa logic thực tế sau)
-        return chiTietHoaDonRepository.findByHoaDon(maPhieu).stream()
-                .map(ChiTietHoaDonMapper::toDTO)
-                .collect(Collectors.toList());
+        // Lấy tất cả ChiTietPhieuDatPhong của phiếu
+        List<ChiTietPhieuDatPhong> list = chiTietPhieuDatPhongRepository.findByMaPhieu(maPhieu);
+
+        return list.stream().map(ct -> {
+            ChiTietHoaDonDTO dto = new ChiTietHoaDonDTO();
+            // Lấy thông tin từ entity (vì có @ManyToOne fetch EAGER)
+            dto.setMaPhieu(ct.getMaPhieu());
+            dto.setMaDichVu(ct.getMaDichVu());
+            dto.setSoLuong(ct.getSoLuong());
+
+            // DichVu đã được load sẵn (EAGER)
+            if (ct.getDichVu() != null) {
+                dto.setTenDichVu(ct.getDichVu().getTenDichVu());
+                dto.setGiaTienTungDichVu(ct.getDichVu().getGiaTien());
+                dto.setThanhTien(ct.getDichVu().getGiaTien() * ct.getSoLuong());
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public void addOrUpdateChiTiet(ChiTietHoaDonDTO dto) {
-        if (dto == null || dto.getMaHoaDon() == null || dto.getMaDichVu() == null) return;
+        if (dto == null || dto.getMaDichVu() == null) return;
 
-        ChiTietHoaDonId id = new ChiTietHoaDonId(dto.getMaHoaDon(), dto.getMaDichVu());
-        Optional<ChiTietHoaDon> existing = chiTietHoaDonRepository.findById(id);
+        // Nếu đã có mã hóa đơn -> lưu thẳng vào ChiTietHoaDon (giữ nguyên code cũ)
+        if (dto.getMaHoaDon() != null && !dto.getMaHoaDon().isEmpty()) {
+            ChiTietHoaDonId id = new ChiTietHoaDonId(dto.getMaHoaDon(), dto.getMaDichVu());
+            ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
+            if (chiTietHoaDonRepository.findById(id).isPresent()) {
+                chiTietHoaDonRepository.update(entity);
+            } else {
+                chiTietHoaDonRepository.save(entity);
+            }
+            return;
+        }
 
-        // Mapper đã xử lý việc set ID ghép và setSoLuong
-        ChiTietHoaDon entity = ChiTietHoaDonMapper.toEntity(dto);
+        // Chưa có hóa đơn, chỉ có mã phiếu -> lưu vào ChiTietPhieuDatPhong
+        if (dto.getMaPhieu() != null && !dto.getMaPhieu().isEmpty()) {
+            // Lấy phiếu (chỉ để kiểm tra tồn tại, không cần gán vào entity)
+            phieuDatPhongRepository.findById(dto.getMaPhieu())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy phiếu: " + dto.getMaPhieu()));
 
-        if (existing.isPresent()) {
-            chiTietHoaDonRepository.update(entity);
-        } else {
-            chiTietHoaDonRepository.save(entity);
+            // Lấy dịch vụ (chỉ để kiểm tra tồn tại)
+            dichVuRepository.findById(dto.getMaDichVu())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy dịch vụ: " + dto.getMaDichVu()));
+
+            // Tìm xem đã có chi tiết nào cho phiếu + dịch vụ này chưa
+            List<ChiTietPhieuDatPhong> ds = chiTietPhieuDatPhongRepository.findByMaPhieu(dto.getMaPhieu());
+            Optional<ChiTietPhieuDatPhong> existing = ds.stream()
+                    .filter(ct -> ct.getMaDichVu().equals(dto.getMaDichVu()))
+                    .findFirst();
+
+            if (existing.isPresent()) {
+                ChiTietPhieuDatPhong ct = existing.get();
+                ct.setSoLuong(ct.getSoLuong() + dto.getSoLuong());
+                chiTietPhieuDatPhongRepository.save(ct); // update
+            } else {
+                ChiTietPhieuDatPhong ct = new ChiTietPhieuDatPhong();
+                ct.setMaPhieu(dto.getMaPhieu());   // tự động tạo id nếu cần
+                ct.setMaDichVu(dto.getMaDichVu());
+                ct.setSoLuong(dto.getSoLuong());
+                ct.setGhiChu("");
+                chiTietPhieuDatPhongRepository.save(ct);// persist mới
+            }
+
         }
     }
 
     @Override
     public void deleteByHoaDon(String maHoaDon) {
+
         chiTietHoaDonRepository.deleteByHoaDon(maHoaDon);
     }
+
 }

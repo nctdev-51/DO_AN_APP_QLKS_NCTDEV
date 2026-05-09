@@ -1,29 +1,15 @@
 package iuh.fit.core.repository;
 
 import iuh.fit.core.entity.ChiTietPhieuDatPhong;
-
+import iuh.fit.core.entity.ChiTietPhieuDatPhongId;
 import java.util.List;
+import java.util.Optional;
 
-/**
- * Interface: IChiTietPhieuDatPhongRepository (Repository Port)
- * 
- * Tầng: CORE - Repository Layer
- * Trách nhiệm: Định nghĩa hợp đồng để thao tác dữ liệu Chi Tiết Phiếu Đặt Phòng
- */
 public interface IChiTietPhieuDatPhongRepository {
-    /**
-     * Tìm chi tiết phiếu đặt phòng theo mã phiếu
-     */
     List<ChiTietPhieuDatPhong> findByMaPhieu(String maPhieu);
-    
-    /**
-     * Lưu chi tiết phiếu đặt phòng
-     */
-    ChiTietPhieuDatPhong save(ChiTietPhieuDatPhong chiTiet);
-    
-    /**
-     * Xóa chi tiết phiếu đặt phòng theo mã phiếu
-     */
+    ChiTietPhieuDatPhong save(ChiTietPhieuDatPhong entity);
     void deleteByMaPhieu(String maPhieu);
-}
 
+    // 👉 Thêm mới
+    Optional<ChiTietPhieuDatPhong> findById(ChiTietPhieuDatPhongId id);
+}

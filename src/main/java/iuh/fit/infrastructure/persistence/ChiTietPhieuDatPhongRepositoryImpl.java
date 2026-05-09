@@ -1,12 +1,14 @@
 package iuh.fit.infrastructure.persistence;
 
 import iuh.fit.core.entity.ChiTietPhieuDatPhong;
+import iuh.fit.core.entity.ChiTietPhieuDatPhongId;
 import iuh.fit.core.repository.IChiTietPhieuDatPhongRepository;
 import iuh.fit.infrastructure.db.JpaConfig;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -23,7 +25,7 @@ public class ChiTietPhieuDatPhongRepositoryImpl implements IChiTietPhieuDatPhong
     public List<ChiTietPhieuDatPhong> findByMaPhieu(String maPhieu) {
         EntityManager em = JpaConfig.getEntityManager();
         try {
-            String hql = "SELECT c FROM ChiTietPhieuDatPhong c WHERE c.maPhieu = :maPhieu";
+            String hql = "SELECT c FROM ChiTietPhieuDatPhong c WHERE c.id.maPhieu = :maPhieu";
             return em.createQuery(hql, ChiTietPhieuDatPhong.class)
                     .setParameter("maPhieu", maPhieu)
                     .getResultList();
@@ -41,7 +43,7 @@ public class ChiTietPhieuDatPhongRepositoryImpl implements IChiTietPhieuDatPhong
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(chiTiet);
+            em.merge(chiTiet);
             transaction.commit();
             logger.info("✅ ChiTietPhieuDatPhong được lưu thành công");
             return chiTiet;
@@ -62,7 +64,7 @@ public class ChiTietPhieuDatPhongRepositoryImpl implements IChiTietPhieuDatPhong
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            String hql = "DELETE FROM ChiTietPhieuDatPhong c WHERE c.maPhieu = :maPhieu";
+            String hql = "DELETE FROM ChiTietPhieuDatPhong c WHERE c.id.maPhieu = :maPhieu";
             em.createQuery(hql)
                     .setParameter("maPhieu", maPhieu)
                     .executeUpdate();
@@ -74,6 +76,16 @@ public class ChiTietPhieuDatPhongRepositoryImpl implements IChiTietPhieuDatPhong
             }
             logger.severe("❌ Lỗi xóa ChiTietPhieuDatPhong: " + e.getMessage());
             throw new RuntimeException("Không thể xóa ChiTietPhieuDatPhong", e);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Optional<ChiTietPhieuDatPhong> findById(ChiTietPhieuDatPhongId id) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            return Optional.ofNullable(em.find(ChiTietPhieuDatPhong.class, id));
         } finally {
             em.close();
         }
