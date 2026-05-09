@@ -1,5 +1,6 @@
 package iuh.fit.presentation.controller;
 
+import iuh.fit.core.dto.LichSuCaLamViecDTO;
 import iuh.fit.core.dto.TaiKhoanDTO;
 import iuh.fit.core.service.*;
 import javafx.animation.PauseTransition;
@@ -36,6 +37,7 @@ public class LoginController {
 
     private IAuthenticationService authenticationService;
     private TaiKhoanDTO currentUser;
+
     private IKhachHangService khachHangService;
     private INhanVienService nhanVienService;
     private IPhongService phongService;
@@ -43,6 +45,9 @@ public class LoginController {
     private IDichVuService dichVuService;
     private IHoaDonService hoaDonService;
     private IChiTietHoaDonService chiTietHoaDonService;
+
+    // Tích hợp Service Giao Ca
+    private IGiaoCaService giaoCaService;
 
     // --- BẢNG MÀU UI CẢI TIẾN HIỆN ĐẠI ---
     private final String COLOR_PRIMARY = "#1e3a8a";  // Xanh dương đậm sang trọng
@@ -59,7 +64,8 @@ public class LoginController {
                            IPhieuDatPhongService phieuDatPhongService,
                            IDichVuService dichVuService,
                            IHoaDonService hoaDonService,
-                           IChiTietHoaDonService chiTietHoaDonService) {
+                           IChiTietHoaDonService chiTietHoaDonService,
+                           IGiaoCaService giaoCaService) { // Bổ sung IGiaoCaService vào Constructor
         this.authenticationService = authenticationService;
         this.khachHangService = khachHangService;
         this.nhanVienService = nhanVienService;
@@ -68,11 +74,11 @@ public class LoginController {
         this.dichVuService = dichVuService;
         this.hoaDonService = hoaDonService;
         this.chiTietHoaDonService = chiTietHoaDonService;
+        this.giaoCaService = giaoCaService;
     }
 
     public Scene createLoginScene() {
         StackPane root = new StackPane();
-        // Cải tiến: Nền gradient tạo chiều sâu cho ứng dụng
         root.setStyle("-fx-background-color: linear-gradient(to bottom right, #e0f2fe, #bae6fd);");
 
         VBox cardBox = new VBox(22);
@@ -80,10 +86,8 @@ public class LoginController {
         cardBox.setMaxWidth(480);
         cardBox.setMaxHeight(500);
         cardBox.setAlignment(Pos.TOP_CENTER);
-        // Cải tiến: Khung bo góc mềm mại hơn, viền mảnh tinh tế
         cardBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.98); -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #ffffff; -fx-border-width: 2;");
 
-        // Cải tiến: Đổ bóng nhạt và rộng hơn tạo hiệu ứng nổi 3D hiện đại
         DropShadow shadow = new DropShadow();
         shadow.setColor(Color.web("#000000", 0.1));
         shadow.setRadius(25);
@@ -101,7 +105,7 @@ public class LoginController {
         try {
             Image logoImage = new Image(getClass().getResourceAsStream("/images/logo_ttv.png"));
             logoImageView.setImage(logoImage);
-            logoImageView.setFitWidth(85); // Tăng size logo
+            logoImageView.setFitWidth(85);
             logoImageView.setFitHeight(85);
             logoImageView.setPreserveRatio(true);
 
@@ -120,7 +124,6 @@ public class LoginController {
             logoTitleBox.getChildren().add(logoImageView);
         }
 
-        // CẢI TIẾN CHÍNH: Tên thương hiệu nổi bật, to và font đậm
         Label titleLabel = new Label("TTV HOTEL");
         titleLabel.setFont(Font.font("Verdana", FontWeight.BLACK, 38));
         titleLabel.setTextFill(new LinearGradient(
@@ -156,7 +159,6 @@ public class LoginController {
         usernameTextField = new TextField();
         usernameTextField.setPromptText("Nhập tài khoản của bạn...");
         usernameTextField.setStyle(inputStyle);
-        // Hiệu ứng focus
         usernameTextField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) usernameTextField.setStyle(inputStyle + inputFocusStyle);
             else usernameTextField.setStyle(inputStyle);
@@ -178,7 +180,6 @@ public class LoginController {
         passwordVisibleField.setStyle(inputStyle);
         passwordVisibleField.setVisible(false);
 
-        // Đồng bộ focus effect cho password
         passwordField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) passwordField.setStyle(inputStyle + inputFocusStyle);
             else passwordField.setStyle(inputStyle);
@@ -223,7 +224,7 @@ public class LoginController {
         progressBar = new ProgressBar();
         progressBar.setVisible(false);
         progressBar.setMaxWidth(Double.MAX_VALUE);
-        progressBar.setPrefHeight(6); // Thanh mảnh hơn
+        progressBar.setPrefHeight(6);
         progressBar.setStyle("-fx-accent: " + COLOR_ACCENT + "; -fx-control-inner-background: #e2e8f0;");
 
         // ================= BUTTONS =================
@@ -231,7 +232,6 @@ public class LoginController {
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(10, 0, 0, 0));
 
-        // Cải tiến nút đăng nhập sang trọng hơn
         loginButton = new Button("Đăng Nhập Hệ Thống");
         loginButton.setMaxWidth(Double.MAX_VALUE);
         loginButton.setCursor(Cursor.HAND);
@@ -242,7 +242,6 @@ public class LoginController {
         loginButton.setOnMouseEntered(e -> loginButton.setStyle(btnLoginHover));
         loginButton.setOnMouseExited(e -> loginButton.setStyle(btnLoginStyle));
 
-        // Nút thoát chuyển thành dạng Outline tinh tế
         exitButton = new Button("Thoát Khỏi Trình Ứng Dụng");
         exitButton.setMaxWidth(Double.MAX_VALUE);
         exitButton.setCursor(Cursor.HAND);
@@ -255,7 +254,6 @@ public class LoginController {
 
         buttonBox.getChildren().addAll(loginButton, exitButton);
 
-        // Actions
         loginButton.setOnAction(e -> handleLogin());
         exitButton.setOnAction(e -> System.exit(0));
         passwordField.setOnAction(e -> handleLogin());
@@ -271,7 +269,7 @@ public class LoginController {
         );
 
         root.getChildren().add(cardBox);
-        return new Scene(root, 650, 580); // Tăng kích thước tổng thể cửa sổ
+        return new Scene(root, 650, 580);
     }
 
     private void handleLogin() {
@@ -292,18 +290,53 @@ public class LoginController {
 
             if (user != null) {
                 currentUser = user;
+
+                // ========================================================
+                // 🚀 ĐÃ FIX: ĐẶC QUYỀN BYPASS CHO ADMIN / QUẢN LÝ
+                // ========================================================
+                boolean isManager = false;
+                try {
+                    // Nếu đăng nhập bằng tk admin thì tự động là quản lý (phục vụ demo nhanh)
+                    if (username.equalsIgnoreCase("admin")) {
+                        isManager = true;
+                    } else {
+                        // Kiểm tra chức vụ thực tế dưới Database
+                        var nv = nhanVienService.getNhanVienById(user.getMaNhanVien());
+                        if (nv != null && (nv.getLoaiNhanVien().contains("QUAN_LY") || nv.getLoaiNhanVien().contains("GIAM_DOC"))) {
+                            isManager = true;
+                        }
+                    }
+                } catch (Exception ignored) {}
+
+                // CHỈ YÊU CẦU NHẬN CA ĐỐI VỚI NHÂN VIÊN LỄ TÂN
+                if (!isManager) {
+                    LichSuCaLamViecDTO caDangLam = giaoCaService.getCaDangLam(user.getMaNhanVien());
+                    if (caDangLam == null) {
+                        GiaoNhanCaDialog dialog = new GiaoNhanCaDialog(giaoCaService, user);
+                        boolean isNhanCa = dialog.showNhanCaDialog();
+
+                        if (!isNhanCa) {
+                            showError("Đăng nhập bị hủy: Bạn chưa xác nhận Nhận Ca.");
+                            resetLoginButton();
+                            currentUser = null;
+                            return; // Chặn lại, không cho load MainController
+                        }
+                    }
+                }
+
                 showSuccess("Thành công! Đang truy cập hệ thống...");
 
-                PauseTransition pause = new PauseTransition(Duration.seconds(1.2)); // Chờ chút để UX mượt hơn
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
                 pause.setOnFinished(event -> {
                     try {
                         Stage currentStage = (Stage) loginButton.getScene().getWindow();
 
                         MainController mainController = new MainController(
-                                currentStage, user,
+                                currentStage, currentUser,
                                 khachHangService, nhanVienService,
                                 phongService, phieuDatPhongService,
-                                dichVuService, hoaDonService, chiTietHoaDonService
+                                dichVuService, hoaDonService, chiTietHoaDonService,
+                                giaoCaService
                         );
                         mainController.showMainScreen();
 

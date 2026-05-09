@@ -13,14 +13,13 @@ import java.util.logging.Logger;
 
 /**
  * Class: HoaDonRepositoryImpl (Persistence Implementation)
- * 
- * Tầng: INFRASTRUCTURE - Persistence Layer
+ * * Tầng: INFRASTRUCTURE - Persistence Layer
  * Trách nhiệm: Implement IHoaDonRepository bằng JPA/Hibernate
  */
 public class HoaDonRepositoryImpl implements IHoaDonRepository {
-    
+
     private static final Logger logger = Logger.getLogger(HoaDonRepositoryImpl.class.getName());
-    
+
     @Override
     public Optional<HoaDon> findById(String maHoaDon) {
         EntityManager em = JpaConfig.getEntityManager();
@@ -34,7 +33,7 @@ public class HoaDonRepositoryImpl implements IHoaDonRepository {
             em.close();
         }
     }
-    
+
     @Override
     public List<HoaDon> findAll() {
         EntityManager em = JpaConfig.getEntityManager();
@@ -48,7 +47,7 @@ public class HoaDonRepositoryImpl implements IHoaDonRepository {
             em.close();
         }
     }
-    
+
     @Override
     public HoaDon save(HoaDon hoaDon) {
         EntityManager em = JpaConfig.getEntityManager();
@@ -69,7 +68,7 @@ public class HoaDonRepositoryImpl implements IHoaDonRepository {
             em.close();
         }
     }
-    
+
     @Override
     public HoaDon update(HoaDon hoaDon) {
         EntityManager em = JpaConfig.getEntityManager();
@@ -90,7 +89,7 @@ public class HoaDonRepositoryImpl implements IHoaDonRepository {
             em.close();
         }
     }
-    
+
     @Override
     public void deleteById(String maHoaDon) {
         EntityManager em = JpaConfig.getEntityManager();
@@ -113,7 +112,7 @@ public class HoaDonRepositoryImpl implements IHoaDonRepository {
             em.close();
         }
     }
-    
+
     @Override
     public List<HoaDon> findByMaKhachHang(String maKhachHang) {
         EntityManager em = JpaConfig.getEntityManager();
@@ -146,5 +145,33 @@ public class HoaDonRepositoryImpl implements IHoaDonRepository {
             em.close();
         }
     }
-}
 
+    // =================================================================================
+    // ĐÃ FIX: Hàm tính tổng doanh thu được thêm vào để khớp với Interface
+    // =================================================================================
+    @Override
+    public double sumDoanhThuByNhanVienAndTime(String maNhanVien, java.time.LocalDateTime thoiGianBatDau, java.time.LocalDateTime thoiGianKetThuc) {
+        EntityManager em = JpaConfig.getEntityManager();
+        try {
+            // Đổi LocalDateTime về LocalDate vì Entity HoaDon lưu ngayLap dạng Date
+            java.time.LocalDate startDate = thoiGianBatDau.toLocalDate();
+            java.time.LocalDate endDate = thoiGianKetThuc.toLocalDate();
+
+            String jpql = "SELECT SUM(h.tongTien) FROM HoaDon h WHERE h.nhanVien.maNhanVien = :maNV " +
+                    "AND h.ngayLap BETWEEN :start AND :end";
+
+            Double tong = em.createQuery(jpql, Double.class)
+                    .setParameter("maNV", maNhanVien)
+                    .setParameter("start", startDate)
+                    .setParameter("end", endDate)
+                    .getSingleResult();
+
+            return tong != null ? tong : 0.0;
+        } catch (Exception e) {
+            logger.severe("❌ Lỗi tính tổng doanh thu: " + e.getMessage());
+            return 0.0;
+        } finally {
+            em.close();
+        }
+    }
+}

@@ -1,46 +1,14 @@
 package iuh.fit.app;
 
 // Import đích danh các Interface (Giao diện)
-import iuh.fit.core.repository.IChiTietHoaDonRepository;
-import iuh.fit.core.repository.IChiTietPhieuDatPhongRepository;
-import iuh.fit.core.repository.IDichVuRepository;
-import iuh.fit.core.repository.IHoaDonRepository;
-import iuh.fit.core.repository.IKhachHangRepository;
-import iuh.fit.core.repository.IKhuyenMaiRepository;
-import iuh.fit.core.repository.INhanVienRepository;
-import iuh.fit.core.repository.IPhieuDatPhongRepository;
-import iuh.fit.core.repository.IPhongRepository;
-import iuh.fit.core.repository.ITaiKhoanRepository;
+import iuh.fit.core.repository.*;
 
-import iuh.fit.core.service.IAuthenticationService;
-import iuh.fit.core.service.IChiTietHoaDonService;
-import iuh.fit.core.service.IDichVuService;
-import iuh.fit.core.service.IHoaDonService;
-import iuh.fit.core.service.IKhachHangService;
-import iuh.fit.core.service.INhanVienService;
-import iuh.fit.core.service.IPhieuDatPhongService;
-import iuh.fit.core.service.IPhongService;
+import iuh.fit.core.service.*;
 
 // Import đích danh các Class thực thi (Impl) ĐỂ TRÁNH LỖI AMBIGUOUS
-import iuh.fit.core.service.impl.AuthenticationServiceImpl;
-import iuh.fit.core.service.impl.ChiTietHoaDonServiceImpl;
-import iuh.fit.core.service.impl.DichVuServiceImpl;
-import iuh.fit.core.service.impl.HoaDonServiceImpl;
-import iuh.fit.core.service.impl.KhachHangServiceImpl;
-import iuh.fit.core.service.impl.NhanVienServiceImpl;
-import iuh.fit.core.service.impl.PhieuDatPhongServiceImpl;
-import iuh.fit.core.service.impl.PhongServiceImpl;
+import iuh.fit.core.service.impl.*;
 
-import iuh.fit.infrastructure.persistence.ChiTietHoaDonRepositoryImpl;
-import iuh.fit.infrastructure.persistence.ChiTietPhieuDatPhongRepositoryImpl;
-import iuh.fit.infrastructure.persistence.DichVuRepositoryImpl;
-import iuh.fit.infrastructure.persistence.HoaDonRepositoryImpl;
-import iuh.fit.infrastructure.persistence.KhachHangRepositoryImpl;
-import iuh.fit.infrastructure.persistence.KhuyenMaiRepositoryImpl;
-import iuh.fit.infrastructure.persistence.NhanVienRepositoryImpl;
-import iuh.fit.infrastructure.persistence.PhieuDatPhongRepositoryImpl;
-import iuh.fit.infrastructure.persistence.PhongRepositoryImpl;
-import iuh.fit.infrastructure.persistence.TaiKhoanRepositoryImpl;
+import iuh.fit.infrastructure.persistence.*;
 
 import iuh.fit.presentation.controller.LoginController;
 import javafx.application.Application;
@@ -63,8 +31,19 @@ public class MainApp extends Application {
         IChiTietHoaDonRepository cthdRepo = new ChiTietHoaDonRepositoryImpl();
         IChiTietPhieuDatPhongRepository ctphRepository = new ChiTietPhieuDatPhongRepositoryImpl();
         IKhuyenMaiRepository kmRepo = new KhuyenMaiRepositoryImpl();
+        IBaoCaoRepository baoCaoRepo = new BaoCaoRepositoryImpl();
+
+        ILichSuCaLamViecRepository lichSuRepo = new LichSuCaLamViecRepositoryImpl();
+        IPhanCongRepository phanCongRepo = new PhanCongRepositoryImpl();
 
         // Khởi tạo service
+        ICaLamViecService caLamViecService = new CaLamViecServiceImpl();
+        IPhanCongService phanCongService = new PhanCongServiceImpl(phanCongRepo);
+
+        IBaoCaoService baoCaoService = new BaoCaoServiceImpl(baoCaoRepo);
+
+        IGiaoCaService giaoCaService = new GiaoCaServiceImpl(lichSuRepo, phanCongRepo, hdRepo);
+
         IKhachHangService khService = new KhachHangServiceImpl(khRepo);
         INhanVienService nvService = new NhanVienServiceImpl(nvRepo);
         IPhongService phongService = new PhongServiceImpl(phongRepo);
@@ -77,7 +56,7 @@ public class MainApp extends Application {
         // Tạo LoginController và lấy Scene
         LoginController loginController = new LoginController(
                 authService, khService, nvService, phongService, phieuService,
-                dvService, hdService, cthdService
+                dvService, hdService, cthdService, giaoCaService
         );
         Scene loginScene = loginController.createLoginScene();
 

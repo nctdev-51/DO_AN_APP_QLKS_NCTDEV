@@ -43,9 +43,9 @@ public interface IHoaDonRepository {
      */
     List<HoaDon> findByMaKhachHang(String maKhachHang);
 
-    /**
-     * Lấy hóa đơn trong khoảng thời gian
-     */
     List<HoaDon> findByNgayLapBetween(LocalDate startDate, LocalDate endDate);
+
+    // Tính tổng doanh thu của nhân viên trong khoảng thời gian cụ thể
+    double sumDoanhThuByNhanVienAndTime(String maNhanVien, java.time.LocalDateTime thoiGianBatDau, java.time.LocalDateTime thoiGianKetThuc);
 }
 

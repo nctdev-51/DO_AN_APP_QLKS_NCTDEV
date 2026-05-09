@@ -188,3 +188,27 @@ INSERT INTO ChiTietHoaDon (maHoaDon, maDichVu, soLuong) VALUES
 ('HD009', 'DV001', 8),  ('HD009', 'DV007', 2),  ('HD009', 'DV008', 1),  ('HD009', 'DV014', 2),
 ('HD010', 'DV001', 4),  ('HD010', 'DV010', 1);
 
+-- ============================================================
+-- DỮ LIỆU CA LÀM VIỆC & PHÂN CÔNG CA (BỔ SUNG)
+-- ============================================================
+
+-- 1. THÊM 3 CA LÀM VIỆC MẶC ĐỊNH
+INSERT INTO ca_lam_viec (ma_ca, ten_ca, gio_bat_dau, gio_ket_thuc) VALUES
+                                                                       ('CA_SANG',  'Ca Sáng',  '06:00:00', '14:00:00'),
+                                                                       ('CA_CHIEU', 'Ca Chiều', '14:00:00', '22:00:00'),
+                                                                       ('CA_DEM',   'Ca Đêm',   '22:00:00', '06:00:00');
+
+-- 2. THÊM DỮ LIỆU PHÂN CÔNG CA LÀM VIỆC MẪU (Demo cho vài ngày)
+-- Sử dụng các mã nhân viên Lễ Tân đã có sẵn trong bảng NhanVien (NV002, NV003, NV004, NV006,...)
+INSERT INTO phan_cong_ca_lam_viec (ma_phan_cong, ma_nhan_vien, ma_ca, ngay_lam_viec) VALUES
+                                                                                         ('PC_1715000001', 'NV002', 'CA_SANG',  '2026-05-09'),
+                                                                                         ('PC_1715000002', 'NV003', 'CA_CHIEU', '2026-05-09'),
+                                                                                         ('PC_1715000003', 'NV004', 'CA_DEM',   '2026-05-09'),
+
+                                                                                         ('PC_1715000004', 'NV006', 'CA_SANG',  '2026-05-10'),
+                                                                                         ('PC_1715000005', 'NV007', 'CA_CHIEU', '2026-05-10'),
+                                                                                         ('PC_1715000006', 'NV009', 'CA_DEM',   '2026-05-10'),
+
+                                                                                         ('PC_1715000007', 'NV010', 'CA_SANG',  '2026-05-11'),
+                                                                                         ('PC_1715000008', 'NV012', 'CA_CHIEU', '2026-05-11'),
+                                                                                         ('PC_1715000009', 'NV002', 'CA_DEM',   '2026-05-11');

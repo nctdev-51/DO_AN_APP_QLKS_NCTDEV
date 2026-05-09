@@ -1,9 +1,17 @@
 package iuh.fit.core.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode
 @Entity
 @Table(name = "phan_cong_ca_lam_viec")
 public class PhanCongCaLamViec {
@@ -23,25 +31,9 @@ public class PhanCongCaLamViec {
     @Column(name = "ngay_lam_viec")
     private LocalDate ngayLamViec;
 
-    public PhanCongCaLamViec() {
-    }
+    @Column(name = "trang_thai", length = 50)
+    private String trangThai = "CHUA_LAM";
 
-    public PhanCongCaLamViec(String maPhanCong, NhanVien nhanVien, CaLamViec caLamViec, LocalDate ngayLamViec) {
-        this.maPhanCong = maPhanCong;
-        this.nhanVien = nhanVien;
-        this.caLamViec = caLamViec;
-        this.ngayLamViec = ngayLamViec;
-    }
-
-    public String getMaPhanCong() { return maPhanCong; }
-    public void setMaPhanCong(String maPhanCong) { this.maPhanCong = maPhanCong; }
-
-    public NhanVien getNhanVien() { return nhanVien; }
-    public void setNhanVien(NhanVien nhanVien) { this.nhanVien = nhanVien; }
-
-    public CaLamViec getCaLamViec() { return caLamViec; }
-    public void setCaLamViec(CaLamViec caLamViec) { this.caLamViec = caLamViec; }
-
-    public LocalDate getNgayLamViec() { return ngayLamViec; }
-    public void setNgayLamViec(LocalDate ngayLamViec) { this.ngayLamViec = ngayLamViec; }
+    @Column(name = "ghi_chu")
+    private String ghiChu;
 }
