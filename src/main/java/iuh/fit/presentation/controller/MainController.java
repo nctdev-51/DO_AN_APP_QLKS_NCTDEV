@@ -490,7 +490,8 @@ public class MainController {
     private void loadQuanLyHoaDon() {
         try {
             contentArea.getChildren().clear();
-            QuanLyHoaDonController controller = new QuanLyHoaDonController(hoaDonService);
+            // Truyền thêm khachHangService vào tham số thứ hai
+            QuanLyHoaDonController controller = new QuanLyHoaDonController(hoaDonService, khachHangService);
             VBox view = controller.createView();
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             contentArea.getChildren().setAll(view);

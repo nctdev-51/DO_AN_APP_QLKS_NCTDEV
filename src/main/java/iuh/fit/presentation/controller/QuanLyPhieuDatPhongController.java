@@ -595,39 +595,14 @@ public class QuanLyPhieuDatPhongController {
     }
 
     private void xuLyTraPhongNhom(List<PhieuDatPhongDTO> group, double canThu) {
-        boolean isGhiNo = group.get(0).getLoaiThanhToan() != null && group.get(0).getLoaiThanhToan().equals("GHI_NO");
+        // 👉 BỎ QUA KIỂM TRA TIỀN NỢ. LÚC NÀO CŨNG PHẢI CHUYỂN SANG TAB THANH TOÁN
+        // ĐỂ LỄ TÂN KIỂM TRA DỊCH VỤ VÀ IN HÓA ĐƠN!
+        String maPhieu = group.get(0).getMaPhieu();
 
-        // --- TRƯỜNG HỢP 1: KHÁCH CÒN NỢ TIỀN (PHẢI THANH TOÁN THÊM) ---
-        if (canThu > 0 && !isGhiNo) {
-            // Lấy mã phiếu của phòng đầu tiên
-            String maPhieu = group.get(0).getMaPhieu();
-
-            // 👉 Lệnh này sẽ báo cho MainController chuyển sang Màn hình Thanh toán
-            if (onNavigateToCheckout != null) {
-                onNavigateToCheckout.accept(maPhieu);
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Lỗi Hệ Thống", "Chức năng chuyển trang chưa được cấu hình.");
-            }
-        }
-        // --- TRƯỜNG HỢP 2: KHÁCH ĐÃ TRẢ ĐỦ HOẶC ĐƯỢC GHI NỢ (CHO PHÉP TRẢ PHÒNG NHANH) ---
-        else {
-            String msg = isGhiNo ? "Phòng này đang được GHI NỢ. Xác nhận cho khách đi và thu hồi " + group.size() + " phòng?"
-                    : "Khách đã thanh toán đủ. Xác nhận thu hồi " + group.size() + " phòng?";
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.YES, ButtonType.NO);
-            if (alert.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-                try {
-                    for (PhieuDatPhongDTO p : group) {
-                        p.setTrangThai("DA_TRA_PHONG");
-                        phieuDatPhongService.updatePhieuDatPhong(p);
-                        phongService.updatePhongTrangThai(p.getMaPhong(), "Trống");
-                    }
-                    loadDataAsync();
-                    showAlert(Alert.AlertType.INFORMATION, "Hoàn tất", "Đã trả phòng thành công.");
-                } catch (Exception e) {
-                    showAlert(Alert.AlertType.ERROR, "Lỗi Database", e.getMessage());
-                }
-            }
+        if (onNavigateToCheckout != null) {
+            onNavigateToCheckout.accept(maPhieu); // Bắn tín hiệu chuyển trang
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Lỗi Hệ Thống", "Chức năng chuyển trang chưa được cấu hình.");
         }
     }
 
