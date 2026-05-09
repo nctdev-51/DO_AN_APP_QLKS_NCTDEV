@@ -1,6 +1,7 @@
 // File: iuh/fit/core/service/impl/YeuCauPheDuyetServiceImpl.java
 package iuh.fit.core.service.impl;
 
+import iuh.fit.core.dto.YeuCauPheDuyetDTO;
 import iuh.fit.core.entity.YeuCauPheDuyet;
 import iuh.fit.core.repository.IYeuCauPheDuyetRepository;
 import iuh.fit.core.service.IGiaoCaService;
@@ -57,7 +58,21 @@ public class YeuCauPheDuyetServiceImpl implements IYeuCauPheDuyetService {
     }
 
     @Override
-    public List<YeuCauPheDuyet> getYeuCauChuaDuyet() {
-        return repository.findByTrangThai("CHUA_DUYET");
+    public List<YeuCauPheDuyetDTO> getYeuCauChuaDuyet() {
+        // Lấy list Entity từ DB
+        List<iuh.fit.core.entity.YeuCauPheDuyet> entities = repository.findByTrangThai("CHUA_DUYET");
+
+        // Map sang DTO
+        return entities.stream().map(yc -> new YeuCauPheDuyetDTO(
+                yc.getMaYeuCau(),
+                yc.getMaNhanVien(),
+                yc.getTenNhanVien(),
+                yc.getThoiGianYeuCau(),
+                yc.getTienDauCa(),
+                yc.getLyDo(),
+                yc.getTrangThai(),
+                yc.getMaQuanLy(),
+                yc.getThoiGianDuyet()
+        )).toList();
     }
 }

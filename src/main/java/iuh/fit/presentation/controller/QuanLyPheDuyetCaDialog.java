@@ -1,7 +1,8 @@
 // File: iuh/fit/presentation/controller/QuanLyPheDuyetCaDialog.java
 package iuh.fit.presentation.controller;
 
-import iuh.fit.core.entity.YeuCauPheDuyet;
+// 👉 SỬA: Import DTO thay vì Entity
+import iuh.fit.core.dto.YeuCauPheDuyetDTO;
 import iuh.fit.core.service.IYeuCauPheDuyetService;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -36,16 +37,17 @@ public class QuanLyPheDuyetCaDialog {
         Label lblTitle = new Label("Danh sách yêu cầu xin vào ca");
         lblTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
 
-        TableView<YeuCauPheDuyet> table = new TableView<>();
+        // 👉 SỬA: Đổi kiểu TableView sang DTO
+        TableView<YeuCauPheDuyetDTO> table = new TableView<>();
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<YeuCauPheDuyet, String> colNV = new TableColumn<>("Nhân viên");
+        TableColumn<YeuCauPheDuyetDTO, String> colNV = new TableColumn<>("Nhân viên");
         colNV.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(p.getValue().getTenNhanVien()));
 
-        TableColumn<YeuCauPheDuyet, String> colLyDo = new TableColumn<>("Lý do");
+        TableColumn<YeuCauPheDuyetDTO, String> colLyDo = new TableColumn<>("Lý do");
         colLyDo.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(p.getValue().getLyDo()));
 
-        TableColumn<YeuCauPheDuyet, String> colThoiGian = new TableColumn<>("Thời gian yêu cầu");
+        TableColumn<YeuCauPheDuyetDTO, String> colThoiGian = new TableColumn<>("Thời gian yêu cầu");
         colThoiGian.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(
                 p.getValue().getThoiGianYeuCau().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))));
 
@@ -60,14 +62,16 @@ public class QuanLyPheDuyetCaDialog {
         actions.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
 
         Runnable refreshTable = () -> {
-            List<YeuCauPheDuyet> list = yeuCauService.getYeuCauChuaDuyet();
+            // 👉 SỬA: Nhận List DTO
+            List<YeuCauPheDuyetDTO> list = yeuCauService.getYeuCauChuaDuyet();
             table.setItems(FXCollections.observableArrayList(list));
         };
 
         refreshTable.run();
 
         btnDuyet.setOnAction(e -> {
-            YeuCauPheDuyet selected = table.getSelectionModel().getSelectedItem();
+            // 👉 SỬA: Lấy đối tượng DTO từ Table
+            YeuCauPheDuyetDTO selected = table.getSelectionModel().getSelectedItem();
             if (selected == null) {
                 new Alert(Alert.AlertType.WARNING, "Vui lòng chọn một yêu cầu").show();
                 return;
@@ -85,7 +89,8 @@ public class QuanLyPheDuyetCaDialog {
         });
 
         btnTuChoi.setOnAction(e -> {
-            YeuCauPheDuyet selected = table.getSelectionModel().getSelectedItem();
+            // 👉 SỬA: Lấy đối tượng DTO từ Table
+            YeuCauPheDuyetDTO selected = table.getSelectionModel().getSelectedItem();
             if (selected == null) {
                 new Alert(Alert.AlertType.WARNING, "Vui lòng chọn một yêu cầu").show();
                 return;

@@ -2,15 +2,13 @@ package iuh.fit.app;
 
 // Import đích danh các Interface (Giao diện)
 import iuh.fit.core.repository.*;
-
 import iuh.fit.core.service.*;
 
 // Import đích danh các Class thực thi (Impl) ĐỂ TRÁNH LỖI AMBIGUOUS
 import iuh.fit.core.service.impl.*;
-
 import iuh.fit.infrastructure.persistence.*;
-
 import iuh.fit.presentation.controller.LoginController;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -20,7 +18,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Khởi tạo repository
+        // =========================================================
+        // 1. KHỞI TẠO REPOSITORY (Tầng truy cập dữ liệu)
+        // =========================================================
         IKhachHangRepository khRepo = new KhachHangRepositoryImpl();
         INhanVienRepository nvRepo = new NhanVienRepositoryImpl();
         IPhongRepository phongRepo = new PhongRepositoryImpl();
@@ -32,31 +32,40 @@ public class MainApp extends Application {
         IChiTietPhieuDatPhongRepository ctphRepository = new ChiTietPhieuDatPhongRepositoryImpl();
         IKhuyenMaiRepository kmRepo = new KhuyenMaiRepositoryImpl();
         IBaoCaoRepository baoCaoRepo = new BaoCaoRepositoryImpl();
-
         ILichSuCaLamViecRepository lichSuRepo = new LichSuCaLamViecRepositoryImpl();
+        IYeuCauPheDuyetRepository yeuCauRepo = new YeuCauPheDuyetRepositoryImpl();
         IPhanCongRepository phanCongRepo = new PhanCongRepositoryImpl();
 
-        // Khởi tạo service
-        ICaLamViecService caLamViecService = new CaLamViecServiceImpl();
-        IPhanCongService phanCongService = new PhanCongServiceImpl(phanCongRepo);
-
-        IBaoCaoService baoCaoService = new BaoCaoServiceImpl(baoCaoRepo);
-
-        IGiaoCaService giaoCaService = new GiaoCaServiceImpl(lichSuRepo, phanCongRepo, hdRepo);
-
+        // =========================================================
+        // 2. KHỞI TẠO SERVICE (Tầng nghiệp vụ)
+        // =========================================================
+        // Các Service độc lập
         IKhachHangService khService = new KhachHangServiceImpl(khRepo);
         INhanVienService nvService = new NhanVienServiceImpl(nvRepo);
         IPhongService phongService = new PhongServiceImpl(phongRepo);
         IPhieuDatPhongService phieuService = new PhieuDatPhongServiceImpl(phieuRepo);
         IAuthenticationService authService = new AuthenticationServiceImpl(tkRepo);
         IDichVuService dvService = new DichVuServiceImpl(dvRepo);
-        IHoaDonService hdService = new HoaDonServiceImpl(hdRepo, cthdRepo, phieuRepo, phongRepo, dvRepo, ctphRepository, khRepo, nvRepo, kmRepo);
         IChiTietHoaDonService cthdService = new ChiTietHoaDonServiceImpl(cthdRepo);
+        ICaLamViecService caLamViecService = new CaLamViecServiceImpl();
+        IPhanCongService phanCongService = new PhanCongServiceImpl(phanCongRepo);
+        IBaoCaoService baoCaoService = new BaoCaoServiceImpl(baoCaoRepo);
 
-        // Tạo LoginController và lấy Scene
+        // Các Service có nhiều dependency phức tạp
+        IHoaDonService hdService = new HoaDonServiceImpl(
+                hdRepo, cthdRepo, phieuRepo, phongRepo, dvRepo, ctphRepository, khRepo, nvRepo, kmRepo
+        );
+
+        IGiaoCaService giaoCaService = new GiaoCaServiceImpl(lichSuRepo, phanCongRepo, hdRepo);
+
+        IYeuCauPheDuyetService yeuCauService = new YeuCauPheDuyetServiceImpl(yeuCauRepo, giaoCaService);
+
+        // =========================================================
+        // 3. KHỞI CHẠY GIAO DIỆN
+        // =========================================================
         LoginController loginController = new LoginController(
                 authService, khService, nvService, phongService, phieuService,
-                dvService, hdService, cthdService, giaoCaService
+                dvService, hdService, cthdService, giaoCaService, yeuCauService
         );
         Scene loginScene = loginController.createLoginScene();
 

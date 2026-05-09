@@ -1,7 +1,7 @@
 package iuh.fit.presentation.controller;
 
 import iuh.fit.core.dto.TaiKhoanDTO;
-import iuh.fit.core.entity.YeuCauPheDuyet;
+import iuh.fit.core.dto.YeuCauPheDuyetDTO;
 import iuh.fit.core.service.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -48,12 +48,11 @@ public class MainController {
     private IGiaoCaService giaoCaService;
     private ChonPhongController chonPhongController;
 
-    // === NÂNG CẤP: YÊU CẦU DUYỆT CA ===
     private IYeuCauPheDuyetService yeuCauService;
     private boolean isManager;
 
     private Label lblClock;
-    private Label lblPendingCount; // badge số yêu cầu chưa duyệt
+    private Label lblPendingCount;
     private Timeline pendingRefreshTimer;
 
     private final String COLOR_PRIMARY = "#2563eb";
@@ -87,11 +86,12 @@ public class MainController {
         rootLayout = new BorderPane();
         rootLayout.setStyle("-fx-background-color: " + COLOR_BG_LIGHT + ";");
 
-        // Nút báo sự cố nhanh (giữ nguyên)
         Button btnQuickReport = new Button("⚠ BÁO SỰ CỐ");
         btnQuickReport.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; " +
                 "-fx-background-radius: 30; -fx-padding: 10 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);");
+
         btnQuickReport.setOnAction(e -> {
+            // 👉 Chạy LOCAL: Gọi thẳng xuống DB qua Impl
             iuh.fit.core.repository.IBaoCaoRepository bcRepo = new iuh.fit.infrastructure.persistence.BaoCaoRepositoryImpl();
             iuh.fit.core.service.IBaoCaoService bcService = new iuh.fit.core.service.impl.BaoCaoServiceImpl(bcRepo);
             new TaoBaoCaoDialog(bcService, currentUser).showDialog();
@@ -115,7 +115,6 @@ public class MainController {
 
         showDashboard();
 
-        // === KIỂM TRA YÊU CẦU ĐANG CHỜ CHO QUẢN LÝ ===
         if (isManager) {
             checkPendingRequestsOnStartup();
             startPendingRequestPolling();
@@ -179,7 +178,6 @@ public class MainController {
         HBox rightControls = new HBox(25);
         rightControls.setAlignment(Pos.CENTER_RIGHT);
 
-        // Badge yêu cầu chưa duyệt
         if (isManager) {
             lblPendingCount = new Label();
             lblPendingCount.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; " +
@@ -254,7 +252,6 @@ public class MainController {
         Button btnHopThu = createMenuButton("📥 Hộp Thư Báo Cáo", false);
         Button btnGuiBaoCao = createMenuButton("📝 Gửi Báo Cáo Sự Cố", false);
 
-        // Nút duyệt yêu cầu (dành cho quản lý)
         Button btnDuyetYeuCau = createMenuButton("⏰ Duyệt Yêu Cầu Vào Ca", false);
 
         btnTrangChu.setOnAction(e -> { setActiveMenu(btnTrangChu, menuButtons); showDashboard(); });
@@ -274,15 +271,19 @@ public class MainController {
             menuButtons.addAll(Arrays.asList(btnNhanVien, btnPhanCong, btnThongKe, btnHopThu, btnDuyetYeuCau));
             btnNhanVien.setOnAction(e -> { setActiveMenu(btnNhanVien, menuButtons); loadQuanLyNhanVien(); });
             btnThongKe.setOnAction(e -> { setActiveMenu(btnThongKe, menuButtons); loadThongKeDoanHThu(); });
-            iuh.fit.core.repository.IPhanCongRepository pcRepo = new iuh.fit.infrastructure.persistence.PhanCongRepositoryImpl();
-            iuh.fit.core.service.IPhanCongService pcService = new iuh.fit.core.service.impl.PhanCongServiceImpl(pcRepo);
-            iuh.fit.core.service.ICaLamViecService caService = new iuh.fit.core.service.impl.CaLamViecServiceImpl();
+
+            // 👉 Chạy LOCAL: Gọi thẳng xuống DB qua Impl
             btnPhanCong.setOnAction(e -> {
                 setActiveMenu(btnPhanCong, menuButtons);
                 contentArea.getChildren().clear();
+                iuh.fit.core.repository.IPhanCongRepository pcRepo = new iuh.fit.infrastructure.persistence.PhanCongRepositoryImpl();
+                iuh.fit.core.service.IPhanCongService pcService = new iuh.fit.core.service.impl.PhanCongServiceImpl(pcRepo);
+                iuh.fit.core.service.ICaLamViecService caService = new iuh.fit.core.service.impl.CaLamViecServiceImpl();
                 QuanLyPhanCongCaController controller = new QuanLyPhanCongCaController(pcService, nhanVienService, caService);
                 contentArea.getChildren().add(controller.createView());
             });
+
+            // 👉 Chạy LOCAL: Gọi thẳng xuống DB qua Impl
             btnHopThu.setOnAction(e -> {
                 setActiveMenu(btnHopThu, menuButtons);
                 contentArea.getChildren().clear();
@@ -291,6 +292,7 @@ public class MainController {
                 QuanLyBaoCaoController controller = new QuanLyBaoCaoController(bcService);
                 contentArea.getChildren().add(controller.createView());
             });
+
             btnDuyetYeuCau.setOnAction(e -> {
                 setActiveMenu(btnDuyetYeuCau, menuButtons);
                 contentArea.getChildren().clear();
@@ -301,6 +303,7 @@ public class MainController {
             sidebar.getChildren().addAll(btnNhanVien, btnPhanCong, btnThongKe, btnHopThu, btnDuyetYeuCau);
         } else {
             menuButtons.add(btnGuiBaoCao);
+            // 👉 Chạy LOCAL: Gọi thẳng xuống DB qua Impl
             btnGuiBaoCao.setOnAction(e -> {
                 setActiveMenu(btnGuiBaoCao, menuButtons);
                 iuh.fit.core.repository.IBaoCaoRepository bcRepo = new iuh.fit.infrastructure.persistence.BaoCaoRepositoryImpl();
@@ -319,7 +322,6 @@ public class MainController {
         return sidebar;
     }
 
-    // ======================= CÁC HÀM HỖ TRỢ MENU =======================
     private Button createMenuButton(String text, boolean isDefaultActive) {
         Button btn = new Button(text);
         btn.setMaxWidth(Double.MAX_VALUE);
@@ -353,9 +355,8 @@ public class MainController {
         timeline.play();
     }
 
-    // ======================= QUẢN LÝ YÊU CẦU CHƯA DUYỆT =======================
     private void checkPendingRequestsOnStartup() {
-        List<YeuCauPheDuyet> pending = yeuCauService.getYeuCauChuaDuyet();
+        List<YeuCauPheDuyetDTO> pending = yeuCauService.getYeuCauChuaDuyet();
         if (pending != null && !pending.isEmpty()) {
             Platform.runLater(() -> {
                 QuanLyPheDuyetCaDialog dialog = new QuanLyPheDuyetCaDialog(yeuCauService);
@@ -374,7 +375,7 @@ public class MainController {
     private void updatePendingBadge() {
         if (lblPendingCount == null) return;
         try {
-            List<YeuCauPheDuyet> pending = yeuCauService.getYeuCauChuaDuyet();
+            List<YeuCauPheDuyetDTO> pending = yeuCauService.getYeuCauChuaDuyet();
             int count = pending.size();
             if (count > 0) {
                 lblPendingCount.setText(count + " yêu cầu");
@@ -412,7 +413,7 @@ public class MainController {
             contentArea.getChildren().add(dashRoot);
 
         } catch (Exception ex) {
-            showErrorBox("LỖI HIỂN THỊ TRANG CHỦ", ex);
+            showErrorBox("LỖI HIỂN TRANG CHỦ", ex);
         }
     }
 
@@ -437,17 +438,14 @@ public class MainController {
     private void loadManHinhChonPhong() {
         try {
             contentArea.getChildren().clear();
-
             if (this.chonPhongController == null) {
                 this.chonPhongController = new ChonPhongController(
                         phongService, khachHangService, phieuDatPhongService, currentUser, primaryStage
                 );
             }
-
             HBox view = chonPhongController.createView();
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             contentArea.getChildren().setAll(view);
-
         } catch (Exception ex) {
             ex.printStackTrace();
             showErrorBox("LỖI KHI MỞ GIAO DIỆN CHỌN PHÒNG", ex);
@@ -502,12 +500,9 @@ public class MainController {
     private void showQuanLyPhieuDatScreen() {
         try {
             contentArea.getChildren().clear();
-            // SỬA: constructor mới có thêm Consumer<String> callback
             QuanLyPhieuDatPhongController qlPhieuController = new QuanLyPhieuDatPhongController(
                     phieuDatPhongService, phongService, khachHangService, nhanVienService, currentUser,
-                    maPhieu -> {
-                        loadTraPhong(maPhieu); // Chuyển sang màn hình trả phòng và truyền mã phiếu
-                    }
+                    maPhieu -> loadTraPhong(maPhieu)
             );
             VBox view = qlPhieuController.createQuanLyPhieuView();
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -520,7 +515,6 @@ public class MainController {
     private void loadQuanLyHoaDon() {
         try {
             contentArea.getChildren().clear();
-            // Truyền thêm khachHangService vào tham số thứ hai
             QuanLyHoaDonController controller = new QuanLyHoaDonController(hoaDonService, khachHangService);
             VBox view = controller.createView();
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

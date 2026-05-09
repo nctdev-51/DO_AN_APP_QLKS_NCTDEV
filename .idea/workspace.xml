@@ -5,40 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="yeu em 17g17">
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/YeuCauPheDuyet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/ICaLamViecRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IYeuCauPheDuyetRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IYeuCauPheDuyetService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/YeuCauPheDuyetServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/CaLamViecRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/YeuCauPheDuyetRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPheDuyetCaDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/YeuCauPheDuyetDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/network/CommandType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/network/HotelServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/network/Request.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/network/Response.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/BaoCaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/BaoCaoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/CaLamViecDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/CaLamViecDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/ChiTietHoaDonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/ChiTietHoaDonDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhuyenMaiDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhuyenMaiDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LichSuCaLamViecDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LichSuCaLamViecDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LoaiPhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LoaiPhongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhanCongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhanCongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterCriteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterCriteria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/BaoCao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/BaoCao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/GiaoNhanCaDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/GiaoNhanCaDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/app/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/app/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IYeuCauPheDuyetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IYeuCauPheDuyetService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/YeuCauPheDuyetServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/YeuCauPheDuyetServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyBaoCaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyBaoCaoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhanCongCaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhanCongCaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/TaoBaoCaoDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/TaoBaoCaoDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPheDuyetCaDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPheDuyetCaDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +60,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Tu_2" />
+        <entry key="$PROJECT_DIR$" value="Tu_new" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -137,9 +116,9 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Tu",
+    "git-widget-placeholder": "Tu__new__2",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/My_Document/lesson/PhanTan/BTL_PT_QLKS/src/main/java/iuh/fit/presentation/controller",
+    "last_opened_file_path": "F:/My_Document/lesson/PhanTan/BTL_PT_QLKS/src/main/java/iuh/fit/infrastructure",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -154,11 +133,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS\src\main\java\iuh\fit\infrastructure" />
       <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS\src\main\java\iuh\fit\presentation\controller" />
       <recent name="T:\BTLJV" />
       <recent name="D:\HK2_Nam3\JAVA\BTNhom\DO_AN_APP_QLKS_NCTDEV\src\main\resources\images" />
       <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS" />
-      <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS\src\main\java" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Launcher">

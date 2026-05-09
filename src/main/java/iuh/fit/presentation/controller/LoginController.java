@@ -2,10 +2,7 @@ package iuh.fit.presentation.controller;
 
 import iuh.fit.core.dto.LichSuCaLamViecDTO;
 import iuh.fit.core.dto.TaiKhoanDTO;
-import iuh.fit.core.repository.IYeuCauPheDuyetRepository;
 import iuh.fit.core.service.*;
-import iuh.fit.core.service.impl.YeuCauPheDuyetServiceImpl;
-import iuh.fit.infrastructure.persistence.YeuCauPheDuyetRepositoryImpl;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -49,6 +46,7 @@ public class LoginController {
     private IHoaDonService hoaDonService;
     private IChiTietHoaDonService chiTietHoaDonService;
     private IGiaoCaService giaoCaService;
+    private IYeuCauPheDuyetService yeuCauPheDuyetService; // 👉 ĐÃ THÊM VÀO ĐÂY
 
     // --- BẢNG MÀU UI CẢI TIẾN HIỆN ĐẠI ---
     private final String COLOR_PRIMARY = "#1e3a8a";  // Xanh dương đậm sang trọng
@@ -58,6 +56,7 @@ public class LoginController {
     private final String COLOR_BORDER = "#cbd5e1";
     private final String COLOR_INPUT_BG = "#f8fafc";
 
+    // 👉 ĐÃ THÊM IYeuCauPheDuyetService VÀO CONSTRUCTOR
     public LoginController(IAuthenticationService authenticationService,
                            IKhachHangService khachHangService,
                            INhanVienService nhanVienService,
@@ -66,7 +65,8 @@ public class LoginController {
                            IDichVuService dichVuService,
                            IHoaDonService hoaDonService,
                            IChiTietHoaDonService chiTietHoaDonService,
-                           IGiaoCaService giaoCaService) {
+                           IGiaoCaService giaoCaService,
+                           IYeuCauPheDuyetService yeuCauPheDuyetService) {
         this.authenticationService = authenticationService;
         this.khachHangService = khachHangService;
         this.nhanVienService = nhanVienService;
@@ -76,11 +76,10 @@ public class LoginController {
         this.hoaDonService = hoaDonService;
         this.chiTietHoaDonService = chiTietHoaDonService;
         this.giaoCaService = giaoCaService;
+        this.yeuCauPheDuyetService = yeuCauPheDuyetService;
     }
 
     public Scene createLoginScene() {
-        // ... giữ nguyên hoàn toàn phần giao diện ...
-        // (mã giao diện của bạn không thay đổi gì cả)
         StackPane root = new StackPane();
         root.setStyle("-fx-background-color: linear-gradient(to bottom right, #e0f2fe, #bae6fd);");
 
@@ -294,10 +293,6 @@ public class LoginController {
             if (user != null) {
                 currentUser = user;
 
-                // ===== TẠO SERVICE YÊU CẦU PHÊ DUYỆT =====
-                IYeuCauPheDuyetRepository yeuCauRepo = new YeuCauPheDuyetRepositoryImpl();
-                IYeuCauPheDuyetService yeuCauService = new YeuCauPheDuyetServiceImpl(yeuCauRepo, giaoCaService);
-
                 boolean isManager = false;
                 try {
                     if (username.equalsIgnoreCase("admin")) {
@@ -314,8 +309,8 @@ public class LoginController {
                 if (!isManager) {
                     LichSuCaLamViecDTO caDangLam = giaoCaService.getCaDangLam(user.getMaNhanVien());
                     if (caDangLam == null) {
-                        // Truyền yeuCauService vào GiaoNhanCaDialog
-                        GiaoNhanCaDialog dialog = new GiaoNhanCaDialog(giaoCaService, yeuCauService, user);
+                        // 👉 FIX: Sử dụng yeuCauPheDuyetService được tiêm từ Constructor
+                        GiaoNhanCaDialog dialog = new GiaoNhanCaDialog(giaoCaService, yeuCauPheDuyetService, user);
                         boolean isNhanCa = dialog.showNhanCaDialog();
 
                         if (!isNhanCa) {
@@ -330,7 +325,6 @@ public class LoginController {
                 showSuccess("Thành công! Đang truy cập hệ thống...");
 
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
-                final IYeuCauPheDuyetService finalYeuCauService = yeuCauService;
                 final boolean finalIsManager = isManager;
                 pause.setOnFinished(event -> {
                     try {
@@ -342,8 +336,8 @@ public class LoginController {
                                 phongService, phieuDatPhongService,
                                 dichVuService, hoaDonService, chiTietHoaDonService,
                                 giaoCaService,
-                                finalYeuCauService,   // <-- TRUYỀN YÊU CẦU SERVICE
-                                finalIsManager        // <-- TRUYỀN CỜ QUẢN LÝ
+                                yeuCauPheDuyetService,   // <-- TRUYỀN YÊU CẦU SERVICE TỪ TRƯỜNG DỮ LIỆU
+                                finalIsManager
                         );
                         mainController.showMainScreen();
 
