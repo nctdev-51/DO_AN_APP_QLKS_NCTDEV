@@ -4,17 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="Tu update 13h43 09/05/2026">
-      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyHoaDonController.java" afterDir="false" />
+    <list default="true" id="72c46223-b413-494d-be47-c23ce885344f" name="Changes" comment="yeu em 17g17">
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/YeuCauPheDuyet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/ICaLamViecRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/repository/IYeuCauPheDuyetRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IYeuCauPheDuyetService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/YeuCauPheDuyetServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/CaLamViecRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/infrastructure/persistence/YeuCauPheDuyetRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPheDuyetCaDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IHoaDonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/IHoaDonService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/HoaDonServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/service/impl/HoaDonServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ChonPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ChonPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatPhongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/BaoCaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/BaoCaoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/CaLamViecDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/CaLamViecDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/ChiTietHoaDonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/ChiTietHoaDonDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/DichVuDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/HoaDonDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhachHangDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhuyenMaiDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/KhuyenMaiDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LichSuCaLamViecDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LichSuCaLamViecDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LoaiPhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/LoaiPhongDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/NhanVienDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhanCongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhanCongDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhieuDatPhongDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterCriteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterCriteria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/PhongFilterResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/dto/TaiKhoanDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/BaoCao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/core/entity/BaoCao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/GiaoNhanCaDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/GiaoNhanCaDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThanhToanTraPhongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/ThanhToanTraPhongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyBaoCaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyBaoCaoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhanCongCaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhanCongCaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/TaoBaoCaoDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/TaoBaoCaoDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +81,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Tu" />
+        <entry key="$PROJECT_DIR$" value="Tu_2" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -97,39 +121,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ClientMain.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ServerMain.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.BTL_PT_QLKS [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.BTL_PT_QLKS [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Tu&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;T:/BTLJV&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ClientMain.executor": "Run",
+    "Application.Launcher.executor": "Run",
+    "Application.MainApp.executor": "Run",
+    "Application.ServerMain.executor": "Run",
+    "Maven.BTL_PT_QLKS [clean].executor": "Run",
+    "Maven.BTL_PT_QLKS [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "Tu",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "F:/My_Document/lesson/PhanTan/BTL_PT_QLKS/src/main/java/iuh/fit/presentation/controller",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS\src\main\java\iuh\fit\presentation\controller" />
       <recent name="T:\BTLJV" />
       <recent name="D:\HK2_Nam3\JAVA\BTNhom\DO_AN_APP_QLKS_NCTDEV\src\main\resources\images" />
       <recent name="F:\My_Document\lesson\PhanTan\BTL_PT_QLKS" />
@@ -312,7 +337,8 @@
     <MESSAGE value="Tu update" />
     <MESSAGE value="yeu em 10g06" />
     <MESSAGE value="Tu update 13h43 09/05/2026" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tu update 13h43 09/05/2026" />
+    <MESSAGE value="yeu em 17g17" />
+    <option name="LAST_COMMIT_MESSAGE" value="yeu em 17g17" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -323,11 +349,6 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/MainController.java</url>
-          <line>63</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/QuanLyPhieuDatPhongController.java</url>
           <line>729</line>
           <option name="timeStamp" value="7" />
@@ -335,7 +356,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/iuh/fit/presentation/controller/DatNhanPhongController.java</url>
           <line>355</line>
-          <properties class="iuh.fit.presentation.controller.DatNhanPhongController" method="renderRoomsGrid">
+          <properties class="iuh.fit.presentation.controller.DatNhanPhongController">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>

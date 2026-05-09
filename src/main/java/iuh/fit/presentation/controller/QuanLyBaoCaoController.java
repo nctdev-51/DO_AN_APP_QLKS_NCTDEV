@@ -13,6 +13,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
+import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javafx.scene.image.Image;
@@ -102,11 +104,22 @@ public class QuanLyBaoCaoController {
         content.setPadding(new Insets(20));
 
         // Hiển thị ảnh nếu có
-        if (bc.getHinhAnh() != null) {
-            ImageView iv = new ImageView(new Image("file:" + bc.getHinhAnh()));
-            iv.setFitWidth(400); iv.setPreserveRatio(true);
-            content.getChildren().add(new Label("Ảnh minh chứng:"));
-            content.getChildren().add(iv);
+        if (bc.getHinhAnh() != null && !bc.getHinhAnh().isEmpty()) {
+            try {
+                // Chuyển đổi đường dẫn tương đối thành File
+                File imageFile = new File(bc.getHinhAnh());
+                if (imageFile.exists()) {
+                    ImageView iv = new ImageView(new Image(imageFile.toURI().toString()));
+                    iv.setFitWidth(400);
+                    iv.setPreserveRatio(true);
+                    content.getChildren().add(new Label("Ảnh minh chứng:"));
+                    content.getChildren().add(iv);
+                } else {
+                    content.getChildren().add(new Label("(Ảnh không tồn tại trên máy)"));
+                }
+            } catch (Exception e) {
+                content.getChildren().add(new Label("(Không thể hiển thị ảnh)"));
+            }
         }
 
         TextArea txtPhanHoi = new TextArea();
@@ -116,7 +129,7 @@ public class QuanLyBaoCaoController {
         btnSave.setStyle("-fx-background-color: #10b981; -fx-text-fill: white;");
         btnSave.setOnAction(e -> {
             bc.setTrangThai("DA_XU_LY");
-            bc.setPhanHoiQuanLy(txtPhanHoi.getText()); // Lưu feedback của sếp
+            bc.setPhanHoiQuanLy(txtPhanHoi.getText());
             try {
                 baoCaoService.update(bc);
                 loadData();

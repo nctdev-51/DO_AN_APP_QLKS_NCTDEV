@@ -265,7 +265,7 @@ public class QuanLyPhanCongCaController {
         cbAddNV.setItems(filteredItems);
 
         // 3. Định dạng cách hiển thị (Mã - Tên)
-        cbAddNV.setConverter(new javafx.util.StringConverter<>() {
+        cbAddNV.setConverter(new StringConverter<>() {
             @Override public String toString(NhanVienDTO nv) {
                 return nv == null ? "" : nv.getMaNhanVien() + " - " + nv.getHoTen();
             }

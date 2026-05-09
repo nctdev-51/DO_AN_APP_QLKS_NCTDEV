@@ -23,6 +23,7 @@
         <class>iuh.fit.core.entity.PhanCongCaLamViec</class>
         <class>iuh.fit.core.entity.ChiTietHoaDon</class>
         <class>iuh.fit.core.entity.ChiTietPhieuDatPhong</class>
+        <class>iuh.fit.core.entity.YeuCauPheDuyet</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 

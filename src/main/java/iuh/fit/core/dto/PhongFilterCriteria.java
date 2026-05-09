@@ -1,12 +1,14 @@
 package iuh.fit.core.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * DTO: PhongFilterCriteria
  * Mô tả: Tiêu chí lọc phòng từ GUI
  */
-public class PhongFilterCriteria {
+public class PhongFilterCriteria implements Serializable {
+    private static final long serialVersionUID = 1L;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private int totalGuests;

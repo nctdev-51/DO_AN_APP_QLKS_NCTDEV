@@ -3,6 +3,7 @@ package iuh.fit.presentation.controller;
 import iuh.fit.core.dto.LichSuCaLamViecDTO;
 import iuh.fit.core.dto.TaiKhoanDTO;
 import iuh.fit.core.service.IGiaoCaService;
+import iuh.fit.core.service.IYeuCauPheDuyetService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,12 +19,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class GiaoNhanCaDialog {
-
     private final IGiaoCaService giaoCaService;
+    private final IYeuCauPheDuyetService yeuCauService; // thêm
     private final TaiKhoanDTO currentUser;
 
-    public GiaoNhanCaDialog(IGiaoCaService giaoCaService, TaiKhoanDTO currentUser) {
+    public GiaoNhanCaDialog(IGiaoCaService giaoCaService,
+                            IYeuCauPheDuyetService yeuCauService,
+                            TaiKhoanDTO currentUser) {
         this.giaoCaService = giaoCaService;
+        this.yeuCauService = yeuCauService;
         this.currentUser = currentUser;
     }
 
@@ -108,7 +112,7 @@ public class GiaoNhanCaDialog {
     }
 
     // ==========================================
-    // 1. DIALOG NHẬN CA (Lúc mới Login)
+    // 1. DIALOG NHẬN CA (Gọi khi mới đăng nhập)
     // ==========================================
     public boolean showNhanCaDialog() {
         Stage dialog = new Stage();
@@ -119,7 +123,6 @@ public class GiaoNhanCaDialog {
         mainLayout.setPadding(new Insets(25));
         mainLayout.setStyle("-fx-background-color: white;");
 
-        // Cột trái: Thông tin
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.setPrefWidth(350);
@@ -137,7 +140,7 @@ public class GiaoNhanCaDialog {
         TextField txtTienDauCa = new TextField();
         txtTienDauCa.setPromptText("Sử dụng bàn phím bên phải...");
         txtTienDauCa.setStyle("-fx-font-size: 20px; -fx-padding: 10; -fx-font-weight: bold; -fx-alignment: center-right; -fx-border-color: #3b82f6; -fx-border-radius: 8;");
-        txtTienDauCa.setEditable(false); // Chặn gõ tay để dùng numpad cho chuẩn POS
+        txtTienDauCa.setEditable(false);
         boxTien.getChildren().addAll(lTien, txtTienDauCa);
 
         Button btnNhanCa = new Button("XÁC NHẬN NHẬN CA");
@@ -150,26 +153,96 @@ public class GiaoNhanCaDialog {
             try {
                 if(txtTienDauCa.getText().isEmpty()) throw new NumberFormatException();
                 double tien = Double.parseDouble(txtTienDauCa.getText().replace(",", ""));
+
+                // Gọi hàm nhận ca bình thường (isManagerOverride = false)
                 giaoCaService.nhanCa(currentUser.getMaNhanVien(), tien, false);
+
                 new Alert(Alert.AlertType.INFORMATION, "Nhận ca thành công! Chúc bạn làm việc hiệu quả.").showAndWait();
                 isSuccess[0] = true;
                 dialog.close();
             } catch (NumberFormatException ex) {
                 new Alert(Alert.AlertType.ERROR, "Vui lòng nhập số tiền hợp lệ!").show();
             } catch (Exception ex) {
-                new Alert(Alert.AlertType.WARNING, ex.getMessage()).show();
+                // 🚀 ĐÃ FIX: BẮT LỖI ĐẾN TRỄ VÀ HIỂN THỊ POPUP XIN QUYỀN
+                if (ex.getMessage().contains("ĐẾN TRỄ")) {
+                    double tien = Double.parseDouble(txtTienDauCa.getText().replace(",", ""));
+                    xuLyDenTre(tien, dialog, isSuccess);
+                } else {
+                    new Alert(Alert.AlertType.WARNING, ex.getMessage()).show();
+                }
             }
         });
 
         root.getChildren().addAll(lblTitle, lblInfo, boxTien, btnNhanCa);
-
-        // Ghép Numpad vào bên phải
         mainLayout.getChildren().addAll(root, new Separator(javafx.geometry.Orientation.VERTICAL), createPOSNumpad(txtTienDauCa));
 
         dialog.setScene(new Scene(mainLayout, 750, 400));
         dialog.showAndWait();
 
         return isSuccess[0];
+    }
+
+    // =========================================================================
+    // 🛠️ HÀM XỬ LÝ NGHIỆP VỤ ĐẾN TRỄ (XIN CẤP PHÉP OVERRIDE)
+    // =========================================================================
+    private void xuLyDenTre(double tienDauCa, Stage parentDialog, boolean[] isSuccess) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Hệ thống khóa tự động");
+        alert.setHeaderText("⛔ BẠN ĐÃ ĐẾN TRỄ QUÁ GIỜ QUY ĐỊNH!");
+        alert.setContentText("Hệ thống đã khóa ca làm việc. Bạn không thể tự ý vào ca.\n\nVui lòng chọn phương án giải quyết:");
+
+        ButtonType btnQuanLyDuyetTaiCho = new ButtonType("Quản lý mở khóa tại máy");
+        ButtonType btnXinPhepTuXa = new ButtonType("Gửi yêu cầu mạng (Client/Server)");
+        ButtonType btnHuy = new ButtonType("Hủy bỏ", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(btnQuanLyDuyetTaiCho, btnXinPhepTuXa, btnHuy);
+
+        alert.showAndWait().ifPresent(type -> {
+            if (type == btnQuanLyDuyetTaiCho) {
+                // 1. NGHIỆP VỤ MỞ KHÓA TẠI CHỖ (LOCAL OVERRIDE)
+                TextInputDialog passDialog = new TextInputDialog();
+                passDialog.setTitle("Xác thực Quản lý");
+                passDialog.setHeaderText("Yêu cầu Quản lý nhập Mật khẩu cấp phép (VD: 123)");
+                passDialog.setContentText("Mật khẩu Quản lý:");
+
+                passDialog.showAndWait().ifPresent(pass -> {
+                    // TODO: Bạn có thể gọi AuthenticationService ở đây để check mật khẩu admin
+                    if (pass.equals("123")) {
+                        try {
+                            // Cấp quyền isManagerOverride = true để bypass logic check giờ
+                            giaoCaService.nhanCa(currentUser.getMaNhanVien(), tienDauCa, true);
+                            new Alert(Alert.AlertType.INFORMATION, "Quản lý đã mở khóa! Nhận ca thành công.").showAndWait();
+                            isSuccess[0] = true;
+                            parentDialog.close();
+                        } catch (Exception ex) {
+                            new Alert(Alert.AlertType.ERROR, ex.getMessage()).show();
+                        }
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Mật khẩu quản lý không chính xác!").show();
+                    }
+                });
+
+            } else if (type == btnXinPhepTuXa) {
+                TextInputDialog lyDoDialog = new TextInputDialog();
+                lyDoDialog.setTitle("Xin phép Quản lý từ xa");
+                lyDoDialog.setHeaderText("Gửi yêu cầu xin vào ca trễ.");
+                lyDoDialog.setContentText("Nhập lý do (Kẹt xe, Hỏng xe...):");
+
+                lyDoDialog.showAndWait().ifPresent(lyDo -> {
+                    try {
+                        yeuCauService.taoYeuCau(
+                                currentUser.getMaNhanVien(),
+                                currentUser.getHoTenNhanVien(),
+                                tienDauCa,
+                                lyDo
+                        );
+                        new Alert(Alert.AlertType.INFORMATION, "Đã gửi yêu cầu chờ quản lý duyệt.\nVui lòng thông báo cho quản lý.").showAndWait();
+                    } catch (Exception ex) {
+                        new Alert(Alert.AlertType.ERROR, "Lỗi gửi yêu cầu: " + ex.getMessage()).show();
+                    }
+                });
+            }
+        });
     }
 
     // ==========================================

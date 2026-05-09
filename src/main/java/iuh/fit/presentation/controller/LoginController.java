@@ -2,7 +2,10 @@ package iuh.fit.presentation.controller;
 
 import iuh.fit.core.dto.LichSuCaLamViecDTO;
 import iuh.fit.core.dto.TaiKhoanDTO;
+import iuh.fit.core.repository.IYeuCauPheDuyetRepository;
 import iuh.fit.core.service.*;
+import iuh.fit.core.service.impl.YeuCauPheDuyetServiceImpl;
+import iuh.fit.infrastructure.persistence.YeuCauPheDuyetRepositoryImpl;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -45,8 +48,6 @@ public class LoginController {
     private IDichVuService dichVuService;
     private IHoaDonService hoaDonService;
     private IChiTietHoaDonService chiTietHoaDonService;
-
-    // Tích hợp Service Giao Ca
     private IGiaoCaService giaoCaService;
 
     // --- BẢNG MÀU UI CẢI TIẾN HIỆN ĐẠI ---
@@ -65,7 +66,7 @@ public class LoginController {
                            IDichVuService dichVuService,
                            IHoaDonService hoaDonService,
                            IChiTietHoaDonService chiTietHoaDonService,
-                           IGiaoCaService giaoCaService) { // Bổ sung IGiaoCaService vào Constructor
+                           IGiaoCaService giaoCaService) {
         this.authenticationService = authenticationService;
         this.khachHangService = khachHangService;
         this.nhanVienService = nhanVienService;
@@ -78,6 +79,8 @@ public class LoginController {
     }
 
     public Scene createLoginScene() {
+        // ... giữ nguyên hoàn toàn phần giao diện ...
+        // (mã giao diện của bạn không thay đổi gì cả)
         StackPane root = new StackPane();
         root.setStyle("-fx-background-color: linear-gradient(to bottom right, #e0f2fe, #bae6fd);");
 
@@ -291,16 +294,15 @@ public class LoginController {
             if (user != null) {
                 currentUser = user;
 
-                // ========================================================
-                // 🚀 ĐÃ FIX: ĐẶC QUYỀN BYPASS CHO ADMIN / QUẢN LÝ
-                // ========================================================
+                // ===== TẠO SERVICE YÊU CẦU PHÊ DUYỆT =====
+                IYeuCauPheDuyetRepository yeuCauRepo = new YeuCauPheDuyetRepositoryImpl();
+                IYeuCauPheDuyetService yeuCauService = new YeuCauPheDuyetServiceImpl(yeuCauRepo, giaoCaService);
+
                 boolean isManager = false;
                 try {
-                    // Nếu đăng nhập bằng tk admin thì tự động là quản lý (phục vụ demo nhanh)
                     if (username.equalsIgnoreCase("admin")) {
                         isManager = true;
                     } else {
-                        // Kiểm tra chức vụ thực tế dưới Database
                         var nv = nhanVienService.getNhanVienById(user.getMaNhanVien());
                         if (nv != null && (nv.getLoaiNhanVien().contains("QUAN_LY") || nv.getLoaiNhanVien().contains("GIAM_DOC"))) {
                             isManager = true;
@@ -312,14 +314,15 @@ public class LoginController {
                 if (!isManager) {
                     LichSuCaLamViecDTO caDangLam = giaoCaService.getCaDangLam(user.getMaNhanVien());
                     if (caDangLam == null) {
-                        GiaoNhanCaDialog dialog = new GiaoNhanCaDialog(giaoCaService, user);
+                        // Truyền yeuCauService vào GiaoNhanCaDialog
+                        GiaoNhanCaDialog dialog = new GiaoNhanCaDialog(giaoCaService, yeuCauService, user);
                         boolean isNhanCa = dialog.showNhanCaDialog();
 
                         if (!isNhanCa) {
                             showError("Đăng nhập bị hủy: Bạn chưa xác nhận Nhận Ca.");
                             resetLoginButton();
                             currentUser = null;
-                            return; // Chặn lại, không cho load MainController
+                            return;
                         }
                     }
                 }
@@ -327,6 +330,8 @@ public class LoginController {
                 showSuccess("Thành công! Đang truy cập hệ thống...");
 
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
+                final IYeuCauPheDuyetService finalYeuCauService = yeuCauService;
+                final boolean finalIsManager = isManager;
                 pause.setOnFinished(event -> {
                     try {
                         Stage currentStage = (Stage) loginButton.getScene().getWindow();
@@ -336,7 +341,9 @@ public class LoginController {
                                 khachHangService, nhanVienService,
                                 phongService, phieuDatPhongService,
                                 dichVuService, hoaDonService, chiTietHoaDonService,
-                                giaoCaService
+                                giaoCaService,
+                                finalYeuCauService,   // <-- TRUYỀN YÊU CẦU SERVICE
+                                finalIsManager        // <-- TRUYỀN CỜ QUẢN LÝ
                         );
                         mainController.showMainScreen();
 
