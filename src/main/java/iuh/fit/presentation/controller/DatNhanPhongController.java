@@ -195,11 +195,50 @@ public class DatNhanPhongController {
         VBox boxNgay = new VBox(5);
         Label lblNgay = new Label("THỜI GIAN LƯU TRÚ:"); lblNgay.setStyle(labelStyle);
         HBox dateRow = new HBox(10);
-        dpIn = new DatePicker(LocalDate.now()); dpIn.setPromptText("Nhận"); dpIn.setStyle(inputStyle); HBox.setHgrow(dpIn, Priority.ALWAYS); dpIn.setMaxWidth(Double.MAX_VALUE);
-        dpIn.setOnAction(e -> filterRooms());
-        Label lblDash = new Label("-"); lblDash.setStyle("-fx-font-weight: bold; -fx-padding: 8 0 0 0;");
-        dpOut = new DatePicker(LocalDate.now().plusDays(1)); dpOut.setPromptText("Trả"); dpOut.setStyle(inputStyle); HBox.setHgrow(dpOut, Priority.ALWAYS); dpOut.setMaxWidth(Double.MAX_VALUE);
-        dpOut.setOnAction(e -> filterRooms());
+
+        dpIn = new DatePicker(LocalDate.now());
+        dpIn.setPromptText("Nhận");
+        dpIn.setStyle(inputStyle);
+        HBox.setHgrow(dpIn, Priority.ALWAYS);
+        dpIn.setMaxWidth(Double.MAX_VALUE);
+
+        Label lblDash = new Label("-");
+        lblDash.setStyle("-fx-font-weight: bold; -fx-padding: 8 0 0 0;");
+
+        dpOut = new DatePicker(LocalDate.now().plusDays(1));
+        dpOut.setPromptText("Trả");
+        dpOut.setStyle(inputStyle);
+        HBox.setHgrow(dpOut, Priority.ALWAYS);
+        dpOut.setMaxWidth(Double.MAX_VALUE);
+
+        // 👉 ĐÃ FIX: VALIDATE NGÀY NHẬN
+        dpIn.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null) {
+                // 1. Ngày nhận không được lùi về trước hôm nay
+                if (newDate.isBefore(LocalDate.now())) {
+                    Platform.runLater(() -> dpIn.setValue(LocalDate.now()));
+                }
+                // 2. Nếu ngày nhận bị đẩy qua ngày trả, tự đẩy ngày trả lên +1 ngày
+                else if (dpOut.getValue() != null && !newDate.isBefore(dpOut.getValue())) {
+                    Platform.runLater(() -> dpOut.setValue(newDate.plusDays(1)));
+                } else {
+                    filterRooms(); // Hợp lệ thì gọi hàm lọc phòng
+                }
+            }
+        });
+
+        // 👉 ĐÃ FIX: VALIDATE NGÀY TRẢ
+        dpOut.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null) {
+                // Ngày trả phải LỚN HƠN ngày nhận ít nhất 1 ngày
+                if (dpIn.getValue() != null && !newDate.isAfter(dpIn.getValue())) {
+                    Platform.runLater(() -> dpOut.setValue(dpIn.getValue().plusDays(1)));
+                } else {
+                    filterRooms(); // Hợp lệ thì gọi hàm lọc phòng
+                }
+            }
+        });
+
         dateRow.getChildren().addAll(dpIn, lblDash, dpOut);
         boxNgay.getChildren().addAll(lblNgay, dateRow);
 

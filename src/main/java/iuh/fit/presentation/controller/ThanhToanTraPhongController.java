@@ -696,6 +696,7 @@ public class ThanhToanTraPhongController {
 
     private void clearCheckoutForm() {
         Platform.runLater(() -> {
+            // 1. Reset thông tin khách
             lblGuestNameCheckout.setText("—");
             lblRoomCheckout.setText("—");
             lblCheckInDateCheckout.setText("—");
@@ -704,11 +705,20 @@ public class ThanhToanTraPhongController {
             lblRoomPriceCheckout.setText("0 đ");
             tvServiceDetails.getItems().clear();
 
+            // 2. Tắt vùng chọn ComboBox
+            cbPhieuDatCheckout.getSelectionModel().clearSelection();
+
+            // 3. 👉 FIX TẠI ĐÂY: Reset các Label hiển thị tiền trên Hóa Đơn
+            lblRoomTotalCheckout.setText("0 đ");
+            lblServiceTotalCheckout.setText("0 đ");
+            lblSurchargeCheckout.setText("0 đ");
+
+            // 4. Reset biến tính toán
             currentRoomTotal = 0;
             currentServiceTotal = 0;
             currentSurchargeTotal = 0;
-            lblSurchargeCheckout.setText("0 đ");
 
+            // 5. Reset Spinner và Tổng cộng
             spinnerVAT.getValueFactory().setValue(10.0);
             spinnerDiscount.getValueFactory().setValue(0.0);
             recalculateTotal();
