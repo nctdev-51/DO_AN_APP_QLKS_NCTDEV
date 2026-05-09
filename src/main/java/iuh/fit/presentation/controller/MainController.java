@@ -78,6 +78,33 @@ public class MainController {
         rootLayout = new BorderPane();
         rootLayout.setStyle("-fx-background-color: " + COLOR_BG_LIGHT + ";");
 
+        Button btnQuickReport = new Button("⚠ BÁO SỰ CỐ");
+        btnQuickReport.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; " +
+                "-fx-background-radius: 30; -fx-padding: 10 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);");
+
+        // Sự kiện mở Dialog báo cáo (Sử dụng Service đã khởi tạo)
+        btnQuickReport.setOnAction(e -> {
+            // Tự động khởi tạo Service nếu cần
+            iuh.fit.core.repository.IBaoCaoRepository bcRepo = new iuh.fit.infrastructure.persistence.BaoCaoRepositoryImpl();
+            iuh.fit.core.service.IBaoCaoService bcService = new iuh.fit.core.service.impl.BaoCaoServiceImpl(bcRepo);
+            new TaoBaoCaoDialog(bcService, currentUser).showDialog();
+        });
+
+        // Ép nút vào góc dưới bên phải màn hình
+        StackPane.setAlignment(btnQuickReport, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(btnQuickReport, new Insets(0, 30, 30, 0));
+
+        // 🚀 ĐÃ FIX: Đảm bảo contentArea luôn có thực thể trước khi nhét vào layoutContainer
+        if (contentArea == null) {
+            contentArea = new StackPane();
+        }
+
+        // Bọc contentArea vào một StackPane để nút nổi lên trên
+        StackPane layoutContainer = new StackPane();
+        layoutContainer.getChildren().addAll(contentArea, btnQuickReport);
+
+        rootLayout.setCenter(layoutContainer);
+
         rootLayout.setTop(createHeader());
         rootLayout.setLeft(createSidebar());
 

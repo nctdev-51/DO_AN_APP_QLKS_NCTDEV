@@ -37,4 +37,11 @@ public class BaoCao {
 
     @Column(name = "trangThai", length = 50)
     private String trangThai = "CHUA_XEM"; // CHUA_XEM, DA_XEM, DA_XU_LY
+
+    // Thêm vào các trường sau
+    @Column(name = "hinhAnh", length = 255)
+    private String hinhAnh; // Lưu đường dẫn file ảnh
+
+    @Column(name = "phanHoiQuanLy", length = 500)
+    private String phanHoiQuanLy;
 }

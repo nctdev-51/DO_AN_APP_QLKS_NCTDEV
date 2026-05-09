@@ -15,6 +15,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class QuanLyBaoCaoController {
     private final IBaoCaoService baoCaoService;
@@ -93,22 +95,38 @@ public class QuanLyBaoCaoController {
     }
 
     private void xemChiTiet(BaoCaoDTO bc) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Chi Tiết Báo Cáo");
-        alert.setHeaderText(bc.getTieuDe());
-        alert.setContentText("Từ: " + bc.getHoTenNhanVien() + "\nLoại: " + bc.getPhanLoai() + "\n\nNỘI DUNG:\n" + bc.getNoiDung());
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Xử lý báo cáo: " + bc.getMaBaoCao());
 
-        ButtonType btnXuLy = new ButtonType("Đánh dấu Đã Xử Lý", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().addAll(btnXuLy);
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(20));
 
-        alert.showAndWait().ifPresent(res -> {
-            if (res == btnXuLy) {
-                bc.setTrangThai("DA_XU_LY");
-                try {
-                    baoCaoService.update(bc);
-                    loadData();
-                } catch (Exception ignored) {}
-            }
+        // Hiển thị ảnh nếu có
+        if (bc.getHinhAnh() != null) {
+            ImageView iv = new ImageView(new Image("file:" + bc.getHinhAnh()));
+            iv.setFitWidth(400); iv.setPreserveRatio(true);
+            content.getChildren().add(new Label("Ảnh minh chứng:"));
+            content.getChildren().add(iv);
+        }
+
+        TextArea txtPhanHoi = new TextArea();
+        txtPhanHoi.setPromptText("Nhập chỉ đạo hoặc kết quả xử lý...");
+
+        Button btnSave = new Button("Xác nhận đã xử lý");
+        btnSave.setStyle("-fx-background-color: #10b981; -fx-text-fill: white;");
+        btnSave.setOnAction(e -> {
+            bc.setTrangThai("DA_XU_LY");
+            bc.setPhanHoiQuanLy(txtPhanHoi.getText()); // Lưu feedback của sếp
+            try {
+                baoCaoService.update(bc);
+                loadData();
+                dialog.close();
+            } catch (Exception ignored) {}
         });
+
+        content.getChildren().addAll(new Label("Nội dung: " + bc.getNoiDung()), new Separator(), new Label("Phản hồi của Quản lý:"), txtPhanHoi, btnSave);
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.showAndWait();
     }
 }

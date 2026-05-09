@@ -212,3 +212,14 @@ INSERT INTO phan_cong_ca_lam_viec (ma_phan_cong, ma_nhan_vien, ma_ca, ngay_lam_v
                                                                                          ('PC_1715000007', 'NV010', 'CA_SANG',  '2026-05-11'),
                                                                                          ('PC_1715000008', 'NV012', 'CA_CHIEU', '2026-05-11'),
                                                                                          ('PC_1715000009', 'NV002', 'CA_DEM',   '2026-05-11');
+
+-- ============================================================
+-- DỮ LIỆU BÁO CÁO / SỰ CỐ (Dành cho Dashboard Quản lý)
+-- ============================================================
+
+INSERT INTO BaoCao (maBaoCao, maNhanVien, tieuDe, noiDung, phanLoai, ngayTao, trangThai, hinhAnh, phanHoiQuanLy) VALUES
+                                                                                                                     ('BC_1715000101', 'NV002', 'Hỏng điều hòa phòng 105', 'Khách phòng 105 (đang ở) báo điều hòa không mát, có chảy nước rỉ xuống thảm. Cần kỹ thuật kiểm tra gấp.', 'Báo cáo Sự cố', '2026-05-09 08:15:00', 'CHUA_XEM', NULL, NULL),
+
+                                                                                                                     ('BC_1715000102', 'NV003', 'Lệch tiền két ca chiều', 'Kiểm đếm két cuối ca phát hiện thiếu 50,000đ. Đã kiểm tra lại các hóa đơn nộp tiền mặt nhưng chưa tìm ra nguyên nhân.', 'Báo cáo Tài chính (Lệch ca)', '2026-05-09 22:10:00', 'CHUA_XEM', NULL, NULL),
+
+                                                                                                                     ('BC_1715000103', 'NV004', 'Đề xuất nhập thêm Aquafina', 'Kho mini ở quầy lễ tân đã hết sạch nước suối Aquafina, chỉ còn Coca. Đề xuất kho tổng xuất thêm 5 thùng xuống quầy.', 'Đề xuất / Yêu cầu', '2026-05-08 14:30:00', 'DA_XU_LY', NULL, 'Đã báo kho xuất 5 thùng, lễ tân nhận hàng nhớ ký phiếu.');

@@ -264,4 +264,41 @@ public class DashboardController {
         });
         return btn;
     }
+
+    private void checkPendingReports(VBox container) {
+        try {
+            // Khởi tạo Service lấy dữ liệu báo cáo ngay tại đây để không ảnh hưởng cấu trúc cũ
+            iuh.fit.core.repository.IBaoCaoRepository bcRepo = new iuh.fit.infrastructure.persistence.BaoCaoRepositoryImpl();
+            iuh.fit.core.service.IBaoCaoService baoCaoService = new iuh.fit.core.service.impl.BaoCaoServiceImpl(bcRepo);
+
+            // Lấy danh sách báo cáo từ DB
+            List<iuh.fit.core.dto.BaoCaoDTO> listBaoCao = baoCaoService.findAll();
+
+            // Đếm số lượng báo cáo có trạng thái "CHUA_XEM"
+            long count = listBaoCao.stream().filter(b -> b.getTrangThai().equals("CHUA_XEM")).count();
+
+            if (count > 0) {
+                VBox alertBox = new VBox(10);
+                alertBox.setStyle("-fx-background-color: #fff1f2; -fx-border-color: #fb7185; -fx-padding: 15; -fx-background-radius: 10;");
+
+                Label lblMsg = new Label("🚩 CÓ " + count + " BÁO CÁO/SỰ CỐ MỚI CHƯA XỬ LÝ!");
+                lblMsg.setStyle("-fx-text-fill: #e11d48; -fx-font-weight: bold; -fx-font-size: 15px;");
+
+                Button btnGo = new Button("Xem và xử lý ngay →");
+                btnGo.setStyle("-fx-background-color: #e11d48; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 6;");
+
+                // Chuyển màn hình khi click
+                btnGo.setOnAction(e -> {
+                    if (navigationHandler != null) {
+                        navigationHandler.accept("QUAN_LY_BAO_CAO");
+                    }
+                });
+
+                alertBox.getChildren().addAll(lblMsg, btnGo);
+                container.getChildren().add(0, alertBox); // Đưa lên đầu Dashboard
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

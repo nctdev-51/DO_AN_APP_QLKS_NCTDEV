@@ -11,10 +11,12 @@ import java.time.LocalDateTime;
 public class BaoCaoDTO {
     private String maBaoCao;
     private String maNhanVien;
-    private String hoTenNhanVien; // Lấy từ Entity NhanVien
+    private String hoTenNhanVien;
     private String tieuDe;
     private String noiDung;
     private String phanLoai;
     private LocalDateTime ngayTao;
     private String trangThai;
+    private String hinhAnh;
+    private String phanHoiQuanLy;
 }

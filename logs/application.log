@@ -115965,3 +115965,2332 @@ Caused by: java.sql.SQLSyntaxErrorException: (conn=5) Table 'nhanvien' already e
         NhanVien nv1_0 
     [34mwhere[0m
         nv1_0.maNhanVien=?
+2026-05-09 10:08:43.697 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-09 10:08:43.703 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-09 10:08:43.817 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-09 10:08:45.006 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m BaoCao (
+        maBaoCao [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        maNhanVien [34mvarchar[0m(5),
+        ngayTao datetime(6) [34mnot[0m [34mnull[0m,
+        noiDung [34mvarchar[0m(1000) [34mnot[0m [34mnull[0m,
+        phanLoai [34mvarchar[0m(50),
+        tieuDe [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        trangThai [34mvarchar[0m(50),
+        [34mprimary[0m [34mkey[0m (maBaoCao)
+    ) engine=InnoDB
+2026-05-09 10:08:45.026 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m ca_lam_viec (
+        ma_ca [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        gio_bat_dau [34mtime[0m(6),
+        gio_ket_thuc [34mtime[0m(6),
+        ten_ca [34mvarchar[0m(100),
+        [34mprimary[0m [34mkey[0m (ma_ca)
+    ) engine=InnoDB
+2026-05-09 10:08:45.029 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m ChiTietHoaDon (
+        maDichVu [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        maHoaDon [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        soLuong [34minteger[0m,
+        [34mprimary[0m [34mkey[0m (maDichVu, maHoaDon)
+    ) engine=InnoDB
+2026-05-09 10:08:45.031 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m ChiTietPhieuDatPhong (
+        maDichVu [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        maPhieu [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        ghiChu [34mvarchar[0m(500),
+        soLuong [34minteger[0m,
+        [34mprimary[0m [34mkey[0m (maDichVu, maPhieu)
+    ) engine=InnoDB
+2026-05-09 10:08:45.034 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m DichVu (
+        maDichVu [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        giaTien [34mfloat[0m(53),
+        moTa [34mvarchar[0m(255),
+        tenDichVu [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (maDichVu)
+    ) engine=InnoDB
+2026-05-09 10:08:45.038 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m HoaDon (
+        maHoaDon [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        chietKhau [34mfloat[0m(53),
+        ghiChu [34mvarchar[0m(500),
+        maKhachHang [34mvarchar[0m(30),
+        maKhuyenMai [34mvarchar[0m(5),
+        maNhanVien [34mvarchar[0m(5),
+        maPhongDat [34mvarchar[0m(4),
+        ngayLap [34mdate[0m,
+        tenPhong [34mvarchar[0m(100),
+        thueVAT [34mfloat[0m(53),
+        tongTien [34mfloat[0m(53),
+        tongTienDichVu [34mfloat[0m(53),
+        tongTienPhong [34mfloat[0m(53),
+        trangThaiThanhToan [34mvarchar[0m(50),
+        [34mprimary[0m [34mkey[0m (maHoaDon)
+    ) engine=InnoDB
+2026-05-09 10:08:45.041 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m KhachHang (
+        maKhachHang [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        hoTen [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        loaiKhachHang [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        ngaySinh [34mdate[0m [34mnot[0m [34mnull[0m,
+        soDienThoai [34mvarchar[0m(15) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (maKhachHang)
+    ) engine=InnoDB
+2026-05-09 10:08:45.044 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m KhuyenMai (
+        maKhuyenMai [34mvarchar[0m(5) [34mnot[0m [34mnull[0m,
+        chietKhau [34mfloat[0m(53) [34mnot[0m [34mnull[0m,
+        loaiKhuyenMai [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        ngayBatDau [34mdate[0m [34mnot[0m [34mnull[0m,
+        ngayKetThuc [34mdate[0m [34mnot[0m [34mnull[0m,
+        tenKhuyenMai [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (maKhuyenMai)
+    ) engine=InnoDB
+2026-05-09 10:08:45.048 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m LichSuCaLamViec (
+        maLichSu [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        ghiChu [34mvarchar[0m(500),
+        maCa [34mvarchar[0m(20),
+        maNhanVien [34mvarchar[0m(5),
+        thoiGianGiaoCa datetime(6),
+        thoiGianNhanCa datetime(6) [34mnot[0m [34mnull[0m,
+        tienChenhLech [34mfloat[0m(53),
+        tienCuoiCaThucTe [34mfloat[0m(53),
+        tienDauCa [34mfloat[0m(53),
+        tongThuTrongCa [34mfloat[0m(53),
+        trangThai [34mvarchar[0m(50),
+        [34mprimary[0m [34mkey[0m (maLichSu)
+    ) engine=InnoDB
+2026-05-09 10:08:45.050 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m LoaiPhong (
+        maLoaiPhong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        moTa [34mvarchar[0m(100) [34mnot[0m [34mnull[0m,
+        tenLoaiPhong [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (maLoaiPhong)
+    ) engine=InnoDB
+2026-05-09 10:08:45.053 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m NhanVien (
+        maNhanVien [34mvarchar[0m(5) [34mnot[0m [34mnull[0m,
+        CCCD [34mvarchar[0m(12) [34mnot[0m [34mnull[0m,
+        gioiTinh TINYINT(1) [34mnot[0m [34mnull[0m,
+        hoTen [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        loaiNhanVien [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        ngaySinh [34mdate[0m [34mnot[0m [34mnull[0m,
+        ngayVaoLam [34mdate[0m [34mnot[0m [34mnull[0m,
+        queQuan [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        soDienThoai [34mvarchar[0m(15) [34mnot[0m [34mnull[0m,
+        trangThai TINYINT(1) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (maNhanVien)
+    ) engine=InnoDB
+2026-05-09 10:08:45.056 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m phan_cong_ca_lam_viec (
+        ma_phan_cong [34mvarchar[0m(20) [34mnot[0m [34mnull[0m,
+        ghi_chu [34mvarchar[0m(255),
+        ngay_lam_viec [34mdate[0m,
+        trang_thai [34mvarchar[0m(50),
+        ma_ca [34mvarchar[0m(20),
+        ma_nhan_vien [34mvarchar[0m(5),
+        [34mprimary[0m [34mkey[0m (ma_phan_cong)
+    ) engine=InnoDB
+2026-05-09 10:08:45.059 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m PhieuDatPhong (
+        maPhieu [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        maKhachHang [34mvarchar[0m(30),
+        maNhanVien [34mvarchar[0m(5),
+        maPhong [34mvarchar[0m(4),
+        ngayDat [34mdate[0m,
+        ngayNhan [34mdate[0m,
+        ngayTra [34mdate[0m,
+        tienCoc [34mfloat[0m(53),
+        tongTien [34mfloat[0m(53),
+        trangThai [34mvarchar[0m(30) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (maPhieu)
+    ) engine=InnoDB
+2026-05-09 10:08:45.062 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m Phong (
+        maPhong [34mvarchar[0m(4) [34mnot[0m [34mnull[0m,
+        giaPhong [34mfloat[0m(53),
+        maLoaiPhong [34mvarchar[0m(20),
+        tenPhong [34mvarchar[0m(100),
+        tinhTrang [34mvarchar[0m(50),
+        [34mprimary[0m [34mkey[0m (maPhong)
+    ) engine=InnoDB
+2026-05-09 10:08:45.064 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mcreate[0m [34mtable[0m TaiKhoan (
+        maNhanVien [34mvarchar[0m(5) [34mnot[0m [34mnull[0m,
+        matKhau [34mvarchar[0m(255) [34mnot[0m [34mnull[0m,
+        tenDangNhap [34mvarchar[0m(50) [34mnot[0m [34mnull[0m,
+        trangThaiTK TINYINT(1) [34mnot[0m [34mnull[0m,
+        [34mprimary[0m [34mkey[0m (maNhanVien)
+    ) engine=InnoDB
+2026-05-09 10:08:45.067 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m KhachHang 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_pqyhwe74h7cobabomxqgvlg7g
+2026-05-09 10:08:45.073 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m KhachHang 
+       [34madd[0m [34mconstraint[0m UK_pqyhwe74h7cobabomxqgvlg7g [34munique[0m (soDienThoai)
+2026-05-09 10:08:45.081 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m NhanVien 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_myivdcojf4knmjowqwvqjwgwf
+2026-05-09 10:08:45.082 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m NhanVien 
+       [34madd[0m [34mconstraint[0m UK_myivdcojf4knmjowqwvqjwgwf [34munique[0m (CCCD)
+2026-05-09 10:08:45.086 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m NhanVien 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_g21a579alc612s1qabsegw8g7
+2026-05-09 10:08:45.088 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m NhanVien 
+       [34madd[0m [34mconstraint[0m UK_g21a579alc612s1qabsegw8g7 [34munique[0m (soDienThoai)
+2026-05-09 10:08:45.091 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m TaiKhoan 
+       [34mdrop[0m index [34mif[0m [34mexists[0m UK_80cxbkm4awrwo7xhayol01sbc
+2026-05-09 10:08:45.094 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m TaiKhoan 
+       [34madd[0m [34mconstraint[0m UK_80cxbkm4awrwo7xhayol01sbc [34munique[0m (tenDangNhap)
+2026-05-09 10:08:45.098 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m BaoCao 
+       [34madd[0m [34mconstraint[0m FKirbidh1lhoeq2ammgv8u6875r 
+       [34mforeign[0m [34mkey[0m (maNhanVien) 
+       [34mreferences[0m NhanVien (maNhanVien)
+2026-05-09 10:08:45.111 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m ChiTietHoaDon 
+       [34madd[0m [34mconstraint[0m FK8dwjorw1y54rxyp3yafiqiq35 
+       [34mforeign[0m [34mkey[0m (maDichVu) 
+       [34mreferences[0m DichVu (maDichVu)
+2026-05-09 10:08:45.117 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m ChiTietHoaDon 
+       [34madd[0m [34mconstraint[0m FK48lko1mwj5apm7o0w68jp3ugw 
+       [34mforeign[0m [34mkey[0m (maHoaDon) 
+       [34mreferences[0m HoaDon (maHoaDon)
+2026-05-09 10:08:45.124 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m ChiTietPhieuDatPhong 
+       [34madd[0m [34mconstraint[0m FK6lx23atwqyd4aux9u7ep4x33a 
+       [34mforeign[0m [34mkey[0m (maDichVu) 
+       [34mreferences[0m DichVu (maDichVu)
+2026-05-09 10:08:45.130 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m ChiTietPhieuDatPhong 
+       [34madd[0m [34mconstraint[0m FKm1iqdlxi6uevccyk3t0dfunib 
+       [34mforeign[0m [34mkey[0m (maPhieu) 
+       [34mreferences[0m PhieuDatPhong (maPhieu)
+2026-05-09 10:08:45.137 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m HoaDon 
+       [34madd[0m [34mconstraint[0m FK9d827nxw1jb7c2n7k6lma13fo 
+       [34mforeign[0m [34mkey[0m (maKhachHang) 
+       [34mreferences[0m KhachHang (maKhachHang)
+2026-05-09 10:08:45.144 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m HoaDon 
+       [34madd[0m [34mconstraint[0m FK1ingtkkt0wcuy2wooff07a1m 
+       [34mforeign[0m [34mkey[0m (maKhuyenMai) 
+       [34mreferences[0m KhuyenMai (maKhuyenMai)
+2026-05-09 10:08:45.151 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m HoaDon 
+       [34madd[0m [34mconstraint[0m FKlr1g5d8b2338kpln7dlergfjg 
+       [34mforeign[0m [34mkey[0m (maNhanVien) 
+       [34mreferences[0m NhanVien (maNhanVien)
+2026-05-09 10:08:45.159 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m HoaDon 
+       [34madd[0m [34mconstraint[0m FKmtlkv8ncnan84bbg1v5xry8lq 
+       [34mforeign[0m [34mkey[0m (maPhongDat) 
+       [34mreferences[0m Phong (maPhong)
+2026-05-09 10:08:45.165 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m LichSuCaLamViec 
+       [34madd[0m [34mconstraint[0m FKl92o7gtagkqwkng5gnue2dhlt 
+       [34mforeign[0m [34mkey[0m (maCa) 
+       [34mreferences[0m ca_lam_viec (ma_ca)
+2026-05-09 10:08:45.171 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m LichSuCaLamViec 
+       [34madd[0m [34mconstraint[0m FKoxdb7bq4x6g2ayvgihhhp4n9c 
+       [34mforeign[0m [34mkey[0m (maNhanVien) 
+       [34mreferences[0m NhanVien (maNhanVien)
+2026-05-09 10:08:45.179 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FK6saxk6pcl9u4hfntxcp13wgtj 
+       [34mforeign[0m [34mkey[0m (ma_ca) 
+       [34mreferences[0m ca_lam_viec (ma_ca)
+2026-05-09 10:08:45.186 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m phan_cong_ca_lam_viec 
+       [34madd[0m [34mconstraint[0m FKt819bkmw7lj7isdtwkp05rm19 
+       [34mforeign[0m [34mkey[0m (ma_nhan_vien) 
+       [34mreferences[0m NhanVien (maNhanVien)
+2026-05-09 10:08:45.193 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m PhieuDatPhong 
+       [34madd[0m [34mconstraint[0m FKlw2u92e0svt8m7imef6whh2jy 
+       [34mforeign[0m [34mkey[0m (maKhachHang) 
+       [34mreferences[0m KhachHang (maKhachHang)
+2026-05-09 10:08:45.199 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m PhieuDatPhong 
+       [34madd[0m [34mconstraint[0m FKg6q4ic5e54j8o1hmvxkkml0lm 
+       [34mforeign[0m [34mkey[0m (maNhanVien) 
+       [34mreferences[0m NhanVien (maNhanVien)
+2026-05-09 10:08:45.205 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m PhieuDatPhong 
+       [34madd[0m [34mconstraint[0m FK193vmga917683f0li98ktju55 
+       [34mforeign[0m [34mkey[0m (maPhong) 
+       [34mreferences[0m Phong (maPhong)
+2026-05-09 10:08:45.215 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m Phong 
+       [34madd[0m [34mconstraint[0m FKfqtihdf0kevjpn73mhnallw3g 
+       [34mforeign[0m [34mkey[0m (maLoaiPhong) 
+       [34mreferences[0m LoaiPhong (maLoaiPhong)
+2026-05-09 10:08:45.522 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:23:14.465 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-09 11:23:14.472 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-09 11:23:14.672 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-09 11:23:15.941 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m BaoCao 
+       [34madd[0m [34mcolumn[0m hinhAnh [34mvarchar[0m(255)
+2026-05-09 11:23:15.971 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34malter[0m [34mtable[0m [34mif[0m [34mexists[0m BaoCao 
+       [34madd[0m [34mcolumn[0m phanHoiQuanLy [34mvarchar[0m(500)
+2026-05-09 11:23:16.362 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:24:34.358 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:24:34.368 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:24:45.706 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-09 11:24:45.714 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-09 11:24:45.828 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-09 11:24:47.419 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:24:47.424 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:26.906 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-09 11:26:26.910 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-09 11:26:27.014 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-09 11:26:28.567 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:26:28.573 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:29.822 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:26:29.826 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:29.830 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:29.831 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:29.832 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:36.408 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        bc1_0.maBaoCao,
+        bc1_0.hinhAnh,
+        bc1_0.maNhanVien,
+        bc1_0.ngayTao,
+        bc1_0.noiDung,
+        bc1_0.phanHoiQuanLy,
+        bc1_0.phanLoai,
+        bc1_0.tieuDe,
+        bc1_0.trangThai 
+    [34mfrom[0m
+        BaoCao bc1_0 
+    [34morder[0m [34mby[0m
+        bc1_0.ngayTao desc
+2026-05-09 11:26:36.410 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:36.417 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:36.418 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:41.898 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:26:41.900 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:41.901 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:41.902 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:41.902 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.128 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai 
+    [34mfrom[0m
+        KhachHang kh1_0
+2026-05-09 11:26:43.140 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:26:43.141 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.145 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.146 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.148 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.169 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pdp1_0.maPhieu,
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai,
+        pdp1_0.maKhachHang,
+        pdp1_0.maNhanVien,
+        pdp1_0.maPhong,
+        pdp1_0.ngayDat,
+        pdp1_0.ngayNhan,
+        pdp1_0.ngayTra,
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang,
+        pdp1_0.tienCoc,
+        pdp1_0.tongTien,
+        pdp1_0.trangThai 
+    [34mfrom[0m
+        PhieuDatPhong pdp1_0 
+    [34mjoin[0m
+        KhachHang kh1_0 
+            [34mon[0m kh1_0.maKhachHang=pdp1_0.maKhachHang 
+    [34mjoin[0m
+        Phong p1_0 
+            [34mon[0m p1_0.maPhong=pdp1_0.maPhong
+2026-05-09 11:26:43.189 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.192 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.196 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.197 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.199 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.202 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.203 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.208 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.439 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pdp1_0.maPhieu,
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai,
+        pdp1_0.maKhachHang,
+        pdp1_0.maNhanVien,
+        pdp1_0.maPhong,
+        pdp1_0.ngayDat,
+        pdp1_0.ngayNhan,
+        pdp1_0.ngayTra,
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang,
+        pdp1_0.tienCoc,
+        pdp1_0.tongTien,
+        pdp1_0.trangThai 
+    [34mfrom[0m
+        PhieuDatPhong pdp1_0 
+    [34mjoin[0m
+        KhachHang kh1_0 
+            [34mon[0m kh1_0.maKhachHang=pdp1_0.maKhachHang 
+    [34mjoin[0m
+        Phong p1_0 
+            [34mon[0m p1_0.maPhong=pdp1_0.maPhong
+2026-05-09 11:26:43.442 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.443 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.447 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.451 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.457 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.460 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:26:43.460 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.464 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:26:43.478 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        dv1_0.maDichVu,
+        dv1_0.giaTien,
+        dv1_0.moTa,
+        dv1_0.tenDichVu 
+    [34mfrom[0m
+        DichVu dv1_0
+2026-05-09 11:27:08.633 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-09 11:27:08.639 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-09 11:27:08.739 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-09 11:27:10.199 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:27:10.207 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:27:10.214 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:27:10.243 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lsclv1_0.maLichSu,
+        lsclv1_0.maCa,
+        lsclv1_0.ghiChu,
+        lsclv1_0.maNhanVien,
+        lsclv1_0.thoiGianGiaoCa,
+        lsclv1_0.thoiGianNhanCa,
+        lsclv1_0.tienChenhLech,
+        lsclv1_0.tienCuoiCaThucTe,
+        lsclv1_0.tienDauCa,
+        lsclv1_0.tongThuTrongCa,
+        lsclv1_0.trangThai 
+    [34mfrom[0m
+        LichSuCaLamViec lsclv1_0 
+    [34mwhere[0m
+        lsclv1_0.maNhanVien=? 
+        [34mand[0m lsclv1_0.trangThai=[36m'DANG_LAM'[0m 
+    limit
+        ?
+2026-05-09 11:27:14.430 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pcclv1_0.ma_phan_cong,
+        pcclv1_0.ma_ca,
+        pcclv1_0.ghi_chu,
+        pcclv1_0.ngay_lam_viec,
+        pcclv1_0.ma_nhan_vien,
+        pcclv1_0.trang_thai 
+    [34mfrom[0m
+        phan_cong_ca_lam_viec pcclv1_0 
+    [34mwhere[0m
+        pcclv1_0.ma_nhan_vien=? 
+        [34mand[0m pcclv1_0.ngay_lam_viec=? 
+    limit
+        ?
+2026-05-09 11:27:14.433 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        clv1_0.ma_ca,
+        clv1_0.gio_bat_dau,
+        clv1_0.gio_ket_thuc,
+        clv1_0.ten_ca 
+    [34mfrom[0m
+        ca_lam_viec clv1_0 
+    [34mwhere[0m
+        clv1_0.ma_ca=?
+2026-05-09 11:27:14.434 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:55:49.996 [JavaFX Application Thread] WARN  o.h.e.j.c.i.ConnectionProviderInitiator - HHH000472: Hikari properties were encountered, but the Hikari ConnectionProvider was not found on the classpath; these properties are going to be ignored.
+2026-05-09 11:55:50.001 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-05-09 11:55:50.123 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-09 11:55:51.674 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:55:51.681 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:55:51.689 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:55:51.713 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lsclv1_0.maLichSu,
+        lsclv1_0.maCa,
+        lsclv1_0.ghiChu,
+        lsclv1_0.maNhanVien,
+        lsclv1_0.thoiGianGiaoCa,
+        lsclv1_0.thoiGianNhanCa,
+        lsclv1_0.tienChenhLech,
+        lsclv1_0.tienCuoiCaThucTe,
+        lsclv1_0.tienDauCa,
+        lsclv1_0.tongThuTrongCa,
+        lsclv1_0.trangThai 
+    [34mfrom[0m
+        LichSuCaLamViec lsclv1_0 
+    [34mwhere[0m
+        lsclv1_0.maNhanVien=? 
+        [34mand[0m lsclv1_0.trangThai=[36m'DANG_LAM'[0m 
+    limit
+        ?
+2026-05-09 11:55:57.798 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pcclv1_0.ma_phan_cong,
+        pcclv1_0.ma_ca,
+        pcclv1_0.ghi_chu,
+        pcclv1_0.ngay_lam_viec,
+        pcclv1_0.ma_nhan_vien,
+        pcclv1_0.trang_thai 
+    [34mfrom[0m
+        phan_cong_ca_lam_viec pcclv1_0 
+    [34mwhere[0m
+        pcclv1_0.ma_nhan_vien=? 
+        [34mand[0m pcclv1_0.ngay_lam_viec=? 
+    limit
+        ?
+2026-05-09 11:55:57.800 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        clv1_0.ma_ca,
+        clv1_0.gio_bat_dau,
+        clv1_0.gio_ket_thuc,
+        clv1_0.ten_ca 
+    [34mfrom[0m
+        ca_lam_viec clv1_0 
+    [34mwhere[0m
+        clv1_0.ma_ca=?
+2026-05-09 11:55:57.801 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:06.937 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        tk1_0.maNhanVien,
+        tk1_0.matKhau,
+        tk1_0.tenDangNhap,
+        tk1_0.trangThaiTK 
+    [34mfrom[0m
+        TaiKhoan tk1_0 
+    [34mwhere[0m
+        tk1_0.tenDangNhap=?
+2026-05-09 11:56:06.940 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:08.173 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:56:08.176 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:08.180 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:08.181 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:08.182 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.028 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:56:10.029 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.031 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.032 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.034 [Thread-4] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.814 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:56:10.815 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.816 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.817 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:10.817 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.424 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:56:11.425 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.429 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.430 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.433 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.466 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pdp1_0.maPhieu,
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai,
+        pdp1_0.maKhachHang,
+        pdp1_0.maNhanVien,
+        pdp1_0.maPhong,
+        pdp1_0.ngayDat,
+        pdp1_0.ngayNhan,
+        pdp1_0.ngayTra,
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang,
+        pdp1_0.tienCoc,
+        pdp1_0.tongTien,
+        pdp1_0.trangThai 
+    [34mfrom[0m
+        PhieuDatPhong pdp1_0 
+    [34mjoin[0m
+        KhachHang kh1_0 
+            [34mon[0m kh1_0.maKhachHang=pdp1_0.maKhachHang 
+    [34mjoin[0m
+        Phong p1_0 
+            [34mon[0m p1_0.maPhong=pdp1_0.maPhong
+2026-05-09 11:56:11.477 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:11.479 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.483 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:11.484 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.489 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:11.492 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:11.494 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:11.498 [Thread-5] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:12.425 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        clv1_0.ma_ca,
+        clv1_0.gio_bat_dau,
+        clv1_0.gio_ket_thuc,
+        clv1_0.ten_ca 
+    [34mfrom[0m
+        ca_lam_viec clv1_0
+2026-05-09 11:56:12.429 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0
+2026-05-09 11:56:12.434 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pcclv1_0.ma_phan_cong,
+        pcclv1_0.ma_ca,
+        pcclv1_0.ghi_chu,
+        pcclv1_0.ngay_lam_viec,
+        pcclv1_0.ma_nhan_vien,
+        pcclv1_0.trang_thai 
+    [34mfrom[0m
+        phan_cong_ca_lam_viec pcclv1_0
+2026-05-09 11:56:12.435 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        clv1_0.ma_ca,
+        clv1_0.gio_bat_dau,
+        clv1_0.gio_ket_thuc,
+        clv1_0.ten_ca 
+    [34mfrom[0m
+        ca_lam_viec clv1_0 
+    [34mwhere[0m
+        clv1_0.ma_ca=?
+2026-05-09 11:56:12.435 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:12.436 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        clv1_0.ma_ca,
+        clv1_0.gio_bat_dau,
+        clv1_0.gio_ket_thuc,
+        clv1_0.ten_ca 
+    [34mfrom[0m
+        ca_lam_viec clv1_0 
+    [34mwhere[0m
+        clv1_0.ma_ca=?
+2026-05-09 11:56:12.438 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:12.442 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        clv1_0.ma_ca,
+        clv1_0.gio_bat_dau,
+        clv1_0.gio_ket_thuc,
+        clv1_0.ten_ca 
+    [34mfrom[0m
+        ca_lam_viec clv1_0 
+    [34mwhere[0m
+        clv1_0.ma_ca=?
+2026-05-09 11:56:12.444 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:12.445 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:12.447 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:12.448 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:12.451 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:12.452 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:13.362 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        bc1_0.maBaoCao,
+        bc1_0.hinhAnh,
+        bc1_0.maNhanVien,
+        bc1_0.ngayTao,
+        bc1_0.noiDung,
+        bc1_0.phanHoiQuanLy,
+        bc1_0.phanLoai,
+        bc1_0.tieuDe,
+        bc1_0.trangThai 
+    [34mfrom[0m
+        BaoCao bc1_0 
+    [34morder[0m [34mby[0m
+        bc1_0.ngayTao desc
+2026-05-09 11:56:13.365 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:13.366 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:13.368 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:14.781 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai 
+    [34mfrom[0m
+        KhachHang kh1_0
+2026-05-09 11:56:14.790 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:56:14.792 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:14.794 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:14.796 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:14.796 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:14.800 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pdp1_0.maPhieu,
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai,
+        pdp1_0.maKhachHang,
+        pdp1_0.maNhanVien,
+        pdp1_0.maPhong,
+        pdp1_0.ngayDat,
+        pdp1_0.ngayNhan,
+        pdp1_0.ngayTra,
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang,
+        pdp1_0.tienCoc,
+        pdp1_0.tongTien,
+        pdp1_0.trangThai 
+    [34mfrom[0m
+        PhieuDatPhong pdp1_0 
+    [34mjoin[0m
+        KhachHang kh1_0 
+            [34mon[0m kh1_0.maKhachHang=pdp1_0.maKhachHang 
+    [34mjoin[0m
+        Phong p1_0 
+            [34mon[0m p1_0.maPhong=pdp1_0.maPhong
+2026-05-09 11:56:14.801 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:14.803 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:14.806 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:14.807 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:14.809 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:14.812 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:14.815 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:14.817 [Thread-6] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:15.362 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pdp1_0.maPhieu,
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai,
+        pdp1_0.maKhachHang,
+        pdp1_0.maNhanVien,
+        pdp1_0.maPhong,
+        pdp1_0.ngayDat,
+        pdp1_0.ngayNhan,
+        pdp1_0.ngayTra,
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang,
+        pdp1_0.tienCoc,
+        pdp1_0.tongTien,
+        pdp1_0.trangThai 
+    [34mfrom[0m
+        PhieuDatPhong pdp1_0 
+    [34mjoin[0m
+        KhachHang kh1_0 
+            [34mon[0m kh1_0.maKhachHang=pdp1_0.maKhachHang 
+    [34mjoin[0m
+        Phong p1_0 
+            [34mon[0m p1_0.maPhong=pdp1_0.maPhong
+2026-05-09 11:56:15.366 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:15.366 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:15.369 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:15.369 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:15.372 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:15.374 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:15.378 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:15.384 [Thread-7] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.191 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pdp1_0.maPhieu,
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai,
+        pdp1_0.maKhachHang,
+        pdp1_0.maNhanVien,
+        pdp1_0.maPhong,
+        pdp1_0.ngayDat,
+        pdp1_0.ngayNhan,
+        pdp1_0.ngayTra,
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang,
+        pdp1_0.tienCoc,
+        pdp1_0.tongTien,
+        pdp1_0.trangThai 
+    [34mfrom[0m
+        PhieuDatPhong pdp1_0 
+    [34mjoin[0m
+        KhachHang kh1_0 
+            [34mon[0m kh1_0.maKhachHang=pdp1_0.maKhachHang 
+    [34mjoin[0m
+        Phong p1_0 
+            [34mon[0m p1_0.maPhong=pdp1_0.maPhong
+2026-05-09 11:56:16.192 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:16.193 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.194 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:16.194 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.195 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:16.196 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:16.197 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.199 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.211 [JavaFX Application Thread] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        dv1_0.maDichVu,
+        dv1_0.giaTien,
+        dv1_0.moTa,
+        dv1_0.tenDichVu 
+    [34mfrom[0m
+        DichVu dv1_0
+2026-05-09 11:56:16.692 [Thread-8] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:56:16.693 [Thread-8] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.694 [Thread-8] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.695 [Thread-8] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:16.697 [Thread-8] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.002 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang 
+    [34mfrom[0m
+        Phong p1_0
+2026-05-09 11:56:17.004 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.005 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.006 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.006 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.008 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        pdp1_0.maPhieu,
+        kh1_0.maKhachHang,
+        kh1_0.hoTen,
+        kh1_0.loaiKhachHang,
+        kh1_0.ngaySinh,
+        kh1_0.soDienThoai,
+        pdp1_0.maKhachHang,
+        pdp1_0.maNhanVien,
+        pdp1_0.maPhong,
+        pdp1_0.ngayDat,
+        pdp1_0.ngayNhan,
+        pdp1_0.ngayTra,
+        p1_0.maPhong,
+        p1_0.giaPhong,
+        p1_0.maLoaiPhong,
+        p1_0.tenPhong,
+        p1_0.tinhTrang,
+        pdp1_0.tienCoc,
+        pdp1_0.tongTien,
+        pdp1_0.trangThai 
+    [34mfrom[0m
+        PhieuDatPhong pdp1_0 
+    [34mjoin[0m
+        KhachHang kh1_0 
+            [34mon[0m kh1_0.maKhachHang=pdp1_0.maKhachHang 
+    [34mjoin[0m
+        Phong p1_0 
+            [34mon[0m p1_0.maPhong=pdp1_0.maPhong
+2026-05-09 11:56:17.008 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:17.009 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.010 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:17.010 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.011 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:17.011 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        nv1_0.maNhanVien,
+        nv1_0.CCCD,
+        nv1_0.gioiTinh,
+        nv1_0.hoTen,
+        nv1_0.loaiNhanVien,
+        nv1_0.ngaySinh,
+        nv1_0.ngayVaoLam,
+        nv1_0.queQuan,
+        nv1_0.soDienThoai,
+        nv1_0.trangThai 
+    [34mfrom[0m
+        NhanVien nv1_0 
+    [34mwhere[0m
+        nv1_0.maNhanVien=?
+2026-05-09 11:56:17.012 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?
+2026-05-09 11:56:17.015 [Thread-9] DEBUG org.hibernate.SQL - 
+    [34mselect[0m
+        lp1_0.maLoaiPhong,
+        lp1_0.moTa,
+        lp1_0.tenLoaiPhong 
+    [34mfrom[0m
+        LoaiPhong lp1_0 
+    [34mwhere[0m
+        lp1_0.maLoaiPhong=?

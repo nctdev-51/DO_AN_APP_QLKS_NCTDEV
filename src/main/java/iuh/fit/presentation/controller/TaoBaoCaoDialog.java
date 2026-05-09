@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 public class TaoBaoCaoDialog {
     private final IBaoCaoService baoCaoService;
     private final TaiKhoanDTO currentUser;
+    private java.io.File selectedImage;
 
     public TaoBaoCaoDialog(IBaoCaoService baoCaoService, TaiKhoanDTO currentUser) {
         this.baoCaoService = baoCaoService;
@@ -51,6 +52,15 @@ public class TaoBaoCaoDialog {
         txtNoiDung.setPrefRowCount(6);
         txtNoiDung.setStyle("-fx-padding: 10; -fx-font-size: 14px;");
 
+        Label lblFileName = new Label("Chưa có ảnh đính kèm");
+        Button btnChonAnh = new Button("📸 Đính kèm ảnh thực tế");
+        btnChonAnh.setOnAction(e -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+            selectedImage = fileChooser.showOpenDialog(null);
+            if (selectedImage != null) lblFileName.setText(selectedImage.getName());
+        });
+
         Button btnGui = new Button("📤 GỬI BÁO CÁO");
         btnGui.setMaxWidth(Double.MAX_VALUE);
         btnGui.setStyle("-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12; -fx-cursor: hand; -fx-background-radius: 8;");
@@ -69,6 +79,7 @@ public class TaoBaoCaoDialog {
                 bc.setNoiDung(txtNoiDung.getText());
                 bc.setNgayTao(LocalDateTime.now());
                 bc.setTrangThai("CHUA_XEM");
+                if (selectedImage != null) bc.setHinhAnh(selectedImage.getAbsolutePath());
 
                 baoCaoService.save(bc); // Cần gọi service để lưu vào DB
                 new Alert(Alert.AlertType.INFORMATION, "Đã gửi báo cáo thành công!").showAndWait();
